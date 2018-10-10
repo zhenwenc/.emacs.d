@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: Import Themed Styles
+# key: ims
+# --
+import { Theme, WithStyles $0 } from 'styles';

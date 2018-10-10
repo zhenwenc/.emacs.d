@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: React Deconst States
+# key: state
+# --
+const { $0 } = this.state;

@@ -1,0 +1,6 @@
+# -*- mode: snippet; require-final-newline: nil -*-
+# name: const declaration
+# key: const
+# group: es6
+# --
+const { $0 } = ${1:initial};

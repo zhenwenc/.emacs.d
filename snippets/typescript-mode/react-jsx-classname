@@ -1,0 +1,6 @@
+# -*- mode: snippet -*-
+# name: React JSX ClassName
+# key: cn
+# condition: (zc-yas/react-jsx-expand-prop-p "cn")
+# --
+className=$0

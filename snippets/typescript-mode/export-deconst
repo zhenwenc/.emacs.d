@@ -1,0 +1,6 @@
+# -*- mode: snippet -*-
+# name: export named
+# key: ex
+# condition: (not (zc-yas/test-buffer-p))
+# --
+export ${2: { ${0:named} }} from '$1';

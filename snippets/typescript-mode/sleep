@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: sleep
+# key: sleep
+# --
+await require('sleep-promise')($0); // TODO: DELETE

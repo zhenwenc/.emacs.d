@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# name: Test it
+# key: it
+# --
+it('${1:name}', async () => {
+  $0
+})

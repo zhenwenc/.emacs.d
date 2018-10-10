@@ -1,0 +1,6 @@
+# -*- mode: snippet -*-
+# name: Test expect
+# key: ex
+# condition: (zc-yas/test-buffer-p)
+# --
+expect(${1:actual}).$0

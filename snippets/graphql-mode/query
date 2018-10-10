@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# name: query
+# key: q
+# --
+type Query {
+  $0
+}

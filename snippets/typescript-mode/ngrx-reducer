@@ -1,0 +1,32 @@
+# -*- mode: snippet -*-
+# name: Ngrx Reducer
+# key: ngreducer
+# --
+import { Action } from '@ngrx/store';
+import { Observable } from 'rxjs';
+
+import { ${1:models} } from 'app/models';
+import * as $2 from '../actions/${2:action}';
+
+
+export interface State {
+  ${3:state}: ${4:<state type>};
+};
+
+export const initialState: State = {
+  $3: ${5:<state default>},
+};
+
+export function reducer(state = initialState, action: Action): State {
+  switch (action.type) {
+
+  case product.ActionTypes.${6:<action type>}: {
+    return {
+      $3: action.payload,
+    };
+  }
+
+  default:
+    return state;
+  }
+}

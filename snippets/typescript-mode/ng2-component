@@ -1,0 +1,24 @@
+# -*- mode: snippet -*-
+# name: Angular2 Component
+# key: ngcomp
+# binding: direct-keybinding
+# --
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  HostBinding,
+  Input,
+} from '@angular/core';
+
+@Component({
+  selector: 'nc-${1:component}',
+  templateUrl: '$1.component.html',
+  styleUrls: ['$1.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+})
+export class $0 {
+
+  constructor(private cd: ChangeDetectorRef) {}
+
+}

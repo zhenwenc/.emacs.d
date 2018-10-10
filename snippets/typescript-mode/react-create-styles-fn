@@ -1,0 +1,8 @@
+# -*- mode: snippet -*-
+# name: React Create Styles Fn
+# key: rcsf
+# --
+const createStyles = (theme: Theme) =>
+  Theme.createStyles({
+    $0
+  });

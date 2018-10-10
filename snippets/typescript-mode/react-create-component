@@ -1,0 +1,12 @@
+# -*- mode: snippet -*-
+# name: React Create Component
+# key: rc
+# condition: (zc-yas/buffer-match-p "react")
+# --
+${1:export }class ${2:`(file-name-base)`} extends React.${3:$$(yas-choose-value '("Component" "PureComponent"))}<${4:$2Props}${5:, $2State}> {
+  render() {
+    return (
+      $0
+    )
+  }
+}

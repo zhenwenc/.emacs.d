@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# name: input
+# key: i
+# --
+input ${1:name} {
+  $0
+}

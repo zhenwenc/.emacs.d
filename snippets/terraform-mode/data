@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# name: data
+# key: d
+# --
+data "${1:type}" "${2:name}" {
+  $0
+}

@@ -1,0 +1,16 @@
+# -*- mode: snippet -*-
+# name: React Bootstrap
+# key: r
+# condition: (and (zc-yas/react-buffer-p) (not (zc-yas/buffer-match-p "react")))
+# --
+import React from 'react';
+
+${1:export interface ${2:`(file-name-base)`Props} {
+
+}}
+
+${3:export interface ${4:`(file-name-base)`State} {
+
+}}
+
+$0

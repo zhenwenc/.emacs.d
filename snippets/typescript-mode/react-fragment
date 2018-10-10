@@ -1,0 +1,6 @@
+# -*- mode: snippet -*-
+# name: React Fragment
+# key: frag
+# condition: (zc-yas/buffer-match-p "react")
+# --
+<React.Fragment>$0</React.Fragment>

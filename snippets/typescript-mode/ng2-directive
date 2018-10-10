@@ -1,0 +1,22 @@
+# -*- mode: snippet -*-
+# name: Angular Directive
+# key: ngdir
+# --
+import {
+  Directive,
+  ViewContainerRef,
+  TemplateRef,
+  Injectable,
+} from '@angular/core';
+
+@Directive({
+  selector: '[nc${1:directive}]',
+})
+export class Nc$1Directive {
+
+  constructor(
+    private viewContainer: ViewContainerRef,
+    private template: TemplateRef<ItemContext>,
+  ) {}
+
+}

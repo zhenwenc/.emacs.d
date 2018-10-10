@@ -1,0 +1,52 @@
+# Elisp
+*.elc
+*~
+
+# Emacs
+\#*\#
+/.emacs.desktop
+/.emacs.desktop.lock
+auto-save-list
+tramp
+.\#*
+
+# Org-mode
+.org-id-locations
+*_archive
+
+# Flymake-mode
+*_flymake.*
+
+# Eshell files
+/eshell/history
+/eshell/lastdir
+
+# Reftex files
+*.rel
+
+# AUCTeX auto folder
+/auto/
+
+# Cask packages
+dist/
+.cask/
+
+# Flycheck
+flycheck_*.el
+
+# Server auth directory
+/server/
+
+# Cache
+/*.eld
+/*.cache
+/.historian
+/.trello
+/cookies
+/bookmarks
+/magithub/cache
+
+# Straight
+/straight/*
+!/straight/versions/
+!/straight/versions/*

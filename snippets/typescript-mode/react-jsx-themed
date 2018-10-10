@@ -1,0 +1,10 @@
+# -*- mode: snippet -*-
+# name: React JSX WithStyles
+# key: rt
+# condition: (zc-yas/react-jsx-expand-tag-p "rt")
+# --
+<WithStyles fn={createStyles}>
+  {({ styles, css }) => (
+    $0
+  )}
+</WithStyles>

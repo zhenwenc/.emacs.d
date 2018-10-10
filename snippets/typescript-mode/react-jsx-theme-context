@@ -1,0 +1,10 @@
+# -*- mode: snippet -*-
+# name: React JSX Theme Context
+# key: rtc
+# condition: (zc-yas/react-jsx-expand-tag-p "rtc")
+# --
+<ThemeContext.Consumer>
+  {({ $1 }) => (
+    $0
+  )}
+</ThemeContext.Consumer>

@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# name: mutation
+# key: m
+# --
+type Mutation {
+  $0
+}

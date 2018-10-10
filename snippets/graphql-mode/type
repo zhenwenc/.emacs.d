@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# name: type
+# key: t
+# --
+type ${1:name} {
+  $0
+}
