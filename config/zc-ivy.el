@@ -93,8 +93,7 @@
 
     ;; Ignore noisy files and directories
     (setq counsel-find-file-ignore-regexp
-          (regexp-opt '("node_modules")))
-    ))
+          (regexp-opt '("node_modules")))))
 
 (use-package flx
   :straight t

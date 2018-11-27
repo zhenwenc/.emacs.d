@@ -122,8 +122,7 @@
 
                   (entry
                    "r" "Read later" "* MAYBE :Read: %i%?"
-                   '(file+olp org-default-notes-file)))
-            ))
+                   '(file+olp org-default-notes-file)))))
 
     (add-to-list 'display-buffer-alist
                  `(,(rx bos "*Org Agenda*" eos)
@@ -132,8 +131,7 @@
                    (reusable-frames . visible)
                    (side            . right)
                    (slot            . 1)
-                   (window-width    . 0.5)))
-    ))
+                   (window-width    . 0.5)))))
 
 
 
