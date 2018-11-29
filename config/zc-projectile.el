@@ -63,7 +63,10 @@ directory in `zc-projectile/ignored-dirs'."
     (setq projectile-completion-system 'ivy)
 
     (setq projectile-globally-ignored-files
-          '("TAGS" ".DS_Store"))
+          '("TAGS"
+            ".DS_Store"
+            "terraform.tfstate"
+            "terraform.tfstate.backup"))
     (setq projectile-globally-ignored-file-suffixes
           '("gz" "zip" "tar" "elc"))
     (setq projectile-globally-ignored-directories
