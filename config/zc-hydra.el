@@ -130,7 +130,8 @@
    (("p!" projectile-run-shell-command-in-root "shell command")
     ("pi" ibuffer "ibuffer")
     ("pI" projectile-invalidate-cache "invalidate cache")
-    ("po" counsel-projectile-switch-project "switch project"))
+    ("po" counsel-projectile-switch-project "switch project")
+    ("pr" zc-projectile/refresh-projects "refresh projects"))
 
    "Search"
    (("pf" counsel-projectile-find-file "find file")
