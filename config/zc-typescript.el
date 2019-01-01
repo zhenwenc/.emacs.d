@@ -38,10 +38,33 @@
   (progn
     (setq typescript-indent-level 2)
 
-    ;; Add font lock keyword: decorator
-    (add-to-list 'typescript--font-lock-keywords-3
-                 `(, (rx (and "@" (in "a-zA-Z_.") (0+ (in "a-zA-Z0-9_."))))
-                     . font-lock-preprocessor-face))
+    (defconst zc-typescript/method-keyword-re
+      (regexp-opt '("async" "static" "public" "private" "protected" "get" "set")))
+
+    (defconst zc-typescript/generic-type-re
+      ".*" ;; FIXME make it more specific
+      "Regexp matching a typescript generic type identifier, without grouping.")
+
+    (defconst zc-typescript/method-heading-re
+      (concat
+       "\\s-*" zc-typescript/method-keyword-re
+       "\\s-+\\(" typescript--name-re "\\)"
+       "\\(?:<" zc-typescript/generic-type-re ">\\)?"
+       "("))
+
+    (defconst zc-typescript/function-heading-re
+      (concat
+       "\\s-*" zc-typescript/method-keyword-re
+       "\\s-+function"
+       "\\s-*\\(" typescript--name-re "\\)"))
+
+    (defconst zc-typescript/decorator-re
+      (rx (and "@" (in "a-zA-Z_.") (0+ (in "a-zA-Z0-9_.")))))
+
+    (dolist (item `((, zc-typescript/decorator-re        . font-lock-preprocessor-face)
+                    (, zc-typescript/method-heading-re   1 font-lock-function-name-face)
+                    (, zc-typescript/function-heading-re 1 font-lock-function-name-face)))
+      (add-to-list 'typescript--font-lock-keywords-3 item))
 
     ;; Enhance smartparens
     (sp-with-modes '(typescript-mode)
