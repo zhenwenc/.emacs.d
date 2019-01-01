@@ -30,6 +30,8 @@
 
        "Project"
        (("pa" treemacs-projectile "add project")
+        ("pd" treemacs-remove-project-from-workspace "remove project")
+        ("pr" treemacs-rename-project "rename project")
         ("pc" treemacs-collapse-project "collapse project")
         ("pC" treemacs-collapse-all-projects "collapse all projects"))
 
