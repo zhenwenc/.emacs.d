@@ -4,6 +4,9 @@
 (autoload 'sp--looking-back-p "smartparens")
 (autoload 'sp-end-of-sexp "smartparens")
 (autoload 'sp-backward-whitespace "smartparens")
+(autoload 'tide-net-sentinel "tide")
+
+(defvar tide-servers)
 
 
 ;; Smartparens
@@ -50,6 +53,17 @@
          (str (buffer-substring beg end))
          (sub (replace-regexp-in-string "/\\|<\\|>" "" str)))
     (string-trim (car (split-string sub " ")))))
+
+
+;; Tide
+
+(defun zc-typescript/tide-stop-all-servers ()
+  "Kill all tide process sentinels and cleanup projects."
+  (interactive)
+  (maphash
+   (lambda (project process)
+     (tide-net-sentinel process "done"))
+   tide-servers))
 
 
 

@@ -188,9 +188,12 @@
 
 (zc-hydra/major-mode-define typescript-mode
   ("Basic"
-   (("n" tide-restart-server "restart server")
-    ("q" nil "quit")
+   (("q" nil "quit")
     ("<escape>" nil nil))
+
+   "Server"
+   (("ns" tide-restart-server "restart server")
+    ("nS" zc-typescript/tide-stop-all-servers "stop all servers"))
 
    "Navigation"
    (("gg" tide-jump-to-definition "goto definition")
