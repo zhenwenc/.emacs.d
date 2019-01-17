@@ -194,7 +194,8 @@
 
    "Server"
    (("ns" tide-restart-server "restart server")
-    ("nS" zc-typescript/tide-stop-all-servers "stop all servers"))
+    ("nS" zc-typescript/tide-stop-all-servers "stop all servers")
+    ("nv" tide-verify-setup "verify setup"))
 
    "Navigation"
    (("gg" tide-jump-to-definition "goto definition")
@@ -202,7 +203,9 @@
 
    "Refactor"
    (("rr" tide-rename-symbol "rename symbol")
-    ("rf" prettier-js "prettier"))
+    ("rf" prettier-js "prettier")
+    ("rx" tide-fix "fix code")
+    ("rX" zc-typescript/linter-fix-file "fix file"))
 
    "Docs"
    (("hu" tide-references "references")

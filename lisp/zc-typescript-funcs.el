@@ -65,6 +65,11 @@
      (tide-net-sentinel process "done"))
    tide-servers))
 
+(defun zc-typescript/linter-fix-file ()
+  (interactive)
+  (shell-command (concat "tslint --fix " (buffer-file-name)))
+  (revert-buffer t t))
+
 
 
 (provide 'zc-typescript-funcs)
