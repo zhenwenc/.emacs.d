@@ -206,6 +206,9 @@
 (defun zc-modeline/dedicated-icon ()
   (all-the-icons-faicon "lock" :height 0.8 :v-adjust 0.05))
 
+(defun zc-modeline/narrowed-icon ()
+  (all-the-icons-faicon "compress" :height 0.8 :v-adjust 0.05))
+
 
 
 (setq-default
@@ -249,6 +252,12 @@
                    (list
                     (zc-modeline/separator)
                     (propertize (zc-modeline/dedicated-icon) 'face warning)))
+
+                 ;; Buffer narrowed status
+                 (when (buffer-narrowed-p)
+                   (list
+                    (zc-modeline/separator)
+                    (propertize (zc-modeline/narrowed-icon) 'face warning)))
                  ))
 
            (rhs (list

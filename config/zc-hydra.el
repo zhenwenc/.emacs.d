@@ -77,7 +77,8 @@
 (zc-hydra/define zc-main-hydra--buffer
   (:color teal :title "Buffer Hydra" :icon "drupal" :prefix "b")
   ("Basic"
-   (("bb" ivy-switch-buffer "switch")
+   (("b SPC" zc/buffer-toggle-narrow "toggle narrowing")
+    ("bb" ivy-switch-buffer "switch")
     ("bn" next-buffer "next")
     ("bN" previous-buffer "previous")
     ("bp" previous-buffer "previous"))
@@ -262,8 +263,7 @@
     ("p" zc-main-hydra--project/body "+project")
     ("s" zc-main-hydra--symbol/body "+symbol")
     ("t" zc-main-hydra--toggle/body "+toggle")
-    ("w" zc-main-hydra--window/body "+window"))
-   ))
+    ("w" zc-main-hydra--window/body "+window"))))
 
 
 
