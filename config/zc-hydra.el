@@ -79,9 +79,8 @@
   ("Basic"
    (("b SPC" zc/buffer-toggle-narrow "toggle narrowing")
     ("bb" ivy-switch-buffer "switch")
-    ("bn" next-buffer "next")
-    ("bN" previous-buffer "previous")
-    ("bp" previous-buffer "previous"))
+    ("bn" projectile-next-project-buffer "next")
+    ("bN" projectile-previous-project-buffer "previous"))
 
    "Misc."
    (("bB" ibuffer "ibuffer")
