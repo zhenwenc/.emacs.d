@@ -129,11 +129,12 @@
            "q"   #'quit-window)
 
   :preface
-  (defun zc-typescript/setup-tide ()
+  (defun zc-typescript/maybe-setup-tide ()
     (interactive)
-    (tide-setup)
-    (eldoc-mode +1)
-    (flycheck-mode +1))
+    (unless (s-contains-p "node_modules" (buffer-file-name))
+      (tide-setup)
+      (eldoc-mode +1)
+      (flycheck-mode +1)))
 
   :preface
   (defun zc-typescript/disable-flycheck-for-node-modules ()
@@ -148,7 +149,7 @@
              (updated (cl-union flycheck-disabled-checkers js-checkers)))
         (setq flycheck-disabled-checkers updated))))
 
-  :hook ((typescript-mode . zc-typescript/setup-tide)
+  :hook ((typescript-mode . zc-typescript/maybe-setup-tide)
          (typescript-mode . zc-typescript/disable-flycheck-for-node-modules))
 
   :init
