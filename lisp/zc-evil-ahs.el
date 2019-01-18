@@ -67,7 +67,9 @@ with `auto-highlight-symbol'."
   (zc-evil-ahs/integrate-evil-search forward)
   (zc-evil-ahs/ahs-highlight-now-wrapper)
   (evil-set-jump)
-  (if forward (ahs-forward) (ahs-backward)))
+  (if forward (ahs-forward) (ahs-backward))
+  ;; recenter window for better visibility
+  (recenter))
 
 (defun zc-evil-ahs/highlight-symbol ()
   "Highlight the symbol under point with `auto-highlight-symbol'."
