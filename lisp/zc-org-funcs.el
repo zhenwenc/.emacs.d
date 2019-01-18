@@ -1,9 +1,32 @@
 (require 'f)
 (require 'dash)
 
+(defvar org-agenda-files)
+(defvar org-default-notes-file)
+(defvar org-agenda-category-filter)
+
 (autoload 'ivy-read "ivy")
+(autoload 'org-agenda-filter-apply "org")
+(autoload 'org-capture-target-buffer "org")
+(autoload 'org-capture-put-target-region-and-position "org")
+(autoload 'org-element-type "org")
+(autoload 'org-element-at-point "org")
 
 
+;; General
+
+(defun zc-org/ctrl-c-ctrl-c-hook ()
+  "Override default functionality of `C-c C-c' command in
+`org-mode', use with `org-ctrl-c-ctrl-c-hook'.
+
+- When in a source code block, do edit instead of execute."
+  (pcase (org-element-type (org-element-context))
+    ;; source code block
+    ((or `inline-src-block `src-block)
+     (org-edit-special))))
+
+
+;; Agenda
 
 (defun zc-org/read-capture-file (&rest _)
   (ivy-read "Capture Target: "
@@ -40,6 +63,24 @@ See `org-capture-set-target-location' for example."
            (org-agenda-filter-apply
             (setq org-agenda-category-filter (list (concat "+" cat))) 'category))
           (t (error "No category provided.")))))
+
+
+;; Babel
+
+(defun zc-org/babel-foreach-result (fn)
+  "Run FN for each source block in buffer."
+  (save-excursion
+    (goto-char (point-min))
+    (let ((case-fold-search t))
+      (while (re-search-forward "^\s*#[+]BEGIN_SRC" nil t)
+        (let ((element (org-element-at-point)))
+          (when (eq (org-element-type element) 'src-block)
+            (funcall fn element)))))
+    (save-buffer)))
+
+(defun zc-org/babel-remove-result-all ()
+  (interactive)
+  (zc-org/babel-foreach-result 'org-babel-remove-result-one-or-many))
 
 
 

@@ -19,6 +19,9 @@
   :defer t
 
   :general
+  (:keymaps 'org-src-mode-map
+            "C-c C-c" #'org-edit-src-exit)
+
   (:states 'normal :keymaps 'org-mode-map
            "RET" #'org-return)
 
@@ -124,6 +127,14 @@
                    "r" "Read later" "* MAYBE :Read: %i%?"
                    '(file+olp org-default-notes-file)))))
 
+    ;; Activate babel source code blocks
+    (org-babel-do-load-languages 'org-babel-load-languages
+                                 '((emacs-lisp . t)
+                                   (sql        . t)))
+
+    ;; Override the context sensitive C-c C-c key
+    (add-hook 'org-ctrl-c-ctrl-c-hook 'zc-org/ctrl-c-ctrl-c-hook)
+
     (add-to-list 'display-buffer-alist
                  `(,(rx bos "*Org Agenda*" eos)
                    (display-buffer-reuse-window
@@ -131,7 +142,23 @@
                    (reusable-frames . visible)
                    (side            . right)
                    (slot            . 1)
-                   (window-width    . 0.5)))))
+                   (window-width    . 0.5)))
+
+    (add-to-list 'display-buffer-alist
+                 `(,(rx bos "*Org Src")
+                   (display-buffer-reuse-window
+                    display-buffer-in-side-window)
+                   (reusable-frames . visible)
+                   (side            . bottom)
+                   (slot            . 1)
+                   (window-height   . 0.3)))))
+
+
+;; https://orgmode.org/manual/Easy-templates.html
+;; https://github.com/abo-abo/hydra/wiki/Org-mode-block-templates
+
+(use-package org-tempo
+  :after org)
 
 
 
@@ -159,11 +186,23 @@
 
 (zc-hydra/major-mode-define org-mode
   ("Basic"
-   ()
+   (("?" org-info "org info"))
 
-   "Edit"
-   (("ei" org-insert-structure-template "insert template")
-    ("ee" org-edit-special "edit special block"))
+   "Edit & Execute"
+   (("ee" org-babel-execute-src-block-maybe "execute block")
+    ("ep" org-property-action "edit property")
+    ("ea" org-babel-insert-header-arg "edit header arg")
+    ("ev" org-babel-check-src-block "source block verify")
+    ("ei" org-babel-view-src-block-info "source block info")
+    ("eo" org-babel-open-src-block-result "open result")
+    ("ec" org-babel-remove-result-one-or-many "clear result")
+    ("eC" zc-org/babel-remove-result-all "clear all result"))
+
+   "Insert"
+   (("id" org-insert-drawer "insert drawer")
+    ("ih" org-insert-heading "insert heading")
+    ("is" org-insert-structure-template "insert template")
+    ("il" org-insert-link "insert link"))
 
    "Server"
    (("ns" org-trello-sync-buffer "trello sync buffer")
