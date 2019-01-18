@@ -7,7 +7,7 @@
 
 (use-package info
   :general
-  ;; unset keybindings conflict with evil
+  ;; Unset evil conflicted keybindings
   (:keymaps 'Info-mode-map "l" nil "h" nil)
 
   (:states '(normal motion) :keymaps 'Info-mode-map
@@ -16,6 +16,13 @@
 
 (use-package helpful
   :straight t
+
+  ;; Evil mess up the default keybindings
+  :general
+  (:states '(normal motion) :keymaps 'helpful-mode-map
+           "TAB" #'forward-button
+           "n"   #'forward-button
+           "p"   #'backward-button)
 
   :preface
   (defun zc-help/temporary-remove-dedication (orig-fn &rest args)
@@ -29,6 +36,10 @@
 
   :config
   (progn
+    ;; Prefer reusing the same buffer while navigating to source.
+    (advice-add 'helpful--navigate
+                :around #'zc-help/temporary-remove-dedication)
+
     (add-to-list 'display-buffer-alist
                  `(,(rx bos "*helpful ")
                    (display-buffer-reuse-window
@@ -36,11 +47,7 @@
                    (reusable-frames . visible)
                    (side            . right)
                    (slot            . 1)
-                   (window-width    . 0.5)))
-
-    ;; I prefer reusing the same buffer while navigating to source.
-    (advice-add 'helpful--navigate
-                :around #'zc-help/temporary-remove-dedication)))
+                   (window-width    . 0.5)))))
 
 (use-package google-translate
   :straight t
