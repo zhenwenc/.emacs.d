@@ -1,6 +1,19 @@
 (eval-when-compile
   (require 'use-package))
 
+(require 'zc-hydra-funcs)
+
+
+
+(use-package info
+  :general
+  ;; unset keybindings conflict with evil
+  (:keymaps 'Info-mode-map "l" nil "h" nil)
+
+  (:states '(normal motion) :keymaps 'Info-mode-map
+            "gs" #'Info-goto-node
+            "gu" #'Info-follow-reference))
+
 (use-package helpful
   :straight t
 
@@ -45,5 +58,26 @@
                    (side            . right)
                    (slot            . 1)
                    (window-width    . 0.2))))
+
+
+
+(zc-hydra/major-mode-define Info-mode
+  ("Basic"
+   ()
+
+   "Navigation"
+   (("gs" Info-goto-node "goto node")
+    ("gt" Info-top-node "goto top node")
+    ("gT" Info-toc "table of contents")
+    ("gu" Info-follow-reference "follow reference")
+    ("gm" Info-menu "menu"))
+
+   "Hints"
+   (("C-j" Info-next "next")
+    ("C-k" Info-prev "previous")
+    ("C-o" Info-history-back "history back")
+    ("C-i" Info-history-forward "history forward"))))
+
+
 
 (provide 'zc-help)
