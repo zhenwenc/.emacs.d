@@ -180,7 +180,7 @@
     (format " %s %s " layout window-unicode)))
 
 (defun zc-modeline/vc-info ()
-  (if vc-mode
+  (if (and vc-mode buffer-file-name)
       (format "%s %s"
               (all-the-icons-octicon "git-branch" :height 0.8 :v-adjust 0.05)
               (replace-regexp-in-string "^ Git[:-]" "" vc-mode))
@@ -190,14 +190,15 @@
   (let ((str (concat
               (if (and (buffer-file-name)
                        (file-remote-p (buffer-file-name))) "@" "")
-              (if buffer-read-only "%" "-")
+              (if buffer-read-only "%%" "-")
               (if (buffer-modified-p) "*" "-"))))
     (s-pad-right 2 " " str)))
 
 (defun zc-modeline/directory-info ()
   (cond
    ;; Skip for special buffers
-   ((string-match-p (rx bos "*" (*? anything) "*" eos) (buffer-name))
+   ((or (not buffer-file-name)
+        (string-match-p (rx bos "*" (*? anything) "*" eos) (buffer-name)))
     "")
    ((> (f-depth default-directory) 1)
     (format "%s/" (f-base default-directory)))
@@ -221,9 +222,10 @@
            (warning (if active 'zc-modeline/warning face))
            (evil-state (cond
                         ((not active)          'zc-modeline/evil-inactive)
+                        (buffer-read-only      'zc-modeline/evil-motion-state)
+                        ((evil-motion-state-p) 'zc-modeline/evil-motion-state)
                         ((evil-insert-state-p) 'zc-modeline/evil-insert-state)
                         ((evil-visual-state-p) 'zc-modeline/evil-visual-state)
-                        ((evil-motion-state-p) 'zc-modeline/evil-motion-state)
                         (t                     'zc-modeline/evil-normal-state)))
            (exceed-80col (>= (current-column) 80))
 
