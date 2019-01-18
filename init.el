@@ -72,7 +72,7 @@
 
 ;; Load features
 
-(require 'org-version)
+(ignore-errors (require 'org-version))
 
 (use-package zc-theme)
 (use-package zc-core)
@@ -121,3 +121,5 @@
             t))
 
 (provide 'init)
+
+
