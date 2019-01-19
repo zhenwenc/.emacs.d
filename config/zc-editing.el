@@ -111,7 +111,8 @@
     (set-face-background 'iedit-occurrence "PaleVioletRed4")))
 
 (use-package wgrep
-  :straight t)
+  :straight t
+  :config (setq wgrep-auto-save-buffer t))
 
 
 
