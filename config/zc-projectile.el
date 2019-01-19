@@ -105,11 +105,6 @@ directory in `zc-projectile/ignored-dirs'."
     (setq counsel-projectile-remove-current-buffer t)
     (setq counsel-projectile-remove-current-project t)
 
-    ;; The default counsel rg command ending with a dot, this will
-    ;; produce duplicated result for `counsel-projectile-rg'.
-    (setq counsel-rg-base-command
-          (s-replace-regexp "[ \t\n\r]+\\.?\\'" "" counsel-rg-base-command))
-
     (counsel-projectile-mode)))
 
 (use-package all-the-icons-ivy
