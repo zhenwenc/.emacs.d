@@ -8,6 +8,8 @@
 (require 'zc-org-funcs)
 (require 'zc-hydra-funcs)
 
+(defvar org-tempo-tags)
+
 
 
 (defconst zc-org/directory "~/org")
@@ -23,7 +25,7 @@
             "C-c C-c" #'org-edit-src-exit)
 
   (:states 'normal :keymaps 'org-mode-map
-           "RET" #'org-return)
+           "RET" #'zc-org/evil-normal-ret)
 
   (:states 'motion :keymaps 'org-agenda-mode-map
            "RET" #'org-agenda-switch-to
@@ -43,10 +45,13 @@
   :config
   (progn
     (setq org-directory zc-org/directory
+          org-attach-directory   (f-join org-directory "data")
+          org-agenda-diary-file  (f-join org-directory "diary.org")
           org-default-notes-file (f-join org-directory "notes.org")
-          org-agenda-diary-file (f-join org-directory "diary.org")
-          org-agenda-files (zc-org/file-with-exts '("org" "trello"))
-          org-attach-directory (f-join org-directory "data"))
+          org-default-todos-file (f-join org-directory "todos.org")
+          org-work-notes-file    (f-join org-directory "work/notes.org")
+          org-work-todos-file    (f-join org-directory "work/todos.org")
+          org-agenda-files       (zc-org/file-with-exts '("org" "trello")))
 
     (setq org-M-RET-may-split-line nil
           org-blank-before-new-entry '((heading . always)
@@ -58,7 +63,8 @@
           org-insert-heading-respect-content t
           org-agenda-restore-windows-after-quit t
           org-agenda-window-setup 'reorganize-frame
-          org-src-window-setup 'current-window)
+          org-src-window-setup 'current-window
+          org-imenu-depth 3)
 
     (setq  org-todo-keywords
            '((type "TODO(t)" "NEXT(n)" "MAYBE(m)" "|" "DONE(d)" "CANCELLED(c)")
@@ -82,49 +88,25 @@
                         properties)))
 
             (list (entry
-                   "t" "Todo" "* TODO %?\n%u\n"
+                   "i" "Idea" "* MAYBE %?\n%i :idea:"
                    '(file org-default-notes-file))
 
                   (entry
-                   "T" "Todo (ask)" "* TODO %?\n%u\n"
-                   '(function zc-org/read-capture-target-file))
+                   "t" "Todo" "* TODO %?\n%i"
+                   '(file+headline org-default-todos-file "Inbox")
+                   :kill-buffer t)
 
                   (entry
-                   "i" "Idea" "* MAYBE :Idea: %?\n%t"
+                   "n" "Note" "* %?\n%(zc-org/capture-code-snippet \"%F\")"
                    '(file org-default-notes-file))
 
                   (entry
-                   "I" "Idea (ask)" "* MAYBE :Idea: %?\n%t"
-                   '(function zc-org/read-capture-target-file))
+                   "T" "Work Todo" "* TODO %?\n%i"
+                   '(file+headline org-work-todos-file "Inbox")
+                   :kill-buffer t)
 
                   (entry
-                   "n" "Next" "* NEXT %?\n%t"
-                   '(file org-default-notes-file))
-
-                  (entry
-                   "N" "Next (ask)" "* NEXT %?\n%t"
-                   '(function zc-org/read-capture-target-file))
-
-                  (entry
-                   "m" "Note" "* %?\n%t"
-                   '(file org-default-notes-file))
-
-                  (entry
-                   "m" "Note (ask)" "* %?\n%t"
-                   '(function zc-org/read-capture-target-file))
-
-                  (entry
-                   "d" "Diary" "* %?\n%U\n"
-                   '(file+datetree org-agenda-diary-file)
-                   :clock-in t :clock-resume t)
-
-                  (entry
-                   "D" "Diary (ask)" "* %?\n%U\n"
-                   '(function zc-org/read-capture-target-file)
-                   :clock-in t :clock-resume t)
-
-                  (entry
-                   "r" "Read later" "* MAYBE :Read: %i%?"
+                   "r" "Read later" "* MAYBE %i%? :Read:"
                    '(file+olp org-default-notes-file)))))
 
     ;; Activate babel source code blocks
@@ -134,6 +116,9 @@
 
     ;; Override the context sensitive C-c C-c key
     (add-hook 'org-ctrl-c-ctrl-c-hook 'zc-org/ctrl-c-ctrl-c-hook)
+    (add-hook 'imenu-after-jump-hook 'zc-org/imenu-after-jump-hook)
+
+    (advice-add 'imenu :before #'zc-org/imenu-before-jump-hook)
 
     (add-to-list 'display-buffer-alist
                  `(,(rx bos "*Org Agenda*" eos)
@@ -158,7 +143,21 @@
 ;; https://github.com/abo-abo/hydra/wiki/Org-mode-block-templates
 
 (use-package org-tempo
-  :after org)
+  :after org
+
+  :preface
+  (defun zc-org/post-org-tempo-add-templates ()
+    (mapc #'(lambda (entry)
+              (let* ((key (cdr entry))
+                     (value (symbol-value key)))
+                (set key (-map-when 'stringp 'upcase value))))
+          org-tempo-tags)
+    (message "HACK: Org complete templates with uppercase keycords."))
+
+  :config
+  ;; Complete src block templates with uppercased keywords
+  (advice-add 'org-tempo-add-templates
+              :after #'zc-org/post-org-tempo-add-templates))
 
 
 
@@ -191,6 +190,7 @@
    "Edit & Execute"
    (("ee" org-babel-execute-src-block-maybe "execute block")
     ("ep" org-property-action "edit property")
+    ("et" counsel-org-tag "edit tag")
     ("ea" org-babel-insert-header-arg "edit header arg")
     ("ev" org-babel-check-src-block "source block verify")
     ("ei" org-babel-view-src-block-info "source block info")
@@ -198,11 +198,9 @@
     ("ec" org-babel-remove-result-one-or-many "clear result")
     ("eC" zc-org/babel-remove-result-all "clear all result"))
 
-   "Insert"
-   (("id" org-insert-drawer "insert drawer")
-    ("ih" org-insert-heading "insert heading")
-    ("is" org-insert-structure-template "insert template")
-    ("il" org-insert-link "insert link"))
+   "Refactor"
+   (("rs" org-sort "sort entries")
+    ("rw" org-refile "refile entry"))
 
    "Server"
    (("ns" org-trello-sync-buffer "trello sync buffer")

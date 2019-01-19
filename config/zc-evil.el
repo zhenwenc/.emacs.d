@@ -229,7 +229,10 @@
   :after (:and org evil-common)
   :hook (org-mode . evil-org-mode)
   :general
-  (:states 'normal :keymaps 'evil-org-mode-map "t" #'org-todo)
+  (:states 'normal :keymaps 'evil-org-mode-map
+           "t" #'org-todo)
+  (:states 'insert :keymaps 'evil-org-mode-map
+           "C-d" nil)
   :config
   (progn
     (require 'evil-org-agenda)
