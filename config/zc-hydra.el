@@ -115,12 +115,16 @@
 (zc-hydra/define zc-main-hydra--symbol
   (:color teal :title "Symbol Hydra" :icon "strikethrough" :prefix "s")
   ("Basic"
-   (("ss" counsel-grep-or-swiper "swiper")
-    ("se" evil-iedit-state/iedit-mode "edit")
+   (("sj" counsel-imenu "imenu"))
+
+   "Symbol"
+   (("se" evil-iedit-state/iedit-mode "edit")
     ("sh" zc-evil-ahs/highlight-symbol "highlight")
     ("sH" zc-evil-ahs/goto-last-searched-symbol "goto last searched")
-    ("sc" zc/evil-search-clear-highlight "clear highlights")
-    ("sj" counsel-imenu "imenu")
+    ("sc" zc/evil-search-clear-highlight "clear highlights"))
+
+   "Search"
+   (("ss" counsel-grep-or-swiper "swiper")
     ("sp" counsel-projectile-rg "search project")
     ("sP" zc/projectile-search-symbol-at-point "search project (sym)"))))
 
