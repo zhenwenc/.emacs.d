@@ -11,6 +11,10 @@
   :config
   (add-to-list 'yas-snippet-dirs
                (concat user-emacs-directory "snippets"))
+
+  ;; Remove GUI dropdown prompt (prefer ivy)
+  (delq #'yas-dropdown-prompt yas-prompt-functions)
+
   (yas-global-mode +1)
 
   ;; NOTE: yas-maybe-expand is a variable.
