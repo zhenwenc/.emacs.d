@@ -39,6 +39,9 @@
              (lambda (file)
                (-contains? exts (f-ext file)))))
 
+  :hook
+  ((org-agenda-after-show . org-narrow-to-subtree))
+
   :init
   (add-to-list 'auto-mode-alist '("\\.trello\\'" . org-mode))
 
@@ -58,17 +61,25 @@
                                        (plain-list-item . nil))
           org-catch-invisible-edits 'smart
           org-enforce-todo-dependencies t
-          org-pretty-entities t
           org-indirect-buffer-display 'current-window
           org-insert-heading-respect-content t
           org-agenda-restore-windows-after-quit t
           org-agenda-window-setup 'reorganize-frame
           org-src-window-setup 'current-window
-          org-imenu-depth 3)
+          org-imenu-depth 3
+          org-refile-targets '((nil :maxlevel . 3)
+                               (org-agenda-files :maxlevel . 3)))
+
+    (setq org-eldoc-breadcrumb-separator " → "
+          org-image-actual-width nil
+          org-pretty-entities t
+          org-tags-column 0
+          org-use-sub-superscripts '{})
 
     (setq  org-todo-keywords
-           '((type "TODO(t)" "NEXT(n)" "MAYBE(m)" "|" "DONE(d)" "CANCELLED(c)")
-             (type "WAITING(w)" "MEETING(M)" "|")))
+           '((type "TODO(t)" "MAYBE(m)" "|" "DONE(d)")
+             (type "NEXT(n)" "WAITING(w)" "LATER(l)" "|" "CANCELLED(c)")
+             (type "[ ](T)" "[-](P)" "[?](M)" "|" "[X](D)")))
 
     (setq org-capture-templates
           (cl-labels ((entry
