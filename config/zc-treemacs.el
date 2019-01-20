@@ -29,7 +29,7 @@
        (("?" treemacs--helpful-hydra "helpful"))
 
        "Project"
-       (("pa" treemacs-projectile "add project")
+       (("pp" treemacs-projectile "add project")
         ("pd" treemacs-remove-project-from-workspace "remove project")
         ("pr" treemacs-rename-project "rename project")
         ("pc" treemacs-collapse-project "collapse project")
