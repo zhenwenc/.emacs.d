@@ -127,9 +127,13 @@
   :straight t
 
   :preface
-  (defun zc-theme/clear-highlight-for-swiper (&rest _)
-    (when highlight-thing-mode (highlight-thing-remove-last))
-    (when highlight-sexp-mode (move-overlay hl-sexp-overlay 0 0)))
+  (progn
+    (defun zc-theme/clear-highlight-for-swiper (&rest _)
+      (when highlight-thing-mode (highlight-thing-remove-last))
+      (when highlight-sexp-mode (move-overlay hl-sexp-overlay 0 0)))
+
+    (defun zc-theme/disable-highlight-thing-for-ahs (fn &rest args)
+      (and (not ahs-highlighted) (apply fn args))))
 
   :commands (global-highlight-thing-mode)
   :init (global-highlight-thing-mode)
@@ -148,7 +152,13 @@
     ;; should be removed, because `swiper' applies its own
     ;; overlays. Otherwise it can flicker between the two faces
     ;; as you move between candidates.
-    (advice-add 'swiper :before #'zc-theme/clear-highlight-for-swiper)))
+    (advice-add 'swiper :before #'zc-theme/clear-highlight-for-swiper)
+
+
+    ;; If symbol is highlighted by `ahs-highlight-now', the same
+    ;; flicker effect occurs on other candidates.
+    (advice-add 'highlight-thing-should-highlight-p
+                :around #'zc-theme/disable-highlight-thing-for-ahs)))
 
 
 
