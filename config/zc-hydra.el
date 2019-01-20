@@ -14,7 +14,7 @@
 (autoload 'counsel-imenu "counsel")
 (autoload 'counsel-recentf "counsel")
 (autoload 'counsel-find-file "counsel")
-(autoload 'counsel-describe-face "counsel")
+(autoload 'counsel-faces "counsel")
 (autoload 'counsel-grep-or-swiper "counsel")
 (autoload 'counsel-projectile "counsel-projectile")
 (autoload 'counsel-projectile-rg "counsel-projectile")
@@ -227,7 +227,7 @@
     ("hdv" helpful-variable "variable")
     ("hdk" helpful-key "key")
     ("hdf" helpful-callable "function")
-    ("hdF" counsel-describe-face "face")
+    ("hdF" counsel-faces "face")
     ("hdm" describe-mode "mode")
     ("hdM" helpful-macro "macro"))
 
