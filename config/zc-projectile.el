@@ -82,10 +82,6 @@ directory in `zc-projectile/ignored-dirs'."
     (advice-add 'projectile-load-known-projects
                 :override #'zc-projectile/refresh-projects)
 
-    ;; Teach projectile to prefer rg for finding files containing strings
-    (advice-add 'projectile-files-with-string
-                :around #'config-projectile--find-files-with-string-using-rg)
-
     (projectile-mode)))
 
 ;; counsel-projectile also loads projectile itself
