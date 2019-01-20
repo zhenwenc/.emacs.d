@@ -8,19 +8,16 @@
 
 
 (defvar zc-default-font
-  "Fira Code 12"
+  "Fira Code 13"
   "The universal default font.")
 
 (defvar zc-variable-pitch-font
-  "Fira Code 12"
+  "Fira Code 13"
   "The font to use in the variable-pitch face.")
 
 (defvar zc-fixed-pitch-font
-  "Fira Code 12"
+  "Fira Code 13"
   "The font to use in the fixed-pitch face.")
-
-;; Hardcoded theme colors
-(defconst zc-theme/background "#282c34")
 
 
 ;; Themes
@@ -34,29 +31,35 @@
           doom-themes-enable-italic t) ; if nil, italics is universally disabled
 
     ;; Load the theme
-    (cond (window-system
-           (setq doom-one-brighter-comments t)
-           (setq doom-one-brighter-modeline t)
-           (load-theme 'doom-one t))
-          (t
-           (setq doom-molokai-brighter-comments t)
-           (setq doom-molokai-brighter-modeline t)
-           (load-theme 'doom-molokai t)))
+    (setq doom-city-lights-brighter-comments nil)
+    (setq doom-city-lights-brighter-modeline nil)
+    (load-theme 'doom-city-lights t)
 
-    ;; Customize the theme
-    ;; (set-face-foreground 'font-lock-string-face "#51afef")
+    ;; Slightly darken the default background to have higher contrast
+    (set-background-color (doom-darken 'bg 0.05))
+    (set-foreground-color (doom-lighten 'fg 0.3))
 
-    ;; (set-face-attribute 'font-lock-preprocessor-face nil
-    ;;                     :foreground "#d9817f"
-    ;;                     :weight 'light)
+    ;; Lighten the decorators/annotation in TS/Java
+    (set-face-attribute 'font-lock-preprocessor-face nil
+                        :foreground (doom-lighten 'violet 0.2)
+                        :weight 'light)
 
-    (set-face-foreground 'font-lock-doc-face          "#999999")
-    (set-face-foreground 'font-lock-type-face         "#efcf90")
-    (set-face-foreground 'font-lock-string-face       "#99cc99")
-    (set-face-bold       'font-lock-preprocessor-face nil)
+    ;; The string face was too dark
+    (set-face-attribute 'font-lock-string-face nil
+                        :foreground (doom-lighten 'green 0.1))
 
-    ;; Remove the ugly lighter background with `*-brighter-comments'.
-    (set-face-background 'font-lock-comment-face nil)
+    ;; The function name face was too dark
+    (set-face-attribute 'font-lock-function-name-face nil
+                        :foreground (doom-color 'green))
+
+    ;; The ivy match face was too close to the background
+    (with-eval-after-load 'ivy
+      (set-face-attribute 'ivy-current-match nil
+                          :foreground (doom-color 'green))
+      (set-face-attribute 'ivy-minibuffer-match-face-1 nil
+                          :foreground (doom-color 'fg))
+      (set-face-attribute 'ivy-virtual nil
+                          :foreground (doom-darken 'fg 0.2)))
 
     ;; Enable custom treemacs theme
     (doom-themes-treemacs-config)
@@ -118,8 +121,7 @@
          (emacs-lisp-mode . highlight-sexp-mode))
   :config
   ;; Lighten background color from doom theme
-  (setq hl-sexp-background-color
-        (color-lighten-name zc-theme/background 5)))
+  (setq hl-sexp-background-color (doom-color 'bg-alt)))
 
 (use-package highlight-thing
   :straight t
@@ -137,10 +139,9 @@
           highlight-thing-case-sensitive-p t
           highlight-thing-exclude-thing-under-point t)
 
-    (set-face-attribute
-     'highlight-thing nil
-     :foreground nil
-     :background (color-lighten-name zc-theme/background 15))
+    (set-face-attribute 'highlight-thing nil
+                        :foreground "#8BD49C"
+                        :background "#283637")
 
     ;; If the search string happens to be the symbol being
     ;; highlighted by `highlight-thing', the overlays it applies
