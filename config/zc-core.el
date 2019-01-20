@@ -109,6 +109,7 @@
 
 ;; Reserved for Spacemacs style prefix key
 (global-unset-key (kbd "M-m"))
+(global-unset-key (kbd "M-l")) ;; downcase word
 
 (global-set-key (kbd "C-x C-b") 'ibuffer)
 (global-set-key (kbd "C-c e e") 'toggle-debug-on-error)

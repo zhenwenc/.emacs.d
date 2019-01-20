@@ -27,6 +27,8 @@
   (:states '(motion normal visual)
            "C-u"        #'evil-scroll-up
            "C-d"        #'evil-scroll-down
+           "M-u"        #'evil-scroll-line-up
+           "M-d"        #'evil-scroll-line-down
            "C-i"        #'indent-for-tab-command
            "C-o"        #'goto-last-change
            "C-S-o"      #'goto-last-change-reverse
