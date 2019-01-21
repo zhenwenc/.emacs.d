@@ -37,6 +37,15 @@
    (t
     (call-interactively #'counsel-imenu))))
 
+(defun zc-ivy/imenu-with-widen-buffer (&rest _)
+  "Execute `zc-ivy/imenu' while temporarily widening the buffer."
+  (interactive)
+  (cond
+   ((derived-mode-p 'org-mode)
+    (call-interactively #'zc-org/goto-with-widen-buffer))
+   (t
+    (call-interactively #'zc-ivy/imenu))))
+
 
 
 (provide 'zc-ivy-funcs)

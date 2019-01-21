@@ -115,7 +115,8 @@
 (zc-hydra/define zc-main-hydra--symbol
   (:color teal :title "Symbol Hydra" :icon "strikethrough" :prefix "s")
   ("Basic"
-   (("sj" zc-ivy/imenu "imenu"))
+   (("sj" zc-ivy/imenu "imenu")
+    ("sJ" zc-ivy/imenu-with-widen-buffer "imenu widen"))
 
    "Symbol"
    (("se" evil-iedit-state/iedit-mode "edit")

@@ -15,6 +15,7 @@
 (defvar org-agenda-category-filter)
 (defvar org-babel-src-block-regexp)
 (defvar org-default-notes-file)
+(defvar org-work-notes-file)
 
 (defconst zc-org/directory "~/org")
 
@@ -87,6 +88,23 @@ list item."
 
 
 ;; Navigation
+
+(defun zc-org/goto-with-widen-buffer ()
+  "Jump to an outline heading within the current buffer.
+
+See also `counsel-outline'."
+  (interactive)
+  (let* ((settings (cdr (assq major-mode counsel-outline-settings)))
+         (candidates (zc/with-wide-buffer
+                      (counsel-outline-candidates settings))))
+    (ivy-read "Outline: " candidates
+              :action (or (plist-get settings :action)
+                          #'counsel-outline-action)
+              :history (or (plist-get settings :history)
+                           'counsel-outline-history)
+              :preselect (max (1- counsel-outline--preselect) 0)
+              :caller (or (plist-get settings :caller)
+                          'counsel-outline))))
 
 (defun zc-org/goto-agenda-files-heading ()
   "Go to a heading in any `org-agenda-files', this function is

@@ -39,6 +39,13 @@ org subtree if in `org-mode'.
      ((derived-mode-p 'org-mode) (org-narrow-to-subtree))
      (t                          (narrow-to-defun)))))
 
+(defmacro zc/with-wide-buffer (&rest body)
+  "Execute body while temporarily widening the buffer."
+  (declare (debug (body)))
+  `(save-excursion
+     (save-restriction
+       (widen) ,@body)))
+
 
 ;; Window
 
