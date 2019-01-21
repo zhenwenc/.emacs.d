@@ -5,6 +5,7 @@
 
 
 
+
 (use-package info
   :general
   ;; Unset evil conflicted keybindings
@@ -12,7 +13,10 @@
 
   (:states '(normal motion) :keymaps 'Info-mode-map
             "gs" #'Info-goto-node
-            "gu" #'Info-follow-reference))
+            "gu" #'Info-follow-reference)
+
+  :config
+  (setq info-lookup-other-window-flag nil))
 
 (use-package helpful
   :straight t
@@ -49,6 +53,7 @@
   (progn
     ;; Prefer reusing the same buffer while navigating to source.
     (advice-add 'helpful--navigate :around #'zc-help/temporary-remove-dedication)
+    (advice-add 'helpful--manual :around #'zc-help/temporary-remove-dedication)
     (advice-add 'helpful--info :around #'zc-help/temporary-remove-dedication)
 
     ;; After navigate to any reference then come back to the
