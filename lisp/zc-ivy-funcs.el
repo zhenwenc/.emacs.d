@@ -33,7 +33,7 @@
   (cond
    ;; Similar to `counsel-imenu' but with better results
    ((derived-mode-p 'org-mode)
-    (call-interactively #'counsel-org-goto-all))
+    (call-interactively #'counsel-org-goto))
    (t
     (call-interactively #'counsel-imenu))))
 
