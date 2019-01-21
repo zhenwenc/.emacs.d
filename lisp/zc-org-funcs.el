@@ -16,21 +16,16 @@
 (defvar org-babel-src-block-regexp)
 (defvar org-default-notes-file)
 
-(defvar zc-org/imenu-buffer-narrowed nil
-  "Stores the narrowing state before `imenu' jump.")
+(defconst zc-org/directory "~/org")
 
 
 ;; General
 
-(defun zc-org/ctrl-c-ctrl-c-hook ()
-  "Override default functionality of `C-c C-c' command in
-`org-mode', use with `org-ctrl-c-ctrl-c-hook'.
-
-- When in a source code block, do edit instead of execute."
-  (pcase (org-element-type (org-element-context))
-    ;; source code block
-    ((or `inline-src-block `src-block)
-     (org-edit-special))))
+(defun zc-org/file-with-exts (exts)
+  "Return files in `org-directory' that matches extension in EXTS."
+  (f-files zc-org/directory
+           (lambda (file)
+             (-contains? exts (f-ext file)))))
 
 (defun zc-org/evil-normal-ret ()
   "Instead of calling `org-return' when evil normal state
@@ -83,26 +78,63 @@ is restricted within the given position bounds of the buffer."
                        :fixedcase nil nil 1))
       (message "Upper-cased %d matches" count))))
 
-(defun zc-org/heading-folded-p ()
+(defun zc-org/heading-or-item-folded-p ()
   "Returns non-nil if point is on a folded headline or plain
 list item."
   (and (or (org-at-heading-p)
            (org-at-item-p))
        (invisible-p (point-at-eol))))
 
-(defun zc-org/imenu-before-jump-hook (&rest _)
-  "Function called before calling `imenu'."
-  (setq zc-org/imenu-buffer-narrowed (buffer-narrowed-p)))
+
+;; Navigation
 
-(defun zc-org/imenu-after-jump-hook ()
-  "Function called after `imenu' jumping to a place."
-  ;; Expand the headline if its folded
-  (when (derived-mode-p 'org-mode)
-    (when (zc-org/heading-folded-p)
+(defun zc-org/goto-agenda-files-heading ()
+  "Go to a heading in any `org-agenda-files', this function is
+different from `counsel-org-goto-all' which only show candidates
+of the currently visible buffers."
+  (interactive)
+  (ivy-read "Goto: " (zc-org/get-outline-candicates org-agenda-files)
+            :history 'counsel-org-goto-history
+            :action (lambda (x)
+                      ;; Ensure we are are in `org' layout to avoid chaos
+                      (zc-layout/create-project-layout zc-org/directory)
+                      (call #'counsel-org-goto-action x))
+            :caller 'zc-org/ivy-goto-outline-heading))
+
+(defun zc-org/get-outline-candicates (filenames)
+  "Return an alist of counsel outline heading completion
+candidates, using `counsel-outline-candidates'."
+  (mapcan
+   (lambda (filename)
+     (with-current-buffer (pcase filename
+                            ((pred bufferp) filename)
+                            (_ (find-file-noselect filename t)))
+       (counsel-outline-candidates)))
+   (-filter #'f-exists? filenames)))
+
+
+;; Hooks and Advices
+
+(defun zc-org/ctrl-c-ctrl-c-hook ()
+  "Override default functionality of `C-c C-c' command in
+`org-mode', use with `org-ctrl-c-ctrl-c-hook'.
+
+- When in a source code block, do edit instead of execute."
+  (pcase (org-element-type (org-element-context))
+    ;; source code block
+    ((or `inline-src-block `src-block)
+     (org-edit-special))))
+
+(defun zc-org/narrow-after-jump (&rest _)
+  "Function called after org jumping to a location.
+
+Expand the headline or item if currently folded."
+  (when (and (derived-mode-p 'org-mode)
+             (org-at-heading-or-item-p))
+    (when (zc-org/heading-or-item-folded-p)
       (org-cycle))
-    (when zc-org/imenu-buffer-narrowed
-      (org-narrow-to-subtree)
-      (message "Buffer narrow restored!"))))
+    (org-narrow-to-subtree)
+    (message "Narrowed to subtree!")))
 
 
 ;; Agenda

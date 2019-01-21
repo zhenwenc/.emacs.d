@@ -53,7 +53,7 @@ Each element looks like (SLOT . PROJECT).")
                             (abbreviate-file-name (projectile-project-root)))
             :require-match t
             :sort counsel-projectile-sort-projects
-            :caller 'zc-layout/select-project))
+            :caller 'zc-layout/select-project-no-action))
 
 (defun zc-layout/default-slot-occupied-p ()
   "Return t if the default slot is not yet occupied."
@@ -108,7 +108,7 @@ name as PROJECT in the `projectile-known-projects'."
         (format "%s/%s" parent dirname)
       dirname)))
 
-(defun zc-layout/create-project-layout (&rest _)
+(defun zc-layout/create-project-layout (&optional project)
   "Create a project layout.
 
 - if there is a layout associate with the selected project,
@@ -116,7 +116,9 @@ name as PROJECT in the `projectile-known-projects'."
 - otherwise, create occupy the next free layout slot, and use
   the project's name as the tag of the window config."
   (interactive)
-  (-when-let* ((project (zc-layout/select-project-no-action))
+  (-when-let* ((project (if project
+                            (projectile-ensure-project project)
+                          (zc-layout/select-project-no-action)))
                (tag (zc-layout/get-layout-tag-for-project project)))
     (let ((window (zc-layout/find-window-config-for-tag tag)))
       (if window

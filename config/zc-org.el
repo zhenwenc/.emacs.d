@@ -12,10 +12,6 @@
 
 
 
-(defconst zc-org/directory "~/org")
-
-
-
 (use-package org
   :straight org-plus-contrib
   :defer t
@@ -32,30 +28,27 @@
            "sc"  #'zc-org/agenda-filter-by-category
            "sC"  #'org-agenda-filter-by-category)
 
-  :preface
-  (defun zc-org/file-with-exts (exts)
-    "Return files in `org-directory' that matches extension in EXTS."
-    (f-files org-directory
-             (lambda (file)
-               (-contains? exts (f-ext file)))))
-
   :hook
   ((org-agenda-after-show . org-narrow-to-subtree))
 
   :init
-  (add-to-list 'auto-mode-alist '("\\.trello\\'" . org-mode))
-
-  :config
   (progn
-    (setq org-directory zc-org/directory
+    (add-to-list 'auto-mode-alist '("\\.trello\\'" . org-mode))
+
+    ;; Org file directories must be defined at `:init' block
+    ;; so that they are visible to the navigation functions,
+    ;; such as `zc-org/goto-agenda-file-heading'.
+    (setq org-directory          zc-org/directory
           org-attach-directory   (f-join org-directory "data")
           org-agenda-diary-file  (f-join org-directory "diary.org")
           org-default-notes-file (f-join org-directory "notes.org")
           org-default-todos-file (f-join org-directory "todos.org")
           org-work-notes-file    (f-join org-directory "work/notes.org")
           org-work-todos-file    (f-join org-directory "work/todos.org")
-          org-agenda-files       (zc-org/file-with-exts '("org" "trello")))
+          org-agenda-files       (zc-org/file-with-exts '("org" "trello"))))
 
+  :config
+  (progn
     (setq org-M-RET-may-split-line nil
           org-blank-before-new-entry '((heading . always)
                                        (plain-list-item . nil))
@@ -127,9 +120,11 @@
 
     ;; Override the context sensitive C-c C-c key
     (add-hook 'org-ctrl-c-ctrl-c-hook 'zc-org/ctrl-c-ctrl-c-hook)
-    (add-hook 'imenu-after-jump-hook 'zc-org/imenu-after-jump-hook)
 
-    (advice-add 'imenu :before #'zc-org/imenu-before-jump-hook)
+    ;; Narrow to headline after jump, which affects:
+    ;; - `counsel-org-goto'
+    ;; - `counsel-org-goto-all'
+    (advice-add 'org-goto-marker-or-bmk :after #'zc-org/narrow-after-jump)
 
     (add-to-list 'display-buffer-alist
                  `(,(rx bos "*Org Agenda*" eos)
@@ -212,6 +207,9 @@
    "Refactor"
    (("rs" org-sort "sort entries")
     ("rw" org-refile "refile entry"))
+
+   "Toggle"
+   (("th" org-toggle-heading "heading"))
 
    "Server"
    (("ns" org-trello-sync-buffer "trello sync buffer")

@@ -170,7 +170,7 @@
 (zc-hydra/define zc-main-hydra--org
   (:color teal :title "Org Hydra" :icon "empire" :prefix "o")
   ("Basic"
-   (("os" counsel-org-goto-all "search all")
+   (("os" zc-org/goto-agenda-files-heading "search all")
     ("oT" org-trello-sync-buffer "trello sync"))
 
    "Agenda"
