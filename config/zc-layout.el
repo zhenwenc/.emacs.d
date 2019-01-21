@@ -78,12 +78,8 @@ Each element looks like (SLOT . PROJECT).")
     (-find tag-equals? windows)))
 
 (defun zc-layout/switch-to-window-config (slot &optional project)
-  "Switch to the window config SLOT. If PROJECT is specified and
-mismatch with the current project name, then switch to the project."
-  (eyebrowse-switch-to-window-config slot)
-  (unless (or (not project)
-              (equal project (projectile-project-name)))
-    (projectile-switch-project-by-name project)))
+  "Switch to the window config SLOT."
+  (eyebrowse-switch-to-window-config slot))
 
 (defun zc-layout/get-project-for-slot (&optional slot)
   "Return the associated project for SLOT.
