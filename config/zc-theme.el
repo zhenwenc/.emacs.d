@@ -132,8 +132,16 @@
       (when highlight-thing-mode (highlight-thing-remove-last))
       (when highlight-sexp-mode (move-overlay hl-sexp-overlay 0 0)))
 
-    (defun zc-theme/disable-highlight-thing-for-ahs (fn &rest args)
-      (and (not ahs-highlighted) (apply fn args))))
+    (defun zc-theme/maybe-disable-highlight-thing (fn &rest args)
+      (and
+       ;; If symbol is highlighted by `ahs-highlight-now', the
+       ;; flicker effect occurs on other candidates.
+       (not ahs-highlighted)
+       ;; Highlight the occurrences of a single character is
+       ;; nonsense.
+       (> (length (highlight-thing-get-thing-at-point)) 1)
+       ;; Fallback to the original function.
+       (apply fn args))))
 
   :commands (global-highlight-thing-mode)
   :init (global-highlight-thing-mode)
@@ -155,10 +163,9 @@
     (advice-add 'swiper :before #'zc-theme/clear-highlight-for-swiper)
 
 
-    ;; If symbol is highlighted by `ahs-highlight-now', the same
-    ;; flicker effect occurs on other candidates.
+    ;; Disable `highlight-thing' for various cases
     (advice-add 'highlight-thing-should-highlight-p
-                :around #'zc-theme/disable-highlight-thing-for-ahs)))
+                :around #'zc-theme/maybe-disable-highlight-thing)))
 
 
 
