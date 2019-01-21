@@ -25,20 +25,35 @@
            "p"   #'backward-button)
 
   :preface
-  (defun zc-help/temporary-remove-dedication (orig-fn &rest args)
-    (let ((window (selected-window)))
-      (cond ((window-dedicated-p window)
-             (set-window-dedicated-p (selected-window) nil)
-             (apply orig-fn args)
-             (set-window-dedicated-p (selected-window) t))
-            (t
-             (apply orig-fn args)))))
+  (progn
+    (defun zc-help/temporary-remove-dedication (orig-fn &rest args)
+      (let ((window (selected-window)))
+        (cond ((window-dedicated-p window)
+               (set-window-dedicated-p window nil)
+               (apply orig-fn args)
+               (set-window-dedicated-p window t))
+              (t
+               (apply orig-fn args)))))
+
+    (defun zc-help/maybe-kill-buffer (orig-fn &rest args)
+      (let ((buffer (current-buffer)))
+        ;; Try the original function first
+        (apply orig-fn args)
+        ;; Kill the helpful buffer if it still alive
+        (if (and (derived-mode-p 'helpful-mode)
+                 (buffer-live-p buffer))
+            (with-current-buffer buffer
+              (kill-buffer-and-window))))))
 
   :config
   (progn
     ;; Prefer reusing the same buffer while navigating to source.
     (advice-add 'helpful--navigate
                 :around #'zc-help/temporary-remove-dedication)
+
+    ;; After navigate to any reference then come back to the
+    ;; helpful buffer, `quit-window' won't work.
+    (advice-add 'quit-window :around #'zc-help/maybe-kill-buffer)
 
     (add-to-list 'display-buffer-alist
                  `(,(rx bos "*helpful ")
