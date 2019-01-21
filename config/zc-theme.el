@@ -137,11 +137,12 @@
        ;; If symbol is highlighted by `ahs-highlight-now', the
        ;; flicker effect occurs on other candidates.
        (not ahs-highlighted)
+       ;; Ensure the original condition satisfies.
+       (apply fn args)
        ;; Highlight the occurrences of a single character is
        ;; nonsense.
-       (> (length (highlight-thing-get-thing-at-point)) 1)
-       ;; Fallback to the original function.
-       (apply fn args))))
+       (let ((thing (highlight-thing-get-thing-at-point)))
+         (or (not (stringp thing)) (> (length thing) 1))))))
 
   :commands (global-highlight-thing-mode)
   :init (global-highlight-thing-mode)
@@ -161,7 +162,6 @@
     ;; overlays. Otherwise it can flicker between the two faces
     ;; as you move between candidates.
     (advice-add 'swiper :before #'zc-theme/clear-highlight-for-swiper)
-
 
     ;; Disable `highlight-thing' for various cases
     (advice-add 'highlight-thing-should-highlight-p
