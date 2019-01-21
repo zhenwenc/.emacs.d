@@ -27,6 +27,16 @@
 (defun zc-ivy/yas-prompt (prompt choices &optional display-fn)
   (yas-completing-prompt prompt choices display-fn #'ivy-completing-read))
 
+(defun zc-ivy/imenu ()
+  "Replacement for `counsel-imenu'."
+  (interactive)
+  (cond
+   ;; Similar to `counsel-imenu' but with better results
+   ((derived-mode-p 'org-mode)
+    (call-interactively #'counsel-org-goto-all))
+   (t
+    (call-interactively #'counsel-imenu))))
+
 
 
 (provide 'zc-ivy-funcs)

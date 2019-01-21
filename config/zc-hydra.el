@@ -65,7 +65,7 @@
 
    "Resize"
    (("w=" balance-windows "balance")
-    ("wm" zc/toggle-maximize-buffer "maximize"))
+    ("wm" zc/toggle-maximize-window "maximize"))
 
    "Killer"
    (("wd" delete-window "kill")
@@ -115,7 +115,7 @@
 (zc-hydra/define zc-main-hydra--symbol
   (:color teal :title "Symbol Hydra" :icon "strikethrough" :prefix "s")
   ("Basic"
-   (("sj" counsel-imenu "imenu"))
+   (("sj" zc-ivy/imenu "imenu"))
 
    "Symbol"
    (("se" evil-iedit-state/iedit-mode "edit")

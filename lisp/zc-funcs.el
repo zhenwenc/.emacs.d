@@ -42,8 +42,8 @@ org subtree if in `org-mode'.
 
 ;; Window
 
-(defun zc/toggle-maximize-buffer ()
-  "Maximize buffer"
+(defun zc/toggle-maximize-window ()
+  "Maximize window"
   (interactive)
   (if (and (= 1 (length (window-list)))
            (assoc ?_ register-alist))
