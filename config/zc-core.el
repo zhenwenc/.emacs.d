@@ -47,6 +47,9 @@
 
       save-place-file (concat paths-cache-directory "/places")
       url-cookie-file (concat paths-cache-directory "/cookies")
+      recentf-save-file (concat paths-cache-directory "/recentf")
+      bookmark-default-file (concat paths-cache-directory "/bookmarks")
+      projectile-cache-file (concat paths-cache-directory "/projectile.cache")
 
       ;; Don't show the startup message
       inhibit-startup-message t
