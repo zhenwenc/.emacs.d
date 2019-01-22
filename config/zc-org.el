@@ -113,6 +113,8 @@
                    "r" "Read later" "* MAYBE %i%? :Read:"
                    '(file+olp org-default-notes-file)))))
 
+    (setq org-confirm-babel-evaluate #'zc-org/babel-confirm-evaluate)
+
     ;; Activate babel source code blocks
     (org-babel-do-load-languages 'org-babel-load-languages
                                  '((emacs-lisp . t)

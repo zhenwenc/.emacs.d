@@ -302,6 +302,14 @@ function and the file."
   (interactive)
   (zc-org/babel-foreach-result 'org-babel-remove-result-one-or-many))
 
+(defun zc-org/babel-confirm-evaluate (lang body)
+  "Function for `org-confirm-babel-evaluate' to determin the
+source code block should be executed."
+  ;; If `EVAL_NO_CONFIRM: yes' is defined
+  (pcase (org-entry-get (point) "eval_no_confirm" t)
+    ("yes" nil) ((or "no" `nil) t)
+    (_ (error "Invalid 'EVAL_NO_CONFIRM' value, use yes/no."))))
+
 (defun zc-org/babel-block-in-session-p (&optional name)
   "Return if src-block is in a session of NAME.
 NAME may be nil for unnamed sessions."
