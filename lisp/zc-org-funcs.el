@@ -36,6 +36,10 @@ is actived, make it align with evil behaviour.
   (interactive)
   (let ((context (org-element-context)))
     (cond
+     ;; In a source block, call `org-babel-execute-src-block'.
+     ((org-in-src-block-p)
+      (org-babel-eval-wipe-error-buffer)
+      (org-babel-execute-src-block current-prefix-arg))
      ;; In a table, all `org-table-next-row'.
      ((or (and (eq (org-element-type context) 'table)
                (>= (point) (org-element-property :contents-begin context))
