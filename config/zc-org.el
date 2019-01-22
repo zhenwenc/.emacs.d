@@ -128,6 +128,20 @@
     ;; - `counsel-org-goto-all'
     (advice-add 'org-goto-marker-or-bmk :after #'zc-org/narrow-after-jump)
 
+    ;; Instruct `smartparens' not to impose itself in org-mode
+    ;; make delimiter auto-closing a little more conservative
+    (with-eval-after-load 'smartparens
+      (sp-with-modes 'org-mode
+        (sp-local-pair "*" nil :unless '(:add org-in-src-block-p
+                                              sp-point-before-word-p
+                                              zc-org/sp-point-at-bol-p))
+        (sp-local-pair "_" nil :unless '(:add org-in-src-block-p
+                                              sp-point-before-word-p))
+        (sp-local-pair "/" nil :unless '(:add sp-point-before-word-p
+                                              zc-org/sp-point-in-checkbox-p))
+        (sp-local-pair "~" nil :unless '(:add sp-point-before-word-p))
+        (sp-local-pair "=" nil :unless '(:add sp-point-before-word-p))))
+
     (add-to-list 'display-buffer-alist
                  `(,(rx bos "*Org Agenda*" eos)
                    (display-buffer-reuse-window

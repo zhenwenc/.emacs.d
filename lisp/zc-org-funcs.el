@@ -375,5 +375,17 @@ session as the current block. ARG has same meaning as in
     (kill-buffer)))
 
 
+;; Smartparens
+
+(defun zc-org/sp-point-in-checkbox-p (_id action _context)
+  (and (eq action 'insert)
+       (sp--looking-at-p "\\s-*]")))
+
+(defun zc-org/sp-point-at-bol-p (_id action _context)
+  (and (eq action 'insert)
+       (eq (char-before) ?*)
+       (sp--looking-back-p "^\\**" (line-beginning-position))))
+
+
 
 (provide 'zc-org-funcs)
