@@ -112,9 +112,7 @@ name as PROJECT in the `projectile-known-projects'."
 - otherwise, create occupy the next free layout slot, and use
   the project's name as the tag of the window config."
   (interactive)
-  (-when-let* ((project (if project
-                            (projectile-ensure-project project)
-                          (zc-layout/select-project-no-action)))
+  (-when-let* ((project (or project (zc-layout/select-project-no-action)))
                (tag (zc-layout/get-layout-tag-for-project project)))
     (let ((window (zc-layout/find-window-config-for-tag tag)))
       (if window
@@ -128,7 +126,7 @@ name as PROJECT in the `projectile-known-projects'."
           ;; Rename the window config tag
           (eyebrowse-rename-window-config slot tag)
           ;; Actually switch to the project
-          (projectile-switch-project-by-name project)
+          (counsel-projectile-switch-project-by-name project)
           ;; Memorize the window config associated project
           (map-put zc-layout/window-config-project-alist
                    slot (projectile-project-name)))

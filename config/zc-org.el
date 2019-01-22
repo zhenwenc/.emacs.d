@@ -45,7 +45,7 @@
           org-default-todos-file (f-join org-directory "todos.org")
           org-work-notes-file    (f-join org-directory "work/notes.org")
           org-work-todos-file    (f-join org-directory "work/todos.org")
-          org-agenda-files       (zc-org/file-with-exts '("org" "trello"))))
+          org-agenda-files       (zc-org/file-with-exts '("org"))))
 
   :config
   (progn

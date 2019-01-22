@@ -171,15 +171,19 @@
 (zc-hydra/define zc-main-hydra--org
   (:color teal :title "Org Hydra" :icon "empire" :prefix "o")
   ("Basic"
-   (("os" zc-org/goto-agenda-files-heading "search all")
-    ("oT" org-trello-sync-buffer "trello sync"))
+   (("oT" org-trello-sync-buffer "trello sync"))
 
    "Agenda"
    (("oa" org-agenda "agenda")
     ("oc" org-capture "capture")
     ("ot" org-todo-list "agenda todo")
     ("or" org-agenda-redo-all "rebuild agenda view")
-    ("od" org-agenda-quit "agenda quit"))))
+    ("od" org-agenda-quit "agenda quit"))
+
+   "Navigation"
+   (("os" zc-org/goto-agenda-files-heading "goto all")
+    ("ob" zc-org/goto-babel-files-heading "goto babel")
+    ("on" zc-org/goto-note-files-heading "goto note"))))
 
 (zc-hydra/define zc-main-hydra--jump
   (:color teal :title "Jump Hydra" :icon "tencent-weibo" :prefix "j")

@@ -22,11 +22,10 @@
 
 ;; General
 
-(defun zc-org/file-with-exts (exts)
+(defun zc-org/file-with-exts (exts &optional dir)
   "Return files in `org-directory' that matches extension in EXTS."
-  (f-files zc-org/directory
-           (lambda (file)
-             (-contains? exts (f-ext file)))))
+  (unless dir (setq dir zc-org/directory))
+  (f-files dir (-compose (-partial #'-contains? exts) #'f-ext) nil))
 
 (defun zc-org/evil-normal-ret ()
   "Instead of calling `org-return' when evil normal state
@@ -103,8 +102,7 @@ See also `counsel-outline'."
               :history (or (plist-get settings :history)
                            'counsel-outline-history)
               :preselect (max (1- counsel-outline--preselect) 0)
-              :caller (or (plist-get settings :caller)
-                          'counsel-outline))))
+              :caller 'zc-org/goto-with-widen-buffer)))
 
 (defun zc-org/goto-agenda-files-heading ()
   "Go to a heading in any `org-agenda-files', this function is
@@ -113,11 +111,48 @@ of the currently visible buffers."
   (interactive)
   (ivy-read "Goto: " (zc-org/get-outline-candicates org-agenda-files)
             :history 'counsel-org-goto-history
-            :action (lambda (x)
-                      ;; Ensure we are are in `org' layout to avoid chaos
-                      (zc-layout/create-project-layout zc-org/directory)
-                      (call #'counsel-org-goto-action x))
-            :caller 'zc-org/ivy-goto-outline-heading))
+            :action #'zc-org/ivy-goto-heading-action
+            :caller #'zc-org/ivy-goto-outline-heading))
+
+(defun zc-org/goto-note-files-heading ()
+  "Go to a heading in any org note files."
+  (interactive)
+  (ivy-read "Goto: " (zc-org/get-outline-candicates
+                      `(,org-default-notes-file ,org-work-notes-file))
+            :history 'counsel-org-goto-history
+            :action #'zc-org/ivy-goto-heading-action
+            :caller #'zc-org/goto-note-files-heading))
+
+(defun zc-org/goto-babel-files-heading ()
+  "Go to a heading in any org babel files."
+  (interactive)
+  (ivy-read "Goto: " (zc-org/get-outline-candicates
+                      (zc-org/file-with-exts
+                       '("org")
+                       (f-join zc-org/directory "babel")))
+            :history 'counsel-org-goto-history
+            :action #'zc-org/ivy-goto-heading-action
+            :caller #'zc-org/goto-babel-files-heading))
+
+(defun zc-org/ivy-goto-heading-action (x)
+  "Jump to headline in candidate X.
+
+Ensure we are are in `org' layout to avoid chaos"
+  (unless (projectile-ensure-project zc-org/directory)
+    (error "Org directory '%s' is not a project" zc-org/directory))
+  (let* ((marker (cdr x))
+         (project zc-org/directory))
+    (if (markerp marker)
+        ;; Instead of promp with `projectile-find-file' after switching
+        ;; project, we use magic dynamic binding to advice projectile
+        ;; switch to the buffer in marker directly.
+        (let* ((buffer (marker-buffer marker))
+               (projectile-switch-project-action
+                (lambda () (switch-to-buffer buffer))))
+          (message "Switched to buffer: %s" buffer)
+          (zc-layout/create-project-layout project))
+      (zc-layout/create-project-layout project)))
+  (counsel-org-goto-action x))
 
 (defun zc-org/get-outline-candicates (filenames)
   "Return an alist of counsel outline heading completion
@@ -127,7 +162,8 @@ candidates, using `counsel-outline-candidates'."
      (with-current-buffer (pcase filename
                             ((pred bufferp) filename)
                             (_ (find-file-noselect filename t)))
-       (counsel-outline-candidates)))
+       (zc/with-wide-buffer
+        (counsel-outline-candidates))))
    (-filter #'f-exists? filenames)))
 
 
