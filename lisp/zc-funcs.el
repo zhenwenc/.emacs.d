@@ -50,14 +50,24 @@ org subtree if in `org-mode'.
 ;; Window
 
 (defun zc/toggle-maximize-window ()
-  "Maximize window"
+  "Maximize window."
   (interactive)
-  (if (and (= 1 (length (window-list)))
+  (let* ((win (window-normalize-window nil))
+         (win-height (window-parameter win 'window-height)))
+    (cond
+     ;; If window is side window, which can not be the only
+     ;; window, resize the window
+     ((window-parameter win 'window-side)
+      (evil-window-set-height nil))
+     ;; If window maybe maximized, to restore the previous
+     ;; window layout
+     ((and (= 1 (length (window-list)))
            (assoc ?_ register-alist))
-      (jump-to-register ?_)
-    (progn
+      (jump-to-register ?_))
+     ;; Miximize the selected window
+     (t
       (window-configuration-to-register ?_)
-      (delete-other-windows))))
+      (delete-other-windows win)))))
 
 (defun zc/split-window-below-and-focus (no-focus)
   "Split the window vertically and focus the new window.
