@@ -192,23 +192,19 @@
     ("jJ" evil-avy-goto-char-2 "goto char 2")
     ("jl" evil-avy-goto-line "goto line"))
 
-   "Wrapping"
-   (("ja" sp-add-to-next-sexp "sp add (next)")
-    ("jA" sp-add-to-previous-sexp "sp add (prev)")
-    ("jb" sp-forward-barf-sexp "sp barf (forward)")
-    ("jB" sp-backward-barf-sexp "sp barf (backward)")
-    ("js" sp-forward-slurp-sexp "sp slurp (forward)")
-    ("jS" sp-backward-slurp-sexp "sp slurp (backward)")
-    ("jr" sp-rewrap-sexp "sp rewrap")
-    ("ju" sp-unwrap-sexp "sp unwrap"))
-
    "Navigation"
-   (("je" sp-end-of-sexp "sp end")
+   (("jf" sp-forward-sexp "sp forward")
+    ("jb" sp-backward-sexp "sp backward")
+    ("je" sp-end-of-sexp "sp end")
     ("jE" sp-beginning-of-sexp "sp beginning")
     ("jn" sp-next-sexp "sp next")
     ("jN" sp-previous-sexp "sp previous")
     ("j>" sp-up-sexp "sp up (end)")
-    ("j<" sp-backward-up-sexp "sp up (start)"))))
+    ("j<" sp-backward-up-sexp "sp up (start)"))
+
+   "Wrapping"
+   (("jr" sp-rewrap-sexp "sp rewrap")
+    ("ju" sp-unwrap-sexp "sp unwrap"))))
 
 (zc-hydra/define zc-main-hydra--toggle
   (:color teal :title "Toggle Hydra" :icon "building" :prefix "t")
