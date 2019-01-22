@@ -157,14 +157,24 @@ Ensure we are are in `org' layout to avoid chaos"
 (defun zc-org/get-outline-candicates (filenames)
   "Return an alist of counsel outline heading completion
 candidates, using `counsel-outline-candidates'."
-  (mapcan
-   (lambda (filename)
-     (with-current-buffer (pcase filename
-                            ((pred bufferp) filename)
-                            (_ (find-file-noselect filename t)))
-       (zc/with-wide-buffer
-        (counsel-outline-candidates))))
-   (-filter #'f-exists? filenames)))
+  (->> filenames
+       (-filter #'f-exists?)
+       (-map-when (-compose #'not #'bufferp)
+                  (-rpartial #'find-file-noselect t))
+       ;; Collect headline candidates
+       (mapcan (lambda (buffer)
+                 (with-current-buffer buffer
+                   (zc/with-wide-buffer
+                    (counsel-outline-candidates)))))
+       ;; Prepend the file name
+       (-map (-lambda ((head . marker))
+               (--> marker
+                    (buffer-file-name (marker-buffer it))
+                    (f-relative it zc-org/directory)
+                    (f-no-ext it)
+                    (propertize it 'face 'ivy-virtual)
+                    (concat "[" it "] " head)
+                    (cons it marker))))))
 
 
 ;; Hooks and Advices
