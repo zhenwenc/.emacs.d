@@ -17,6 +17,9 @@
 (defconst paths-config-directory
   (concat user-emacs-directory "config"))
 
+(defconst paths-themes-directory
+  (concat user-emacs-directory "themes"))
+
 (defconst paths-private-directory
   (concat user-emacs-directory "private"))
 

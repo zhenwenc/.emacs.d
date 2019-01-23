@@ -24,56 +24,15 @@
 
 (use-package doom-themes
   :straight t
+  :init (add-to-list 'custom-theme-load-path paths-themes-directory)
   :config
   (progn
     ;; Global settings (defaults)
-    (setq doom-themes-enable-bold t    ; if nil, bold is universally disabled
-          doom-themes-enable-italic t) ; if nil, italics is universally disabled
+    (setq doom-themes-enable-bold t
+          doom-themes-enable-italic t)
 
     ;; Load the theme
-    (setq doom-dracula-brighter-comments nil)
-    (setq doom-dracula-brighter-modeline nil)
-    (load-theme 'doom-dracula t)
-
-    ;; Slightly change default faces to have higher contrast
-    (set-foreground-color (doom-lighten 'base7 0.1))
-
-    (set-face-attribute 'font-lock-variable-name-face nil
-                        :foreground (doom-color 'yellow))
-
-    (set-face-attribute 'font-lock-type-face nil
-                        :foreground (doom-color 'violet))
-
-    (set-face-attribute 'font-lock-builtin-face nil
-                        :foreground (doom-color 'magenta))
-
-    (set-face-attribute 'font-lock-preprocessor-face nil
-                        :foreground (doom-color 'dark-cyan)
-                        :weight 'light)
-
-    (set-face-attribute 'font-lock-keyword-face nil
-                        :foreground (doom-color 'cyan))
-
-    (set-face-attribute 'font-lock-function-name-face nil
-                        :foreground (doom-color 'red))
-
-    (set-face-attribute 'font-lock-string-face nil
-                        :foreground (doom-lighten 'green 0.1))
-
-    ;; The ivy match face was too close to the background
-    (with-eval-after-load 'ivy
-      (set-face-attribute 'ivy-current-match nil
-                          :foreground (doom-color 'green))
-      (set-face-attribute 'ivy-minibuffer-match-face-1 nil
-                          :foreground (doom-color 'fg))
-      (set-face-attribute 'ivy-virtual nil
-                          :foreground (doom-darken 'fg 0.2)))
-
-    (with-eval-after-load 'highlight-thing
-      (set-face-attribute 'highlight-thing nil
-                          :foreground (doom-color 'bg-alt)
-                          :background (doom-color 'red)
-                          :weight 'normal))
+    (load-theme 'zc-dracula t)
 
     ;; Enable custom treemacs theme
     (doom-themes-treemacs-config)
