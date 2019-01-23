@@ -31,26 +31,34 @@
           doom-themes-enable-italic t) ; if nil, italics is universally disabled
 
     ;; Load the theme
-    (setq doom-city-lights-brighter-comments nil)
-    (setq doom-city-lights-brighter-modeline nil)
-    (load-theme 'doom-city-lights t)
+    (setq doom-dracula-brighter-comments nil)
+    (setq doom-dracula-brighter-modeline nil)
+    (load-theme 'doom-dracula t)
 
-    ;; Slightly darken the default background to have higher contrast
-    (set-background-color (doom-darken 'bg 0.05))
-    (set-foreground-color (doom-lighten 'fg 0.3))
+    ;; Slightly change default faces to have higher contrast
+    (set-foreground-color (doom-lighten 'base7 0.1))
 
-    ;; Lighten the decorators/annotation in TS/Java
+    (set-face-attribute 'font-lock-variable-name-face nil
+                        :foreground (doom-color 'yellow))
+
+    (set-face-attribute 'font-lock-type-face nil
+                        :foreground (doom-color 'violet))
+
+    (set-face-attribute 'font-lock-builtin-face nil
+                        :foreground (doom-color 'magenta))
+
     (set-face-attribute 'font-lock-preprocessor-face nil
-                        :foreground (doom-lighten 'violet 0.2)
+                        :foreground (doom-color 'dark-cyan)
                         :weight 'light)
 
-    ;; The string face was too dark
-    (set-face-attribute 'font-lock-string-face nil
-                        :foreground (doom-color 'green))
+    (set-face-attribute 'font-lock-keyword-face nil
+                        :foreground (doom-color 'cyan))
 
-    ;; The function name face was too dark
     (set-face-attribute 'font-lock-function-name-face nil
-                        :foreground (doom-color 'green))
+                        :foreground (doom-color 'red))
+
+    (set-face-attribute 'font-lock-string-face nil
+                        :foreground (doom-lighten 'green 0.1))
 
     ;; The ivy match face was too close to the background
     (with-eval-after-load 'ivy
@@ -134,14 +142,15 @@
 
     (defun zc-theme/maybe-disable-highlight-thing (fn &rest args)
       (and
-       ;; If symbol is highlighted by `ahs-highlight-now', the
-       ;; flicker effect occurs on other candidates.
+       ;; If symbol is highlighted by `ahs-highlight-now',
+       ;; the flicker effect occurs on other candidates.
        (not ahs-highlighted)
        ;; Ensure the original condition satisfies.
        (apply fn args)
        ;; Highlight the occurrences of a single character is
        ;; nonsense.
        (let ((thing (highlight-thing-get-thing-at-point)))
+         ;; (message "what %s" (get-text-property nil 'face thing))
          (or (not (stringp thing)) (> (length thing) 1))))))
 
   :commands (global-highlight-thing-mode)
@@ -154,8 +163,9 @@
           highlight-thing-excluded-major-modes '(magit-status-mode))
 
     (set-face-attribute 'highlight-thing nil
-                        :foreground (doom-color 'bg)
-                        :background (doom-color 'red))
+                        :foreground (doom-color 'bg-alt)
+                        :background (doom-color 'red)
+                        :weight 'normal)
 
     ;; If the search string happens to be the symbol being
     ;; highlighted by `highlight-thing', the overlays it applies
