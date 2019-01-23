@@ -46,7 +46,7 @@
 
     ;; The string face was too dark
     (set-face-attribute 'font-lock-string-face nil
-                        :foreground (doom-lighten 'green 0.1))
+                        :foreground (doom-color 'green))
 
     ;; The function name face was too dark
     (set-face-attribute 'font-lock-function-name-face nil
@@ -148,13 +148,14 @@
   :init (global-highlight-thing-mode)
   :config
   (progn
-    (setq highlight-thing-delay-seconds 0.1
+    (setq highlight-thing-delay-seconds 0.5
           highlight-thing-case-sensitive-p t
-          highlight-thing-exclude-thing-under-point t)
+          highlight-thing-exclude-thing-under-point t
+          highlight-thing-excluded-major-modes '(magit-status-mode))
 
     (set-face-attribute 'highlight-thing nil
-                        :foreground "#8BD49C"
-                        :background "#283637")
+                        :foreground (doom-color 'bg)
+                        :background (doom-color 'red))
 
     ;; If the search string happens to be the symbol being
     ;; highlighted by `highlight-thing', the overlays it applies
