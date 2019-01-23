@@ -69,6 +69,12 @@
       (set-face-attribute 'ivy-virtual nil
                           :foreground (doom-darken 'fg 0.2)))
 
+    (with-eval-after-load 'highlight-thing
+      (set-face-attribute 'highlight-thing nil
+                          :foreground (doom-color 'bg-alt)
+                          :background (doom-color 'red)
+                          :weight 'normal))
+
     ;; Enable custom treemacs theme
     (doom-themes-treemacs-config)
 
@@ -84,14 +90,17 @@
   :straight t
   :demand t
   :commands (global-page-break-lines-mode)
-  :init
+  :preface
   (defun zc-theme/disable-all-the-icons-in-tty (orig-fn &rest args)
     (when (display-graphic-p)
       (apply orig-fn args)))
-  ;; all-the-icons doesn't work in the terminal
-  (dolist (fn '(all-the-icons-octicon all-the-icons-material
-                                      all-the-icons-faicon all-the-icons-fileicon
-                                      all-the-icons-wicon all-the-icons-alltheicon))
+  :init
+  (dolist (fn '(all-the-icons-octicon
+                all-the-icons-material
+                all-the-icons-faicon
+                all-the-icons-fileicon
+                all-the-icons-wicon
+                all-the-icons-alltheicon))
     (advice-add fn :around #'zc-theme/disable-all-the-icons-in-tty))
   :config
   (progn
@@ -161,11 +170,6 @@
           highlight-thing-case-sensitive-p t
           highlight-thing-exclude-thing-under-point t
           highlight-thing-excluded-major-modes '(magit-status-mode))
-
-    (set-face-attribute 'highlight-thing nil
-                        :foreground (doom-color 'bg-alt)
-                        :background (doom-color 'red)
-                        :weight 'normal)
 
     ;; If the search string happens to be the symbol being
     ;; highlighted by `highlight-thing', the overlays it applies
