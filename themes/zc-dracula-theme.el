@@ -164,6 +164,6 @@
    (ivy-virtual :foreground base6)
 
    ;; highlight-thing
-   (highlight-thing :background (doom-blend yellow base3 0.6)
-                    :foreground (doom-darken base3 0.8))
+   (highlight-thing :background (doom-blend yellow base3 0.1)
+                    :foreground nil :inherit bold)
    ))
