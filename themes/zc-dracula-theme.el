@@ -161,6 +161,7 @@
 
    ;; override doom-theme-common
    (font-lock-preprocessor-face :foreground operators)
+   (ivy-virtual :foreground base6)
 
    ;; highlight-thing
    (highlight-thing :background (doom-blend yellow base3 0.6)
