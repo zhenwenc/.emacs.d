@@ -158,7 +158,7 @@ update recentf list."
     ;; Ensure the destination directory exists
     (when (and (not (file-exists-p dest-dir))
                (yes-or-no-p (format "Create directory '%s'?" dest-dir)))
-                 (make-directory dest-dir t))
+      (make-directory dest-dir t))
     ;; Actually rename the file
     (rename-file src dest-path t)
     ;; Rename current buffer
