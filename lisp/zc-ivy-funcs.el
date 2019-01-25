@@ -27,24 +27,15 @@
 (defun zc-ivy/yas-prompt (prompt choices &optional display-fn)
   (yas-completing-prompt prompt choices display-fn #'ivy-completing-read))
 
-(defun zc-ivy/imenu ()
+(defun zc-ivy/imenu (&optional widenp)
   "Replacement for `counsel-imenu'."
   (interactive)
   (cond
    ;; Similar to `counsel-imenu' but with better results
    ((derived-mode-p 'org-mode)
-    (call-interactively #'counsel-org-goto))
+    (zc-org/goto-buffer-heading (if widenp 'root 'parent)))
    (t
     (call-interactively #'counsel-imenu))))
-
-(defun zc-ivy/imenu-with-widen-buffer (&rest _)
-  "Execute `zc-ivy/imenu' while temporarily widening the buffer."
-  (interactive)
-  (cond
-   ((derived-mode-p 'org-mode)
-    (call-interactively #'zc-org/goto-with-widen-buffer))
-   (t
-    (call-interactively #'zc-ivy/imenu))))
 
 
 

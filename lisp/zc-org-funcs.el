@@ -16,6 +16,8 @@
 (defvar org-babel-src-block-regexp)
 (defvar org-default-notes-file)
 (defvar org-work-notes-file)
+(defvar counsel-outline-settings)
+(defvar counsel-outline--preselect)
 
 (defconst zc-org/directory "~/org")
 
@@ -92,13 +94,19 @@ list item."
 
 ;; Navigation
 
-(defun zc-org/goto-with-widen-buffer ()
+(defun zc-org/goto-buffer-heading (&optional tree)
   "Jump to an outline heading within the current buffer.
+
+Filter candidates with TREE:
+- When equals to 'parent, show all siblings recursively.
+- Otherwise, show all headings in the buffer.
 
 See also `counsel-outline'."
   (interactive)
   (let* ((settings (cdr (assq major-mode counsel-outline-settings)))
          (candidates (zc/with-wide-buffer
+                      (when (eq tree 'parent)
+                        (outline-up-heading 1) (org-narrow-to-subtree))
                       (counsel-outline-candidates settings))))
     (ivy-read "Outline: " candidates
               :action (or (plist-get settings :action)
@@ -108,37 +116,23 @@ See also `counsel-outline'."
               :preselect (max (1- counsel-outline--preselect) 0)
               :caller 'zc-org/goto-with-widen-buffer)))
 
-(defun zc-org/goto-agenda-files-heading ()
-  "Go to a heading in any `org-agenda-files', this function is
-different from `counsel-org-goto-all' which only show candidates
-of the currently visible buffers."
-  (interactive)
-  (ivy-read "Goto: " (zc-org/get-outline-candicates org-agenda-files)
-            :history 'counsel-org-goto-history
-            :action #'zc-org/ivy-goto-heading-action
-            :caller #'zc-org/ivy-goto-outline-heading))
+(defun zc-org/goto-file-heading (type)
+  "Jump to a heading in an org file.
 
-(defun zc-org/goto-note-files-heading ()
-  "Go to a heading in any org note files."
+See also `counsel-org-goto-all'."
   (interactive)
-  (ivy-read "Goto: " (zc-org/get-outline-candicates
-                      `(,org-default-notes-file ,org-work-notes-file))
-            :history 'counsel-org-goto-history
-            :action #'zc-org/ivy-goto-heading-action
-            :caller #'zc-org/goto-note-files-heading))
+  (let ((files (pcase type
+                 ('notes (list org-default-notes-file org-work-notes-file))
+                 ('babel (zc-org/file-with-exts
+                          '("org")
+                          (f-join zc-org/directory "babel")))
+                 (_ org-agenda-files))))
+    (ivy-read "Goto: " (zc-org/get-outline-candicates files)
+              :history 'counsel-org-goto-history
+              :action #'zc-org/goto-file-heading-action
+              :caller #'zc-org/goto-file-heading)))
 
-(defun zc-org/goto-babel-files-heading ()
-  "Go to a heading in any org babel files."
-  (interactive)
-  (ivy-read "Goto: " (zc-org/get-outline-candicates
-                      (zc-org/file-with-exts
-                       '("org")
-                       (f-join zc-org/directory "babel")))
-            :history 'counsel-org-goto-history
-            :action #'zc-org/ivy-goto-heading-action
-            :caller #'zc-org/goto-babel-files-heading))
-
-(defun zc-org/ivy-goto-heading-action (x)
+(defun zc-org/goto-file-heading-action (x)
   "Jump to headline in candidate X.
 
 Ensure we are are in `org' layout to avoid chaos"

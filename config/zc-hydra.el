@@ -115,8 +115,8 @@
 (zc-hydra/define zc-main-hydra--symbol
   (:color teal :title "Symbol Hydra" :icon "strikethrough" :prefix "s")
   ("Basic"
-   (("sj" zc-ivy/imenu "imenu")
-    ("sJ" zc-ivy/imenu-with-widen-buffer "imenu widen"))
+   (("sj" (zc-ivy/imenu) "imenu")
+    ("sJ" (zc-ivy/imenu t) "imenu widen"))
 
    "Symbol"
    (("se" evil-iedit-state/iedit-mode "edit")
@@ -177,13 +177,12 @@
    (("oa" org-agenda "agenda")
     ("oc" org-capture "capture")
     ("ot" org-todo-list "agenda todo")
-    ("or" org-agenda-redo-all "rebuild agenda view")
     ("od" org-agenda-quit "agenda quit"))
 
    "Navigation"
-   (("os" zc-org/goto-agenda-files-heading "goto all")
-    ("ob" zc-org/goto-babel-files-heading "goto babel")
-    ("on" zc-org/goto-note-files-heading "goto note"))))
+   (("oo" (zc-org/goto-file-heading 'all) "all")
+    ("ob" (zc-org/goto-file-heading 'babel) "babel")
+    ("on" (zc-org/goto-file-heading 'notes) "notes"))))
 
 (zc-hydra/define zc-main-hydra--jump
   (:color teal :title "Jump Hydra" :icon "tencent-weibo" :prefix "j")
