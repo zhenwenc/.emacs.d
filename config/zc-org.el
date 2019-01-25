@@ -33,8 +33,6 @@
 
   :init
   (progn
-    (add-to-list 'auto-mode-alist '("\\.trello\\'" . org-mode))
-
     ;; Org file directories must be defined at `:init' block
     ;; so that they are visible to the navigation functions,
     ;; such as `zc-org/goto-agenda-file-heading'.
@@ -183,28 +181,6 @@
 
 
 
-(eval-and-compile
-  (defconst zc-org/trello-load-path
-    (expand-file-name "local/org-trello" user-emacs-directory)))
-
-(use-package org-trello
-  :load-path zc-org/trello-load-path
-  :commands (org-trello-mode)
-  :preface
-  (defun zc-org/maybe-enable-trello ()
-    "Enable buffer with `org-trello' if file name ends with `.trello'."
-    (let ((filename (buffer-file-name (current-buffer))))
-      (when (and filename (f-ext? filename "trello"))
-        (org-trello-mode))))
-
-  :hook (org-mode . zc-org/maybe-enable-trello)
-  :init
-  (general-setq org-trello-default-prefix-keybinding nil
-                org-trello-current-prefix-keybinding nil
-                org-trello-files (f-files zc-org/directory (-rpartial #'f-ext? "trello"))))
-
-
-
 (zc-hydra/major-mode-define org-mode
   ("Basic"
    (("?" org-info "org info"))
@@ -226,12 +202,7 @@
 
    "Toggle"
    (("ti" org-toggle-item "item")
-    ("th" org-toggle-heading "heading"))
-
-   "Server"
-   (("ns" org-trello-sync-buffer "trello sync buffer")
-    ("nu" org-trello-update-board-metadata "trello update metadata")
-    ("nU" org-trello-install-board-metadata "trello install metadata"))))
+    ("th" org-toggle-heading "heading"))))
 
 (zc-hydra/major-mode-define org-agenda-mode
   ("Basic"

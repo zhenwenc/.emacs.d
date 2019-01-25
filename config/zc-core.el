@@ -207,12 +207,6 @@
   :defer t
   :config (setq which-key-idle-delay 0.3))
 
-;; Required by org-trello
-(use-package request-deferred
-  :straight t
-  :config
-  (setq request-storage-directory (f-join paths-cache-directory "request")))
-
 
 
 (require 'server)
