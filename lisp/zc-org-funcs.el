@@ -275,7 +275,7 @@ function and the file."
           (cat
            (org-agenda-filter-apply
             (setq org-agenda-category-filter (list (concat "+" cat))) 'category))
-          (t (error "No category provided.")))))
+          (t (error "No category provided")))))
 
 
 ;; Babel
@@ -302,7 +302,7 @@ source code block should be executed."
   ;; If `EVAL_NO_CONFIRM: yes' is defined
   (pcase (org-entry-get (point) "eval_no_confirm" t)
     ("yes" nil) ((or "no" `nil) t)
-    (_ (error "Invalid 'EVAL_NO_CONFIRM' value, use yes/no."))))
+    (_ (error "Invalid 'EVAL_NO_CONFIRM' value, use yes/no"))))
 
 (defun zc-org/babel-block-in-session-p (&optional name)
   "Return if src-block is in a session of NAME.

@@ -36,7 +36,7 @@
   (if file
       (shell-command
        (format "%s %s" (executable-find "open") (file-name-directory file)))
-    (error "Buffer is not attached to any file.")))
+    (error "Buffer is not attached to any file")))
 
 
 

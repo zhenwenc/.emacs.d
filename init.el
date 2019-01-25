@@ -10,7 +10,7 @@
 ;; https://github.com/chrisbarrett/.emacs.d
 
 (when (version< emacs-version "26")
-  (error "Your version of Emacs is too old."))
+  (error "Your version of Emacs is too old"))
 
 (setq gc-cons-threshold (* 800 1024))
 
