@@ -158,11 +158,10 @@
     (winner-mode t)))
 
 (use-package ispell
-  :disabled t ;; Not using
-  :config
-  (progn
-    (setq ispell-really-hunspell t)
-    (setq ispell-program-name "hunspell")))
+  :init
+  (setq ispell-really-hunspell t
+        ispell-dictionary "english"
+        ispell-program-name "hunspell"))
 
 
 ;; External Packages
