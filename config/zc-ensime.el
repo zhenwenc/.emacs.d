@@ -54,7 +54,6 @@
 (defun zc-ensime/set-company-variables (&rest _)
   (unless (ensime-connected-p)
     (setq-local company-idle-delay 0.5)
-    (setq-local company-backends '(ensime-company))
     (setq-local company-minimum-prefix-length
                 (default-value 'company-minimum-prefix-length))))
 

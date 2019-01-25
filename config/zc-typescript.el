@@ -179,11 +179,7 @@
     (ignore-errors
       (setcar (memq 'source-inplace
                     (flycheck-checker-get 'typescript-tslint 'command))
-              'source-original))
-
-    ;; Only use fewer company backends
-    (if (bound-and-true-p tide-mode)
-        (set (make-local-variable 'company-backends) '(company-tide)))))
+              'source-original))))
 
 
 

@@ -1,7 +1,19 @@
 (eval-when-compile
   (require 'use-package))
 
+(require 'dash)
 (require 'general)
+
+(defvar zc-company/backend-alist
+  '((text-mode   :derived (company-capf company-dabbrev company-ispell))
+    (prog-mode   :derived (company-capf company-yasnippet))
+    (conf-mode   :derived (company-dabbrev-code))
+    (css-mode    :exact   (company-css))
+    (tide-mode   :exact   (company-tide))
+    (ensime-mode :exact   (ensime-company)))
+  "An alist matching modes to company backends.")
+
+
 
 (use-package company
   :straight t
@@ -16,7 +28,17 @@
 
   :preface
   (defun zc-company/setup ()
-    "Correct settings messed up by `evil-collection-company'."
+    ;; Set `company-backends' for the current buffer.
+    (set (make-local-variable 'company-backends)
+         (-mapcat (-lambda ((mode &plist :derived derived :exact exact))
+                    (or (and (derived-mode-p mode) derived)
+                        (and (or (eq major-mode mode)
+                                 (and (boundp mode)
+                                      (symbol-value mode)))
+                             exact)))
+                  zc-company/backend-alist))
+
+    ;; Correct settings messed up by `evil-collection-company'.
     (general-define-key
      :keymaps 'company-active-map
      [return] #'company-complete-selection
@@ -27,29 +49,25 @@
      "C-e"    #'evil-end-of-line
      "C-d"    #'evil-delete-char))
 
-  :hook (after-init . global-company-mode)
+  :hook ((after-init . global-company-mode)
+         (company-mode . zc-company/setup))
 
-  :config
-  (progn
-    (setq company-idle-delay 0.2
-          company-require-match nil
-          company-minimum-prefix-length 2
+  :init
+  (setq company-idle-delay 0.2
+        company-require-match nil
+        company-minimum-prefix-length 2
 
-          company-dabbrev-downcase nil
-          company-dabbrev-ignore-case nil
-          company-dabbrev-code-ignore-case nil
-          company-tooltip-limit 10
-          company-tooltip-align-annotations t
+        company-dabbrev-downcase nil
+        company-dabbrev-ignore-case nil
+        company-dabbrev-code-ignore-case nil
+        company-tooltip-limit 10
+        company-tooltip-align-annotations t
 
-          company-frontends '(company-pseudo-tooltip-unless-just-one-frontend
-                              company-preview-frontend
-                              company-echo-metadata-frontend)
-          company-backends '(company-capf
-                             company-dabbrev
-                             company-dabbrev-code
-                             company-keywords)
-          company-transformers '(company-sort-by-occurrence))
-    (add-hook 'company-mode-hook #'zc-company/setup)))
+        company-frontends '(company-pseudo-tooltip-unless-just-one-frontend
+                            company-preview-frontend
+                            company-echo-metadata-frontend)
+        company-backends '(company-capf)
+        company-transformers '(company-sort-by-occurrence)))
 
 (use-package company-dabbrev
   :after company)
@@ -64,8 +82,6 @@
 (use-package company-yasnippet
   :after company
   :general
-  ("C-M-y" #'company-yasnippet)
-  :config
-  (add-to-list company-backends 'company-yasnippet))
+  ("C-M-y" #'company-yasnippet))
 
 (provide 'zc-company)

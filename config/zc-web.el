@@ -28,11 +28,6 @@
                 (make-local-variable 'js-indent-level)
                 (setq js-indent-level 2)))
 
-    (add-hook 'zc-web-css-mode-hook
-              #'(lambda ()
-                  (set (make-local-variable 'company-backends) '(company-css))
-                  (company-mode)))
-
     ;; Use line comments when commenting in JS
     (setf (cdr (assoc "javascript" web-mode-comment-formats)) "//")
 
