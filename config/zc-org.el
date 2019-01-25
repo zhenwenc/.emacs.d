@@ -210,22 +210,23 @@
    (("?" org-info "org info"))
 
    "Edit & Execute"
-   (("ee" org-babel-execute-src-block-maybe "execute block")
-    ("ep" org-property-action "edit property")
-    ("et" counsel-org-tag "edit tag")
-    ("ea" org-babel-insert-header-arg "edit header arg")
-    ("ev" org-babel-check-src-block "source block verify")
-    ("ei" org-babel-view-src-block-info "source block info")
+   (("ee" org-babel-execute-src-block-maybe "execute")
+    ("ep" org-property-action "property")
+    ("et" counsel-org-tag "tag")
+    ("ea" org-babel-insert-header-arg "header arg")
+    ("ev" org-babel-check-src-block "block verify")
+    ("ei" org-babel-view-src-block-info "block info")
     ("eo" org-babel-open-src-block-result "open result")
     ("ec" org-babel-remove-result-one-or-many "clear result")
     ("eC" zc-org/babel-remove-result-all "clear all result"))
 
    "Refactor"
-   (("rs" org-sort "sort entries")
-    ("rw" org-refile "refile entry"))
+   (("rs" org-sort "sort")
+    ("rw" org-refile "refile"))
 
    "Toggle"
-   (("th" org-toggle-heading "heading"))
+   (("ti" org-toggle-item "item")
+    ("th" org-toggle-heading "heading"))
 
    "Server"
    (("ns" org-trello-sync-buffer "trello sync buffer")
