@@ -54,7 +54,7 @@
 (zc-hydra/define zc-main-hydra--window
   (:color teal :title "Window Hydra" :icon "windows" :prefix "w")
   ("Basic"
-   (("w SPC" zc/toggle-current-window-dedication "toggle dedication")
+   (("w SPC" zc/toggle-current-window-dedication "dedicate")
     ("wo" ace-select-window "select"))
 
    "Split"
@@ -77,13 +77,14 @@
 (zc-hydra/define zc-main-hydra--buffer
   (:color teal :title "Buffer Hydra" :icon "drupal" :prefix "b")
   ("Basic"
-   (("b SPC" zc/buffer-toggle-narrow "toggle narrowing")
+   (("b SPC" zc/buffer-toggle-narrow "narrow")
     ("bb" ivy-switch-buffer "switch")
     ("bn" projectile-next-project-buffer "next")
     ("bN" projectile-previous-project-buffer "previous"))
 
    "Misc."
    (("bB" ibuffer "ibuffer")
+    ("bi" zc/indent-buffer "indent")
     ("bd" zc-layout/kill-current-buffer "kill")
     ("by" zc/copy-buffer-to-clipboard "copy to clipboard")
     ("bs" (switch-to-buffer "*scratch*") "switch to scratch")

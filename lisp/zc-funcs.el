@@ -210,7 +210,6 @@ Behave the same as 'Command + delete' at macOS"
   (zc-core/evil-escape)
   (save-buffer))
 
-;; Evil escape everything
 (defun zc-core/evil-escape ()
   "Evil escape everything."
   (interactive)
@@ -218,6 +217,14 @@ Behave the same as 'Command + delete' at macOS"
       (iedit-quit))
   ;; (evil-mc-undo-all-cursors)
   (evil-escape))
+
+(defun zc/indent-buffer ()
+  "Indent the entire buffer."
+  (interactive)
+  (save-excursion
+    (delete-trailing-whitespace)
+    (indent-region (point-min) (point-max) nil)
+    (untabify (point-min) (point-max))))
 
 
 ;; Symbol and Search

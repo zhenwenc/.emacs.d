@@ -19,9 +19,9 @@
   :straight t
 
   :general
-  ([remap complete-symbol] #'company-manual-begin
+  ([remap complete-symbol]     #'company-manual-begin
    [remap completion-at-point] #'company-manual-begin
-   "S-<return>" #'company-complete)
+   "S-<return>"                #'company-complete)
 
   (:keymaps 'comint-mode-map
             [remap indent-for-tab-command] #'company-manual-begin)
