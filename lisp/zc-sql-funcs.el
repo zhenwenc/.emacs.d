@@ -1,23 +1,20 @@
+(require 'dash)
+
 
-
-(defun zc-sql/format-region (beg end)
-  "Format SQL in region between beg and END."
-  (interactive "r")
-  (save-excursion
-    (shell-command-on-region beg end "pg_format" nil t)))
-
-(defun zc-sql/format-buffer ()
-  "Format SQL in buffer."
-  (interactive)
-  (zc-sql/format-region (point-min) (point-max)))
 
 (defun zc-sql/format-region-or-buffer (beg end)
   "Format SQL for the entire buffer or the marked region
-between beg and end."
+between BEG and END.
+
+Available SQL formatters:
+- https://github.com/andialbrecht/sqlparse
+- https://github.com/darold/pgFormatter
+"
   (interactive "r")
-  (if (use-region-p)
-      (zc-sql/format-region beg end)
-    (zc-sql/format-buffer)))
+  (unless (use-region-p) (setq beg (point-min)
+                               end (point-max)))
+  (save-excursion
+    (shell-command-on-region beg end "sqlformat -r -" nil t)))
 
 
 

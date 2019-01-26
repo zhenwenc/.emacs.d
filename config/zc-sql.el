@@ -37,10 +37,7 @@
 
 (zc-hydra/major-mode-define sql-mode
   ("Basic"
-   ()
-
-   "Refactor"
-   (("rf" zc-sql/format-region-or-buffer "format"))))
+   (("f" zc-sql/format-region-or-buffer "format"))))
 
 
 
