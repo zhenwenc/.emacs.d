@@ -6,7 +6,7 @@
 
 (defvar zc-company/backend-alist
   '((text-mode   :derived (company-capf company-dabbrev company-ispell))
-    (prog-mode   :derived (company-capf company-yasnippet))
+    (prog-mode   :derived (company-capf))
     (conf-mode   :derived (company-dabbrev-code))
     (css-mode    :exact   (company-css))
     (tide-mode   :exact   (company-tide))
@@ -78,10 +78,5 @@
   :config
   (setq company-statistics-file (concat paths-cache-directory "/company-statistics"))
   (company-statistics-mode +1))
-
-(use-package company-yasnippet
-  :after company
-  :general
-  ("C-M-y" #'company-yasnippet))
 
 (provide 'zc-company)

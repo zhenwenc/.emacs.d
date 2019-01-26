@@ -116,6 +116,7 @@
 
 (use-package tide
   :straight t
+  :after (typescript-mode company flycheck)
 
   :general
   (:states '(normal insert) :keymaps 'tide-mode-map
@@ -131,10 +132,9 @@
   :preface
   (defun zc-typescript/maybe-setup-tide ()
     (interactive)
-    (unless (s-contains-p "node_modules" (buffer-file-name))
-      (tide-setup)
-      (eldoc-mode +1)
-      (flycheck-mode +1)))
+    (tide-setup)
+    (eldoc-mode +1)
+    (flycheck-mode +1))
 
   :preface
   (defun zc-typescript/disable-flycheck-for-node-modules ()
