@@ -128,7 +128,7 @@
    "Search"
    (("ss" counsel-grep-or-swiper "swiper")
     ("sp" counsel-projectile-rg "search project")
-    ("sP" zc/projectile-search-symbol-at-point "search project (sym)"))))
+    ("sP" zc-projectile/search-symbol-at-point "search project (sym)"))))
 
 (zc-hydra/define zc-main-hydra--project
   (:color teal :title "Project Hydra" :icon "product-hunt" :prefix "p")
