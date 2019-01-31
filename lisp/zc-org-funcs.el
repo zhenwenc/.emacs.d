@@ -177,16 +177,6 @@ candidates, using `counsel-outline-candidates'."
 
 ;; Hooks and Advices
 
-(defun zc-org/ctrl-c-ctrl-c-hook ()
-  "Override default functionality of `C-c C-c' command in
-`org-mode', use with `org-ctrl-c-ctrl-c-hook'.
-
-- When in a source code block, do edit instead of execute."
-  (pcase (org-element-type (org-element-context))
-    ;; source code block
-    ((or `inline-src-block `src-block)
-     (org-edit-special))))
-
 (defun zc-org/narrow-after-jump (&rest _)
   "Function called after org jumping to a location.
 

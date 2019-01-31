@@ -118,9 +118,6 @@
                                  '((emacs-lisp . t)
                                    (sql        . t)))
 
-    ;; Override the context sensitive C-c C-c key
-    (add-hook 'org-ctrl-c-ctrl-c-hook 'zc-org/ctrl-c-ctrl-c-hook)
-
     ;; Narrow to headline after jump, which affects:
     ;; - `counsel-org-goto'
     ;; - `counsel-org-goto-all'
@@ -186,7 +183,7 @@
    (("?" org-info "org info"))
 
    "Edit & Execute"
-   (("ee" org-babel-execute-src-block-maybe "execute")
+   (("ee" org-edit-special "edit")
     ("ep" org-property-action "property")
     ("et" counsel-org-tag "tag")
     ("ea" org-babel-insert-header-arg "header arg")
