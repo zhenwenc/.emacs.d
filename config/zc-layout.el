@@ -9,6 +9,8 @@
 
 (autoload 'projectile-switch-project "projectile")
 
+(defvar eyebrowse-default-workspace-slot)
+
 (defvar zc-layout/window-config-project-alist nil
   "Alist of window config slots with their associated project.
 
@@ -55,12 +57,11 @@ Each element looks like (SLOT . PROJECT).")
             :sort counsel-projectile-sort-projects
             :caller 'zc-layout/select-project-no-action))
 
-(defun zc-layout/default-slot-occupied-p ()
-  "Return t if the default slot is not yet occupied."
-  (let* ((slot eyebrowse-default-workspace-slot)
-         (windows (eyebrowse--get 'window-configs))
-         (window (assoc slot windows))
-         (tag (nth 2 window)))
+(defun zc-layout/slot-occupied-p (slot)
+  "Return t if SLOT is not yet occupied."
+  (let* ((windows (eyebrowse--get 'window-configs))
+         (window  (assoc slot windows))
+         (tag     (nth 2 window)))
     (or (not window) ; window was deleted
         (and tag (> (length tag) 0)))))
 
@@ -94,7 +95,7 @@ name as PROJECT in the `projectile-known-projects'."
   (thread-last projectile-known-projects
     (-remove (-partial 'f-same? project))
     (-map #'f-base)
-    (-any?  (-partial 's-equals? (f-base project)))))
+    (-any? (-partial 's-equals? (f-base project)))))
 
 (defun zc-layout/get-layout-tag-for-project (project)
   "Return the eyebrowse window config tag for PROJECT."
@@ -113,25 +114,26 @@ name as PROJECT in the `projectile-known-projects'."
   the project's name as the tag of the window config."
   (interactive)
   (-when-let* ((project (or project (zc-layout/select-project-no-action)))
-               (tag (zc-layout/get-layout-tag-for-project project)))
-    (let ((window (zc-layout/find-window-config-for-tag tag)))
-      (if window
-          (zc-layout/switch-to-window-config (car window) project)
-        ;; Create eyebrowse window config, prefer to the default slot if
-        ;; not occupied, otherwise fallback to `eyebrowse-create-window-config'.
-        (if (zc-layout/default-slot-occupied-p)
+               (tag     (zc-layout/get-layout-tag-for-project project)))
+    (-if-let (window (zc-layout/find-window-config-for-tag tag))
+        (zc-layout/switch-to-window-config (car window) project)
+      ;; Create eyebrowse window config, prefer to the
+      ;; default slot if not occupied, otherwise call
+      ;; `eyebrowse-create-window-config'.
+      (let ((slot eyebrowse-default-workspace-slot))
+        (if (zc-layout/slot-occupied-p slot)
             (eyebrowse-create-window-config)
-          (eyebrowse-switch-to-window-config eyebrowse-default-workspace-slot))
-        (let ((slot (eyebrowse--get 'current-slot)))
-          ;; Rename the window config tag
-          (eyebrowse-rename-window-config slot tag)
-          ;; Actually switch to the project
-          (counsel-projectile-switch-project-by-name project)
-          ;; Memorize the window config associated project
-          (map-put zc-layout/window-config-project-alist
-                   slot (projectile-project-name)))
-        ;; Kill other windows since they belong to the last layout
-        (delete-other-windows)))))
+          (eyebrowse-switch-to-window-config slot)))
+      (let ((slot (eyebrowse--get 'current-slot)))
+        ;; Rename the window config tag
+        (eyebrowse-rename-window-config slot tag)
+        ;; Actually switch to the project
+        (counsel-projectile-switch-project-by-name project)
+        ;; Memorize the window config associated project
+        (map-put zc-layout/window-config-project-alist
+                 slot (projectile-project-name)))
+      ;; Kill other windows since they belong to the last layout
+      (delete-other-windows))))
 
 (defun zc-layout/switch-project-layout (&rest _)
   "Switch to a project. If default slot is not occupied,
