@@ -14,7 +14,7 @@ Available SQL formatters:
   (unless (use-region-p) (setq beg (point-min)
                                end (point-max)))
   (save-excursion
-    (shell-command-on-region beg end "sqlformat -r -" nil t)))
+    (shell-command-on-region beg end "sqlformat -r -k upper -" nil t)))
 
 
 
