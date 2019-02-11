@@ -127,11 +127,9 @@
     ;; make delimiter auto-closing a little more conservative
     (with-eval-after-load 'smartparens
       (sp-with-modes 'org-mode
-        (sp-local-pair "*" nil :unless '(:add org-in-src-block-p
-                                              sp-point-before-word-p
+        (sp-local-pair "*" nil :unless '(:add sp-point-before-word-p
                                               zc-org/sp-point-at-bol-p))
-        (sp-local-pair "_" nil :unless '(:add org-in-src-block-p
-                                              sp-point-before-word-p))
+        (sp-local-pair "_" nil :unless '(:add sp-point-before-word-p))
         (sp-local-pair "/" nil :unless '(:add sp-point-before-word-p
                                               zc-org/sp-point-in-checkbox-p))
         (sp-local-pair "~" nil :unless '(:add sp-point-before-word-p))
