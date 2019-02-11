@@ -182,13 +182,13 @@
 
    "Edit & Execute"
    (("ee" org-edit-special "edit")
-    ("ep" org-property-action "edit property")
+    ("ea" org-babel-insert-header-arg "edit arg")
     ("et" counsel-org-tag "edit tag")
-    ("ea" org-babel-insert-header-arg "header arg")
+    ("ep" org-property-action "edit property")
     ("ei" org-babel-view-src-block-info "block info")
     ("eo" org-babel-open-src-block-result "open result")
     ("ec" org-babel-remove-result-one-or-many "clear result")
-    ("eC" zc-org/babel-remove-result-all "clear all result"))
+    ("eC" zc-org/babel-remove-result-all "clear result*"))
 
    "Refactor"
    (("rs" org-sort "sort")
