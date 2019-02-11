@@ -181,11 +181,11 @@ candidates, using `counsel-outline-candidates'."
 (defun zc-org/narrow-after-jump (&rest _)
   "Function called after org jumping to a location.
 
-Expand the headline or item if currently folded."
+Expand the headline and narrow to current subtree."
   (when (and (derived-mode-p 'org-mode)
-             (org-at-heading-or-item-p))
-    (when (zc-org/heading-or-item-folded-p)
-      (org-cycle))
+             (org-at-heading-p))
+    (outline-hide-other)
+    (outline-show-subtree)
     (org-narrow-to-subtree)
     (message "Narrowed to subtree!")))
 
