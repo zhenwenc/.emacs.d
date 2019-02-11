@@ -184,10 +184,9 @@
 
    "Edit & Execute"
    (("ee" org-edit-special "edit")
-    ("ep" org-property-action "property")
-    ("et" counsel-org-tag "tag")
+    ("ep" org-property-action "edit property")
+    ("et" counsel-org-tag "edit tag")
     ("ea" org-babel-insert-header-arg "header arg")
-    ("ev" org-babel-check-src-block "block verify")
     ("ei" org-babel-view-src-block-info "block info")
     ("eo" org-babel-open-src-block-result "open result")
     ("ec" org-babel-remove-result-one-or-many "clear result")
