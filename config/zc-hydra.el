@@ -96,7 +96,8 @@
    (("fs" save-buffer "save")
     ("fv" reload-file "reload")
     ("fD" zc/delete-buffer-and-file "delete")
-    ("fR" zc/rename-buffer-and-file "rename"))
+    ("fR" zc/rename-buffer-and-file "rename")
+    ("fb" counsel-bookmark "bookmark"))
 
    "Search"
    (("fr" counsel-recentf "find recent")
