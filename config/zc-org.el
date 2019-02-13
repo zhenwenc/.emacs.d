@@ -116,7 +116,8 @@
     ;; Activate babel source code blocks
     (org-babel-do-load-languages 'org-babel-load-languages
                                  '((emacs-lisp . t)
-                                   (sql        . t)))
+                                   (sql        . t)
+                                   (shell      . t)))
 
     ;; Narrow to headline after jump, which affects:
     ;; - `counsel-org-goto'
