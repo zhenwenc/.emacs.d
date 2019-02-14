@@ -78,6 +78,7 @@
 (use-package zc-core)
 (use-package zc-osx :if (eq system-type 'darwin))
 (use-package zc-editing)
+(use-package zc-eshell)
 (use-package zc-git)
 (use-package zc-projectile)
 (use-package zc-evil)

@@ -166,4 +166,8 @@
    ;; highlight-thing
    (highlight-thing :background (doom-blend yellow base3 0.1)
                     :foreground nil :inherit bold)
+
+   ;; eshell
+   (zc-eshell/prompt-pwd :foreground violet)
+   (zc-eshell/prompt-git-branch :foreground cyan)
    ))

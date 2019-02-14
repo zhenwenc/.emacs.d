@@ -247,6 +247,7 @@
   ("Basic"
    (("SPC" counsel-M-x "M-x")
     (":" eval-expression "eval expression")
+    ("!" zc-eshell/open "open eshell")
     ("r" ivy-resume "ivy resume")
     ("v" er/expand-region "expand region")
     ("m" zc-hydra/major-mode-hydra "major mode hydra")
