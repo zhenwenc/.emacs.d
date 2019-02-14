@@ -77,18 +77,21 @@
 (zc-hydra/define zc-main-hydra--buffer
   (:color teal :title "Buffer Hydra" :icon "drupal" :prefix "b")
   ("Basic"
-   (("b SPC" zc/buffer-toggle-narrow "narrow")
-    ("bb" ivy-switch-buffer "switch")
+   (("b SPC" zc/buffer-toggle-narrow "narrow"))
+
+   "Navigation"
+   (("bb" ivy-switch-buffer "switch")
     ("bn" projectile-next-project-buffer "next")
-    ("bN" projectile-previous-project-buffer "previous"))
+    ("bN" projectile-previous-project-buffer "previous")
+    ("bs" (switch-to-buffer "*scratch*") "switch to scratch")
+    ("bm" (switch-to-buffer "*Messages*") "switch to messages")
+    ("bz" bury-buffer "bury"))
 
    "Misc."
    (("bB" ibuffer "ibuffer")
     ("bi" zc/indent-buffer "indent")
     ("bd" zc-layout/kill-current-buffer "kill")
-    ("by" zc/copy-buffer-to-clipboard "copy to clipboard")
-    ("bs" (switch-to-buffer "*scratch*") "switch to scratch")
-    ("bm" (switch-to-buffer "*Messages*") "switch to messages"))))
+    ("by" zc/copy-buffer-to-clipboard "copy to clipboard"))))
 
 (zc-hydra/define zc-main-hydra--file
   (:color teal :title "File Hydra" :icon "file" :prefix "f")
