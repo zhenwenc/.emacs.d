@@ -90,7 +90,7 @@
    "Misc."
    (("bB" ibuffer "ibuffer")
     ("bi" zc/indent-buffer "indent")
-    ("bd" zc-layout/kill-current-buffer "kill")
+    ("bd" zc-layout/kill-buffer "kill")
     ("by" zc/copy-buffer-to-clipboard "copy to clipboard"))))
 
 (zc-hydra/define zc-main-hydra--file

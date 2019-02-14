@@ -38,8 +38,26 @@ directory in `zc-projectile/ignored-dirs'."
     (projectile-cleanup-known-projects)))
 
 
+
+(defmacro zc-projectile/with-switch-project-action (to-buffer &rest body)
+  "Execute the forms in BODY while advicing projectile switch
+to a project buffer after `projectile-switch-project-by-name'
+instead of prompt with `projectile-find-file', which is done
+by using the magic dynamic binding."
+  (declare (indent defun))
+  `(let ((projectile-switch-project-action
+          (lambda ()
+            (let ((buf (cond
+                        (,to-buffer ,to-buffer)
+                        (t "*scratch*"))))
+              (message "Switched to buffer: %s" buf)
+              (switch-to-buffer buf)))))
+     ,@body))
+
+
 ;; Commands
 
+;;;###autoload
 (defun zc-projectile/search-symbol-at-point (current-dir-p)
   (interactive "P")
   (let ((sym (thing-at-point 'symbol t)))

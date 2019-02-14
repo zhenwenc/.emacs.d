@@ -2,9 +2,12 @@
 (require 'f)
 (require 'dash)
 (require 'dash-functional)
-(require 'counsel-projectile)
 
 (autoload 'projectile-switch-project "projectile")
+
+(defvar projectile-known-projects)
+(defvar counsel-projectile-sort-projects)
+(defvar eyebrowse-default-workspace-slot)
 
 (defvar zc-layout/window-config-project-alist nil
   "Alist of window config slots with their associated project.
@@ -59,10 +62,10 @@ If SLOT is nil, default to current slot."
 (defun zc-layout/has-same-project-name (project)
   "Return true if there exists another project with the same
 name as PROJECT in the `projectile-known-projects'."
-  (thread-last projectile-known-projects
-    (-remove (-partial 'f-same? project))
-    (-map #'f-base)
-    (-any? (-partial 's-equals? (f-base project)))))
+  (->> projectile-known-projects
+       (-remove (-partial 'f-same? project))
+       (-map #'f-base)
+       (-any? (-partial 's-equals? (f-base project)))))
 
 (defun zc-layout/get-layout-tag-for-project (project)
   "Return the eyebrowse window config tag for PROJECT."
@@ -110,28 +113,34 @@ prompt to create a project layout."
       (zc-layout/switch-to-window-config (eyebrowse--read-slot))
     (zc-layout/create-project-layout)))
 
-(defun zc-layout/kill-current-buffer (&optional arg)
+(defun zc-layout/kill-buffer (arg &optional buffer)
   "Kill the current buffer, switch to the previous project buffer.
 
 If the universal prefix argument is used then kill also the window."
   (interactive "P")
-  (let* ((buffer       (current-buffer))
-         (buffer-win   (get-buffer-window buffer))
-         (project      (zc-layout/get-project-for-slot))
-         (project-curr (projectile-project-name)))
+  (let* ((buffer (or buffer (current-buffer)))
+         (window (get-buffer-window buffer)))
     (cond ((window-minibuffer-p)
            (abort-recursive-edit))
           ((equal '(4) arg)
            (kill-buffer-and-window))
           (t
-           (with-selected-window buffer-win
-             ;; When the current project mismatches with the layout's
-             ;; project, `projectile-previous-project-buffer' will make
-             ;; the situation even worse.
-             (if (and project (equal project project-curr))
-                 (projectile-previous-project-buffer)
-               (previous-buffer))
-             (kill-buffer buffer))))))
+           (zc-layout/switch-to-previous-buffer window)
+           (kill-buffer buffer)))))
+
+(defun zc-layout/switch-to-previous-buffer (&optional win)
+  "Switch to the previous project buffer if available, otherwise
+switch to fallback buffer."
+  (interactive)
+  (with-selected-window (or win (selected-window))
+    ;; When the current project mismatches with the layout's
+    ;; project, `projectile-previous-project-buffer' will make
+    ;; the situation even worse.
+    (let* ((project      (zc-layout/get-project-for-slot))
+           (project-curr (projectile-project-name)))
+      (if (and project (equal project project-curr))
+          (projectile-previous-project-buffer)
+        (previous-buffer)))))
 
 
 

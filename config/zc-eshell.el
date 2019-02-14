@@ -98,7 +98,7 @@ replace or insert mode."
         (add-to-list 'eshell-visual-commands cmd)))
 
     (add-to-list 'display-buffer-alist
-                 `(,(rx bos "*eshell*" eos)
+                 `(,(rx bos "*eshell" (*? anything) "*" eos)
                    (display-buffer-reuse-window
                     display-buffer-in-side-window)
                    (reusable-frames . visible)

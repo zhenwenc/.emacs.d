@@ -141,14 +141,9 @@ Ensure we are are in `org' layout to avoid chaos"
     (error "Org directory '%s' is not a project" zc-org/directory))
   (let* ((marker (cdr x))
          (project zc-org/directory))
-    (if (markerp marker)
-        ;; Instead of promp with `projectile-find-file' after switching
-        ;; project, we use magic dynamic binding to advice projectile
-        ;; switch to the buffer in marker directly.
-        (let* ((buffer (marker-buffer marker))
-               (projectile-switch-project-action
-                (lambda () (switch-to-buffer buffer))))
-          (message "Switched to buffer: %s" buffer)
+    (-if-let* ((is-marker (markerp marker))
+               (buf       (marker-buffer marker)))
+        (zc-projectile/with-switch-project-action buf
           (zc-layout/create-project-layout project))
       (zc-layout/create-project-layout project)))
   (counsel-org-goto-action x))

@@ -8,6 +8,8 @@
 (require 'zc-org-funcs)
 (require 'zc-hydra-funcs)
 
+(autoload 'counsel-outline-candidates "counsel-projectile")
+
 (defvar org-tempo-tags)
 
 
