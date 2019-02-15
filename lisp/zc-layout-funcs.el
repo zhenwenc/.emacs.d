@@ -16,17 +16,6 @@ Each element looks like (SLOT . PROJECT).")
 
 
 
-(defun zc-layout/select-project-no-action ()
-  "Prompt project selection with counsel."
-  (interactive)
-  (ivy-read (projectile-prepend-project-name "Select a project: ")
-            projectile-known-projects
-            :preselect (and (projectile-project-p)
-                            (abbreviate-file-name (projectile-project-root)))
-            :require-match t
-            :sort counsel-projectile-sort-projects
-            :caller 'zc-layout/select-project-no-action))
-
 (defun zc-layout/slot-occupied-p (slot)
   "Return t if SLOT is not yet occupied."
   (let* ((windows (eyebrowse--get 'window-configs))
@@ -75,6 +64,22 @@ name as PROJECT in the `projectile-known-projects'."
         (format "%s/%s" parent dirname)
       dirname)))
 
+
+
+;;;###autoload
+(defun zc-layout/select-project-no-action ()
+  "Prompt project selection with counsel."
+  (interactive)
+  (require 'counsel-projectile)
+  (ivy-read (projectile-prepend-project-name "Select a project: ")
+            projectile-known-projects
+            :preselect (and (projectile-project-p)
+                            (projectile-project-name))
+            :require-match t
+            :sort counsel-projectile-sort-projects
+            :caller 'zc-layout/select-project-no-action))
+
+;;;###autoload
 (defun zc-layout/create-project-layout (&optional project)
   "Create a project layout.
 
@@ -105,6 +110,7 @@ name as PROJECT in the `projectile-known-projects'."
       ;; Kill other windows since they belong to the last layout
       (delete-other-windows))))
 
+;;;###autoload
 (defun zc-layout/switch-project-layout (&rest _)
   "Switch to a project. If default slot is not occupied,
 prompt to create a project layout."
@@ -113,6 +119,7 @@ prompt to create a project layout."
       (zc-layout/switch-to-window-config (eyebrowse--read-slot))
     (zc-layout/create-project-layout)))
 
+;;;###autoload
 (defun zc-layout/kill-buffer (arg &optional buffer)
   "Kill the current buffer, switch to the previous project buffer.
 
@@ -128,19 +135,21 @@ If the universal prefix argument is used then kill also the window."
            (zc-layout/switch-to-previous-buffer window)
            (kill-buffer buffer)))))
 
+;;;###autoload
 (defun zc-layout/switch-to-previous-buffer (&optional win)
   "Switch to the previous project buffer if available, otherwise
 switch to fallback buffer."
   (interactive)
   (with-selected-window (or win (selected-window))
-    ;; When the current project mismatches with the layout's
-    ;; project, `projectile-previous-project-buffer' will make
-    ;; the situation even worse.
-    (let* ((project      (zc-layout/get-project-for-slot))
-           (project-curr (projectile-project-name)))
-      (if (and project (equal project project-curr))
+    (let* ((current (projectile-project-name))
+           (project (zc-layout/get-project-for-slot)))
+      ;; When the current project mismatches with the layout's
+      ;; project, `projectile-previous-project-buffer' will make
+      ;; a wrong choice.
+      (if (and project (string= project current))
           (projectile-previous-project-buffer)
-        (previous-buffer)))))
+        (zc-projectile/with-switch-project-action 'previous
+          (projectile-switch-project-by-name project))))))
 
 
 

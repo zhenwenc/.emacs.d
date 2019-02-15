@@ -1,4 +1,5 @@
 (require 's)
+(require 'f)
 (require 'dash)
 (require 'dash-functional)
 (require 'subr-x)
@@ -37,9 +38,14 @@ directory in `zc-projectile/ignored-dirs'."
     ;; Ensure the projects exist
     (projectile-cleanup-known-projects)))
 
+(defun zc-projectile/get-project-root (project)
+  "Return the project root directory for PROJECT."
+  (--find (eq project (projectile-project-name it))
+          projectile-known-projects))
+
 
 
-(defmacro zc-projectile/with-switch-project-action (to-buffer &rest body)
+(defmacro zc-projectile/with-switch-project-action (buffer &rest body)
   "Execute the forms in BODY while advicing projectile switch
 to a project buffer after `projectile-switch-project-by-name'
 instead of prompt with `projectile-find-file', which is done
@@ -47,11 +53,20 @@ by using the magic dynamic binding."
   (declare (indent defun))
   `(let ((projectile-switch-project-action
           (lambda ()
-            (let ((buf (cond
-                        (,to-buffer ,to-buffer)
-                        (t "*scratch*"))))
-              (message "Switched to buffer: %s" buf)
-              (switch-to-buffer buf)))))
+            ;; Fallback to default switch project action.
+            ;; Note that we are on a temporary buffer, see
+            ;; `projectile-switch-project-by-name'.
+            (let* ((project (projectile-project-name))
+                   (default-directory (zc-projectile/get-project-root project)))
+              (pcase ,buffer
+                ('previous
+                 (projectile-previous-project-buffer))
+                ('silent
+                 (switch-to-buffer "*scratch*"))
+                ((pred ,(-orfn 'bufferp 'stringp))
+                 (switch-to-buffer ,buffer))
+                (_
+                 (projectile-find-file)))))))
      ,@body))
 
 

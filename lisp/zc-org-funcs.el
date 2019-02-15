@@ -142,8 +142,8 @@ Ensure we are are in `org' layout to avoid chaos"
   (let* ((marker (cdr x))
          (project zc-org/directory))
     (-if-let* ((is-marker (markerp marker))
-               (buf       (marker-buffer marker)))
-        (zc-projectile/with-switch-project-action buf
+               (buffer    (marker-buffer marker)))
+        (zc-projectile/with-switch-project-action buffer
           (zc-layout/create-project-layout project))
       (zc-layout/create-project-layout project)))
   (counsel-org-goto-action x))
