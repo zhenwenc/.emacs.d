@@ -14,8 +14,13 @@
 
   :config
   (progn
-    (setq projectile-enable-caching t)
-    (setq projectile-completion-system 'ivy)
+    (setq projectile-enable-caching t
+          projectile-completion-system 'ivy
+
+          projectile-cache-file
+          (concat paths-cache-directory "/projectile.cache")
+          projectile-known-projects-file
+          (concat paths-cache-directory "/projectile.projects"))
 
     (setq projectile-globally-ignored-files
           '("TAGS"

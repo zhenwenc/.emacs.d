@@ -45,15 +45,13 @@
       save-interprogram-paste-before-kill t
       ediff-window-setup-function 'ediff-setup-windows-plain
 
-      save-place-file (concat paths-cache-directory "/places")
-      url-cookie-file (concat paths-cache-directory "/cookies")
-      recentf-save-file (concat paths-cache-directory "/recentf")
+      save-place-file       (concat paths-cache-directory "/places")
+      url-cookie-file       (concat paths-cache-directory "/cookies")
+      recentf-save-file     (concat paths-cache-directory "/recentf")
       bookmark-default-file (concat paths-cache-directory "/bookmarks")
-      projectile-cache-file (concat paths-cache-directory "/projectile.cache")
 
       ;; Don't show the startup message
       inhibit-startup-message t
-
 
       ;; Prefer splitting windows horizontally
       split-height-threshold nil
@@ -62,6 +60,7 @@
       make-backup-files nil
       backup-directory-alist         `((".*" . ,temporary-file-directory))
       auto-save-file-name-transforms `((".*" ,temporary-file-directory t))
+      auto-save-list-file-name        (concat paths-cache-directory "/autosave")
 
       ;; Smooth scroll
       scroll-step            1
