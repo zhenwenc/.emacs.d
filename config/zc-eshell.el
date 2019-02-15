@@ -15,9 +15,9 @@
     ("f"     "find-file $1")
     ("ag"    "ag --color $*")
     ("rg"    "rg --color=always $*")
-    ("l"     "ls -lh")
-    ("ll"    "ls -lah")
-    ("la"    "ls -lAh")
+    ("l"     "ls -lh $*")
+    ("ll"    "ls -lah $*")
+    ("la"    "ls -lAh $*")
     ("tf"    "terraform $*")
     ("tree"  "tree -I 'target|node_modules' $*")
     ("clear" "clear-scrollback"))
@@ -67,7 +67,8 @@ replace or insert mode."
       (kbd "C-p")      #'eshell-previous-input
       (kbd "C-n")      #'eshell-next-input
       (kbd "C-a C-a")  #'eshell-bol
-      (kbd "C-a x")    #'zc-eshell/kill-and-close))
+      (kbd "C-a x")    #'zc-eshell/kill-and-close
+      (kbd "C-a z")    #'bury-buffer))
 
   :hook
   ((eshell-mode            . zc-eshell/init-evil)

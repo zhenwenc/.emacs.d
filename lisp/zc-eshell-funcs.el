@@ -1,5 +1,6 @@
 (require 'f)
 (require 'dash)
+(require 'eshell)
 
 (autoload 'shrink-path-file "shrink-path")
 
