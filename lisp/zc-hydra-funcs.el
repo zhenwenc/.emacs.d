@@ -9,16 +9,14 @@
 
 
 (defun zc-hydra/title-with-faicon (name icon)
-  (s-concat "\n "
+  (format "\n %s %s"
             (all-the-icons-faicon icon :v-adjust 0.01 :height 1.1)
-            " "
             (propertize name 'face '(:height 1.1 :weight bold))))
 
 (defun zc-hydra/major-mode-title (mode)
-  (s-concat "\n "
+  (format "\n %s %s"
             (all-the-icons-icon-for-mode mode :v-adjust 0.01 :height 1.1)
-            " "
-            (propertize mode 'face '(:height 1.1 :weight bold))))
+            (propertize (symbol-name mode) 'face '(:height 1.1 :weight bold))))
 
 (defun zc-hydra/remove-heads-prefix (prefix heads-plist)
   (if (stringp prefix)
@@ -63,7 +61,7 @@
   "Define hydra for major mode MODE with HEADS-PLIST."
   (declare (indent defun))
   (let ((name  (intern (format "major-mode-hydra--%s" mode)))
-        (title (zc-hydra/major-mode-title (symbol-name mode)))
+        (title (zc-hydra/major-mode-title mode))
         (heads (zc-hydra/maybe-add-exit-head heads-plist)))
     `(pretty-hydra-define ,name
        (:hint nil :color teal :title ,title) ,heads)))
