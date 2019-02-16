@@ -72,9 +72,11 @@
             org-agenda-mode))
 
     ;; Use `all-the-icons-insert-*' to find available icons.
-    (add-to-list 'all-the-icons-mode-icon-alist
-                 '(terraform-mode all-the-icons-faicon "tree"
-                                  :face all-the-icons-blue))
+    (dolist (icon '((prodigy-mode   all-the-icons-faicon "bar-chart"
+                                    :face all-the-icons-blue)
+                    (terraform-mode all-the-icons-faicon "tree"
+                                    :face all-the-icons-blue)))
+      (add-to-list 'all-the-icons-mode-icon-alist icon))
 
     (global-page-break-lines-mode)))
 

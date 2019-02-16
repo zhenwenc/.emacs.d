@@ -34,7 +34,7 @@
 
 
 (zc-hydra/major-mode-define prodigy-mode
-  ("Navigation"
+  ("Basic"
    (("n" prodigy-next "next")
     ("p" prodigy-prev "previous")
     ("<" prodigy-first "first")
@@ -48,20 +48,18 @@
     ("T" prodigy-unmark-tag "unmark tag")
     ("U" prodigy-unmark-all "unmark all"))
 
-   "Process"
-   (("s" prodigy-start "start service")
-    ("S" prodigy-stop "stop service")
-    ("r" prodigy-restart "restart service")
-    ("TAB" prodigy-display-process "view output"))
-
    "Filters"
-   (("ft" prodigy-add-tag-filter "add tag filter")
-    ("fn" prodigy-add-name-filter "add name filter")
-    ("fc" prodigy-clear-filters "clear all filters"))
+   (("ft" prodigy-add-tag-filter "tag")
+    ("fn" prodigy-add-name-filter "name")
+    ("fc" prodigy-clear-filters "clear"))
 
-   "Misc."
-   (("o" prodigy-browse "open in browser")
-    ("g" prodigy-refresh "refresh services"))))
+   "Service"
+   (("s" prodigy-start "start")
+    ("S" prodigy-stop "stop")
+    ("r" prodigy-restart "restart")
+    ("g" prodigy-refresh "refresh")
+    ("o" prodigy-browse "open in browser")
+    ("TAB" prodigy-display-process "view output"))))
 
 
 
