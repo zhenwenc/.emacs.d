@@ -5,8 +5,10 @@
   :straight t
   :config
   (setq magit-repository-directories
-        '(("~/code/"     . 2)
-          ("~/.emacs.d/" . 0))))
+        '(("~/.emacs.d/" . 0)
+          ("~/org/"      . 0)
+          ("~/code/"     . 2)
+          ("~/dotfiles/" . 0))))
 
 ;; Show source files' todos in Magit status buffer
 
