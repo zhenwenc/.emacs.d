@@ -35,6 +35,7 @@
 
   :defines (eshell-command-aliases-list
             eshell-visual-commands
+            eshell-visual-subcommands
             eshell-hist-ignoredups
             eshell-glob-case-insensitive
             eshell-error-if-no-glob
@@ -61,14 +62,16 @@ replace or insert mode."
     "Overwrite keybinding defined in `evil-collection'."
     (evil-define-key 'normal eshell-mode-map
       (kbd "<return>") #'zc-eshell/goto-end-of-prompt
-      (kbd "C-a x")    #'zc-eshell/kill-and-close)
+      (kbd "q")        #'delete-window
+      (kbd "C-a x")    #'zc-eshell/kill-and-close
+      (kbd "C-a z")    #'delete-window)
     (evil-define-key 'insert eshell-mode-map
       (kbd "C-e")      #'end-of-line
       (kbd "C-p")      #'eshell-previous-input
       (kbd "C-n")      #'eshell-next-input
       (kbd "C-a C-a")  #'eshell-bol
       (kbd "C-a x")    #'zc-eshell/kill-and-close
-      (kbd "C-a z")    #'bury-buffer))
+      (kbd "C-a z")    #'delete-window))
 
   :hook
   ((eshell-mode            . zc-eshell/init-evil)
@@ -96,7 +99,10 @@ replace or insert mode."
     ;; handle that, so delegate these commands to a term buffer.
     (with-eval-after-load 'em-term
       (dolist (cmd '("tmux" "htop" "zsh" "vim"))
-        (add-to-list 'eshell-visual-commands cmd)))
+        (add-to-list 'eshell-visual-commands cmd))
+
+      (dolist (cmd '(("yarn" "release")))
+        (add-to-list 'eshell-visual-subcommands cmd)))
 
     (add-to-list 'display-buffer-alist
                  `(,(rx bos "*eshell" (*? anything) "*" eos)
