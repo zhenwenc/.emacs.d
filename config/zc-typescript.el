@@ -14,9 +14,12 @@
 (use-package typescript-mode
   :straight t
   :defer t
+
   :mode (("\\.es6\\'"  . typescript-mode)
          ("\\.jsx?\\'" . typescript-mode)
          ("\\.tsx?\\'" . typescript-mode))
+
+  :interpreter (("node" . typescript-mode))
 
   :preface
   (defun zc-typescript/set-node-modules-readonly ()
