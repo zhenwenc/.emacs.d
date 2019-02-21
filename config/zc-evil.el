@@ -77,10 +77,11 @@
     (setq evil-emacs-state-cursor  '("SkyBlue2" hbar))
 
     ;; Configure initial state for modes
-    (evil-set-initial-state 'diff-mode 'motion)
-    (evil-set-initial-state 'ibuffer-mode 'motion)
-    (evil-set-initial-state 'prodigy-mode 'motion)
-    (evil-set-initial-state 'org-agenda-mode 'motion)))
+    (evil-set-initial-state 'diff-mode        'motion)
+    (evil-set-initial-state 'ibuffer-mode     'motion)
+    (evil-set-initial-state 'prodigy-mode     'motion)
+    (evil-set-initial-state 'org-agenda-mode  'motion)
+    (evil-set-initial-state 'compilation-mode 'motion)))
 
 
 ;; Provide motions and text objects for delimited arguments

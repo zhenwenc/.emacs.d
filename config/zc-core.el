@@ -87,11 +87,6 @@
       ;; generally not actionable.
       ad-redefinition-action 'accept
 
-      compilation-environment '("TERM=screen-256color")
-      compilation-always-kill t
-      compilation-ask-about-save nil
-      compilation-scroll-output 'first-error
-
       comint-prompt-read-only t
 
       ;; Always focus on help windows
@@ -161,6 +156,36 @@
   (setq ispell-really-hunspell t
         ispell-dictionary "english"
         ispell-program-name "hunspell"))
+
+(use-package compile
+  :defer t
+  :preface
+  (defun zc-core/colorize-compilation-buffer ()
+    (unless (derived-mode-p 'rg-mode)
+      (with-silent-modifications
+        (ansi-color-apply-on-region compilation-filter-start (point)))))
+
+  :general
+  (:states 'motion :keymaps 'compilation-mode-map
+           "h" #'evil-backward-char)
+
+  :init
+  (setq compilation-environment '("TERM=screen-256color")
+        compilation-always-kill t
+        compilation-ask-about-save nil
+        compilation-scroll-output 'first-error)
+
+  :hook (compilation-filter . zc-core/colorize-compilation-buffer)
+
+  :config
+  (add-to-list 'display-buffer-alist
+               `(,(rx bos "*compilation*" eos)
+                 (display-buffer-reuse-window
+                  display-buffer-in-side-window)
+                 (reusable-frames . visible)
+                 (side            . bottom)
+                 (slot            . 1)
+                 (window-height   . 0.3))))
 
 
 ;; External Packages

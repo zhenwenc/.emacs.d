@@ -143,6 +143,9 @@
     ("po" counsel-projectile-switch-project "switch project")
     ("pr" zc-projectile/refresh-projects "refresh projects"))
 
+   "Command"
+   (("pc" projectile-compile-project "compile"))
+
    "Search"
    (("pf" counsel-projectile-find-file "find file")
     ("pb" counsel-projectile-switch-to-buffer "find buffer")
