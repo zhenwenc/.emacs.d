@@ -140,19 +140,27 @@
     (flycheck-mode +1))
 
   :preface
+  (defun zc-typescript/disable-flycheck-linters ()
+    (when (boundp 'flycheck-disabled-checkers)
+      (dolist (checker '(javascript-jshint typescript-tslint))
+        (add-to-list 'flycheck-disabled-checkers checker))))
+
+  :preface
   (defun zc-typescript/disable-flycheck-for-node-modules ()
     (when (and (buffer-file-name)
                (s-contains-p "node_modules" (buffer-file-name))
                (boundp 'flycheck-checkers)
                (boundp 'flycheck-disabled-checkers))
-      (let* ((js-checkers (seq-filter
-                           (lambda (checker)
-                             (string-prefix-p "javascript" (symbol-name checker)))
-                           flycheck-checkers))
-             (updated (cl-union flycheck-disabled-checkers js-checkers)))
-        (setq flycheck-disabled-checkers updated))))
+      (setq-local flycheck-disabled-checkers
+                  (->> flycheck-checkers
+                       (-map #'symbol-name)
+                       (--filter (or (string-prefix-p "javascript" it)
+                                     (string-prefix-p "typescript" it)))
+                       (-map #'intern)
+                       (-union flycheck-disabled-checkers)))))
 
   :hook ((typescript-mode . zc-typescript/maybe-setup-tide)
+         (typescript-mode . zc-typescript/disable-flycheck-linters)
          (typescript-mode . zc-typescript/disable-flycheck-for-node-modules))
 
   :init
@@ -171,10 +179,6 @@
 
   :config
   (progn
-    ;; NOTE: Disabled tslint if slow
-    (add-to-list 'flycheck-disabled-checkers 'javascript-jshint)
-    (add-to-list 'flycheck-disabled-checkers 'typescript-tslint)
-
     ;; HACK: Flycheck generated temporary file hammers file watchers.
     ;;       Remove the hack after these issues are fixed:
     ;; https://github.com/flycheck/flycheck/issues/1446
