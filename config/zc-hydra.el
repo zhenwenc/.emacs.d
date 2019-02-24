@@ -289,10 +289,12 @@
     (general-setq general-override-states
                   '(insert emacs hybrid normal visual motion operator replace))
     (general-override-mode +1)
-    (general-define-key :states '(normal visual motion)
-                        :keymaps 'override
+    (general-define-key :keymaps 'override :states '(normal visual motion)
                         "SPC" #'zc-main-hydra/body
-                        ","   #'zc-hydra/major-mode-hydra)))
+                        ","   #'zc-hydra/major-mode-hydra)
+    (general-define-key :keymaps 'override :states '(insert)
+                        "s-SPC" #'zc-main-hydra/body
+                        "s-,"   #'zc-hydra/major-mode-hydra)))
 
 
 
