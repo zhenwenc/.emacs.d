@@ -181,7 +181,7 @@
   :config
   (progn
     (zc-evil/set-initial-state 'tide-references-mode     'motion)
-    (zc-evil/set-initial-state 'tide-project-errors-mode 'motion)
+    (zc-evil/set-initial-state 'tide-project-errors-mode 'normal)
 
     ;; HACK: Flycheck generated temporary file hammers file watchers.
     ;;       Remove the hack after these issues are fixed:
@@ -199,6 +199,11 @@
    (("ns" tide-restart-server "restart server")
     ("nS" zc-typescript/tide-stop-all-servers "stop all servers")
     ("nv" tide-verify-setup "verify setup"))
+
+   "Error"
+   (("el" tide-project-errors "project errors")
+    ("en" tide-find-next-error "next error")
+    ("eN" tide-find-previous-error "prev error"))
 
    "Refactor"
    (("rr" tide-rename-symbol "rename symbol")
