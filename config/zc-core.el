@@ -160,15 +160,19 @@
 
 (use-package compile
   :defer t
+  :after evil
+
+  :general
+  (:states 'motion :keymaps 'compilation-mode-map
+           "h" #'evil-backward-char)
+
   :preface
   (defun zc-core/colorize-compilation-buffer ()
     (unless (derived-mode-p 'rg-mode)
       (with-silent-modifications
         (ansi-color-apply-on-region compilation-filter-start (point)))))
 
-  :general
-  (:states 'motion :keymaps 'compilation-mode-map
-           "h" #'evil-backward-char)
+  :hook (compilation-filter . zc-core/colorize-compilation-buffer)
 
   :init
   (setq compilation-environment '("TERM=screen-256color")
@@ -176,7 +180,6 @@
         compilation-ask-about-save nil
         compilation-scroll-output 'first-error)
 
-  :hook (compilation-filter . zc-core/colorize-compilation-buffer)
 
   :config
   (progn

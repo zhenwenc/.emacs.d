@@ -2,6 +2,7 @@
   (require 'use-package))
 
 (require 'general)
+(require 'zc-hydra-funcs)
 
 
 
@@ -100,8 +101,8 @@
 (use-package zc-evil-ahs
   :after (:and evil pretty-hydra)
   :init
-  (pretty-hydra-define zc-evil-ahs
-    (:hint nil :color red :quit-key "q" :title "Ahs Hydra" :post zc-evil-ahs/reset)
+  (zc-hydra/define zc-evil-ahs-hydra
+    (:color red :title "Ahs Hydra" :post zc-evil-ahs/reset)
 
     ("Navigation"
      (("n" zc-evil-ahs/goto-next-forward "next")
@@ -112,11 +113,9 @@
      "Edit"
      (("e" zc-evil-ahs/iedit "edit"))
 
-     "Others"
+     "Range"
      (("r" ahs-change-range "change range")
-      ("R" zc-evil-ahs/reset "reset range")
-      ("q" nil "quit" :color blue)
-      ("<escape>" nil nil :color blue)))))
+      ("R" zc-evil-ahs/reset "reset range")))))
 
 
 ;; A set of keybindings for Evil mode.

@@ -177,10 +177,7 @@
 
 (zc-hydra/define zc-main-hydra--org
   (:color teal :title "Org Hydra" :icon "empire" :prefix "o")
-  ("Basic"
-   ()
-
-   "Agenda"
+  ("Agenda"
    (("oa" org-agenda "agenda")
     ("oc" org-capture "capture")
     ("ot" org-todo-list "agenda todo")

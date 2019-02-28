@@ -33,7 +33,7 @@
            (-mapcat #'cadr)
            (-none? (-compose #'null #'cadr)))
       (--map-first (listp it)
-                   (-concat it '(("q" nil "quit")
+                   (-concat it '(("q"        nil nil)
                                  ("<escape>" nil nil)))
                    heads-plist)
     heads-plist))

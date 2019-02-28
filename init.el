@@ -75,8 +75,8 @@
 (ignore-errors (require 'org-version))
 
 (use-package zc-theme)
-(use-package zc-evil)
 (use-package zc-core)
+(use-package zc-evil)
 (use-package zc-osx :if (eq system-type 'darwin))
 (use-package zc-editing)
 (use-package zc-eshell)

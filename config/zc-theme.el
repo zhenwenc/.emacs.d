@@ -5,6 +5,8 @@
 (require 'color)
 (require 'general)
 
+(defvar ahs-highlighted)
+
 
 
 (defvar zc-default-font
@@ -103,26 +105,6 @@
 
 (use-package highlight-thing
   :straight t
-
-  :preface
-  (progn
-    (defun zc-theme/clear-highlight-for-swiper (&rest _)
-      (when highlight-thing-mode (highlight-thing-remove-last))
-      (when highlight-sexp-mode (move-overlay hl-sexp-overlay 0 0)))
-
-    (defun zc-theme/maybe-disable-highlight-thing (fn &rest args)
-      (and
-       ;; If symbol is highlighted by `ahs-highlight-now',
-       ;; the flicker effect occurs on other candidates.
-       (not ahs-highlighted)
-       ;; Ensure the original condition satisfies.
-       (apply fn args)
-       ;; Highlight the occurrences of a single character is
-       ;; nonsense.
-       (let ((thing (highlight-thing-get-thing-at-point)))
-         ;; (message "what %s" (get-text-property nil 'face thing))
-         (or (not (stringp thing)) (> (length thing) 1))))))
-
   :commands (global-highlight-thing-mode)
   :init (global-highlight-thing-mode)
   :config
@@ -137,9 +119,24 @@
     ;; should be removed, because `swiper' applies its own
     ;; overlays. Otherwise it can flicker between the two faces
     ;; as you move between candidates.
+    (defun zc-theme/clear-highlight-for-swiper (&rest _)
+      (when highlight-thing-mode (highlight-thing-remove-last))
+      (when highlight-sexp-mode (move-overlay hl-sexp-overlay 0 0)))
     (advice-add 'swiper :before #'zc-theme/clear-highlight-for-swiper)
 
     ;; Disable `highlight-thing' for various cases
+    (defun zc-theme/maybe-disable-highlight-thing (fn &rest args)
+      (and
+       ;; If symbol is highlighted by `ahs-highlight-now',
+       ;; the flicker effect occurs on other candidates.
+       (not ahs-highlighted)
+       ;; Ensure the original condition satisfies.
+       (apply fn args)
+       ;; Highlight the occurrences of a single character is
+       ;; nonsense.
+       (let ((thing (highlight-thing-get-thing-at-point)))
+         ;; (message "what %s" (get-text-property nil 'face thing))
+         (or (not (stringp thing)) (> (length thing) 1)))))
     (advice-add 'highlight-thing-should-highlight-p
                 :around #'zc-theme/maybe-disable-highlight-thing)))
 

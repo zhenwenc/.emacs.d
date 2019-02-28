@@ -12,8 +12,8 @@
   (:keymaps 'Info-mode-map "l" nil "h" nil)
 
   (:states '(normal motion) :keymaps 'Info-mode-map
-            "gs" #'Info-goto-node
-            "gu" #'Info-follow-reference)
+           "gs" #'Info-goto-node
+           "gu" #'Info-follow-reference)
 
   :config
   (setq info-lookup-other-window-flag nil))
@@ -78,21 +78,18 @@
    google-translate-pop-up-buffer-set-focus t)
 
   (add-to-list 'display-buffer-alist
-                 `(,(rx bos "*Google Translate*" eos)
-                   (display-buffer-reuse-window
-                    display-buffer-in-side-window)
-                   (reusable-frames . visible)
-                   (side            . right)
-                   (slot            . 1)
-                   (window-width    . 0.2))))
+               `(,(rx bos "*Google Translate*" eos)
+                 (display-buffer-reuse-window
+                  display-buffer-in-side-window)
+                 (reusable-frames . visible)
+                 (side            . right)
+                 (slot            . 1)
+                 (window-width    . 0.2))))
 
 
 
 (zc-hydra/major-mode-define Info-mode
-  ("Basic"
-   ()
-
-   "Navigation"
+  ("Navigation"
    (("gs" Info-goto-node "goto node")
     ("gt" Info-top-node "goto top node")
     ("gT" Info-toc "table of contents")

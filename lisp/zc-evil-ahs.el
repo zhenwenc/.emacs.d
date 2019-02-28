@@ -75,8 +75,8 @@ with `auto-highlight-symbol'."
   (interactive)
   (zc-evil-ahs/ahs-highlight-now-wrapper)
   (setq zc-evil-ahs/last-ahs-highlight-p (ahs-highlight-p))
-  (zc-evil-ahs/body)
-  (zc-evil-ahs/integrate-evil-search t))
+  (zc-evil-ahs/integrate-evil-search t)
+  (zc-evil-ahs-hydra/body))
 
 (defun zc-evil-ahs/iedit ()
   "Turn on edit mode for selected symbols."
@@ -89,6 +89,8 @@ with `auto-highlight-symbol'."
 (defun zc-evil-ahs/reset ()
   "Reset the range for `auto-highlight-symbol'."
   (interactive)
-  (ahs-change-range ahs-default-range))
+  (unless (eq (symbol-value ahs-default-range)
+              ahs-current-range)
+    (ahs-change-range ahs-default-range)))
 
 (provide 'zc-evil-ahs)
