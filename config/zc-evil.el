@@ -2,7 +2,6 @@
   (require 'use-package))
 
 (require 'general)
-(require 'pretty-hydra)
 
 
 
@@ -80,8 +79,7 @@
     (evil-set-initial-state 'diff-mode        'motion)
     (evil-set-initial-state 'ibuffer-mode     'motion)
     (evil-set-initial-state 'prodigy-mode     'motion)
-    (evil-set-initial-state 'org-agenda-mode  'motion)
-    (evil-set-initial-state 'compilation-mode 'motion)))
+    (evil-set-initial-state 'org-agenda-mode  'motion)))
 
 
 ;; Provide motions and text objects for delimited arguments
@@ -100,7 +98,7 @@
 ;; Provide integration with highlight-symbol
 
 (use-package zc-evil-ahs
-  :after evil
+  :after (:and evil pretty-hydra)
   :init
   (pretty-hydra-define zc-evil-ahs
     (:hint nil :color red :quit-key "q" :title "Ahs Hydra" :post zc-evil-ahs/reset)

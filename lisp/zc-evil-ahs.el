@@ -1,6 +1,5 @@
 (require 'evil)
 (require 'iedit)
-(require 'auto-highlight-symbol)
 
 ;; TODO: Only need one direction -> always forward
 

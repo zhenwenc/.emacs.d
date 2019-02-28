@@ -7,7 +7,6 @@
 (require 'pretty-hydra)
 (require 'all-the-icons)
 (require 'zc-funcs)
-(require 'zc-evil-ahs)
 (require 'zc-projectile)
 (require 'zc-hydra-funcs)
 

@@ -2,6 +2,7 @@
   (require 'use-package))
 
 (require 'general)
+(require 'zc-evil-funcs)
 
 
 ;; Environment
@@ -178,14 +179,17 @@
   :hook (compilation-filter . zc-core/colorize-compilation-buffer)
 
   :config
-  (add-to-list 'display-buffer-alist
-               `(,(rx bos "*compilation*" eos)
-                 (display-buffer-reuse-window
-                  display-buffer-in-side-window)
-                 (reusable-frames . visible)
-                 (side            . bottom)
-                 (slot            . 1)
-                 (window-height   . 0.3))))
+  (progn
+    (zc-evil/set-initial-state 'compilation-mode 'motion)
+
+    (add-to-list 'display-buffer-alist
+                 `(,(rx bos "*compilation*" eos)
+                   (display-buffer-reuse-window
+                    display-buffer-in-side-window)
+                   (reusable-frames . visible)
+                   (side            . bottom)
+                   (slot            . 1)
+                   (window-height   . 0.3)))))
 
 
 ;; External Packages

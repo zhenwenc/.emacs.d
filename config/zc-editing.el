@@ -53,11 +53,14 @@
 
 (use-package auto-highlight-symbol
   :straight t
+  :after evil
   :preface
   ;; Prevent the default keymap from getting created
   (defvar auto-highlight-symbol-mode-map (make-sparse-keymap))
   :config
   (progn
+    (require 'zc-evil-ahs)
+
     (setq ahs-case-fold-search nil)
     (setq ahs-default-range 'ahs-range-whole-buffer)
     (setq ahs-idle-interval 0.25)

@@ -2,6 +2,7 @@
   (require 'use-package))
 
 (require 'f)
+(require 'zc-evil-funcs)
 (require 'zc-hydra-funcs)
 (require 'zc-typescript-funcs)
 
@@ -179,6 +180,9 @@
 
   :config
   (progn
+    (zc-evil/set-initial-state 'tide-references-mode     'motion)
+    (zc-evil/set-initial-state 'tide-project-errors-mode 'motion)
+
     ;; HACK: Flycheck generated temporary file hammers file watchers.
     ;;       Remove the hack after these issues are fixed:
     ;; https://github.com/flycheck/flycheck/issues/1446
