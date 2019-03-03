@@ -39,6 +39,20 @@ org subtree if in `org-mode'.
      ((derived-mode-p 'org-mode) (org-narrow-to-subtree))
      (t                          (narrow-to-defun)))))
 
+;; https://www.emacswiki.org/emacs/BufferLocalKeys
+(defun zc/buffer-local-set-key (key func)
+  (let ((name (format "%s-magic" (buffer-name))))
+    (eval
+     `(define-minor-mode ,(intern name)
+        "Automagically built minor mode to define buffer-local keys."))
+    (let* ((mapname (format "%s-map" name))
+           (map (intern mapname)))
+      (unless (boundp (intern mapname))
+        (set map (make-sparse-keymap)))
+      (eval
+       `(define-key ,map ,key func)))
+    (funcall (intern name) t)))
+
 (defmacro zc/with-wide-buffer (&rest body)
   "Execute body while temporarily widening the buffer."
   (declare (debug (body)))
