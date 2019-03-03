@@ -135,7 +135,6 @@
        ;; Highlight the occurrences of a single character is
        ;; nonsense.
        (let ((thing (highlight-thing-get-thing-at-point)))
-         ;; (message "what %s" (get-text-property nil 'face thing))
          (or (not (stringp thing)) (> (length thing) 1)))))
     (advice-add 'highlight-thing-should-highlight-p
                 :around #'zc-theme/maybe-disable-highlight-thing)))
