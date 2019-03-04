@@ -129,7 +129,7 @@
       (and
        ;; If symbol is highlighted by `ahs-highlight-now',
        ;; the flicker effect occurs on other candidates.
-       (not ahs-highlighted)
+       (not (bound-and-true-p ahs-highlighted))
        ;; Ensure the original condition satisfies.
        (apply fn args)
        ;; Highlight the occurrences of a single character is
