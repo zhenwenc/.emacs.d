@@ -158,42 +158,6 @@
         ispell-dictionary "english"
         ispell-program-name "hunspell"))
 
-(use-package compile
-  :defer t
-  :after evil
-
-  :general
-  (:states 'motion :keymaps 'compilation-mode-map
-           "h" #'evil-backward-char)
-
-  :preface
-  (defun zc-core/colorize-compilation-buffer ()
-    (unless (derived-mode-p 'rg-mode)
-      (with-silent-modifications
-        (ansi-color-apply-on-region compilation-filter-start (point)))))
-
-  :hook (compilation-filter . zc-core/colorize-compilation-buffer)
-
-  :init
-  (setq compilation-environment '("TERM=screen-256color")
-        compilation-always-kill t
-        compilation-ask-about-save nil
-        compilation-scroll-output 'first-error)
-
-
-  :config
-  (progn
-    (zc-evil/set-initial-state 'compilation-mode 'motion)
-
-    (add-to-list 'display-buffer-alist
-                 `(,(rx bos "*compilation*" eos)
-                   (display-buffer-reuse-window
-                    display-buffer-in-side-window)
-                   (reusable-frames . visible)
-                   (side            . bottom)
-                   (slot            . 1)
-                   (window-height   . 0.3)))))
-
 
 ;; External Packages
 

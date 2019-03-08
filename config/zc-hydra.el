@@ -166,14 +166,19 @@
     ("gt" git-timemachine "time machine"))))
 
 (zc-hydra/define zc-main-hydra--error
-  (:color teal :title "Error Hydra" :icon "bug" :prefix "e")
-  ("Basic"
+  (:color teal :title "Error & Eval Hydra" :icon "bug" :prefix "e")
+  ("Flycheck"
    (("el" zc-flycheck/toggle-error-list "flycheck error list")
     ("eL" zc-flycheck-hydra/body "flycheck error list")
     ("en" flycheck-next-error "next error")
     ("eN" flycheck-previous-error "previous error")
     ("ee" flycheck-explain-error-at-point "flycheck explain at point")
-    ("ev" flycheck-verify-setup "flycheck verify"))))
+    ("ev" flycheck-verify-setup "flycheck verify"))
+
+   "Eval"
+   (("eb" quickrun "quickrun buffer")
+    ("er" quickrun-region "quickrun region")
+    ("eR" quickrun-replace-region "quickrun replace region"))))
 
 (zc-hydra/define zc-main-hydra--org
   (:color teal :title "Org Hydra" :icon "empire" :prefix "o")

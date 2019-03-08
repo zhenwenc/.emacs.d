@@ -77,6 +77,7 @@
 (use-package zc-theme)
 (use-package zc-core)
 (use-package zc-evil)
+(use-package zc-eval)
 (use-package zc-osx :if (eq system-type 'darwin))
 (use-package zc-editing)
 (use-package zc-eshell)
