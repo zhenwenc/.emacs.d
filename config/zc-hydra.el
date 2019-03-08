@@ -140,7 +140,7 @@
     ("pi" ibuffer "ibuffer")
     ("pI" projectile-invalidate-cache "invalidate cache")
     ("po" counsel-projectile-switch-project "switch project")
-    ("pr" zc-projectile/refresh-projects "refresh projects"))
+    ("pg" zc-projectile/refresh-projects "refresh projects"))
 
    "Command"
    (("pc" projectile-compile-project "compile"))
