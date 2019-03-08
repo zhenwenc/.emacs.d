@@ -9,13 +9,16 @@
       mac-option-key-is-meta  nil
 
       ;; In dired, move deletions to trash
-      delete-by-moving-to-trash t)
+      delete-by-moving-to-trash t
 
-(add-to-list 'default-frame-alist '(ns-transparent-titlebar . t))
+      ns-use-native-fullscreen nil
+      ;; Don't open a file in a new frame
+      ns-pop-up-frames nil
+      ;; Never show a proxy icon in the title bar.
+      ns-use-proxy-icon nil)
+
+(add-to-list 'default-frame-alist '(ns-transparent-titlebar . nil))
 (add-to-list 'default-frame-alist '(ns-appearance . nil))
-
-;; Never show a proxy icon in the title bar.
-(setq ns-use-proxy-icon nil)
 
 (global-unset-key (kbd "M-t"))
 (global-unset-key (kbd "M-p"))

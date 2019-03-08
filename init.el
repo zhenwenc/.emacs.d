@@ -10,9 +10,14 @@
 ;; https://github.com/chrisbarrett/.emacs.d
 
 (when (version< emacs-version "26")
-  (error "Your version of Emacs is too old"))
+  (error "This requires Emacs 26 and above!"))
 
-(setq gc-cons-threshold (* 800 1024))
+;; Speed up startup
+(setq gc-cons-threshold (* 800 1024 100))
+(add-hook 'emacs-startup-hook
+          (lambda ()
+            "Restore defalut values after init."
+            (setq gc-cons-threshold (* 800 1024))))
 
 (defconst emacs-start-time (current-time))
 

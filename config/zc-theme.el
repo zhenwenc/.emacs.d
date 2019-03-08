@@ -172,12 +172,13 @@
  fringe-indicator-alist (delq (assq 'continuation fringe-indicator-alist)
                               fringe-indicator-alist)
 
- mode-line-default-help-echo nil ; disable mode-line mouseovers
- show-help-function nil          ; hide :help-echo text
- use-dialog-box nil              ; always avoid GUI
+ mode-line-default-help-echo nil   ; disable mode-line mouseovers
+ show-help-function nil            ; hide :help-echo text
+ use-dialog-box nil                ; always avoid GUI
  visible-cursor nil
  visible-bell nil
- ring-bell-function 'ignore      ; no ring bell at all.
+ ring-bell-function 'ignore        ; no ring bell at all.
+ inhibit-compacting-font-caches t  ; don’t compact font caches during GC
 
  ;; More reliable inter-window border
  ;; The native border "consumes" a pixel of the fringe on righter-most splits,
