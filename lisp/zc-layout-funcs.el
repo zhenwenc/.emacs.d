@@ -146,10 +146,13 @@ switch to fallback buffer."
       ;; When the current project mismatches with the layout's
       ;; project, `projectile-previous-project-buffer' will make
       ;; a wrong choice.
-      (if (and project (string= project current))
-          (projectile-previous-project-buffer)
-        (zc-projectile/with-switch-project-action 'previous
-          (projectile-switch-project-by-name project))))))
+      (cond ((and project (string= project current))
+             (projectile-previous-project-buffer))
+            (project
+             (zc-projectile/with-switch-project-action 'previous
+               (projectile-switch-project-by-name project)))
+            (t
+             (projectile-previous-project-buffer))))))
 
 
 
