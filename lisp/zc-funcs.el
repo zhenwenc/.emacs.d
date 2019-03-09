@@ -254,6 +254,14 @@ Behave the same as 'Command + delete' at macOS"
 
 ;; Misc.
 
+(defun zc/maximize-gc-limit ()
+  "Disable garbage collection when entering commands."
+  (setq gc-cons-threshold most-positive-fixnum))
+
+(defun zc/reset-gc-limit ()
+  "Restore to defalut values."
+  (setq gc-cons-threshold 800000))
+
 (defun zc/kill-emacs-or-frame (&optional persist-server-p)
   "Kill emacs process or the current frame."
   (interactive)

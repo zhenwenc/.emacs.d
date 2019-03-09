@@ -58,7 +58,6 @@ If SLOT is nil, default to current slot."
   (--> projectile-known-projects
        (--filter (string= (f-base dir) (f-base it)) it)
        (f-common-parent it)
-       (progn (message "hoo! %s" it) it)
        (s-chop-prefix (f-slash it) (f-canonical dir))
        (s-chop-suffix "/" it)))
 

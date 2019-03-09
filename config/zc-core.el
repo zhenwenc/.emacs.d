@@ -102,6 +102,15 @@
       doc-view-continuous t)
 
 
+;; Performance
+
+(add-hook 'minibuffer-setup-hook #'zc/maximize-gc-limit)
+(add-hook 'minibuffer-exit-hook #'zc/reset-gc-limit)
+
+;; Improve the performance of rendering long lines.
+(setq-default bidi-display-reordering nil)
+
+
 ;; General key bindings
 
 ;; Reserved for Spacemacs style prefix key

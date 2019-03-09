@@ -12,17 +12,16 @@
 (when (version< emacs-version "26")
   (error "This requires Emacs 26 and above!"))
 
-;; Speed up startup
-(setq gc-cons-threshold (* 800 1024 100))
-(add-hook 'emacs-startup-hook
-          (lambda ()
-            "Restore defalut values after init."
-            (setq gc-cons-threshold (* 800 1024))))
-
 (defconst emacs-start-time (current-time))
 
 (unless noninteractive
   (message "Loading %s..." load-file-name))
+
+
+
+;; Speed up startup
+(setq gc-cons-threshold (* 800 1024 100))
+(add-hook 'emacs-startup-hook #'zc/reset-gc-limit)
 
 
 ;; Bootstrap straight.el package manager.
