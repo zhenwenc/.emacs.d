@@ -2,7 +2,6 @@
   (require 'use-package))
 
 (require 'f)
-(require 'zc-evil-funcs)
 (require 'zc-hydra-funcs)
 (require 'zc-typescript-funcs)
 
@@ -170,18 +169,14 @@
   (advice-add 'tide-completion-doc-buffer :override #'ignore)
 
   :config
-  (progn
-    (zc-evil/set-initial-state 'tide-references-mode     'motion)
-    (zc-evil/set-initial-state 'tide-project-errors-mode 'normal)
-
-    ;; HACK: Flycheck generated temporary file hammers file watchers.
-    ;;       Remove the hack after these issues are fixed:
-    ;; https://github.com/flycheck/flycheck/issues/1446
-    ;; https://github.com/flycheck/flycheck/issues/1472
-    (ignore-errors
-      (setcar (memq 'source-inplace
-                    (flycheck-checker-get 'typescript-tslint 'command))
-              'source-original))))
+  ;; HACK: Flycheck generated temporary file hammers file watchers.
+  ;;       Remove the hack after these issues are fixed:
+  ;; https://github.com/flycheck/flycheck/issues/1446
+  ;; https://github.com/flycheck/flycheck/issues/1472
+  (ignore-errors
+    (setcar (memq 'source-inplace
+                  (flycheck-checker-get 'typescript-tslint 'command))
+            'source-original)))
 
 
 

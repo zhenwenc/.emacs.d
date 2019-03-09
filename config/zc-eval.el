@@ -23,11 +23,7 @@
   (setq compilation-environment '("TERM=screen-256color")
         compilation-always-kill t
         compilation-ask-about-save nil
-        compilation-scroll-output 'first-error)
-
-  :config
-  (progn
-    (zc-evil/set-initial-state 'compilation-mode 'motion)))
+        compilation-scroll-output 'first-error))
 
 (use-package quickrun
   :straight t

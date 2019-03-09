@@ -2,7 +2,6 @@
   (require 'use-package))
 
 (require 'general)
-(require 'zc-evil-funcs)
 
 
 ;; Environment
