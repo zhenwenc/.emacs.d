@@ -11,7 +11,11 @@
       ;; In dired, move deletions to trash
       delete-by-moving-to-trash t
 
+      ;; Emacs child frame won't work on native fullscreen mode.
+      ;; see lazycat-emacs
       ns-use-native-fullscreen nil
+      ns-use-fullscreen-animation nil
+
       ;; Don't open a file in a new frame
       ns-pop-up-frames nil
       ;; Never show a proxy icon in the title bar.

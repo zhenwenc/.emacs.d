@@ -195,4 +195,11 @@
 (when (display-graphic-p)
   (setq initial-frame-alist '((width . 160) (height . 60))))
 
+;; TODO: Default maximize frame and enter fullscreen mode
+;; (setq frame-resize-pixelwise t)
+;; (set-frame-parameter (selected-frame) 'fullscreen 'maximized)
+;; (run-at-time "2sec" nil (lambda () (toggle-frame-fullscreen)))
+
+
+
 (provide 'zc-theme)
