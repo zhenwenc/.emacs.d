@@ -113,11 +113,11 @@
 (global-set-key (kbd "C-c e e") 'toggle-debug-on-error)
 (global-set-key (kbd "C-h c")   'describe-char)
 
-(global-set-key (kbd "M-1")      'winum-select-window-1)
-(global-set-key (kbd "M-2")      'winum-select-window-2)
-(global-set-key (kbd "M-3")      'winum-select-window-3)
-(global-set-key (kbd "M-4")      'winum-select-window-4)
-(global-set-key (kbd "M-5")      'winum-select-window-5)
+(global-set-key (kbd "M-1")     'winum-select-window-1)
+(global-set-key (kbd "M-2")     'winum-select-window-2)
+(global-set-key (kbd "M-3")     'winum-select-window-3)
+(global-set-key (kbd "M-4")     'winum-select-window-4)
+(global-set-key (kbd "M-5")     'winum-select-window-5)
 
 ;; Make <escape> issue a keyboard-quit in as many situations as possible.
 (define-key minibuffer-local-map            (kbd "<escape>") #'keyboard-escape-quit)

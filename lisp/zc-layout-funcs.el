@@ -17,12 +17,21 @@ Each element looks like (SLOT . PROJECT).")
 
 
 (defun zc-layout/slot-occupied-p (slot)
-  "Return t if SLOT is not yet occupied."
+  "Return t if SLOT is occupied."
   (let* ((windows (eyebrowse--get 'window-configs))
          (window  (assoc slot windows))
          (tag     (nth 2 window)))
     (or (not window) ; window was deleted
         (and tag (> (length tag) 0)))))
+
+(defun zc-layout/find-free-slot ()
+  "Returns a yet unoccupied eyebrowse slot. Takeover the default
+slot if unoccupied, otherwise fine a free one."
+  (if (zc-layout/slot-occupied-p eyebrowse-default-workspace-slot)
+      eyebrowse-default-workspace-slot
+    (let* ((window-configs (eyebrowse--get 'window-configs))
+           (slots          (mapcar 'car window-configs)))
+      (eyebrowse-free-slot slots))))
 
 (defun zc-layout/current-window-config-tag ()
   "Return the current window config tag."
@@ -37,39 +46,27 @@ Each element looks like (SLOT . PROJECT).")
         (tag-equals? (-compose (-partial 's-equals? tag) '-last-item)))
     (-find tag-equals? windows)))
 
-(defun zc-layout/switch-to-window-config (slot &optional project)
-  "Switch to the window config SLOT."
-  (eyebrowse-switch-to-window-config slot))
-
-(defun zc-layout/get-project-for-slot (&optional slot)
+(defun zc-layout/project-for-slot (&optional slot)
   "Return the associated project for SLOT.
 
 If SLOT is nil, default to current slot."
   (alist-get (or slot (eyebrowse--get 'current-slot))
              zc-layout/window-config-project-alist nil nil 'equal))
 
-(defun zc-layout/has-same-project-name (project)
-  "Return true if there exists another project with the same
-name as PROJECT in the `projectile-known-projects'."
-  (->> projectile-known-projects
-       (-remove (-partial 'f-same? project))
-       (-map #'f-base)
-       (-any? (-partial 's-equals? (f-base project)))))
-
-(defun zc-layout/get-layout-tag-for-project (project)
+(defun zc-layout/layout-tag-for-project (dir)
   "Return the eyebrowse window config tag for PROJECT."
-  (let* ((dirname (f-base project))
-         (parent  (f-base (f-parent project))))
-    (if (zc-layout/has-same-project-name project)
-        (format "%s/%s" parent dirname)
-      dirname)))
+  (--> projectile-known-projects
+       (--filter (string= (f-base dir) (f-base it)) it)
+       (f-common-parent it)
+       (progn (message "hoo! %s" it) it)
+       (s-chop-prefix (f-slash it) (f-canonical dir))
+       (s-chop-suffix "/" it)))
 
 
 
 ;;;###autoload
 (defun zc-layout/select-project-no-action ()
   "Prompt project selection with counsel."
-  (interactive)
   (require 'counsel-projectile)
   (ivy-read (projectile-prepend-project-name "Select a project: ")
             projectile-known-projects
@@ -80,43 +77,34 @@ name as PROJECT in the `projectile-known-projects'."
             :caller 'zc-layout/select-project-no-action))
 
 ;;;###autoload
-(defun zc-layout/create-project-layout (&optional project)
-  "Create a project layout.
-
-- if there is a layout associate with the selected project,
-  switch to the layout;
-- otherwise, create occupy the next free layout slot, and use
-  the project's name as the tag of the window config."
+(defun zc-layout/create-project-layout (&optional dir)
+  "Return the layout slot for the project in DIR, or create a new
+layout if no layout found and return the created slot."
   (interactive)
-  (-when-let* ((project (or project (zc-layout/select-project-no-action)))
-               (tag     (zc-layout/get-layout-tag-for-project project)))
-    (-if-let (window (zc-layout/find-window-config-for-tag tag))
-        (zc-layout/switch-to-window-config (car window) project)
-      ;; Create eyebrowse window config, prefer to the
-      ;; default slot if not occupied, otherwise call
-      ;; `eyebrowse-create-window-config'.
-      (let ((slot eyebrowse-default-workspace-slot))
-        (if (zc-layout/slot-occupied-p slot)
-            (eyebrowse-create-window-config)
-          (eyebrowse-switch-to-window-config slot)))
-      (let ((slot (eyebrowse--get 'current-slot)))
+  (let* ((dir     (or dir (zc-layout/select-project-no-action)))
+         (project (projectile-project-root dir))
+         (tag     (zc-layout/layout-tag-for-project project)))
+    (-if-let (found (zc-layout/find-window-config-for-tag tag))
+        (eyebrowse-switch-to-window-config (car found))
+      ;; Create eyebrowse window config
+      (let ((slot (zc-layout/find-free-slot)))
+        (eyebrowse-switch-to-window-config slot)
         ;; Rename the window config tag
         (eyebrowse-rename-window-config slot tag)
         ;; Actually switch to the project
         (counsel-projectile-switch-project-by-name project)
         ;; Memorize the window config associated project
-        (map-put zc-layout/window-config-project-alist
-                 slot (projectile-project-name)))
-      ;; Kill other windows since they belong to the last layout
-      (delete-other-windows))))
+        (map-put zc-layout/window-config-project-alist slot project)
+        ;; Kill other windows, they belong to the last layout
+        (delete-other-windows)))))
 
 ;;;###autoload
-(defun zc-layout/switch-project-layout (&rest _)
-  "Switch to a project. If default slot is not occupied,
-prompt to create a project layout."
-  (interactive)
-  (if (zc-layout/slot-occupied-p eyebrowse-default-workspace-slot)
-      (zc-layout/switch-to-window-config (eyebrowse--read-slot))
+(defun zc-layout/switch-project-layout (&optional create)
+  "Switch to a layout for the project in DIR, create a new layout
+if not found or NEW."
+  (interactive "P")
+  (if (and zc-layout/window-config-project-alist (not create))
+      (eyebrowse-switch-to-window-config (eyebrowse--read-slot))
     (zc-layout/create-project-layout)))
 
 ;;;###autoload
@@ -141,8 +129,8 @@ If the universal prefix argument is used then kill also the window."
 switch to fallback buffer."
   (interactive)
   (with-selected-window (or win (selected-window))
-    (let* ((current (projectile-project-name))
-           (project (zc-layout/get-project-for-slot)))
+    (let* ((current (projectile-project-root))
+           (project (zc-layout/project-for-slot)))
       ;; When the current project mismatches with the layout's
       ;; project, `projectile-previous-project-buffer' will make
       ;; a wrong choice.
