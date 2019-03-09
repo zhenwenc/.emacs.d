@@ -16,18 +16,18 @@ Each element looks like (SLOT . PROJECT).")
 
 
 
-(defun zc-layout/slot-occupied-p (slot)
-  "Return t if SLOT is occupied."
+(defun zc-layout/slot-unoccupied-p (slot)
+  "Return t if SLOT is yet unoccupied."
   (let* ((windows (eyebrowse--get 'window-configs))
          (window  (assoc slot windows))
          (tag     (nth 2 window)))
     (or (not window) ; window was deleted
-        (and tag (> (length tag) 0)))))
+        (= (length tag) 0))))
 
 (defun zc-layout/find-free-slot ()
   "Returns a yet unoccupied eyebrowse slot. Takeover the default
 slot if unoccupied, otherwise fine a free one."
-  (if (zc-layout/slot-occupied-p eyebrowse-default-workspace-slot)
+  (if (zc-layout/slot-unoccupied-p eyebrowse-default-workspace-slot)
       eyebrowse-default-workspace-slot
     (let* ((window-configs (eyebrowse--get 'window-configs))
            (slots          (mapcar 'car window-configs)))
