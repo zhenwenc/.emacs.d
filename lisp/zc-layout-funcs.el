@@ -92,7 +92,7 @@ layout if no layout found and return the created slot."
         ;; Rename the window config tag
         (eyebrowse-rename-window-config slot tag)
         ;; Actually switch to the project
-        (counsel-projectile-switch-project-by-name project)
+        (projectile-switch-project-by-name project)
         ;; Memorize the window config associated project
         (map-put zc-layout/window-config-project-alist slot project)
         ;; Kill other windows, they belong to the last layout

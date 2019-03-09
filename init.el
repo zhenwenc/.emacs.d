@@ -127,6 +127,6 @@
                           ,load-file-name elapsed)))
             t))
 
-(provide 'init)
-
 
+
+(provide 'init)

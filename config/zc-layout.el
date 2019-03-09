@@ -7,10 +7,22 @@
 
 (use-package eyebrowse
   :straight t
+
+  :preface
+  (defun zc-layout/create-initial-layouts ()
+    (zc-projectile/with-switch-project-action "*scratch*"
+      (zc-layout/create-project-layout "~/.emacs.d")
+      (setq-local default-directory "~/.emacs.d")))
+
   :config
   (setq eyebrowse-tagged-slot-format "%s [%t]")
+
   ;; Unset all default key bindings
   (define-key eyebrowse-mode-map eyebrowse-keymap-prefix nil)
+
+  ;; Create the initial layer on startup
+  (add-hook 'emacs-startup-hook #'zc-layout/create-initial-layouts)
+
   (eyebrowse-mode t))
 
 (use-package winum
