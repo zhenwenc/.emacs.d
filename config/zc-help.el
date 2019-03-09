@@ -58,16 +58,7 @@
 
     ;; After navigate to any reference then come back to the
     ;; helpful buffer, `quit-window' won't work.
-    (advice-add 'quit-window :around #'zc-help/maybe-kill-buffer)
-
-    (add-to-list 'display-buffer-alist
-                 `(,(rx bos "*helpful ")
-                   (display-buffer-reuse-window
-                    display-buffer-in-side-window)
-                   (reusable-frames . visible)
-                   (side            . right)
-                   (slot            . 1)
-                   (window-width    . 0.5)))))
+    (advice-add 'quit-window :around #'zc-help/maybe-kill-buffer)))
 
 (use-package google-translate
   :straight t
@@ -75,16 +66,7 @@
   (setq
    google-translate-default-source-language "en"
    google-translate-default-target-language "zh-CN"
-   google-translate-pop-up-buffer-set-focus t)
-
-  (add-to-list 'display-buffer-alist
-               `(,(rx bos "*Google Translate*" eos)
-                 (display-buffer-reuse-window
-                  display-buffer-in-side-window)
-                 (reusable-frames . visible)
-                 (side            . right)
-                 (slot            . 1)
-                 (window-width    . 0.2))))
+   google-translate-pop-up-buffer-set-focus t))
 
 
 

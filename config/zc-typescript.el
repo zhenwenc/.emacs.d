@@ -166,18 +166,8 @@
          (typescript-mode . zc-typescript/disable-flycheck-for-node-modules))
 
   :init
-  (progn
-    (add-to-list 'display-buffer-alist
-                 `(,(rx bos "*tide-documentation*" eos)
-                   (display-buffer-reuse-window
-                    display-buffer-in-side-window)
-                   (reusable-frames . visible)
-                   (side            . bottom)
-                   (slot            . 1)
-                   (window-width    . 0.5)))
-
-    ;; HACK: This is hacky, is there any better way?
-    (advice-add 'tide-completion-doc-buffer :override #'ignore))
+  ;; HACK: This is hacky, is there any better way?
+  (advice-add 'tide-completion-doc-buffer :override #'ignore)
 
   :config
   (progn

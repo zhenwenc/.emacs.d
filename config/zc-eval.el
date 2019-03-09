@@ -27,16 +27,7 @@
 
   :config
   (progn
-    (zc-evil/set-initial-state 'compilation-mode 'motion)
-
-    (add-to-list 'display-buffer-alist
-                 `(,(rx bos "*compilation*" eos)
-                   (display-buffer-reuse-window
-                    display-buffer-in-side-window)
-                   (reusable-frames . visible)
-                   (side            . bottom)
-                   (slot            . 1)
-                   (window-height   . 0.3)))))
+    (zc-evil/set-initial-state 'compilation-mode 'motion)))
 
 (use-package quickrun
   :straight t

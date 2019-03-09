@@ -22,16 +22,7 @@
     ;; trip up the prompt specified in `sql.el'.
     (sql-set-product-feature 'postgres :prompt-regexp "^[-[:alnum:]_]*=[#>] ")
     (sql-set-product-feature 'postgres :prompt-cont-regexp
-                             "^[-[:alnum:]_]*[-(][#>] ")
-
-    (add-to-list 'display-buffer-alist
-                 `(,(rx bos "*SQL*" eos)
-                   (display-buffer-reuse-window
-                    display-buffer-in-side-window)
-                   (reusable-frames . visible)
-                   (side            . bottom)
-                   (slot            . 1)
-                   (window-height   . 0.5)))))
+                             "^[-[:alnum:]_]*[-(][#>] ")))
 
 
 

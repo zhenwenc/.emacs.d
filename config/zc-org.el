@@ -136,25 +136,7 @@
         (sp-local-pair "/" nil :unless '(:add sp-point-before-word-p
                                               zc-org/sp-point-in-checkbox-p))
         (sp-local-pair "~" nil :unless '(:add sp-point-before-word-p))
-        (sp-local-pair "=" nil :unless '(:add sp-point-before-word-p))))
-
-    (add-to-list 'display-buffer-alist
-                 `(,(rx bos "*Org Agenda*" eos)
-                   (display-buffer-reuse-window
-                    display-buffer-in-side-window)
-                   (reusable-frames . visible)
-                   (side            . right)
-                   (slot            . 1)
-                   (window-width    . 0.5)))
-
-    (add-to-list 'display-buffer-alist
-                 `(,(rx bos "*Org Src")
-                   (display-buffer-reuse-window
-                    display-buffer-in-side-window)
-                   (reusable-frames . visible)
-                   (side            . bottom)
-                   (slot            . 1)
-                   (window-height   . 0.3)))))
+        (sp-local-pair "=" nil :unless '(:add sp-point-before-word-p))))))
 
 
 ;; https://orgmode.org/manual/Easy-templates.html

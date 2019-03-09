@@ -50,15 +50,6 @@
                                        flycheck-error-message-buffer
                                        'display-buffer-popup-window)))))
 
-    (add-to-list 'display-buffer-alist
-                 `(,(rx bos "*Flycheck errors*" eos)
-                   (display-buffer-reuse-window
-                    display-buffer-in-side-window)
-                   (reusable-frames . visible)
-                   (side            . bottom)
-                   (slot            . 1)
-                   (window-height   . 0.2)))
-
     (advice-add #'flycheck-may-enable-mode :filter-return
                 #'zc-flycheck/maybe-inhibit-flycheck)
 

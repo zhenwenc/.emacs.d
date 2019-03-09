@@ -23,13 +23,7 @@
     (setq prodigy-completion-system 'default)
 
     ;; Load service configs
-    (zc/load-private-package 'config-prodigy "config-prodigy.el.gpg")
-
-    (add-to-list 'display-buffer-alist
-                 `(,(rx bos "*prodigy*" eos)
-                   (display-buffer-reuse-window
-                    display-buffer-in-side-window)
-                   (reusable-frames . visible)))))
+    (zc/load-private-package 'config-prodigy "config-prodigy.el.gpg")))
 
 
 

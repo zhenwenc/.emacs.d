@@ -136,22 +136,6 @@
   :config
   (global-auto-revert-mode))
 
-(use-package winner
-  :config
-  (progn
-    (setq winner-boring-buffers
-          '("*Completions*"
-            "*Compile-Log*"
-            "*inferior-lisp*"
-            "*Fuzzy Completions*"
-            "*Apropos*"
-            "*Help*"
-            "*cvs*"
-            "*Buffer List*"
-            "*Ibuffer*"
-            "*esh command on file*"))
-    (winner-mode t)))
-
 (use-package ispell
   :init
   (setq ispell-really-hunspell t
@@ -168,14 +152,6 @@
   :straight t
   :defer nil
   :config (setq avy-background t))
-
-(use-package ace-window
-  :straight t
-  :general ("M-o" 'ace-window)
-  :config
-  (progn
-    (setq aw-keys '(?1 ?2 ?3 ?4 ?5 ?6 ?8))
-    (setq aw-background t)))
 
 (use-package imenu-list
   :straight t

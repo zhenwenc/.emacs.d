@@ -102,16 +102,7 @@ replace or insert mode."
         (add-to-list 'eshell-visual-commands cmd))
 
       (dolist (cmd '(("yarn" "release")))
-        (add-to-list 'eshell-visual-subcommands cmd)))
-
-    (add-to-list 'display-buffer-alist
-                 `(,(rx bos "*eshell" (*? anything) "*" eos)
-                   (display-buffer-reuse-window
-                    display-buffer-in-side-window)
-                   (reusable-frames . visible)
-                   (side            . bottom)
-                   (slot            . 1)
-                   (window-height   . 0.35)))))
+        (add-to-list 'eshell-visual-subcommands cmd)))))
 
 (use-package eshell-z
   :straight t
