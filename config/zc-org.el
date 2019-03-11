@@ -25,27 +25,16 @@
   (:states 'normal :keymaps 'org-mode-map
            "RET" #'zc-org/evil-normal-ret)
 
-  (:states 'motion :keymaps 'org-agenda-mode-map
-           "RET" #'org-agenda-switch-to
-           "sc"  #'zc-org/agenda-filter-by-category
-           "sC"  #'org-agenda-filter-by-category)
-
-  :hook
-  ((org-agenda-after-show . org-narrow-to-subtree))
-
   :init
-  (progn
-    ;; Org file directories must be defined at `:init' block
-    ;; so that they are visible to the navigation functions,
-    ;; such as `zc-org/goto-agenda-file-heading'.
-    (setq org-directory          zc-org/directory
-          org-attach-directory   (f-join org-directory "data")
-          org-agenda-diary-file  (f-join org-directory "diary.org")
-          org-default-notes-file (f-join org-directory "notes.org")
-          org-default-todos-file (f-join org-directory "todos.org")
-          org-work-notes-file    (f-join org-directory "work/notes.org")
-          org-work-todos-file    (f-join org-directory "work/todos.org")
-          org-agenda-files       (zc-org/file-with-exts '("org"))))
+  ;; Org file directories must be defined at `:init' block
+  ;; so that they are visible to the navigation functions,
+  ;; such as `zc-org/goto-agenda-file-heading'.
+  (setq org-directory          zc-org/directory
+        org-attach-directory   (f-join org-directory "data")
+        org-default-notes-file (f-join org-directory "notes.org")
+        org-default-todos-file (f-join org-directory "todos.org")
+        org-work-notes-file    (f-join org-directory "work/notes.org")
+        org-work-todos-file    (f-join org-directory "work/todos.org"))
 
   :config
   (progn
@@ -56,12 +45,10 @@
           org-enforce-todo-dependencies t
           org-indirect-buffer-display 'current-window
           org-insert-heading-respect-content t
-          org-agenda-restore-windows-after-quit t
-          org-agenda-window-setup 'reorganize-frame
           org-src-window-setup 'current-window
           org-imenu-depth 3
-          org-refile-targets '((nil :maxlevel . 3)
-                               (org-agenda-files :maxlevel . 3)))
+          org-refile-targets '((nil              :maxlevel . 2)
+                               (org-agenda-files :maxlevel . 2)))
 
     (setq org-eldoc-breadcrumb-separator " → "
           org-image-actual-width nil
@@ -137,6 +124,36 @@
                                               zc-org/sp-point-in-checkbox-p))
         (sp-local-pair "~" nil :unless '(:add sp-point-before-word-p))
         (sp-local-pair "=" nil :unless '(:add sp-point-before-word-p))))))
+
+
+
+(use-package org-agenda
+  :straight org-plus-contrib
+  :after org
+  :commands (org-agenda)
+
+  :general
+  (:states 'motion :keymaps 'org-agenda-mode-map
+           "RET" #'org-agenda-switch-to
+           "sc"  #'zc-org/agenda-filter-by-category
+           "sC"  #'org-agenda-filter-by-category)
+
+  :hook
+  ((org-agenda-after-show . org-narrow-to-subtree))
+
+  :init
+  ;; Org file directories must be defined at `:init' block
+  ;; so that they are visible to the navigation functions,
+  ;; such as `zc-org/goto-agenda-file-heading'.
+  (setq org-agenda-diary-file  (f-join zc-org/directory "diary.org")
+        org-agenda-files       (zc-org/file-with-exts '("org")))
+
+  :config
+  (progn
+    (setq org-agenda-restore-windows-after-quit t
+          org-agenda-window-setup 'reorganize-frame)
+
+    (advice-add 'org-agenda-quit :before 'org-save-all-org-buffers)))
 
 
 ;; https://orgmode.org/manual/Easy-templates.html
