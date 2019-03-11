@@ -73,13 +73,12 @@
     (with-eval-after-load 'smartparens
       (sp-with-modes '(typescript-mode)
         (sp-local-pair "/*" "*/"
-                       :post-handlers
-                       '(("| " "SPC") (zc-typescript/sp-comment-expand "RET")))
+                       :post-handlers '(("| " "SPC")
+                                        (zc-typescript/sp-comment-expand "RET")))
 
         ;; Enter < inserts </> to start a new JSX node
         (sp-local-pair "<" ">"
-                       :post-handlers
-                       '(zc-typescript/sp-jsx-expand-tag))))
+                       :post-handlers '(zc-typescript/sp-jsx-expand-tag))))
 
     ;; Enter > right before the slash in a self-closing tag automatically
     ;; inserts a closing tag and places point inside the element

@@ -11,6 +11,10 @@
 
 ;; Smartparens
 
+(defun zc-typescript/sp-react-buffer-p (&rest _ignored)
+  "Return t if the current buffer is a TSX/JSX buffer."
+  (string-match-p "jsx\\|tsx" (file-name-extension (buffer-name))))
+
 (defun zc-typescript/sp-comment-expand (&rest _ignored)
   "Expand Javascript comment block."
   (save-excursion
@@ -27,7 +31,8 @@
   "Expand JSX tag <> to self-closing form </> if point is not after a word."
   (when (and (eq action 'insert)
              (not (sp--looking-back-p
-                   (concat "\\(\\sw\\|\\s_\\)" (regexp-quote id)))))
+                   (concat "\\(\\sw\\|\\s_\\)" (regexp-quote id))))
+             (zc-typescript/sp-react-buffer-p))
     (save-excursion (insert "/"))))
 
 (defun zc-typescript/sp-jsx-rewrap-tag (&rest _ignored)
