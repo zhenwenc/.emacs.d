@@ -186,7 +186,7 @@
    (("oa" org-agenda "agenda")
     ("oc" org-capture "capture")
     ("ot" org-todo-list "agenda todo")
-    ("od" org-agenda-quit "agenda quit"))
+    ("oq" org-agenda-quit "agenda quit"))
 
    "Navigation"
    (("oo" (zc-org/goto-file-heading 'all) "all")
