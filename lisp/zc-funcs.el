@@ -254,7 +254,7 @@ Behave the same as 'Command + delete' at macOS"
 
 ;; Misc.
 
-(defun zc/maximize-gc-limit ()
+(defun zc/max-gc-limit ()
   "Disable garbage collection when entering commands."
   (setq gc-cons-threshold most-positive-fixnum))
 
