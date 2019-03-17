@@ -153,6 +153,9 @@
         ispell-dictionary "english"
         ispell-program-name "hunspell"))
 
+(use-package conf-mode
+  :mode ("\\.ovpn\\'" . conf-space-mode))
+
 
 ;; External Packages
 
