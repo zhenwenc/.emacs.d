@@ -3,22 +3,33 @@
 
 (use-package treemacs
   :straight t
+  :after projectile
+
+  :preface
+  (defun zc-treemacs/is-file-ignored? (file git-info)
+    "Return t if FILE should not be rendered."
+    (let ((-compare-fn #'f-same?))
+      ;; Use treemacs function first as its faster
+      (or (treemacs-is-file-git-ignored? file git-info)
+          (-contains? (projectile-ignored-directories) file))))
+
   :config
   (progn
     (setq
      ;; Path to the file treemacs uses to persist its state
-     treemacs-persist-file
-     (f-join paths-cache-directory "treemacs-persist")
-
+     treemacs-persist-file (f-join paths-cache-directory "treemacs-persist")
      ;; Follow the currently selected file
      treemacs-follow-after-init t
-
      ;; Prevents treemacs from being selected with `other-window`
      treemacs-is-never-other-window t)
 
     (treemacs-follow-mode t)
     (treemacs-filewatch-mode t)
     (treemacs-git-mode 'simple)
+
+    ;; Hide noisy files and directories
+    (add-to-list 'treemacs-pre-file-insert-predicates
+                 #'zc-treemacs/is-file-ignored?)
 
     ;; Disable the indicator next to open files--hl-line is sufficient
     (treemacs-fringe-indicator-mode nil)
