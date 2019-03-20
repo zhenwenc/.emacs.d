@@ -55,6 +55,7 @@
 
 (use-package counsel
   :straight t
+  :after projectile
   :general
   (:states '(motion normal insert visual)
            "M-x" #'counsel-M-x
@@ -67,7 +68,8 @@
                       'face '(:foreground "gray50")))
 
     ;; Ignore noisy files and directories
-    (setq counsel-find-file-ignore-regexp (regexp-opt '("node_modules")))
+    (setq counsel-find-file-ignore-regexp
+          (regexp-opt projectile-globally-ignored-directories))
 
     ;; The default counsel rg command ending with a dot, this will
     ;; produce duplicated result for `counsel-projectile-rg'.
