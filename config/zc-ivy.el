@@ -69,7 +69,8 @@
 
     ;; Ignore noisy files and directories
     (setq counsel-find-file-ignore-regexp
-          (regexp-opt projectile-globally-ignored-directories))
+          (regexp-opt (mapcar (lambda (dir) (s-append "/" dir))
+                              projectile-globally-ignored-directories)))
 
     ;; The default counsel rg command ending with a dot, this will
     ;; produce duplicated result for `counsel-projectile-rg'.
