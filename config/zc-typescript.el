@@ -87,6 +87,14 @@
 
 
 
+(use-package js-mode
+  :defer t
+  :defines (js-indent-level)
+  :config
+  (setq js-indent-level 2))
+
+
+
 (use-package prettier-js
   :straight t
   :after (:any zc-web-modes typescript-mode graphql-mode)
