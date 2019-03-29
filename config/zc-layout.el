@@ -135,12 +135,10 @@
                  (window-height   . 0.3))
 
                 (,(rx bos "*compilation*" eos)
-                 (display-buffer-reuse-window
-                  display-buffer-in-side-window)
+                 (display-buffer-reuse-window)
                  (reusable-frames . visible)
-                 (side            . bottom)
                  (slot            . 1)
-                 (window-height   . 0.3))))
+                 (window-height   . 0.5))))
   (add-to-list 'display-buffer-alist item))
 
 
