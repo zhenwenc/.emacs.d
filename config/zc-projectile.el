@@ -39,6 +39,15 @@
             "node_modules"
             "straight/repos"))
 
+    ;; Replace default npm project type with yarn
+    (setq projectile-project-types
+          (-remove (-lambda ((type)) (eq type 'npm))
+                   projectile-project-types))
+    (projectile-register-project-type 'npm '("package.json")
+                                      :compile "yarn build"
+                                      :test "yarn test"
+                                      :test-suffix ".spec")
+
     (advice-add 'projectile-load-known-projects
                 :override #'zc-projectile/refresh-projects)
 
