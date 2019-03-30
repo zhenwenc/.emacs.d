@@ -6,6 +6,11 @@
   :defer t
   :mode "graphql\\'")
 
+(use-package docker
+  :straight t
+  :defer t
+  :commands (docker))
+
 (use-package dockerfile-mode
   :straight t
   :defer t
