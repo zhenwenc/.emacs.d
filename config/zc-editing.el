@@ -1,6 +1,8 @@
 (eval-when-compile
   (require 'use-package))
 
+(require 'zc-paths)
+
 
 
 ;; Enable delete selection mode
@@ -116,6 +118,14 @@
 (use-package wgrep
   :straight t
   :config (setq wgrep-auto-save-buffer t))
+
+(use-package savehist
+  :config
+  (setq savehist-file (concat paths-cache-directory "/savehist")
+        savehist-save-minibuffer-history t
+        savehist-autosave-interval nil ; save on kill only
+        savehist-additional-variables '(compile-history))
+  (savehist-mode +1))
 
 
 

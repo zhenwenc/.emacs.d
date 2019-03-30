@@ -40,9 +40,10 @@ Interactively also sends a terminating newline."
 (defun zc-eval/projectile-read-command (prompt command)
   "Overwrite the original `projectile-read-command', prompt
 with Ivy."
-  (ivy-read prompt (delete-dups compile-history)
-            :history 'compile-history
+  (ivy-read prompt (delete-dups (mapcar #'s-trim compile-history))
+            :history 'zc-eval/projectile-read-command-history
             :initial-input command
+            :action #'(lambda (x) (add-to-list 'compile-history x))
             :caller #'zc-eval/projectile-read-command))
 
 (defun zc-eval/recompile ()
