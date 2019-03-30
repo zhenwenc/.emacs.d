@@ -1,8 +1,8 @@
 (eval-when-compile
   (require 'use-package))
 
-(require 's)
-(require 'dash)
+(require 'zc-eval-funcs)
+(require 'zc-hydra-funcs)
 
 
 
@@ -28,22 +28,25 @@
   :after evil
 
   :general
-  (:states 'motion :keymaps 'compilation-mode-map
-           "h" #'evil-backward-char)
-
   (:states 'normal :keymaps 'compilation-mode-map
-           "g" #'recompile)
+           "h"   #'evil-backward-char)
+
+  (:states 'insert :keymaps 'compilation-mode-map
+           "g"   #'recompile
+           "a"   #'zc-eval/compilation-send-self
+           "f"   #'zc-eval/compilation-send-self
+           "RET" #'zc-eval/compilation-send-self)
 
   :preface
-  (defun zc-eval/colorize-compilation-buffer ()
+  (defun zc-eval/compilation-colorize-buffer ()
     (unless (derived-mode-p 'rg-mode)
       (with-silent-modifications
         (ansi-color-apply-on-region compilation-filter-start (point)))))
 
-  :hook (compilation-filter . zc-eval/colorize-compilation-buffer)
+  :hook (compilation-filter . zc-eval/compilation-colorize-buffer)
 
   :init
-  (setq compilation-environment '("TERM=screen-256color")
+  (setq compilation-environment '("TERM=screen-256color" "CI=true")
         compilation-always-kill t
         compilation-ask-about-save nil
         compilation-scroll-output 'first-error)
@@ -52,7 +55,10 @@
   (progn
     (setf (alist-get 'jest compilation-error-regexp-alist-alist)
           (list zc-eval/jest-error-rx 1 2 3))
-    (add-to-list 'compilation-error-regexp-alist 'jest)))
+    (add-to-list 'compilation-error-regexp-alist 'jest)
+
+    (advice-add #'projectile-read-command :override
+                #'zc-eval/projectile-read-command)))
 
 (use-package quickrun
   :straight t
@@ -69,6 +75,13 @@
       (:description . "Run TypeScript script"))
     :mode 'typescript
     :override t))
+
+
+
+(zc-hydra/major-mode-define compilation-mode
+  ("Basic"
+   (("i" zc-eval/compilation-send-input "send input")
+    ("I" zc-eval/compilation-toggle-comint "toggle comint"))))
 
 
 

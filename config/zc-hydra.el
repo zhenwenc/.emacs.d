@@ -142,9 +142,6 @@
     ("po" counsel-projectile-switch-project "switch project")
     ("pg" zc-projectile/refresh-projects "refresh projects"))
 
-   "Command"
-   (("pc" projectile-compile-project "compile"))
-
    "Search"
    (("pf" counsel-projectile-find-file "find file")
     ("pb" counsel-projectile-switch-to-buffer "find buffer")
@@ -178,7 +175,9 @@
    "Eval"
    (("eb" quickrun "quickrun buffer")
     ("er" quickrun-region "quickrun region")
-    ("eR" quickrun-replace-region "quickrun replace region"))))
+    ("eR" quickrun-replace-region "quickrun replace region")
+    ("ec" compile "compile")
+    ("ep" projectile-compile-project "compile project"))))
 
 (zc-hydra/define zc-main-hydra--org
   (:color teal :title "Org Hydra" :icon "empire" :prefix "o")
