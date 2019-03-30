@@ -1,8 +1,9 @@
 (require 's)
 (require 'dash)
 
-(autoload 'recompile "compile")
 (autoload 'ivy-read "ivy")
+(autoload 'recompile "compile")
+(autoload 'compilation-find-buffer "compile")
 
 (defvar compile-history)
 (defvar compilation-arguments)
@@ -43,6 +44,26 @@ with Ivy."
             :history 'compile-history
             :initial-input command
             :caller #'zc-eval/projectile-read-command))
+
+(defun zc-eval/recompile ()
+  "Call `recompile' if the compilation buffer was compiled
+manually, otherwise does nothing."
+  (let ((buffer (compilation-find-buffer)))
+    (unless (get-buffer-process buffer)
+      (recompile))))
+
+(define-minor-mode zc-eval/compile-on-save-mode
+  "Minor mode to automatically call `recompile' after saving
+the current buffer, when there is no ongoing compilation."
+  :lighter " cos"
+  :global nil
+  (cond
+   (noninteractive) ; running a batch job
+   ((bound-and-true-p zc-eval/compile-on-save-mode)
+    (make-local-variable 'after-save-hook)
+    (add-hook 'after-save-hook #'zc-eval/recompile nil t))
+   (t
+    (remove-hook 'after-save-hook #'zc-eval/recompile t))))
 
 
 

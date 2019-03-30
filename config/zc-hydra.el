@@ -174,9 +174,8 @@
 
    "Eval"
    (("eb" quickrun "quickrun buffer")
-    ("er" quickrun-region "quickrun region")
-    ("eR" quickrun-replace-region "quickrun replace region")
     ("ec" compile "compile")
+    ("er" recompile "recompile")
     ("ep" projectile-compile-project "compile project"))))
 
 (zc-hydra/define zc-main-hydra--org
@@ -217,9 +216,10 @@
   (:color teal :title "Toggle Hydra" :icon "building" :prefix "t")
   ("Basic"
    (("td" toggle-debug-on-error "emacs debug")
+    ("tf" toggle-frame-fullscreen "fullscreen")
     ("tn" toggle-linum "line numbers")
     ("tw" whitespace-mode "whitespace")
-    ("tc" hide/show-comments-toggle "comments")
+    ("tc" zc-eval/compile-on-save-mode "auto recompile")
     ("tk" which-key-mode "which key")
     ("tp" prodigy "prodigy services"))))
 

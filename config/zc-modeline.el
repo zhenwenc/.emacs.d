@@ -210,6 +210,9 @@
 (defun zc-modeline/narrowed-icon ()
   (all-the-icons-faicon "compress" :height 0.8 :v-adjust 0.05))
 
+(defun zc-modeline/auto-recompile-icon ()
+  (all-the-icons-faicon "repeat" :height 0.8 :v-adjust 0.05))
+
 
 
 (setq-default
@@ -260,6 +263,12 @@
                    (list
                     (zc-modeline/separator)
                     (propertize (zc-modeline/narrowed-icon) 'face warning)))
+
+                 ;; Auto-recompile status
+                 (when zc-eval/compile-on-save-mode
+                   (list
+                    (zc-modeline/separator)
+                    (propertize (zc-modeline/auto-recompile-icon) 'face warning)))
                  ))
 
            (rhs (list
@@ -292,6 +301,6 @@
    ))
 
 ;; Testing
-;; (setq mode-line-format (default-value 'mode-line-format))
+(setq mode-line-format (default-value 'mode-line-format))
 
 (provide 'zc-modeline)
