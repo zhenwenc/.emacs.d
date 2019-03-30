@@ -292,6 +292,6 @@
    ))
 
 ;; Testing
-(setq mode-line-format (default-value 'mode-line-format))
+;; (setq mode-line-format (default-value 'mode-line-format))
 
 (provide 'zc-modeline)
