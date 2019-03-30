@@ -39,17 +39,25 @@
 
   :preface
   (defun zc-eval/compilation-colorize-buffer ()
+    "Apply ansi codes to the compilation buffers."
     (unless (derived-mode-p 'rg-mode)
       (with-silent-modifications
         (ansi-color-apply-on-region compilation-filter-start (point)))))
 
-  :hook (compilation-filter . zc-eval/compilation-colorize-buffer)
+  :preface
+  (defun zc-eval/compilation-resize-buffer ()
+    "Reduce text size for better visibility."
+    (text-scale-set -1))
+
+  :hook ((compilation-mode   . zc-eval/compilation-resize-buffer)
+         (compilation-filter . zc-eval/compilation-colorize-buffer))
 
   :init
-  (setq compilation-environment '("TERM=screen-256color" "CI=true")
+  (setq compilation-environment '("TERM=screen-256color")
         compilation-always-kill t
         compilation-ask-about-save nil
-        compilation-scroll-output 'first-error)
+        compilation-scroll-output 'first-error
+        compilation-message-face 'font-lock-comment-face)
 
   :config
   (progn
