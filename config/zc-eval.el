@@ -7,12 +7,17 @@
 
 
 (defconst zc-eval/jest-error-rx
-  (rx bol "at" (+? nonl)
-      "("
+  (rx bol "at" space (? (: (+? nonl) "("))
       (group (+? nonl)) ":" ;; filename
       (group (+ digit)) ":" ;; line
       (group (+ digit))     ;; column
-      ")" eol))
+      (? ")") eol))
+
+(defconst zc-eval/jest-console-rx
+  (rx bol "console." (+ word) (+ space)
+      (group (+? nonl)) ":" ;; filename
+      (group (+ digit))     ;; line
+      (or eol (not (any ":")))))
 
 (-let* ((str "at Object.it (core/__tests__/Option.spec.ts:8:38)")
         ((whole file line column) (s-match zc-eval/jest-error-rx str)))
@@ -20,6 +25,19 @@
   (cl-assert (equal file   "core/__tests__/Option.spec.ts"))
   (cl-assert (equal line   "8"))
   (cl-assert (equal column "38")))
+
+(-let* ((str "at core/__tests__/Option.spec.ts:8:38")
+        ((whole file line column) (s-match zc-eval/jest-error-rx str)))
+  (cl-assert (equal whole str))
+  (cl-assert (equal file   "core/__tests__/Option.spec.ts"))
+  (cl-assert (equal line   "8"))
+  (cl-assert (equal column "38")))
+
+(-let* ((str "console.info core/__tests__/Option.spec.ts:107")
+        ((whole file line) (s-match zc-eval/jest-console-rx str)))
+  (cl-assert (equal whole str))
+  (cl-assert (equal file   "core/__tests__/Option.spec.ts"))
+  (cl-assert (equal line   "107")))
 
 
 
@@ -60,13 +78,14 @@
         compilation-message-face 'font-lock-comment-face)
 
   :config
-  (progn
-    (setf (alist-get 'jest compilation-error-regexp-alist-alist)
-          (list zc-eval/jest-error-rx 1 2 3))
-    (add-to-list 'compilation-error-regexp-alist 'jest)
+  (-each `((jest-error   ,(list zc-eval/jest-error-rx   1 2 3 1))
+           (jest-console ,(list zc-eval/jest-console-rx 1 2 nil 1)))
+    (-lambda ((type elt))
+      (setf (alist-get type compilation-error-regexp-alist-alist) elt)
+      (add-to-list 'compilation-error-regexp-alist type)))
 
-    (advice-add #'projectile-read-command :override
-                #'zc-eval/projectile-read-command)))
+  (advice-add #'projectile-read-command :override
+              #'zc-eval/projectile-read-command))
 
 (use-package quickrun
   :straight t
