@@ -54,7 +54,10 @@
   (:color teal :title "Window Hydra" :icon "windows" :prefix "w")
   ("Basic"
    (("w SPC" zc/toggle-current-window-dedication "dedicate")
-    ("wo" ace-select-window "select"))
+    ("wo" ace-select-window "select")
+    ("w0" (text-scale-set 0) "scale reset")
+    ("w+" text-scale-increase "scale ↑" :color pink)
+    ("w_" text-scale-decrease "scale ↓" :color pink))
 
    "Split"
    (("w-" zc/split-window-below-and-focus "vertical")
