@@ -10,15 +10,6 @@
           ("~/code/"     . 2)
           ("~/dotfiles/" . 0))))
 
-;; Transient commands (previously known as magit-popup)
-
-(use-package transient
-  :straight t
-  :init
-  (setq transient-levels-file  (concat paths-cache-dir "/transient/levels.el")
-        transient-values-file  (concat paths-cache-dir "/transient/values.el")
-        transient-history-file (concat paths-cache-dir "/transient/history.el")))
-
 ;; Show source files' todos in Magit status buffer
 
 (use-package magit-todos
@@ -32,21 +23,29 @@
   :after (:and magit evil-common)
   :config (evil-magit-init))
 
-;; Interfaces to GitHub integrated into Magit
+;; Transient commands (previously known as magit-popup)
 
-;; (use-package magithub
-;;   :straight t
-;;   :after magit
-;;   :preface
-;;   (setq magithub-dir (concat paths-cache-dir "/magithub"))
-;;   :init
-;;   (setq magithub-clone-default-directory "~/code/github"
-;;         magithub-preferred-remote-method 'clone_url)
-;;   :config
-;;   (progn
-;;     ;; See `magithub-feature-list' for available features.
-;;     (magithub-feature-autoinject
-;;      '(pull-request-merge commit-browse completion))))
+(use-package transient
+  :straight t
+  :init
+  (setq transient-levels-file  (concat paths-cache-dir "/transient/levels.el")
+        transient-values-file  (concat paths-cache-dir "/transient/values.el")
+        transient-history-file (concat paths-cache-dir "/transient/history.el")))
+
+;; Interfaces to GitHub integration
+
+(use-package forge
+  :straight t
+  :after magit
+  :commands magit-status
+
+  :general
+  (:keymaps 'transient-map
+            "<escape>" #'transient-quit-all
+            "q"        #'transient-quit-all)
+
+  :init
+  (setq forge-database-file (concat paths-cache-dir "/forge/database.sqlite")))
 
 ;; Interactively step forward and backwards through a
 ;; buffer's git versions.
