@@ -231,15 +231,16 @@
     (:color teal :title "Help Hydra" :icon "question" :prefix "h")
     ("Docs"
      (("hi" info "info")
+      ("hI" counsel-info-lookup-symbol "find info")
       ("hm" man "man")
       ("hh" helpful-at-point "doc at point"))
 
      "Describe"
      (("hdc" describe-char "char")
-      ("hdC" helpful-command "command")
-      ("hdv" helpful-variable "variable")
+      ("hdC" zc-ivy/describe-command "command")
+      ("hdv" counsel-describe-variable "variable")
       ("hdk" helpful-key "key")
-      ("hdf" helpful-callable "function")
+      ("hdf" counsel-describe-function "function")
       ("hdF" counsel-faces "face")
       ("hdm" describe-mode "mode")
       ("hdM" helpful-macro "macro"))
@@ -249,8 +250,6 @@
       ("htT" google-translate-query-translate-reverse "translate (r)")
       ("htp" google-translate-at-point "translate at point")
       ("htP" google-translate-at-point-reverse "translate at point (r)"))))
-
-
 
   (zc-hydra/define zc-main-hydra
     (:hint nil :color teal :title "Main Hydra")

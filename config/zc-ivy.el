@@ -61,21 +61,24 @@
            "M-x" #'counsel-M-x
            "M-y" #'counsel-yank-pop)
   :config
-  (progn
-    ;; Display separator in kill-ring buffer
-    (setq counsel-yank-pop-separator
-          (propertize (concat "\n" (make-string 30 ?-) "\n")
-                      'face '(:foreground "gray50")))
+  ;; Display separator in kill-ring buffer
+  (setq counsel-yank-pop-separator
+        (propertize (concat "\n" (make-string 30 ?-) "\n")
+                    'face '(:foreground "gray50")))
 
-    ;; Ignore noisy files and directories
-    (setq counsel-find-file-ignore-regexp
-          (regexp-opt (mapcar (lambda (dir) (s-append "/" dir))
-                              projectile-globally-ignored-directories)))
+  ;; Ignore noisy files and directories
+  (setq counsel-find-file-ignore-regexp
+        (regexp-opt (mapcar (lambda (dir) (s-append "/" dir))
+                            projectile-globally-ignored-directories)))
 
-    ;; The default counsel rg command ending with a dot, this will
-    ;; produce duplicated result for `counsel-projectile-rg'.
-    (setq counsel-rg-base-command "rg -zS -M 120 --no-heading --line-number --color never %s ."
-          counsel-ag-base-command "ag -zS -W 120 --nocolor --nogroup %s")))
+  ;; The default counsel rg command ending with a dot, this will
+  ;; produce duplicated result for `counsel-projectile-rg'.
+  (setq counsel-rg-base-command "rg -zS -M 120 --no-heading --line-number --color never %s ."
+        counsel-ag-base-command "ag -zS -W 120 --nocolor --nogroup %s")
+
+  ;; Use `helpful' describe functions
+  (setq counsel-describe-function-function #'helpful-callable
+        counsel-describe-variable-function #'helpful-variable))
 
 (use-package flx
   :straight t

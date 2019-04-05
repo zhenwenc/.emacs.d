@@ -37,6 +37,12 @@
    (t
     (call-interactively #'counsel-imenu))))
 
+(defun zc-ivy/describe-command ()
+  "Similar to `helpful-command'."
+  (interactive)
+  (let ((obarray (seq-filter #'commandp obarray)))
+    (call-interactively #'counsel-describe-function)))
+
 
 
 (provide 'zc-ivy-funcs)
