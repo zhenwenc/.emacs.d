@@ -18,9 +18,9 @@
           projectile-completion-system 'ivy
 
           projectile-cache-file
-          (concat paths-cache-directory "/projectile.cache")
+          (concat paths-cache-dir "/projectile.cache")
           projectile-known-projects-file
-          (concat paths-cache-directory "/projectile.projects"))
+          (concat paths-cache-dir "/projectile.projects"))
 
     (setq projectile-globally-ignored-files
           '("TAGS"

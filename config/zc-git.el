@@ -15,9 +15,9 @@
 (use-package transient
   :straight t
   :init
-  (setq transient-levels-file  (concat paths-cache-directory "/transient/levels.el")
-        transient-values-file  (concat paths-cache-directory "/transient/values.el")
-        transient-history-file (concat paths-cache-directory "/transient/history.el")))
+  (setq transient-levels-file  (concat paths-cache-dir "/transient/levels.el")
+        transient-values-file  (concat paths-cache-dir "/transient/values.el")
+        transient-history-file (concat paths-cache-dir "/transient/history.el")))
 
 ;; Show source files' todos in Magit status buffer
 
@@ -38,7 +38,7 @@
 ;;   :straight t
 ;;   :after magit
 ;;   :preface
-;;   (setq magithub-dir (concat paths-cache-directory "/magithub"))
+;;   (setq magithub-dir (concat paths-cache-dir "/magithub"))
 ;;   :init
 ;;   (setq magithub-clone-default-directory "~/code/github"
 ;;         magithub-preferred-remote-method 'clone_url)

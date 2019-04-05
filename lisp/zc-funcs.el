@@ -274,7 +274,7 @@ Behave the same as 'Command + delete' at macOS"
 
 (defun zc/load-private-package (pkg file)
   "Load encrypted package PKG from private directory."
-  (let ((path (f-join paths-private-directory file)))
+  (let ((path (f-join paths-private-dir file)))
     (if (f-exists? path)
         (require pkg path)
       (warn "Private package [%s] not found." path))))

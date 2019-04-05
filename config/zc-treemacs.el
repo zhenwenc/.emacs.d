@@ -19,7 +19,7 @@
   (progn
     (setq
      ;; Path to the file treemacs uses to persist its state
-     treemacs-persist-file (f-join paths-cache-directory "treemacs-persist")
+     treemacs-persist-file (f-join paths-cache-dir "treemacs-persist")
      ;; Follow the currently selected file
      treemacs-follow-after-init t
      ;; Prevents treemacs from being selected with `other-window`

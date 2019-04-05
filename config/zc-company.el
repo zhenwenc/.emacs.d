@@ -77,7 +77,7 @@
   :straight t
   :after company
   :config
-  (setq company-statistics-file (concat paths-cache-directory "/company-statistics"))
+  (setq company-statistics-file (concat paths-cache-dir "/company-statistics"))
   (company-statistics-mode +1))
 
 
