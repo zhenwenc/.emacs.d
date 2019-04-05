@@ -87,22 +87,6 @@
   (advice-add #'projectile-read-command :override
               #'zc-eval/projectile-read-command))
 
-(use-package quickrun
-  :straight t
-  :defer nil
-  :config
-  (setq quickrun-focus-p nil)
-
-  (quickrun-add-command "typescript"
-    '((:command . "ts-node")
-      (:exec . ("%c -T %o %s %a"))
-      (:compile-only . "%c %o %s %s")
-      (:compile-conf . ((:compilation-mode . nil)
-                        (:mode . typescript-mode)))
-      (:description . "Run TypeScript script"))
-    :mode 'typescript
-    :override t))
-
 
 
 (zc-hydra/major-mode-define compilation-mode

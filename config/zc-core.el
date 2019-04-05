@@ -159,9 +159,6 @@
 
 ;; External Packages
 
-(use-package pretty-hydra
-  :straight (:host github :repo "jerrypnz/major-mode-hydra.el"))
-
 (use-package avy
   :straight t
   :defer nil

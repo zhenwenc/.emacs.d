@@ -13,7 +13,6 @@
   :functions (evil-mode evil-delay evil-delete-backward-char-and-join)
 
   :general
-
   ;; Motion keys for help buffers.
   (:states 'motion :keymaps 'help-mode-map
            "<escape>"   #'quit-window
@@ -103,7 +102,7 @@
 
 (use-package zc-evil-ahs
   :after (:and evil pretty-hydra)
-  :init
+  :config
   (zc-hydra/define zc-evil-ahs-hydra
     (:color red :title "Ahs Hydra" :post zc-evil-ahs/reset)
 

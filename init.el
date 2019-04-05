@@ -52,6 +52,7 @@
 (straight-use-package 'dash-functional)
 (straight-use-package 'f)
 (straight-use-package 's)
+(straight-use-package 'lv)
 (straight-use-package 'noflet)
 (straight-use-package 'memoize)
 (straight-use-package 'general)
@@ -81,8 +82,10 @@
 (use-package zc-theme)
 (use-package zc-core)
 (use-package zc-evil)
-(use-package zc-eval)
+(use-package zc-ivy)
+(use-package zc-hydra)
 (use-package zc-osx :if (eq system-type 'darwin))
+(use-package zc-eval)
 (use-package zc-editing)
 (use-package zc-eshell)
 (use-package zc-git)
@@ -92,7 +95,6 @@
 (use-package zc-smartparens)
 (use-package zc-flycheck)
 (use-package zc-company)
-(use-package zc-ivy)
 (use-package zc-lisp)
 (use-package zc-tools)
 (use-package zc-treemacs)
@@ -109,7 +111,6 @@
 (use-package zc-typescript)
 (use-package zc-prodigy)
 (use-package zc-help)
-(use-package zc-hydra)
 
 
 ;; Print overall startup time.

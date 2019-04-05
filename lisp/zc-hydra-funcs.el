@@ -1,7 +1,6 @@
 (require 's)
 (require 'dash)
 (require 'dash-functional)
-(require 'pretty-hydra)
 
 (autoload 'all-the-icons-faicon "all-the-icons")
 (autoload 'all-the-icons-icon-for-mode "all-the-icons")
@@ -10,13 +9,13 @@
 
 (defun zc-hydra/title-with-faicon (name icon)
   (format "\n %s %s"
-            (all-the-icons-faicon icon :v-adjust 0.01 :height 1.1)
-            (propertize name 'face '(:height 1.1 :weight bold))))
+          (all-the-icons-faicon icon :v-adjust 0.01 :height 1.1)
+          (propertize name 'face '(:height 1.1 :weight bold))))
 
 (defun zc-hydra/major-mode-title (mode)
   (format "\n %s %s"
-            (all-the-icons-icon-for-mode mode :v-adjust 0.01 :height 1.1)
-            (propertize (symbol-name mode) 'face '(:height 1.1 :weight bold))))
+          (all-the-icons-icon-for-mode mode :v-adjust 0.01 :height 1.1)
+          (propertize (symbol-name mode) 'face '(:height 1.1 :weight bold))))
 
 (defun zc-hydra/remove-heads-prefix (prefix heads-plist)
   (if (stringp prefix)

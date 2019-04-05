@@ -60,6 +60,7 @@
 
 (use-package ensime
   :straight t
+  :defer t
 
   :general
 

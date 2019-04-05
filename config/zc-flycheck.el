@@ -2,7 +2,6 @@
   (require 'use-package))
 
 (require 'dash)
-(require 'hydra)
 (require 'subr-x)
 
 (autoload 'projectile-project-p "projectile")
@@ -12,6 +11,7 @@
 
 (use-package flycheck
   :straight t
+  :after (hydra)
   :hook (prog-mode . flycheck-mode-on-safe)
 
   :commands (flycheck-list-errors

@@ -1,9 +1,11 @@
 (eval-when-compile
   (require 'use-package))
 
+
+
 (use-package treemacs
   :straight t
-  :after projectile
+  :after (:and projectile pretty-hydra)
 
   :preface
   (defun zc-treemacs/is-file-ignored? (file git-info)
@@ -61,5 +63,7 @@
 (use-package treemacs-projectile
   :straight t
   :after (:and treemacs projectile))
+
+
 
 (provide 'zc-treemacs)

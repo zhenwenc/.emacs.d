@@ -8,6 +8,11 @@
 (defvar-local zc-evil-ahs/last-ahs-highlight-p nil
   "Info on the last searched highlighted symbol.")
 
+(defvar ahs-default-range)
+(defvar ahs-current-range)
+
+
+
 (defun zc-evil-ahs/integrate-evil-search (forward)
   ;; isearch-string is last searched item. Next time
   ;; "n" is hit we will use this.
