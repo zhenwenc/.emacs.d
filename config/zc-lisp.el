@@ -1,15 +1,18 @@
 (eval-when-compile
   (require 'use-package))
 
+(require 'general)
 (require 'zc-hydra-funcs)
 
 (autoload 'sp-up-sexp "smartparens")
 (autoload 'sp-point-in-string-or-comment "smartparens")
+(autoload 'helpful-callable "helpful")
+(autoload 'helpful-variable "helpful")
 
 
 
 ;; http://www.sugarshark.com/elisp/init/lisp.el.html
-(defun zc-lisp/describe-foo-at-point ()
+(defun zc-lisp/describe-at-point ()
   "Show the documentation of the Elisp function and variable near point.
 This checks in turn:
 -- for a function name where point is
@@ -53,45 +56,42 @@ Requires smartparens because all movement is done using `sp-up-sexp'."
       (sp-up-sexp arg)
       (call-interactively 'eval-last-sexp))))
 
-(defun zc-lisp/macroexpand-point (sexp)
-  "Expand the macro at point and display on temporary buffer."
-  (interactive (list (sexp-at-point)))
-  (with-output-to-temp-buffer "*el-macroexpansion*"
-    (pp (macroexpand sexp)))
-  (with-current-buffer "*el-macroexpansion*"
-    (emacs-lisp-mode)))
-
 
 
-(zc-hydra/major-mode-define emacs-lisp-mode
-  ("Basic"
-   (("!" ielm "REPL"))
+(use-package elisp-mode
+  :straight nil
 
-   "Compile"
-   (("cc" emacs-lisp-byte-compile "compile")
-    ("cl" auto-compile-display-log "compile log"))
+  ;; Prefer xref-find than dump-jump for elisp
+  :general (:states 'normal :keymaps 'emacs-lisp-mode-map
+                    "M-,"   #'pop-tag-mark
+                    "M-."   #'xref-find-definitions
+                    "C-M-." #'xref-find-apropos)
 
-   "Eval"
-   (("eb" eval-buffer "buffer")
-    ("ef" eval-defun "defun")
-    ("er" eval-region "region")
-    ("ee" zc-lisp/eval-current-form-sp "current form"))
+  :config
+  (zc-hydra/major-mode-define emacs-lisp-mode
+    ("Basic"
+     (("!" ielm "REPL"))
 
-   "Macro"
-   (("me" zc-lisp/macroexpand-point "expand"))
+     "Compile"
+     (("cc" emacs-lisp-byte-compile "compile"))
 
-   "Test"
-   (("tt" ert "prompt")
-    ("ta" (ert t) "all")
-    ("tf" (ert :failed) "failed"))
+     "Eval & Expand"
+     (("eb" eval-buffer "buffer")
+      ("ef" eval-defun "defun")
+      ("er" eval-region "region")
+      ("ee" zc-lisp/eval-current-form-sp "current form")
+      ("em" pp-macroexpand-last-sexp "expand macro"))
 
-   "Doc"
-   (("hh" zc-lisp/describe-foo-at-point "doc at point")
-    ("hf" describe-function)
-    ("hv" describe-variable))))
+     "Test"
+     (("tt" ert "prompt")
+      ("ta" (ert t) "all")
+      ("tf" (ert :failed) "failed"))
 
-;; Prefer xref-find than dump-jump for elisp
-(define-key emacs-lisp-mode-map (kbd "M-.") #'xref-find-definitions)
-(define-key emacs-lisp-mode-map (kbd "M-,") #'xref-find-apropos)
+     "Doc"
+     (("hh" zc-lisp/describe-at-point "doc at point")
+      ("hf" helpful-function "desc function")
+      ("hv" helpful-variable "desc variable")))))
+
+
 
 (provide 'zc-lisp)

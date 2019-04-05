@@ -2,7 +2,6 @@
   (require 'use-package))
 
 (require 'general)
-(require 'zc-hydra-funcs)
 
 
 
@@ -101,23 +100,7 @@
 ;; Provide integration with highlight-symbol
 
 (use-package zc-evil-ahs
-  :after (:and evil pretty-hydra)
-  :config
-  (zc-hydra/define zc-evil-ahs-hydra
-    (:color red :title "Ahs Hydra" :post zc-evil-ahs/reset)
-
-    ("Navigation"
-     (("n" zc-evil-ahs/goto-next-forward "next")
-      ("p" zc-evil-ahs/goto-next-backward "previous")
-      ("N" zc-evil-ahs/goto-next-backward "previous")
-      ("b" ahs-back-to-start "back to start"))
-
-     "Edit"
-     (("e" zc-evil-ahs/iedit "edit"))
-
-     "Range"
-     (("r" ahs-change-range "change range")
-      ("R" zc-evil-ahs/reset "reset range")))))
+  :after (:and evil pretty-hydra))
 
 
 ;; A set of keybindings for Evil mode.

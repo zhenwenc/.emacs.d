@@ -5,10 +5,6 @@
 (require 'zc-hydra-funcs)
 (require 'zc-typescript-funcs)
 
-(autoload 'f-join "f")
-(autoload 'flycheck-add-mode "flycheck")
-(autoload 'projectile-project-p "projectile")
-
 
 
 (use-package typescript-mode
@@ -38,52 +34,72 @@
          (typescript-mode . zc-typescript/add-node-modules-bin-to-path))
 
   :config
-  (progn
-    (setq typescript-indent-level 2)
+  (setq typescript-indent-level 2)
 
-    (defconst zc-typescript/method-keyword-re
-      (regexp-opt '("async" "static" "public" "private" "protected" "get" "set")))
+  (defconst zc-typescript/method-keyword-re
+    (regexp-opt '("async" "static" "public" "private" "protected" "get" "set")))
 
-    (defconst zc-typescript/generic-type-re
-      ".*" ;; FIXME make it more specific
-      "Regexp matching a typescript generic type identifier, without grouping.")
+  (defconst zc-typescript/generic-type-re
+    ".*" ;; FIXME make it more specific
+    "Regexp matching a typescript generic type identifier, without grouping.")
 
-    (defconst zc-typescript/method-heading-re
-      (concat
-       "\\s-*" zc-typescript/method-keyword-re
-       "\\s-+\\(" typescript--name-re "\\)"
-       "\\(?:<" zc-typescript/generic-type-re ">\\)?"
-       "("))
+  (defconst zc-typescript/method-heading-re
+    (concat
+     "\\s-*" zc-typescript/method-keyword-re
+     "\\s-+\\(" typescript--name-re "\\)"
+     "\\(?:<" zc-typescript/generic-type-re ">\\)?"
+     "("))
 
-    (defconst zc-typescript/function-heading-re
-      (concat
-       "\\s-*" zc-typescript/method-keyword-re
-       "\\s-+function"
-       "\\s-*\\(" typescript--name-re "\\)"))
+  (defconst zc-typescript/function-heading-re
+    (concat
+     "\\s-*" zc-typescript/method-keyword-re
+     "\\s-+function"
+     "\\s-*\\(" typescript--name-re "\\)"))
 
-    (defconst zc-typescript/decorator-re
-      (rx (and "@" (in "a-zA-Z_.") (0+ (in "a-zA-Z0-9_.")))))
+  (defconst zc-typescript/decorator-re
+    (rx (and "@" (in "a-zA-Z_.") (0+ (in "a-zA-Z0-9_.")))))
 
-    (dolist (item `((, zc-typescript/decorator-re        . font-lock-preprocessor-face)
-                    (, zc-typescript/method-heading-re   1 font-lock-function-name-face)
-                    (, zc-typescript/function-heading-re 1 font-lock-function-name-face)))
-      (add-to-list 'typescript--font-lock-keywords-3 item))
+  (dolist (item `((, zc-typescript/decorator-re        . font-lock-preprocessor-face)
+                  (, zc-typescript/method-heading-re   1 font-lock-function-name-face)
+                  (, zc-typescript/function-heading-re 1 font-lock-function-name-face)))
+    (add-to-list 'typescript--font-lock-keywords-3 item))
 
-    ;; Enhance smartparens
-    (with-eval-after-load 'smartparens
-      (sp-with-modes '(typescript-mode)
-        (sp-local-pair "/*" "*/"
-                       :post-handlers '(("| " "SPC")
-                                        (zc-typescript/sp-comment-expand "RET")))
+  ;; Enhance smartparens
+  (with-eval-after-load 'smartparens
+    (sp-with-modes '(typescript-mode)
+      (sp-local-pair "/*" "*/"
+                     :post-handlers '(("| " "SPC")
+                                      (zc-typescript/sp-comment-expand "RET")))
 
-        ;; Enter < inserts </> to start a new JSX node
-        (sp-local-pair "<" ">"
-                       :post-handlers '(zc-typescript/sp-jsx-expand-tag))))
+      ;; Enter < inserts </> to start a new JSX node
+      (sp-local-pair "<" ">"
+                     :post-handlers '(zc-typescript/sp-jsx-expand-tag))))
 
-    ;; Enter > right before the slash in a self-closing tag automatically
-    ;; inserts a closing tag and places point inside the element
-    (evil-define-key 'insert typescript-mode-map
-      (kbd ">") 'zc-typescript/sp-jsx-rewrap-tag)))
+  ;; Enter > right before the slash in a self-closing tag automatically
+  ;; inserts a closing tag and places point inside the element
+  (evil-define-key 'insert typescript-mode-map
+    (kbd ">") 'zc-typescript/sp-jsx-rewrap-tag)
+
+  (zc-hydra/major-mode-define typescript-mode
+    ("Server"
+     (("ns" tide-restart-server "restart server")
+      ("nS" zc-typescript/tide-stop-all-servers "stop all servers")
+      ("nv" tide-verify-setup "verify setup"))
+
+     "Error"
+     (("el" tide-project-errors "project errors")
+      ("en" tide-find-next-error "next error")
+      ("eN" tide-find-previous-error "prev error"))
+
+     "Refactor"
+     (("rr" tide-rename-symbol "rename symbol")
+      ("rf" prettier-js "prettier")
+      ("rx" tide-fix "fix code")
+      ("rX" zc-typescript/linter-fix-file "fix file"))
+
+     "Docs"
+     (("hu" tide-references "references")
+      ("hh" tide-documentation-at-point "doc at point")))))
 
 
 
@@ -184,29 +200,6 @@
     (setcar (memq 'source-inplace
                   (flycheck-checker-get 'typescript-tslint 'command))
             'source-original)))
-
-
-
-(zc-hydra/major-mode-define typescript-mode
-  ("Server"
-   (("ns" tide-restart-server "restart server")
-    ("nS" zc-typescript/tide-stop-all-servers "stop all servers")
-    ("nv" tide-verify-setup "verify setup"))
-
-   "Error"
-   (("el" tide-project-errors "project errors")
-    ("en" tide-find-next-error "next error")
-    ("eN" tide-find-previous-error "prev error"))
-
-   "Refactor"
-   (("rr" tide-rename-symbol "rename symbol")
-    ("rf" prettier-js "prettier")
-    ("rx" tide-fix "fix code")
-    ("rX" zc-typescript/linter-fix-file "fix file"))
-
-   "Docs"
-   (("hu" tide-references "references")
-    ("hh" tide-documentation-at-point "doc at point"))))
 
 
 

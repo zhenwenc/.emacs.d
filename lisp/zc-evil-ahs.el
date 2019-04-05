@@ -1,8 +1,11 @@
 (require 'evil)
 (require 'iedit)
+(require 'pretty-hydra)
+(require 'zc-hydra-funcs)
 
 ;; TODO: Only need one direction -> always forward
 
+(autoload 'auto-highlight-symbol-mode "auto-highlight-symbol")
 (autoload 'evil-iedit-state/iedit-mode "evil-iedit-state")
 
 (defvar-local zc-evil-ahs/last-ahs-highlight-p nil
@@ -97,5 +100,25 @@ with `auto-highlight-symbol'."
   (unless (eq (symbol-value ahs-default-range)
               ahs-current-range)
     (ahs-change-range ahs-default-range)))
+
+
+
+(zc-hydra/define zc-evil-ahs-hydra
+  (:color red :title "Ahs Hydra" :post zc-evil-ahs/reset)
+
+  ("Navigation"
+   (("n" zc-evil-ahs/goto-next-forward "next")
+    ("p" zc-evil-ahs/goto-next-backward "previous")
+    ("N" zc-evil-ahs/goto-next-backward "previous")
+    ("b" ahs-back-to-start "back to start"))
+
+   "Edit"
+   (("e" zc-evil-ahs/iedit "edit"))
+
+   "Range"
+   (("r" ahs-change-range "change range")
+    ("R" zc-evil-ahs/reset "reset range"))))
+
+
 
 (provide 'zc-evil-ahs)

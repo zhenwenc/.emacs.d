@@ -96,18 +96,20 @@
   :straight t
   :commands (historian-mode)
   :after ivy
-  :config (historian-mode +1))
+  :config
+  (setq historian-save-file (concat paths-cache-dir "/historian"))
+  (historian-mode +1))
 
 (use-package ivy-historian
   :straight t
   :commands (ivy-historian-mode)
   :after (:and ivy historian)
   :config
-  (progn
-    (setq ivy-historian-freq-boost-factor 2000)
-    (setq ivy-historian-recent-boost 2000)
-    (setq ivy-historian-recent-decrement 1000)
+  (setq ivy-historian-freq-boost-factor 2000
+        ivy-historian-recent-boost 2000
+        ivy-historian-recent-decrement 1000)
+  (ivy-historian-mode 1))
 
-    (ivy-historian-mode 1)))
+
 
 (provide 'zc-ivy)
