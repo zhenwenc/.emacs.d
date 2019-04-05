@@ -31,6 +31,7 @@
           '("gz" "zip" "tar" "elc"))
     (setq projectile-globally-ignored-directories
           '(".git"
+            ".cache"
             ".ensime_cache"
             "dist"
             "build"
