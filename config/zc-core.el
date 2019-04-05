@@ -145,6 +145,10 @@
 (define-key minibuffer-local-must-match-map (kbd "<escape>") #'keyboard-escape-quit)
 (define-key minibuffer-local-isearch-map    (kbd "<escape>") #'keyboard-escape-quit)
 
+(general-define-key :states  '(normal visual motion)
+                    :keymaps '(special-mode-map messages-buffer-mode-map)
+                    "SPC"    #'zc-main-hydra/body)
+
 
 ;; Build-in packages
 
