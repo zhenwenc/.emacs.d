@@ -3,12 +3,20 @@
 
 (use-package magit
   :straight t
+
+  :general
+  (:states 'normal :keymaps 'magit-status-mode-map
+           "q" #'magit-mode-bury-buffer)
+
   :config
   (setq magit-repository-directories
         '(("~/.emacs.d/" . 0)
           ("~/org/"      . 0)
           ("~/code/"     . 2)
-          ("~/dotfiles/" . 0))))
+          ("~/dotfiles/" . 0)))
+
+  ;; Display magit buffer in fullframe
+  (setq magit-display-buffer-function #'magit-display-buffer-fullframe-status-v1))
 
 ;; Show source files' todos in Magit status buffer
 
@@ -27,6 +35,10 @@
 
 (use-package transient
   :straight t
+  :general
+  (:keymaps 'transient-map
+            "<escape>" #'transient-quit-one
+            "q"        #'transient-quit-one)
   :init
   (setq transient-levels-file  (concat paths-cache-dir "/transient/levels.el")
         transient-values-file  (concat paths-cache-dir "/transient/values.el")
@@ -38,12 +50,6 @@
   :straight t
   :after magit
   :commands magit-status
-
-  :general
-  (:keymaps 'transient-map
-            "<escape>" #'transient-quit-all
-            "q"        #'transient-quit-all)
-
   :init
   (setq forge-database-file (concat paths-cache-dir "/forge/database.sqlite")))
 
