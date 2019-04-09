@@ -44,10 +44,10 @@
       ;; Try the original function first
       (apply orig-fn args)
       ;; Kill the helpful buffer if it still alive
-      (if (and (derived-mode-p 'helpful-mode)
-               (buffer-live-p buffer))
-          (with-current-buffer buffer
-            (kill-buffer-and-window)))))
+      (when (and (derived-mode-p 'helpful-mode)
+                 (buffer-live-p buffer))
+        (with-current-buffer buffer
+          (kill-buffer-and-window)))))
 
   :config
   ;; Prefer reusing the same buffer while navigating to source.
