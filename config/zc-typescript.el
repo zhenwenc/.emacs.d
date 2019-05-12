@@ -190,6 +190,7 @@
   :init
   ;; HACK: This is hacky, is there any better way?
   (advice-add 'tide-completion-doc-buffer :override #'ignore)
+  (advice-add 'tide-load-tsconfig :override #'zc-typescript/tide-load-tsconfig)
 
   :config
   ;; HACK: Flycheck generated temporary file hammers file watchers.

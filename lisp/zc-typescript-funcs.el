@@ -75,6 +75,15 @@
   (shell-command (concat "tslint --fix " (buffer-file-name)))
   (revert-buffer t t))
 
+(defun zc-typescript/tide-load-tsconfig (path &rest _ignored)
+  "Overrides `tide-load-tsconfig'."
+  (when (not (file-exists-p path))
+    (error "tsconfig file not found at %S." path))
+  (condition-case nil
+      (let ((json-object-type 'plist)
+            (json (shell-command-to-string "tsc --showConfig")))
+        (json-read-from-string json))
+    (error '())))
 
 
 (provide 'zc-typescript-funcs)
