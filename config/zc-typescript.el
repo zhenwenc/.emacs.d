@@ -30,7 +30,8 @@
       (make-local-variable 'exec-path)
       (add-to-list 'exec-path (f-join root "node_modules" ".bin"))))
 
-  :hook ((find-file . zc-typescript/set-node-modules-readonly)
+  :hook ((find-file       . zc-typescript/set-node-modules-readonly)
+         (post-command    . zc-typescript/post-command-hook-handler)
          (typescript-mode . zc-typescript/add-node-modules-bin-to-path))
 
   :config
@@ -193,6 +194,9 @@
   (advice-add 'tide-load-tsconfig :override #'zc-typescript/tide-load-tsconfig)
 
   :config
+  (setq tide-completion-detailed nil
+        tide-completion-ignore-case t)
+
   ;; HACK: Flycheck generated temporary file hammers file watchers.
   ;;       Remove the hack after these issues are fixed:
   ;; https://github.com/flycheck/flycheck/issues/1446

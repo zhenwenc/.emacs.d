@@ -21,7 +21,7 @@
     (forward-line -1)
     (end-of-line)
     (insert "*"))
-  (insert "* ")
+  (insert " * ")
   (save-excursion
     (insert "\n")
     (indent-according-to-mode))
@@ -84,6 +84,25 @@
             (json (shell-command-to-string "tsc --showConfig")))
         (json-read-from-string json))
     (error '())))
+
+
+;; TypeScript
+
+(defun zc-typescript/post-command-hook-handler ()
+  "Handler for `post-command-hook'."
+  (with-demoted-errors "zc-typescript/post-command-hook-handler: %S"
+    (when (derived-mode-p 'typescript-mode)
+      (zc-typescript/maybe-insert-asterisk))))
+
+(defun zc-typescript/maybe-insert-asterisk ()
+  (when (and (member this-command '(newline evil-open-below))
+             (save-excursion
+               (forward-line -1)
+               (string-match-p (rx bol (* space) "*" (not (any "/")))
+                               (thing-at-point 'line t))))
+    (insert " * ")
+    (indent-according-to-mode)))
+
 
 
 (provide 'zc-typescript-funcs)
