@@ -151,7 +151,7 @@ Also invalidates projectile cache when it's possible."
         (delete-file fname t)
         (kill-buffer buffer)
         (when (and (featurep 'projectile) (projectile-project-p))
-          (call-interactively #'projectile-invalidate-cache))
+          (projectile-invalidate-cache nil))
         (message "File deleted: %s" fname)))))
 
 (defun zc/rename-buffer-and-file (buffer dest-path)
@@ -185,8 +185,8 @@ update recentf list."
       (recentf-add-file dest-path)
       (recentf-remove-if-non-kept src))
     ;; Update projectile if needed
-    (when (projectile-project-p)
-      (call-interactively #'projectile-invalidate-cache))
+    (when (and (featurep 'projectile) (projectile-project-p))
+      (projectile-invalidate-cache nil))
     (message "File renamed '%s' to '%s'" src-name dest-name)))
 
 
