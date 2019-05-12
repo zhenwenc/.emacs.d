@@ -138,7 +138,15 @@
                  (display-buffer-reuse-window)
                  (reusable-frames . visible)
                  (slot            . 1)
-                 (window-height   . 0.5))))
+                 (window-height   . 0.5))
+
+                (,(rx bos "*prettier errors*" eos)
+                 (display-buffer-reuse-window
+                  display-buffer-in-side-window)
+                 (reusable-frames . visible)
+                 (side            . bottom)
+                 (slot            . 1)
+                 (window-height   . 0.3))))
   (add-to-list 'display-buffer-alist item))
 
 

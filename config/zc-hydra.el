@@ -142,6 +142,7 @@
     (:color teal :title "Project Hydra" :icon "product-hunt" :prefix "p")
     ("Basic"
      (("p!" projectile-run-shell-command-in-root "shell command")
+      ("pk" projectile-kill-buffers "kill buffers")
       ("pi" ibuffer "ibuffer")
       ("pI" projectile-invalidate-cache "invalidate cache")
       ("po" counsel-projectile-switch-project "switch project")
@@ -209,8 +210,8 @@
       ("jE" sp-beginning-of-sexp "sp beginning")
       ("jn" sp-next-sexp "sp next")
       ("jN" sp-previous-sexp "sp previous")
-      ("j>" sp-up-sexp "sp up (end)")
-      ("j<" sp-backward-up-sexp "sp up (start)"))
+      ("j>" sp-up-sexp "sp up (end)" :color red)
+      ("j<" sp-backward-up-sexp "sp up (start)" :color red))
 
      "Wrapping"
      (("jr" sp-rewrap-sexp "sp rewrap")
