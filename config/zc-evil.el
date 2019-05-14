@@ -40,7 +40,8 @@
 
   (:states 'normal
            ;; unset define macro
-           "q"          nil)
+           "q"          nil
+           "M"          #'evil-show-marks)
 
   (:states 'insert
            "C-<tab>"    #'dabbrev-expand
