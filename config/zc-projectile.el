@@ -16,6 +16,7 @@
   (progn
     (setq projectile-enable-caching t
           projectile-completion-system 'ivy
+          projectile-kill-buffers-filter #'zc/buffer-invisible-p
 
           projectile-cache-file
           (concat paths-cache-dir "/projectile.cache")

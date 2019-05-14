@@ -53,6 +53,10 @@ org subtree if in `org-mode'.
        `(define-key ,map ,key func)))
     (funcall (intern name) t)))
 
+(defun zc/buffer-invisible-p (buf)
+  "Return t if BUF doesn't belongs to any window."
+  (not (get-buffer-window buf)))
+
 (defmacro zc/with-wide-buffer (&rest body)
   "Execute body while temporarily widening the buffer."
   (declare (debug (body)))
