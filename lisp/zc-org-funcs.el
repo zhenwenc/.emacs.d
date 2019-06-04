@@ -352,7 +352,7 @@ session as the current block. ARG has same meaning as in
     (error "You must be in a src-block to run this command"))
   (save-window-excursion
     (org-babel-switch-to-session)
-    (kill-buffer)))
+    (kill-current-buffer)))
 
 
 ;; Smartparens

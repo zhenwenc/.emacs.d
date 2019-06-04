@@ -98,7 +98,7 @@
   (interactive)
   (unless (eq major-mode 'eshell-mode)
     (user-error "Not in an eshell buffer"))
-  (kill-this-buffer))
+  (kill-current-buffer))
 
 
 
