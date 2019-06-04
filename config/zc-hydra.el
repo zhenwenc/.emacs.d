@@ -244,7 +244,8 @@
       ("hdf" counsel-describe-function "function")
       ("hdF" counsel-faces "face")
       ("hdm" describe-mode "mode")
-      ("hdM" helpful-macro "macro"))
+      ("hdM" helpful-macro "macro")
+      ("hdp" describe-package "package"))
 
      "Translate"
      (("htt" google-translate-query-translate "translate")
