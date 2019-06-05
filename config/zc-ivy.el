@@ -40,7 +40,7 @@
                     (helpful-macro    . "^")))
       (add-to-list 'ivy-initial-inputs-alist item))
 
-    ;; Re-sort matching candicates
+    ;; Re-sort matching candidates
     (add-to-list 'ivy-sort-matches-functions-alist
                  '(counsel-projectile-find-file . zc-ivy/sort-matches-by-length))
 

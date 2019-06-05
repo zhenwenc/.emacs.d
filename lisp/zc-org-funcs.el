@@ -128,7 +128,7 @@ See also `counsel-org-goto-all'."
                           '("org")
                           (f-join zc-org/directory "babel")))
                  (_ org-agenda-files))))
-    (ivy-read "Goto: " (zc-org/get-outline-candicates files)
+    (ivy-read "Goto: " (zc-org/get-outline-candidates files)
               :history 'counsel-org-goto-history
               :action #'zc-org/goto-file-heading-action
               :caller #'zc-org/goto-file-heading)))
@@ -148,7 +148,7 @@ Ensure we are are in `org' layout to avoid chaos"
       (zc-layout/create-project-layout project)))
   (counsel-org-goto-action x))
 
-(defun zc-org/get-outline-candicates (filenames)
+(defun zc-org/get-outline-candidates (filenames)
   "Return an alist of counsel outline heading completion
 candidates, using `counsel-outline-candidates'."
   (->> filenames
