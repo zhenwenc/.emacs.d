@@ -160,6 +160,8 @@
   :preface
   (defun zc-typescript/maybe-setup-tide ()
     (interactive)
+    (unless (f-ext? buffer-file-name)
+      (setq-local tide-require-manual-setup t))
     (tide-setup)
     (eldoc-mode +1)
     (flycheck-mode +1))
