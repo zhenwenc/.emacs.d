@@ -132,7 +132,7 @@
                  (reusable-frames . visible)
                  (side            . bottom)
                  (slot            . 1)
-                 (window-height   . 0.3))
+                 (window-height   . 0.45))
 
                 (,(rx bos "*compilation*" eos)
                  (display-buffer-reuse-window)
