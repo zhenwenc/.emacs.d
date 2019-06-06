@@ -11,8 +11,15 @@ Available SQL formatters:
 - https://github.com/darold/pgFormatter
 "
   (interactive "r")
-  (unless (use-region-p) (setq beg (point-min)
-                               end (point-max)))
+  (unless (use-region-p)
+    (setq beg (save-excursion
+                (backward-paragraph)
+                (skip-syntax-forward " >")
+                (point))
+          end (save-excursion
+                (forward-paragraph)
+                (skip-syntax-backward " >")
+                (point))))
   (save-excursion
     (shell-command-on-region beg end "sqlformat -r -k upper -" nil t)))
 
