@@ -88,6 +88,7 @@
 (use-package zc-eval)
 (use-package zc-editing)
 (use-package zc-eshell)
+(use-package zc-term)
 (use-package zc-git)
 (use-package zc-projectile)
 (use-package zc-layout)

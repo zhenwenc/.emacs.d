@@ -225,8 +225,10 @@ Behave the same as 'Command + delete' at macOS"
 (defun zc-core/evil-escape-and-save ()
   "Evil escape everything and save buffer."
   (interactive)
-  (zc-core/evil-escape)
-  (save-buffer))
+  (if (derived-mode-p 'term-mode)
+      (message "You won't want to save!")
+    (zc-core/evil-escape)
+    (save-buffer)))
 
 (defun zc-core/evil-escape ()
   "Evil escape everything."

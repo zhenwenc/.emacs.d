@@ -61,6 +61,13 @@ If SLOT is nil, default to current slot."
        (s-chop-prefix (f-slash it) (f-canonical dir))
        (s-chop-suffix "/" it)))
 
+(defun zc-layout/is-current-project-layout-p ()
+  "Return t if the current selected project is the same as
+the layout project."
+  (let* ((current (projectile-project-root))
+         (project (zc-layout/project-for-slot)))
+    (and project (string= project current))))
+
 
 
 ;;;###autoload
