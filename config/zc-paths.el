@@ -17,6 +17,9 @@
 (defconst paths-config-dir
   (concat user-emacs-directory "config"))
 
+(defconst paths-vendor-dir
+  (concat user-emacs-directory "vendor"))
+
 (defconst paths-themes-dir
   (concat user-emacs-directory "themes"))
 
@@ -43,7 +46,7 @@ If argument INTERACTIVE-P is set, log additional information."
 
     (when interactive-p
       (if-let* ((added (seq-difference load-path before)))
-               (message "Load path updated. Added: %S" added)
-               (message "No change to load-path")))))
+          (message "Load path updated. Added: %S" added)
+        (message "No change to load-path")))))
 
 (provide 'zc-paths)
