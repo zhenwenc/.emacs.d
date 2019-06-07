@@ -95,6 +95,7 @@
 (use-package zc-modeline)
 (use-package zc-smartparens)
 (use-package zc-flycheck)
+(use-package zc-flyspell)
 (use-package zc-company)
 (use-package zc-lisp)
 (use-package zc-tools)
