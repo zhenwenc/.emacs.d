@@ -12,17 +12,17 @@
 
   :general
   (:keymaps 'ivy-occur-mode-map
-            "C-x C-w"    #'ivy-wgrep-change-to-wgrep-mode)
+   "C-x C-w"    #'ivy-wgrep-change-to-wgrep-mode)
 
   (:keymaps 'ivy-minibuffer-map
-            "<f1>"       #'zc-ivy/show-help
-            "C-j"        #'ivy-next-line
-            "C-k"        #'ivy-previous-line
-            "C-w"        #'ivy-yank-word  ; match isearch behaviour
-            "C-l"        #'ivy-partial-or-done
-            "C-z"        #'ivy-dispatching-done
-            "C-<return>" #'ivy-immediate-done
-            "C-c C-e"    #'zc-ivy/occur-then-wgrep)
+   "<f1>"       #'zc-ivy/show-help
+   "C-j"        #'ivy-next-line
+   "C-k"        #'ivy-previous-line
+   "C-w"        #'ivy-yank-word  ; match isearch behaviour
+   "C-l"        #'ivy-partial-or-done
+   "C-z"        #'ivy-dispatching-done
+   "C-<return>" #'ivy-immediate-done
+   "C-c C-e"    #'zc-ivy/occur-then-wgrep)
 
   :config
   (progn
@@ -58,8 +58,8 @@
   :after projectile
   :general
   (:states '(motion normal insert visual)
-           "M-x" #'counsel-M-x
-           "M-y" #'counsel-yank-pop)
+   "M-x" #'counsel-M-x
+   "M-y" #'counsel-yank-pop)
   :config
   ;; Display separator in kill-ring buffer
   (setq counsel-yank-pop-separator
