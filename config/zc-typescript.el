@@ -85,16 +85,19 @@
     ("Server"
      (("ns" tide-restart-server "restart server")
       ("nS" zc-typescript/tide-stop-all-servers "stop all servers")
+      ("nl" tide-list-servers "list servers")
       ("nv" tide-verify-setup "verify setup"))
 
      "Error"
-     (("el" tide-project-errors "project errors")
+     (("ee" tide-error-at-point "error at point")
+      ("el" tide-project-errors "project errors")
       ("en" tide-find-next-error "next error")
       ("eN" tide-find-previous-error "prev error"))
 
      "Refactor"
      (("rr" tide-rename-symbol "rename symbol")
-      ("rf" prettier-js "prettier")
+      ("rR" tide-rename-file "rename file")
+      ("rf" prettier-js "format file")
       ("rx" tide-fix "fix code")
       ("rX" zc-typescript/linter-fix-file "fix file"))
 
