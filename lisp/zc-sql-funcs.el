@@ -9,6 +9,10 @@ between BEG and END.
 Available SQL formatters:
 - https://github.com/andialbrecht/sqlparse
 - https://github.com/darold/pgFormatter
+
+Alternatives:
+- https://github.com/purcell/sqlformat
+- https://github.com/purcell/reformatter.el
 "
   (interactive "r")
   (unless (use-region-p)
