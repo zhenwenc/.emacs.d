@@ -23,6 +23,17 @@
   (defun zc-flycheck/maybe-inhibit-flycheck (result)
     (unless (equal (buffer-name) "*ediff-merge*") result))
 
+  :init
+  (defun zc-flycheck/disable-checkers (&rest checkers)
+    "Disable the given Flycheck syntax CHECKERS, symbols.
+This function affects only the current buffer, and neither causes
+nor requires Flycheck to be loaded."
+    (unless (boundp 'flycheck-disabled-checkers)
+      (setq flycheck-disabled-checkers nil))
+    (make-local-variable 'flycheck-disabled-checkers)
+    (dolist (checker checkers)
+      (cl-pushnew checker flycheck-disabled-checkers)))
+
   :config
   (progn
     (setq flycheck-pos-tip-timeout 10)

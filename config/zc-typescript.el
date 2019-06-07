@@ -20,7 +20,7 @@
   :preface
   (defun zc-typescript/set-node-modules-readonly ()
     (when (and (buffer-file-name)
-               (string-match-p (rx "/node_modules/") (buffer-file-name)))
+               (s-contains-p "/node_modules/" buffer-file-name))
       (read-only-mode +1)))
 
   :preface
@@ -116,13 +116,15 @@
   :straight t
   :after (:any zc-web-modes typescript-mode graphql-mode)
   :commands (prettier-js prettier-js-mode)
-  :hook ((graphql-mode . enable-prettier-mode)
-         (typescript-mode . enable-prettier-mode)
-         (zc-web-css-mode . enable-prettier-mode))
+  :hook ((graphql-mode    . zc-typescript/maybe-enable-prettier)
+         (typescript-mode . zc-typescript/maybe-enable-prettier)
+         (zc-web-css-mode . zc-typescript/maybe-enable-prettier))
   :preface
-  (defun enable-prettier-mode ()
-    (if (not (string= (projectile-project-name) "apollo-codegen"))
-        (prettier-js-mode)))
+  (defun zc-typescript/maybe-enable-prettier ()
+    (unless (or (not buffer-file-name) ; maybe scratch
+                (s-contains-p "/github/" buffer-file-name)
+                (s-contains-p "/node_modules/" buffer-file-name))
+      (prettier-js-mode)))
   :config
   ;; NOTE: If the prettier version seems outdated, check .nvmrc
   (setq prettier-js-args '("--single-quote" "--trailing-comma" "es5")))
@@ -160,7 +162,8 @@
   :preface
   (defun zc-typescript/maybe-setup-tide ()
     (interactive)
-    (unless (f-ext? buffer-file-name)
+    (unless (or (not buffer-file-name)
+                (f-ext? buffer-file-name))
       (setq-local tide-require-manual-setup t))
     (tide-setup)
     (eldoc-mode +1)
@@ -168,26 +171,31 @@
 
   :preface
   (defun zc-typescript/disable-flycheck-linters ()
-    (when (boundp 'flycheck-disabled-checkers)
-      (dolist (checker '(javascript-jshint typescript-tslint))
-        (add-to-list 'flycheck-disabled-checkers checker))))
+    "Linters are pretty slow, and we use Prettier anyway."
+    (zc-flycheck/disable-checkers 'javascript-jshint 'typescript-tslint))
+
+  :preface
+  (defun zc-typescript/disable-flycheck-for-flow ()
+    (when (and buffer-file-name
+               (string= (f-ext buffer-file-name) "js")
+               (save-excursion (goto-char (point-min))
+                               (search-forward "@flow" nil t)))
+      (zc-flycheck/disable-checkers 'typescript-tide)))
 
   :preface
   (defun zc-typescript/disable-flycheck-for-node-modules ()
-    (when (and (buffer-file-name)
-               (s-contains-p "node_modules" (buffer-file-name))
-               (boundp 'flycheck-checkers)
-               (boundp 'flycheck-disabled-checkers))
-      (setq-local flycheck-disabled-checkers
-                  (->> flycheck-checkers
-                       (-map #'symbol-name)
-                       (--filter (or (string-prefix-p "javascript" it)
-                                     (string-prefix-p "typescript" it)))
-                       (-map #'intern)
-                       (-union flycheck-disabled-checkers)))))
+    (when (and buffer-file-name
+               (s-contains-p "/node_modules/" buffer-file-name))
+      (apply 'zc-flycheck/disable-checkers
+             (->> flycheck-checkers
+                  (-map #'symbol-name)
+                  (--filter (or (string-prefix-p "javascript" it)
+                                (string-prefix-p "typescript" it)))
+                  (-map #'intern)))))
 
   :hook ((typescript-mode . zc-typescript/maybe-setup-tide)
          (typescript-mode . zc-typescript/disable-flycheck-linters)
+         (typescript-mode . zc-typescript/disable-flycheck-for-flow)
          (typescript-mode . zc-typescript/disable-flycheck-for-node-modules))
 
   :init

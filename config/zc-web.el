@@ -45,12 +45,11 @@
       (when (file-exists-p tidy-bin)
         (setq flycheck-html-tidy-executable tidy-bin)))
 
-    (flycheck-add-mode 'css-csslint 'zc-web-css-mode)
+    (flycheck-add-mode 'html-tidy     'zc-web-html-mode)
+    (flycheck-add-mode 'css-csslint   'zc-web-css-mode)
     (flycheck-add-mode 'json-jsonlint 'zc-web-json-mode)
-    (flycheck-add-mode 'html-tidy 'zc-web-html-mode)
 
-    (add-to-list 'flycheck-disabled-checkers 'json-jsonlint)
-    (add-to-list 'flycheck-disabled-checkers 'css-csslint)
+    (zc-flycheck/disable-checkers 'json-jsonlint 'css-csslint)
 
     (add-hook 'zc-web-css-mode-hook #'zc-web/add-node-modules-bin-to-path)))
 
