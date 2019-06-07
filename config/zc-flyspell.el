@@ -25,7 +25,6 @@
   ((org-mode         . flyspell-mode)
    (yaml-mode        . flyspell-mode)
    (git-commit-mode  . flyspell-mode)
-   (prog-mode        . flyspell-prog-mode)
    (before-save-hook . flyspell-buffer)
    (flyspell-mode    . zc-flyspell/setup))
 
