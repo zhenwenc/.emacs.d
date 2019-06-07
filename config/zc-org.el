@@ -20,10 +20,32 @@
 
   :general
   (:keymaps 'org-src-mode-map
-            "C-c C-c" #'org-edit-src-exit)
+   "C-c C-c" #'org-edit-src-exit)
 
   (:states 'normal :keymaps 'org-mode-map
-           "RET" #'zc-org/evil-normal-ret)
+   "RET" #'zc-org/evil-normal-ret)
+
+  :hydra
+  ("Basic"
+   (("?" org-info "org info"))
+
+   "Edit & Execute"
+   (("ee" org-edit-special "edit")
+    ("ea" org-babel-insert-header-arg "edit arg")
+    ("et" counsel-org-tag "edit tag")
+    ("ep" org-property-action "edit property")
+    ("ei" org-babel-view-src-block-info "block info")
+    ("eo" org-babel-open-src-block-result "open result")
+    ("ec" org-babel-remove-result-one-or-many "clear result")
+    ("eC" zc-org/babel-remove-result-all "clear result*"))
+
+   "Refactor"
+   (("rs" org-sort "sort")
+    ("rw" org-refile "refile"))
+
+   "Toggle"
+   (("ti" org-toggle-item "item")
+    ("th" org-toggle-heading "heading")))
 
   :init
   ;; Org file directories must be defined at `:init' block
@@ -118,10 +140,10 @@
     (with-eval-after-load 'smartparens
       (sp-with-modes 'org-mode
         (sp-local-pair "*" "*" :unless '(:add sp-point-before-word-p
-                                              zc-org/sp-point-at-bol-p))
+                                         zc-org/sp-point-at-bol-p))
         (sp-local-pair "_" "_" :unless '(:add sp-point-before-word-p))
         (sp-local-pair "/" "/" :unless '(:add sp-point-before-word-p
-                                              zc-org/sp-point-in-checkbox-p))
+                                         zc-org/sp-point-in-checkbox-p))
         (sp-local-pair "~" "~" :unless '(:add sp-point-before-word-p))
         (sp-local-pair "=" "=" :unless '(:add sp-point-before-word-p))))))
 
@@ -134,73 +156,11 @@
 
   :general
   (:states 'motion :keymaps 'org-agenda-mode-map
-           "RET" #'org-agenda-switch-to
-           "sc"  #'zc-org/agenda-filter-by-category
-           "sC"  #'org-agenda-filter-by-category)
+   "RET" #'org-agenda-switch-to
+   "sc"  #'zc-org/agenda-filter-by-category
+   "sC"  #'org-agenda-filter-by-category)
 
-  :hook
-  ((org-agenda-after-show . org-narrow-to-subtree))
-
-  :init
-  ;; Org file directories must be defined at `:init' block
-  ;; so that they are visible to the navigation functions,
-  ;; such as `zc-org/goto-agenda-file-heading'.
-  (setq org-agenda-diary-file  (f-join zc-org/directory "diary.org")
-        org-agenda-files       (zc-org/file-with-exts '("org")))
-
-  :config
-  (progn
-    (setq org-agenda-restore-windows-after-quit t
-          org-agenda-window-setup 'reorganize-frame)
-
-    (advice-add 'org-agenda-quit :before 'org-save-all-org-buffers)))
-
-
-;; https://orgmode.org/manual/Easy-templates.html
-;; https://github.com/abo-abo/hydra/wiki/Org-mode-block-templates
-
-(use-package org-tempo
-  :after org
-
-  :preface
-  (defun zc-org/post-org-tempo-add-templates ()
-    (mapc #'(lambda (entry)
-              (let* ((key (cdr entry))
-                     (value (symbol-value key)))
-                (set key (-map-when 'stringp 'upcase value))))
-          org-tempo-tags)
-    (message "HACK: Org complete templates with uppercase keycords."))
-
-  :config
-  ;; Complete src block templates with uppercased keywords
-  (advice-add 'org-tempo-add-templates
-              :after #'zc-org/post-org-tempo-add-templates))
-
-
-
-(zc-hydra/major-mode-define org-mode
-  ("Basic"
-   (("?" org-info "org info"))
-
-   "Edit & Execute"
-   (("ee" org-edit-special "edit")
-    ("ea" org-babel-insert-header-arg "edit arg")
-    ("et" counsel-org-tag "edit tag")
-    ("ep" org-property-action "edit property")
-    ("ei" org-babel-view-src-block-info "block info")
-    ("eo" org-babel-open-src-block-result "open result")
-    ("ec" org-babel-remove-result-one-or-many "clear result")
-    ("eC" zc-org/babel-remove-result-all "clear result*"))
-
-   "Refactor"
-   (("rs" org-sort "sort")
-    ("rw" org-refile "refile"))
-
-   "Toggle"
-   (("ti" org-toggle-item "item")
-    ("th" org-toggle-heading "heading"))))
-
-(zc-hydra/major-mode-define org-agenda-mode
+  :hydra
   ("Basic"
    (("."  org-agenda-goto-today "goto today")
     ("+"  org-agenda-manipulate-query-add "query add")
@@ -246,7 +206,45 @@
     ("gC" org-agenda-convert-date "convert date")
     ("gd" org-agenda-goto-date "goto date")
     ("gt" org-agenda-show-tags "show tags"))
-   ))
+   )
+
+  :hook
+  ((org-agenda-after-show . org-narrow-to-subtree))
+
+  :init
+  ;; Org file directories must be defined at `:init' block
+  ;; so that they are visible to the navigation functions,
+  ;; such as `zc-org/goto-agenda-file-heading'.
+  (setq org-agenda-diary-file  (f-join zc-org/directory "diary.org")
+        org-agenda-files       (zc-org/file-with-exts '("org")))
+
+  :config
+  (progn
+    (setq org-agenda-restore-windows-after-quit t
+          org-agenda-window-setup 'reorganize-frame)
+
+    (advice-add 'org-agenda-quit :before 'org-save-all-org-buffers)))
+
+
+;; https://orgmode.org/manual/Easy-templates.html
+;; https://github.com/abo-abo/hydra/wiki/Org-mode-block-templates
+
+(use-package org-tempo
+  :after org
+
+  :preface
+  (defun zc-org/post-org-tempo-add-templates ()
+    (mapc #'(lambda (entry)
+              (let* ((key (cdr entry))
+                     (value (symbol-value key)))
+                (set key (-map-when 'stringp 'upcase value))))
+          org-tempo-tags)
+    (message "HACK: Org complete templates with uppercase keycords."))
+
+  :config
+  ;; Complete src block templates with uppercased keywords
+  (advice-add 'org-tempo-add-templates
+              :after #'zc-org/post-org-tempo-add-templates))
 
 
 

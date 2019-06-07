@@ -11,23 +11,12 @@
   :straight t
   :defer t
   :commands (prodigy)
+
   :general
   (:states '(motion normal) :keymaps 'prodigy-mode-map
-           "TAB" #'prodigy-display-process)
-  :config
-  (progn
-    ;; Truncate buffers.
-    (setq prodigy-view-truncate-by-default t)
+   "TAB" #'prodigy-display-process)
 
-    ;; Use standard completing-read.
-    (setq prodigy-completion-system 'default)
-
-    ;; Load service configs
-    (zc/load-private-package 'config-prodigy "config-prodigy.el.gpg")))
-
-
-
-(zc-hydra/major-mode-define prodigy-mode
+  :hydra
   ("Basic"
    (("n" prodigy-next "next")
     ("p" prodigy-prev "previous")
@@ -53,7 +42,18 @@
     ("r" prodigy-restart "restart")
     ("g" prodigy-refresh "refresh")
     ("o" prodigy-browse "open in browser")
-    ("TAB" prodigy-display-process "view output"))))
+    ("TAB" prodigy-display-process "view output")))
+
+  :config
+  (progn
+    ;; Truncate buffers.
+    (setq prodigy-view-truncate-by-default t)
+
+    ;; Use standard completing-read.
+    (setq prodigy-completion-system 'default)
+
+    ;; Load service configs
+    (zc/load-private-package 'config-prodigy "config-prodigy.el.gpg")))
 
 
 

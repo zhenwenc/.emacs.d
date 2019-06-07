@@ -47,13 +47,13 @@
 
   :general
   (:states 'normal :keymaps 'compilation-mode-map
-           "h"   #'evil-backward-char)
+   "h"   #'evil-backward-char)
 
   (:states 'insert :keymaps 'compilation-mode-map
-           "g"   #'recompile
-           "a"   #'zc-eval/compilation-send-self
-           "f"   #'zc-eval/compilation-send-self
-           "RET" #'zc-eval/compilation-send-self)
+   "g"   #'recompile
+   "a"   #'zc-eval/compilation-send-self
+   "f"   #'zc-eval/compilation-send-self
+   "RET" #'zc-eval/compilation-send-self)
 
   :preface
   (defun zc-eval/compilation-colorize-buffer ()

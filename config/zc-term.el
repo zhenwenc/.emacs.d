@@ -5,6 +5,23 @@
 
 
 
+(use-package term
+  :straight nil
+  :hydra
+  ("Basic"
+   (("c" zc-term/open "create")
+    ("r" zc-term/rename "rename")
+    ("x" zc-term/kill-and-close "kill"))
+
+   "Navigation"
+   (("s" zc-term/switch "switch")
+    ("<" multi-term-prev "previous" :color red)
+    (">" multi-term-next "next" :color red))
+
+   "Toggle"
+   (("h" compilation-shell-minor-mode "compilation mode"))))
+
+
 (use-package multi-term
   :straight t
 
@@ -12,22 +29,22 @@
 
   :general
   (:states 'normal :keymaps 'term-mode-map
-           "<return>" #'undefined
-           "SPC"      #'zc-main-hydra/body
-           "q"        #'zc-term/bury-all-buffers)
+   "<return>" #'undefined
+   "SPC"      #'zc-main-hydra/body
+   "q"        #'zc-term/bury-all-buffers)
 
   (:states 'insert :keymaps 'term-raw-map
-           ;; This key was shallowed by evil-collection,
-           ;; but not sure for what purpose.
-           "C-y" #'term-paste
-           "C-l" #'comint-clear-buffer)
+   ;; This key was shallowed by evil-collection,
+   ;; but not sure for what purpose.
+   "C-y" #'term-paste
+   "C-l" #'comint-clear-buffer)
 
   (:states 'normal :keymaps 'term-mode-map
-           :predicate '(zc-term/compilation-minor-mode-p)
-           "<return>" #'compile-goto-error
-           "RET"      #'compile-goto-error
-           "C-n"      #'compilation-next-error
-           "C-p"      #'compilation-previous-error)
+   :predicate '(zc-term/compilation-minor-mode-p)
+   "<return>" #'compile-goto-error
+   "RET"      #'compile-goto-error
+   "C-n"      #'compilation-next-error
+   "C-p"      #'compilation-previous-error)
 
   :preface
   (defun zc-term/setup ()
@@ -48,22 +65,7 @@
         multi-term-switch-after-close 'PREVIOUS
 
         ;; Avoid interpreter output causes window to scroll
-        multi-term-scroll-show-maximum-output t)
-
-
-  (zc-hydra/major-mode-define term-mode
-    ("Basic"
-     (("c" zc-term/open "create")
-      ("r" zc-term/rename "rename")
-      ("x" zc-term/kill-and-close "kill"))
-
-     "Navigation"
-     (("s" zc-term/switch "switch")
-      ("<" multi-term-prev "previous" :color red)
-      (">" multi-term-next "next" :color red))
-
-     "Toggle"
-     (("h" compilation-shell-minor-mode "compilation mode")))))
+        multi-term-scroll-show-maximum-output t))
 
 
 

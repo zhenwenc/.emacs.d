@@ -1,9 +1,3 @@
-;; We use `pg_format'(https://github.com/darold/pgFormatter)
-;; to prettify the SQL queries.
-;;
-;; Install the package with:
-;;   brew install pgFormatter
-
 (eval-when-compile
   (require 'use-package))
 
@@ -15,7 +9,13 @@
 
 
 (use-package sql-mode
+  :straight nil
   :defer t
+
+  :hydra
+  ("Basic"
+   (("f" zc-sql/format-region-or-buffer "format")))
+
   :config
   (progn
     ;; PostgreSQL databases with underscores in their names
@@ -23,12 +23,6 @@
     (sql-set-product-feature 'postgres :prompt-regexp "^[-[:alnum:]_]*=[#>] ")
     (sql-set-product-feature 'postgres :prompt-cont-regexp
                              "^[-[:alnum:]_]*[-(][#>] ")))
-
-
-
-(zc-hydra/major-mode-define sql-mode
-  ("Basic"
-   (("f" zc-sql/format-region-or-buffer "format"))))
 
 
 

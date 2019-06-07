@@ -7,12 +7,8 @@
   :straight t
   :defer t
   :commands (restclient-mode)
-  :config
-  (setq electric-indent-local-mode nil))
 
-
-
-(zc-hydra/major-mode-define restclient-mode
+  :hydra
   ("Navigation"
    (("n" restclient-jump-next "next" :exit nil)
     ("p" restclient-jump-prev "previous" :exit nil)
@@ -24,7 +20,10 @@
     ("r" restclient-http-send-current-raw "send raw"))
    "Misc."
    (("w" restclient-copy-curl-command "copy curl")
-    ("m" restclient-mark-current "mark"))))
+    ("m" restclient-mark-current "mark")))
+
+  :config
+  (setq electric-indent-local-mode nil))
 
 
 

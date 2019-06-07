@@ -17,6 +17,30 @@
 
   :interpreter (("node" . typescript-mode))
 
+  :hydra
+  ("Server"
+   (("ns" tide-restart-server "restart server")
+    ("nS" zc-typescript/tide-stop-all-servers "stop all servers")
+    ("nl" tide-list-servers "list servers")
+    ("nv" tide-verify-setup "verify setup"))
+
+   "Error"
+   (("ee" tide-error-at-point "error at point")
+    ("el" tide-project-errors "project errors")
+    ("en" tide-find-next-error "next error")
+    ("eN" tide-find-previous-error "prev error"))
+
+   "Refactor"
+   (("rr" tide-rename-symbol "rename symbol")
+    ("rR" tide-rename-file "rename file")
+    ("rf" prettier-js "format file")
+    ("rx" tide-fix "fix code")
+    ("rX" zc-typescript/linter-fix-file "fix file"))
+
+   "Docs"
+   (("hu" tide-references "references")
+    ("hh" tide-documentation-at-point "doc at point")))
+
   :preface
   (defun zc-typescript/set-node-modules-readonly ()
     (when (and (buffer-file-name)
@@ -79,31 +103,7 @@
   ;; Enter > right before the slash in a self-closing tag automatically
   ;; inserts a closing tag and places point inside the element
   (evil-define-key 'insert typescript-mode-map
-    (kbd ">") 'zc-typescript/sp-jsx-rewrap-tag)
-
-  (zc-hydra/major-mode-define typescript-mode
-    ("Server"
-     (("ns" tide-restart-server "restart server")
-      ("nS" zc-typescript/tide-stop-all-servers "stop all servers")
-      ("nl" tide-list-servers "list servers")
-      ("nv" tide-verify-setup "verify setup"))
-
-     "Error"
-     (("ee" tide-error-at-point "error at point")
-      ("el" tide-project-errors "project errors")
-      ("en" tide-find-next-error "next error")
-      ("eN" tide-find-previous-error "prev error"))
-
-     "Refactor"
-     (("rr" tide-rename-symbol "rename symbol")
-      ("rR" tide-rename-file "rename file")
-      ("rf" prettier-js "format file")
-      ("rx" tide-fix "fix code")
-      ("rX" zc-typescript/linter-fix-file "fix file"))
-
-     "Docs"
-     (("hu" tide-references "references")
-      ("hh" tide-documentation-at-point "doc at point")))))
+    (kbd ">") 'zc-typescript/sp-jsx-rewrap-tag))
 
 
 
@@ -153,14 +153,14 @@
 
   :general
   (:states '(normal insert) :keymaps 'tide-mode-map
-           "M-." #'tide-jump-to-definition
-           "M-," #'tide-jump-back)
+   "M-." #'tide-jump-to-definition
+   "M-," #'tide-jump-back)
 
   (:states 'normal :keymaps 'tide-references-mode-map
-           "RET" #'tide-goto-reference
-           "p"   #'tide-find-previous-reference
-           "n"   #'tide-find-next-reference
-           "q"   #'quit-window)
+   "RET" #'tide-goto-reference
+   "p"   #'tide-find-previous-reference
+   "n"   #'tide-find-next-reference
+   "q"   #'quit-window)
 
   :preface
   (defun zc-typescript/maybe-setup-tide ()

@@ -75,4 +75,23 @@
 
 
 
+(defun use-package-normalize/:hydra (name keyword args)
+  (use-package-only-one (symbol-name keyword) args
+    #'use-package-normalize-value))
+
+(defun use-package-handler/:hydra (name _keyword arg rest state)
+  "Handle `:hydra' keyword."
+  (let ((body (use-package-process-keywords name rest state))
+        (mode (use-package-as-mode name)))
+    (use-package-concat
+     body
+     `((zc-hydra/major-mode-define ,mode ,arg)))))
+
+(with-eval-after-load 'use-package-core
+  (when (and (boundp 'use-package-keywords)
+             (listp use-package-keywords))
+    (add-to-list 'use-package-keywords :hydra 'append)))
+
+
+
 (provide 'zc-hydra-funcs)

@@ -12,8 +12,8 @@
   (:keymaps 'Info-mode-map "l" nil "h" nil)
 
   (:states '(normal motion) :keymaps 'Info-mode-map
-           "gs" #'Info-goto-node
-           "gu" #'Info-follow-reference)
+   "gs" #'Info-goto-node
+   "gu" #'Info-follow-reference)
 
   :config
   (setq info-lookup-other-window-flag nil))
@@ -24,9 +24,9 @@
   ;; Evil mess up the default keybindings
   :general
   (:states '(normal motion) :keymaps 'helpful-mode-map
-           "TAB" #'forward-button
-           "n"   #'forward-button
-           "p"   #'backward-button)
+   "TAB" #'forward-button
+   "n"   #'forward-button
+   "p"   #'backward-button)
 
   :preface
   (defun zc-help/temporary-remove-dedication (orig-fn &rest args)

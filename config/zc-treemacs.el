@@ -9,6 +9,22 @@
   :straight t
   :after (:and projectile pretty-hydra)
 
+  :hydra
+  ("Basic"
+   (("?" treemacs--helpful-hydra "helpful"))
+
+   "Project"
+   (("pp" treemacs-projectile "add project")
+    ("pd" treemacs-remove-project-from-workspace "remove project")
+    ("pr" treemacs-rename-project "rename project")
+    ("pc" treemacs-collapse-project "collapse project")
+    ("pC" treemacs-collapse-all-projects "collapse all projects"))
+
+   "Workspace"
+   (("wc" treemacs-create-workspace "create workspace")
+    ("wo" treemacs-switch-workspace "select workspace")
+    ("wD" treemacs-remove-workspace "remove workspace")))
+
   :preface
   (defun zc-treemacs/is-file-ignored? (file git-info)
     "Return t if FILE should not be rendered."
@@ -35,24 +51,7 @@
                #'zc-treemacs/is-file-ignored?)
 
   ;; Disable the indicator next to open files--hl-line is sufficient
-  (treemacs-fringe-indicator-mode nil)
-
-  ;; Define custom key bindings
-  (zc-hydra/major-mode-define treemacs-mode
-    ("Basic"
-     (("?" treemacs--helpful-hydra "helpful"))
-
-     "Project"
-     (("pp" treemacs-projectile "add project")
-      ("pd" treemacs-remove-project-from-workspace "remove project")
-      ("pr" treemacs-rename-project "rename project")
-      ("pc" treemacs-collapse-project "collapse project")
-      ("pC" treemacs-collapse-all-projects "collapse all projects"))
-
-     "Workspace"
-     (("wc" treemacs-create-workspace "create workspace")
-      ("wo" treemacs-switch-workspace "select workspace")
-      ("wD" treemacs-remove-workspace "remove workspace")))))
+  (treemacs-fringe-indicator-mode nil))
 
 (use-package treemacs-evil
   :straight t
@@ -61,10 +60,10 @@
   (setq evil-treemacs-state-cursor '("SkyBlue" box))
 
   (general-define-key :keymaps 'treemacs-mode-map :states 'treemacs
-                      "h" #'treemacs-collapse-parent-node
-                      "l" #'treemacs-TAB-action
-                      "H" #'treemacs-root-up
-                      "L" #'treemacs-root-down))
+    "h" #'treemacs-collapse-parent-node
+    "l" #'treemacs-TAB-action
+    "H" #'treemacs-root-up
+    "L" #'treemacs-root-down))
 
 (use-package treemacs-projectile
   :straight t
