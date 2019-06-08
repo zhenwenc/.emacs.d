@@ -23,7 +23,7 @@
   (interactive)
   (clipboard-kill-ring-save (point-min) (point-max)))
 
-(defun zc/buffer-toggle-narrow (beg end)
+(defun zc/buffer-toggle-narrow ()
   "Restrict editing in this buffer to the current region or
 org subtree if in `org-mode'.
 
@@ -31,11 +31,12 @@ org subtree if in `org-mode'.
 - If the region is active, narrow to region.
 - If currently in `org-mode', narrow to subtree.
 - Otherwise, narrow to defun."
-  (interactive "r")
+  (interactive)
   (save-excursion
     (cond
      ((buffer-narrowed-p)        (widen) (recenter))
-     ((use-region-p)             (narrow-to-region beg end))
+     ((use-region-p)             (narrow-to-region (region-beginning)
+                                                   (region-end)))
      ((derived-mode-p 'org-mode) (org-narrow-to-subtree))
      (t                          (narrow-to-defun)))))
 
