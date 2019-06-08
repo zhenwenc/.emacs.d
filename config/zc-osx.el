@@ -21,8 +21,9 @@
       ;; Never show a proxy icon in the title bar.
       ns-use-proxy-icon nil)
 
+(add-to-list 'default-frame-alist '(ns-appearance           . nil))
 (add-to-list 'default-frame-alist '(ns-transparent-titlebar . nil))
-(add-to-list 'default-frame-alist '(ns-appearance . nil))
+(add-to-list 'default-frame-alist '(vertical-scroll-bars    . nil))
 
 (global-unset-key (kbd "M-t"))
 (global-unset-key (kbd "M-p"))
