@@ -5,11 +5,6 @@
 
 
 
-;; Enable delete selection mode
-(delete-selection-mode 1)
-
-
-
 (global-set-key (kbd "s-<backspace>") 'backward-kill-word)
 (global-set-key (kbd "s-<left>")      'backward-word)
 (global-set-key (kbd "s-<right>")     'forward-word)

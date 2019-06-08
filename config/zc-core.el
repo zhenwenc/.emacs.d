@@ -15,9 +15,6 @@
 (defalias #'yes-or-no-p #'y-or-n-p)
 (defalias #'view-hello-file #'ignore)
 
-;; Automatically update buffers when files change
-(global-auto-revert-mode t)
-
 ;; Enable 'power user' features
 (put 'upcase-region 'disabled nil)
 (put 'downcase-region 'disabled nil)
@@ -51,8 +48,13 @@
       recentf-save-file     (concat paths-cache-dir "/recentf")
       bookmark-default-file (concat paths-cache-dir "/bookmarks")
 
-      ;; Don't show the startup message
+      ;; Quiet startup
+      inhibit-startup-screen t
       inhibit-startup-message t
+      inhibit-startup-echo-area-message t
+
+      ;; Disable useless features
+      frame-title-format nil
 
       ;; Prefer splitting windows horizontally
       split-height-threshold nil
@@ -152,7 +154,14 @@
 
 ;; Build-in packages
 
+;; Delete selection if insert someting
+(use-package delsel
+  :ensure nil
+  :hook (after-init . delete-selection-mode))
+
+;; Automatically update buffers when files change
 (use-package autorevert
+  :ensure nil
   :init
   (setq global-auto-revert-non-file-buffers t)
   (setq auto-revert-verbose nil)
