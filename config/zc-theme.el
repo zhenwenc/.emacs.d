@@ -159,6 +159,10 @@
         (add-to-list 'default-frame-alist `(font . ,zc-default-font))
         (add-to-list 'default-frame-alist '(internal-border-width . 0))
 
+        ;; Workaround for initializing child frame by posframe
+        ;; causes weird white square flicker on the screen.
+        (add-to-list 'default-frame-alist `(background-color . ,(doom-color 'bg)))
+
         (set-face-font 'default        zc-default-font)
         (set-face-font 'variable-pitch zc-variable-pitch-font)
         (set-face-font 'fixed-pitch    zc-fixed-pitch-font))

@@ -52,6 +52,7 @@
       inhibit-startup-screen t
       inhibit-startup-message t
       inhibit-startup-echo-area-message t
+      initial-scratch-message nil
 
       ;; Disable useless features
       frame-title-format nil
