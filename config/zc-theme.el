@@ -85,6 +85,17 @@
 (use-package rainbow-delimiters
   :straight t)
 
+(use-package hl-line
+  :straight t
+  :preface
+  (defun zc-theme/maybe-init-hl-line ()
+    (unless (or (derived-mode-p 'lisp-mode)
+                (derived-mode-p 'emacs-lisp-mode))
+      (hl-line-mode)))
+  :hook
+  (text-mode . zc-theme/maybe-init-hl-line)
+  (prog-mode . zc-theme/maybe-init-hl-line))
+
 (use-package hl-todo
   :straight t
   :preface
@@ -93,51 +104,51 @@
       (unless (or (s-ends-with? ".org" name)
                   (s-ends-with? "org.el" name))
         (hl-todo-mode))))
-  :hook (prog-mode . zc-theme/maybe-init-hl-todo))
+  :hook
+  (prog-mode . zc-theme/maybe-init-hl-todo))
 
 (use-package highlight-sexp
   :straight t
-  :hook ((lisp-mode . highlight-sexp-mode)
+  :hook ((lisp-mode       . highlight-sexp-mode)
          (emacs-lisp-mode . highlight-sexp-mode))
-  :config
+  :custom
   ;; Lighten background color from doom theme
-  (setq hl-sexp-background-color (doom-color 'bg-alt)))
+  (hl-sexp-background-color (doom-color 'bg-alt)))
 
 (use-package highlight-thing
   :straight t
   :commands (global-highlight-thing-mode)
   :init (global-highlight-thing-mode)
   :config
-  (progn
-    (setq highlight-thing-delay-seconds 0.5
-          highlight-thing-case-sensitive-p t
-          highlight-thing-exclude-thing-under-point t
-          highlight-thing-excluded-major-modes '(magit-status-mode))
+  (setq highlight-thing-delay-seconds 0.5
+        highlight-thing-case-sensitive-p t
+        highlight-thing-exclude-thing-under-point t
+        highlight-thing-excluded-major-modes '(magit-status-mode))
 
-    ;; If the search string happens to be the symbol being
-    ;; highlighted by `highlight-thing', the overlays it applies
-    ;; should be removed, because `swiper' applies its own
-    ;; overlays. Otherwise it can flicker between the two faces
-    ;; as you move between candidates.
-    (defun zc-theme/clear-highlight-for-swiper (&rest _)
-      (when highlight-thing-mode (highlight-thing-remove-last))
-      (when highlight-sexp-mode (move-overlay hl-sexp-overlay 0 0)))
-    (advice-add 'swiper :before #'zc-theme/clear-highlight-for-swiper)
+  ;; If the search string happens to be the symbol being
+  ;; highlighted by `highlight-thing', the overlays it applies
+  ;; should be removed, because `swiper' applies its own
+  ;; overlays. Otherwise it can flicker between the two faces
+  ;; as you move between candidates.
+  (defun zc-theme/clear-highlight-for-swiper (&rest _)
+    (when highlight-thing-mode (highlight-thing-remove-last))
+    (when highlight-sexp-mode (move-overlay hl-sexp-overlay 0 0)))
+  (advice-add 'swiper :before #'zc-theme/clear-highlight-for-swiper)
 
-    ;; Disable `highlight-thing' for various cases
-    (defun zc-theme/maybe-disable-highlight-thing (fn &rest args)
-      (and
-       ;; If symbol is highlighted by `ahs-highlight-now',
-       ;; the flicker effect occurs on other candidates.
-       (not (bound-and-true-p ahs-highlighted))
-       ;; Ensure the original condition satisfies.
-       (apply fn args)
-       ;; Highlight the occurrences of a single character is
-       ;; nonsense.
-       (let ((thing (highlight-thing-get-thing-at-point)))
-         (or (not (stringp thing)) (> (length thing) 1)))))
-    (advice-add 'highlight-thing-should-highlight-p
-                :around #'zc-theme/maybe-disable-highlight-thing)))
+  ;; Disable `highlight-thing' for various cases
+  (defun zc-theme/maybe-disable-highlight-thing (fn &rest args)
+    (and
+     ;; If symbol is highlighted by `ahs-highlight-now',
+     ;; the flicker effect occurs on other candidates.
+     (not (bound-and-true-p ahs-highlighted))
+     ;; Ensure the original condition satisfies.
+     (apply fn args)
+     ;; Highlight the occurrences of a single character is
+     ;; nonsense.
+     (let ((thing (highlight-thing-get-thing-at-point)))
+       (or (not (stringp thing)) (> (length thing) 1)))))
+  (advice-add 'highlight-thing-should-highlight-p
+              :around #'zc-theme/maybe-disable-highlight-thing))
 
 
 
