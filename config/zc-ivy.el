@@ -126,7 +126,6 @@
   (setq ivy-posframe-display-functions-alist '((t . zc-ivy/posframe-display)))
   (setq ivy-posframe-parameters '((alpha 98 98))
         ivy-posframe-border-width 16
-        ivy-posframe-min-width 120
         ivy-posframe-min-height 10)
   (ivy-posframe-mode +1))
 
