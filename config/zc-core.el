@@ -134,6 +134,7 @@
 (global-set-key (kbd "C-x C-b") 'ibuffer)
 (global-set-key (kbd "C-c e e") 'toggle-debug-on-error)
 (global-set-key (kbd "C-h c")   'describe-char)
+(global-set-key (kbd "s-u")     'revert-buffer)
 
 (global-set-key (kbd "M-1")     'winum-select-window-1)
 (global-set-key (kbd "M-2")     'winum-select-window-2)
@@ -191,7 +192,7 @@
   :commands (imenu-list)
   :general (:states 'normal :keymaps 'imenu-list-major-mode-map
             "d" #'imenu-list-display-entry
-            "g" #'imenu-list-refresh
+            "r" #'imenu-list-refresh
             "q" #'quit-window)
   :config
   (setq imenu-list-focus-after-activation nil

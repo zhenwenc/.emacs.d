@@ -119,6 +119,7 @@
   :straight t
   :custom-face
   (ivy-posframe        ((t (:background ,(doom-color 'bg-alt)))))
+  (ivy-posframe-border ((t (:background ,(doom-color 'bg-alt)))))
   (ivy-posframe-cursor ((t (:background ,(doom-color 'blue)))))
   :config
   (defun zc-ivy/posframe-display (str)

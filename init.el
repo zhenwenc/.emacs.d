@@ -9,6 +9,9 @@
 ;; This emacs setting is adapted from Chris Barrett's config here:
 ;; https://github.com/chrisbarrett/.emacs.d
 
+;; Install Emacs on MacOS:
+;; https://github.com/railwaycat/homebrew-emacsmacport
+
 (when (version< emacs-version "26")
   (error "This requires Emacs 26 and above!"))
 
