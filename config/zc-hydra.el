@@ -221,13 +221,17 @@
   (zc-hydra/define zc-main-hydra--toggle
     (:color teal :title "Toggle Hydra" :icon "building" :prefix "t")
     ("Basic"
-     (("td" toggle-debug-on-error "emacs debug")
-      ("tf" toggle-frame-fullscreen "fullscreen")
+     (("tf" toggle-frame-fullscreen "fullscreen")
+      ("tF" toggle-frame-maximized "maximize frame")
+      ("td" toggle-debug-on-error "emacs debug")
       ("tn" toggle-linum "line numbers")
       ("tw" whitespace-mode "whitespace")
+      ("tk" which-key-mode "which key"))
+
+     "Apps"
+     (("tp" prodigy "prodigy services")
       ("tc" zc-eval/compile-on-save-mode "auto recompile")
-      ("tk" which-key-mode "which key")
-      ("tp" prodigy "prodigy services"))))
+      ("ti" imenu-list-smart-toggle "imenu list"))))
 
   (zc-hydra/define zc-main-hydra--help
     (:color teal :title "Help Hydra" :icon "question" :prefix "h")

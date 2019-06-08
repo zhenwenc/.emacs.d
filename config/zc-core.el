@@ -190,7 +190,12 @@
   :straight t
   :commands (imenu-list)
   :general (:states 'normal :keymaps 'imenu-list-major-mode-map
-                    "q" #'quit-window))
+            "d" #'imenu-list-display-entry
+            "g" #'imenu-list-refresh
+            "q" #'quit-window)
+  :config
+  (setq imenu-list-focus-after-activation nil
+        imenu-list-auto-resize t))
 
 (use-package smex
   :straight t
