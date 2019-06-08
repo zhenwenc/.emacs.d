@@ -4,6 +4,7 @@
 (require 's)
 (require 'noflet)
 (require 'zc-ivy-funcs)
+(require 'zc-layout-funcs)
 
 
 
@@ -26,6 +27,7 @@
 
   :config
   (progn
+    (setq ivy-height 10)
     (setq ivy-count-format "(%d/%d) ")
 
     ;; Show recent files in switch-buffer
@@ -112,6 +114,21 @@
         ivy-historian-recent-boost 2000
         ivy-historian-recent-decrement 1000)
   (ivy-historian-mode 1))
+
+(use-package ivy-posframe
+  :straight t
+  :custom-face
+  (ivy-posframe        ((t (:background ,(doom-color 'bg-alt)))))
+  (ivy-posframe-cursor ((t (:background ,(doom-color 'blue)))))
+  :config
+  (defun zc-ivy/posframe-display (str)
+    (ivy-posframe--display str #'zc-layout/poshandler-frame-bottom-center))
+  (setq ivy-posframe-display-functions-alist '((t . zc-ivy/posframe-display)))
+  (setq ivy-posframe-parameters '((alpha 98 98))
+        ivy-posframe-border-width 16
+        ivy-posframe-min-width 120
+        ivy-posframe-min-height 10)
+  (ivy-posframe-mode +1))
 
 
 

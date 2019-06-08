@@ -6,6 +6,7 @@
 (require 'general)
 (require 'zc-funcs)
 (require 'zc-hydra-funcs)
+(require 'zc-layout-funcs)
 
 (autoload 'counsel-imenu "counsel")
 (autoload 'counsel-recentf "counsel")
@@ -299,6 +300,18 @@
   (general-define-key :keymaps 'override :states '(insert)
     "s-SPC" #'zc-main-hydra/body
     "s-,"   #'zc-hydra/major-mode-hydra))
+
+
+
+(use-package hydra
+  :straight t
+  :config
+  (setq hydra-hint-display-type 'posframe)
+  (setq hydra-posframe-show-params
+        `(:internal-border-width 16
+          :background-color ,(doom-color 'bg-alt)
+          :override-parameters ((alpha 98 98))
+          :poshandler zc-layout/poshandler-frame-bottom-center)))
 
 
 

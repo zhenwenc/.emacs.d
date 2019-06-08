@@ -145,25 +145,31 @@
   "Setup frame default fonts."
   (if window-system
       (progn
-        (setq-default line-spacing 1)
-
         (add-to-list 'default-frame-alist `(font . ,zc-default-font))
         (add-to-list 'default-frame-alist '(internal-border-width . 0))
 
-        (set-face-font 'default zc-default-font)
+        (set-face-font 'default        zc-default-font)
         (set-face-font 'variable-pitch zc-variable-pitch-font)
-        (set-face-font 'fixed-pitch zc-fixed-pitch-font))
+        (set-face-font 'fixed-pitch    zc-fixed-pitch-font))
     (when (not (eq system-type 'darwin))
       (menu-bar-mode -1))
     ;; Menu bar always off in text mode
     (menu-bar-mode -1)))
+(add-hook 'after-init-hook 'zc-theme/after-init)
 
 (defun zc-theme/no-fringes-in-minibuffer ()
   "Disable fringes in the minibuffer window."
   (set-window-fringes (minibuffer-window) 0 0 nil))
-
-(add-hook 'after-init-hook 'zc-theme/after-init)
 (add-hook 'minibuffer-setup-hook #'zc-theme/no-fringes-in-minibuffer)
+
+(defun zc-theme/set-line-spacing ()
+  "Add extra spacing above and below each line, which is
+similar to using: `(setq-default line-spacing 1)', but avoid
+affecting minibuffers which may cause problem on `ivy'."
+  (setq-local default-text-properties
+              '(line-spacing 0.25 line-height 1.25)))
+(add-hook 'text-mode-hook #'zc-theme/set-line-spacing)
+(add-hook 'text-mode-hook #'zc-theme/set-line-spacing)
 
 
 
