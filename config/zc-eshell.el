@@ -82,7 +82,7 @@ replace or insert mode."
   :init
   (setq eshell-kill-processes-on-exit t
         eshell-hist-ignoredups t
-        eshell-directory-name (concat paths-cache-dir "/eshell")
+        eshell-directory-name (concat paths-cache-dir "eshell")
 
         eshell-prompt-regexp "^.* λ "
         eshell-prompt-function #'zc-eshell/prompt

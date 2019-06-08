@@ -103,7 +103,7 @@
 
   :init
   (progn
-    (setq ensime-startup-dirname (concat paths-cache-dir "/ensime/"))
+    (setq ensime-startup-dirname (concat paths-cache-dir "ensime/"))
 
     )
 

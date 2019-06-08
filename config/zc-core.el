@@ -43,10 +43,10 @@
       save-interprogram-paste-before-kill t
       ediff-window-setup-function 'ediff-setup-windows-plain
 
-      save-place-file       (concat paths-cache-dir "/places")
-      url-cookie-file       (concat paths-cache-dir "/cookies")
-      recentf-save-file     (concat paths-cache-dir "/recentf")
-      bookmark-default-file (concat paths-cache-dir "/bookmarks")
+      save-place-file       (concat paths-cache-dir "places")
+      url-cookie-file       (concat paths-cache-dir "cookies")
+      recentf-save-file     (concat paths-cache-dir "recentf")
+      bookmark-default-file (concat paths-cache-dir "bookmarks")
 
       ;; Quiet startup
       inhibit-startup-screen t
@@ -64,12 +64,12 @@
       make-backup-files               nil
       backup-directory-alist         `((".*" . ,temporary-file-directory))
       auto-save-file-name-transforms `((".*" ,temporary-file-directory t))
-      auto-save-list-file-name        (concat paths-cache-dir "/autosave")
-      auto-save-list-file-prefix      (concat paths-cache-dir "/autosave/.saves-")
+      auto-save-list-file-name        (concat paths-cache-dir "autosave")
+      auto-save-list-file-prefix      (concat paths-cache-dir "autosave/.saves-")
 
       ;; Tramp
-      tramp-persistency-file-name     (concat paths-cache-dir "/tramp")
-      tramp-auto-save-directory       (concat paths-cache-dir "/autosave/tramp")
+      tramp-persistency-file-name     (concat paths-cache-dir "tramp")
+      tramp-auto-save-directory       (concat paths-cache-dir "autosave/tramp")
       tramp-backup-directory-alist    backup-directory-alist
       tramp-histfile-override         "/tmp/.tramp" ; shhh!
 

@@ -26,7 +26,6 @@
 
 (use-package doom-themes
   :straight t
-  :init (add-to-list 'custom-theme-load-path paths-themes-dir)
   :config
   (progn
     ;; Global settings (defaults)

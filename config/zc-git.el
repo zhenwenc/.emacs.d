@@ -40,9 +40,9 @@
             "<escape>" #'transient-quit-one
             "q"        #'transient-quit-one)
   :init
-  (setq transient-levels-file  (concat paths-cache-dir "/transient/levels.el")
-        transient-values-file  (concat paths-cache-dir "/transient/values.el")
-        transient-history-file (concat paths-cache-dir "/transient/history.el")))
+  (setq transient-levels-file  (concat paths-cache-dir "transient/levels.el")
+        transient-values-file  (concat paths-cache-dir "transient/values.el")
+        transient-history-file (concat paths-cache-dir "transient/history.el")))
 
 ;; Interfaces to GitHub integration
 
@@ -51,7 +51,7 @@
   :after magit
   :commands magit-status
   :init
-  (setq forge-database-file (concat paths-cache-dir "/forge/database.sqlite")))
+  (setq forge-database-file (concat paths-cache-dir "forge/database.sqlite")))
 
 ;; Interactively step forward and backwards through a
 ;; buffer's git versions.

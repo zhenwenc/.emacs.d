@@ -116,7 +116,7 @@
 
 (use-package savehist
   :config
-  (setq savehist-file (concat paths-cache-dir "/savehist")
+  (setq savehist-file (concat paths-cache-dir "savehist")
         savehist-save-minibuffer-history t
         savehist-autosave-interval nil ; save on kill only
         savehist-additional-variables '(compile-history))

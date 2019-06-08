@@ -102,7 +102,7 @@
   :commands (historian-mode)
   :after ivy
   :config
-  (setq historian-save-file (concat paths-cache-dir "/historian"))
+  (setq historian-save-file (concat paths-cache-dir "historian"))
   (historian-mode +1))
 
 (use-package ivy-historian

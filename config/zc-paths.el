@@ -9,22 +9,22 @@
 
 
 (defconst paths-cache-dir
-  (concat user-emacs-directory ".cache"))
+  (concat user-emacs-directory ".cache/"))
 
 (defconst paths-lisp-dir
-  (concat user-emacs-directory "lisp"))
+  (concat user-emacs-directory "lisp/"))
 
 (defconst paths-config-dir
-  (concat user-emacs-directory "config"))
+  (concat user-emacs-directory "config/"))
 
 (defconst paths-vendor-dir
-  (concat user-emacs-directory "vendor"))
+  (concat user-emacs-directory "vendor/"))
 
 (defconst paths-themes-dir
-  (concat user-emacs-directory "themes"))
+  (concat user-emacs-directory "themes/"))
 
 (defconst paths-private-dir
-  (concat user-emacs-directory "private"))
+  (concat user-emacs-directory "private/"))
 
 
 
@@ -43,6 +43,7 @@ If argument INTERACTIVE-P is set, log additional information."
                       (seq-uniq (append main-dirs subdirs load-path)))))
 
     (setq load-path updated-load-path)
+    (add-to-list 'custom-theme-load-path paths-themes-dir)
 
     (when interactive-p
       (if-let* ((added (seq-difference load-path before)))

@@ -86,7 +86,7 @@
   :after company
   :hook (company-mode . company-prescient-mode)
   :config
-  (setq prescient-save-file (concat paths-cache-dir "/prescient-save.el"))
+  (setq prescient-save-file (concat paths-cache-dir "prescient-save.el"))
   (prescient-persist-mode +1))
 
 (use-package company-box

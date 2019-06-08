@@ -253,7 +253,7 @@
   :straight t
   :preface
   (defun zc-org/pre-execute-async-src-block ()
-    (setq org-plantuml-jar-path (concat paths-vendor-dir "/plantuml.jar")))
+    (setq org-plantuml-jar-path (concat paths-vendor-dir "plantuml.jar")))
   :hook ((org-babel-after-execute . org-redisplay-inline-images)
          (ob-async-pre-execute-src-block . zc-org/pre-execute-async-src-block)))
 
