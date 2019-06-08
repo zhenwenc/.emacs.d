@@ -19,7 +19,10 @@
       ;; Don't open a file in a new frame
       ns-pop-up-frames nil
       ;; Never show a proxy icon in the title bar.
-      ns-use-proxy-icon nil)
+      ns-use-proxy-icon nil
+
+      ;; Enable this when using maximized instead of fullframe.
+      ns-auto-hide-menu-bar nil)
 
 (add-to-list 'default-frame-alist '(ns-appearance           . nil))
 (add-to-list 'default-frame-alist '(ns-transparent-titlebar . nil))
