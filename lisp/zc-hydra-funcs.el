@@ -43,6 +43,19 @@
        (--filter (not (-contains? props (car it))))
        (-flatten-n 1)))
 
+(defun zc-hydra/normalize-head (head)
+  (cond ((null head) nil)
+        ;; symbol
+        ((symbolp head)
+         (symbol-value head))
+        ;; self-evaluating form
+        ((and (listp head) (functionp (car head)))
+         (eval head))
+        ;; function
+        ((functionp head)
+         `(funcall #',head))
+        (t head)))
+
 
 
 (defmacro zc-hydra/define (name body heads-plist)
@@ -61,7 +74,9 @@
   (declare (indent defun))
   (let ((name  (intern (format "major-mode-hydra--%s" mode)))
         (title (zc-hydra/major-mode-title mode))
-        (heads (zc-hydra/maybe-add-exit-head heads-plist)))
+        (heads (--> heads-plist
+                    (mapcar #'zc-hydra/normalize-head it)
+                    (zc-hydra/maybe-add-exit-head it))))
     `(pretty-hydra-define ,name
        (:hint nil :color teal :title ,title) ,heads)))
 
