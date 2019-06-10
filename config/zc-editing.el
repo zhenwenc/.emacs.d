@@ -93,9 +93,9 @@
 
 (use-package dumb-jump
   :straight t
-  :general (:states 'normal :keymaps 'prog-mode-map
-                    "M-." #'dumb-jump-go
-                    "M-," #'dumb-jump-back)
+  :general (:keymaps '(emacs-lisp-mode-map)
+            [remap xref-find-definitions] #'dumb-jump-go
+            [remap xref-pop-marker-stack] #'dumb-jump-back)
   :config
   (progn
     (setq dumb-jump-selector 'ivy)
@@ -104,7 +104,7 @@
 (use-package iedit
   :straight t
   :general (:keymaps 'iedit-mode-keymap
-                     "C-;" #'iedit-toggle-selection)
+            "C-;" #'iedit-toggle-selection)
   :config
   (progn
     (setq iedit-toggle-key-default nil)

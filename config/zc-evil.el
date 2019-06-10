@@ -14,44 +14,45 @@
   :general
   ;; Motion keys for help buffers.
   (:states 'motion :keymaps 'help-mode-map
-           "<escape>"   #'quit-window
-           "<tab>"      #'forward-button
-           "S-<tab>"    #'backward-button
-           "]"          #'help-go-forward
-           "["          #'help-go-back
-           "gh"         #'help-follow-symbol)
+   "<escape>"   #'quit-window
+   "<tab>"      #'forward-button
+   "S-<tab>"    #'backward-button
+   "]"          #'help-go-forward
+   "["          #'help-go-back
+   "gh"         #'help-follow-symbol)
 
   ;; Rebind C-u to scroll up
   (:states '(motion normal visual)
-           "C-u"        #'evil-scroll-up
-           "C-d"        #'evil-scroll-down
-           "M-u"        #'evil-scroll-line-up
-           "M-d"        #'evil-scroll-line-down
-           "C-i"        #'indent-for-tab-command
-           "C-o"        #'goto-last-change
-           "C-S-o"      #'goto-last-change-reverse
-           "M-a"        #'zc-core/evil-escape
-           "M-s"        #'zc-core/evil-escape-and-save
-           "M-C-<up>"   #'zc-core/move-line-up
-           "M-C-<down>" #'zc-core/move-line-down)
+   "C-u"        #'evil-scroll-up
+   "C-d"        #'evil-scroll-down
+   "M-u"        #'evil-scroll-line-up
+   "M-d"        #'evil-scroll-line-down
+   "C-i"        #'indent-for-tab-command
+   "C-o"        #'goto-last-change
+   "C-S-o"      #'goto-last-change-reverse
+   "M-a"        #'zc-core/evil-escape
+   "M-s"        #'zc-core/evil-escape-and-save
+   "M-C-<up>"   #'zc-core/move-line-up
+   "M-C-<down>" #'zc-core/move-line-down)
 
   (:states '(normal insert)
-           "M-k"        #'kill-whole-line)
+   "M-k"        #'kill-whole-line
+   "M-."        #'xref-find-definitions
+   "M-,"        #'xref-pop-marker-stack)
 
   (:states 'normal
-           ;; unset define macro
-           "q"          nil
-           "M"          #'evil-show-marks)
+   "q"          nil ; unset define macro
+   "M"          #'evil-show-marks)
 
   (:states 'insert
-           "C-<tab>"    #'dabbrev-expand
-           "TAB"        #'indent-for-tab-command
-           "M-a"        #'zc-core/evil-escape
-           "M-s"        #'zc-core/evil-escape-and-save
-           "C-k"        #'undefined ; digraph
-           "C-i"        #'indent-for-tab-command
-           "C-d"        #'delete-char
-           "C-S-d"      #'backward-kill-word)
+   "C-<tab>"    #'dabbrev-expand
+   "TAB"        #'indent-for-tab-command
+   "M-a"        #'zc-core/evil-escape
+   "M-s"        #'zc-core/evil-escape-and-save
+   "C-k"        #'undefined ; digraph
+   "C-i"        #'indent-for-tab-command
+   "C-d"        #'delete-char
+   "C-S-d"      #'backward-kill-word)
 
   (:states '(normal visual) "C-e" #'evil-end-of-line)
   (:states 'insert          "C-e" #'mwim-end-of-code-or-line)
@@ -155,8 +156,8 @@
   :commands (global-evil-surround-mode)
   :general
   (:states 'visual :keymaps 'evil-surround-mode-map
-           "s" #'evil-surround-region
-           "S" #'evil-substitute)
+   "s" #'evil-surround-region
+   "S" #'evil-substitute)
   :preface
   (defun zc-evil/init-evil-surround-pairs ()
     (make-local-variable 'evil-surround-pairs-alist)
@@ -203,10 +204,10 @@
   :after evil-common
   :general
   (:states 'normal
-           ;; Double all the commenting functions so that the inverse
-           ;; operations can be called without setting a flag
-           ";"  #'evilnc-comment-operator
-           "gc" #'evilnc-comment-operator))
+   ;; Double all the commenting functions so that the inverse
+   ;; operations can be called without setting a flag
+   ";"  #'evilnc-comment-operator
+   "gc" #'evilnc-comment-operator))
 
 
 ;; Supplemental evil-mode key-bindings to org-mode
@@ -217,9 +218,9 @@
   :hook (org-mode . evil-org-mode)
   :general
   (:states 'normal :keymaps 'evil-org-mode-map
-           "t" #'org-todo)
+   "t" #'org-todo)
   (:states 'insert :keymaps 'evil-org-mode-map
-           "C-d" nil)
+   "C-d" nil)
   :config
   (progn
     (require 'evil-org-agenda)

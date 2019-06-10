@@ -163,37 +163,34 @@ Requires smartparens because all movement is done using `sp-up-sexp'."
 (use-package elisp-mode
   :straight nil
 
-  ;; Prefer xref-find than dump-jump for elisp
+  ;; Prefer xref-find than dumb-jump for elisp
   :general (:states 'normal :keymaps 'emacs-lisp-mode-map
-            "M-,"   #'pop-tag-mark
-            "M-."   #'xref-find-definitions
-            "C-M-." #'xref-find-apropos))
+            "C-M-." #'xref-find-apropos)
 
-
+  :config
+  (zc-hydra/major-mode-define emacs-lisp-mode
+    ("Basic"
+     (("!" ielm "REPL"))
 
-(zc-hydra/major-mode-define emacs-lisp-mode
-  ("Basic"
-   (("!" ielm "REPL"))
+     "Compile"
+     (("cc" emacs-lisp-byte-compile "compile"))
 
-   "Compile"
-   (("cc" emacs-lisp-byte-compile "compile"))
+     "Eval & Expand"
+     (("eb" eval-buffer "buffer")
+      ("ef" eval-defun "defun")
+      ("er" eval-region "region")
+      ("ee" zc-lisp/eval-current-form-sp "current form")
+      ("em" pp-macroexpand-last-sexp "expand macro"))
 
-   "Eval & Expand"
-   (("eb" eval-buffer "buffer")
-    ("ef" eval-defun "defun")
-    ("er" eval-region "region")
-    ("ee" zc-lisp/eval-current-form-sp "current form")
-    ("em" pp-macroexpand-last-sexp "expand macro"))
+     "Test"
+     (("tt" ert "prompt")
+      ("ta" (ert t) "all")
+      ("tf" (ert :failed) "failed"))
 
-   "Test"
-   (("tt" ert "prompt")
-    ("ta" (ert t) "all")
-    ("tf" (ert :failed) "failed"))
-
-   "Doc"
-   (("hh" zc-lisp/describe-at-point "doc at point")
-    ("hf" helpful-function "desc function")
-    ("hv" helpful-variable "desc variable"))))
+     "Doc"
+     (("hh" zc-lisp/describe-at-point "doc at point")
+      ("hf" helpful-function "desc function")
+      ("hv" helpful-variable "desc variable")))))
 
 
 
