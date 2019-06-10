@@ -101,6 +101,7 @@
 (use-package zc-flycheck)
 (use-package zc-flyspell)
 (use-package zc-company)
+(use-package zc-lsp)
 (use-package zc-lisp)
 (use-package zc-tools)
 (use-package zc-treemacs)
