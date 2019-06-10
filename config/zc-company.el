@@ -5,13 +5,14 @@
 (require 'general)
 
 (defvar zc-company/backend-alist
-  '((text-mode      :derived (company-capf company-dabbrev company-ispell))
-    (prog-mode      :derived (company-capf))
-    (conf-mode      :derived (company-dabbrev-code))
-    (css-mode       :exact   (company-css))
-    (tide-mode      :exact   (company-tide))
-    (ensime-mode    :exact   (ensime-company))
-    (terraform-mode :exact   (company-dabbrev)))
+  '((text-mode       :derived (company-capf company-dabbrev company-ispell))
+    (prog-mode       :derived (company-capf))
+    (conf-mode       :derived (company-dabbrev-code))
+    (css-mode        :exact   (company-css))
+    (tide-mode       :exact   (company-tide))
+    (typescript-mode :exact   (company-lsp))
+    (ensime-mode     :exact   (ensime-company))
+    (terraform-mode  :exact   (company-dabbrev)))
   "An alist matching modes to company backends.")
 
 

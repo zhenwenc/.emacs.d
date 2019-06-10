@@ -19,27 +19,14 @@
 
   :hydra
   ("Server"
-   (("ns" tide-restart-server "restart server")
-    ("nS" zc-typescript/tide-stop-all-servers "stop all servers")
-    ("nl" tide-list-servers "list servers")
-    ("nv" tide-verify-setup "verify setup"))
-
-   "Error"
-   (("ee" tide-error-at-point "error at point")
-    ("el" tide-project-errors "project errors")
-    ("en" tide-find-next-error "next error")
-    ("eN" tide-find-previous-error "prev error"))
-
-   "Refactor"
-   (("rr" tide-rename-symbol "rename symbol")
-    ("rR" tide-rename-file "rename file")
-    ("rf" prettier-js "format file")
-    ("rx" tide-fix "fix code")
-    ("rX" zc-typescript/linter-fix-file "fix file"))
+   (zc-lsp/hydra-section--server '(:prefix "n"))
 
    "Docs"
-   (("hu" tide-references "references")
-    ("hh" tide-documentation-at-point "doc at point")))
+   (zc-lsp/hydra-section--help '(:prefix "h"))
+
+   "Refactor"
+   (zc-lsp/hydra-section--refactor '(:prefix "r")
+     '(("f" prettier-js "format"))))
 
   :preface
   (defun zc-typescript/set-node-modules-readonly ()
@@ -54,9 +41,38 @@
       (make-local-variable 'exec-path)
       (add-to-list 'exec-path (f-join root "node_modules" ".bin"))))
 
-  :hook ((find-file       . zc-typescript/set-node-modules-readonly)
-         (post-command    . zc-typescript/post-command-hook-handler)
-         (typescript-mode . zc-typescript/add-node-modules-bin-to-path))
+  :preface
+  (defun zc-typescript/disable-flycheck-linters ()
+    "Linters are pretty slow, and we use Prettier anyway."
+    (zc-flycheck/disable-checkers 'javascript-jshint 'typescript-tslint))
+
+  :preface
+  (defun zc-typescript/disable-flycheck-for-flow ()
+    (when (and buffer-file-name
+               (string= (f-ext buffer-file-name) "js")
+               (save-excursion (goto-char (point-min))
+                               (search-forward "@flow" nil t)))
+      (zc-flycheck/disable-checkers 'typescript-tide)))
+
+  :preface
+  (defun zc-typescript/disable-flycheck-for-node-modules ()
+    (when (and buffer-file-name
+               (s-contains-p "/node_modules/" buffer-file-name))
+      (apply 'zc-flycheck/disable-checkers
+             (->> flycheck-checkers
+                  (-map #'symbol-name)
+                  (--filter (or (string-prefix-p "javascript" it)
+                                (string-prefix-p "typescript" it)))
+                  (-map #'intern)))))
+
+  :hook
+  (find-file       . zc-typescript/set-node-modules-readonly)
+  (post-command    . zc-typescript/post-command-hook-handler)
+  (typescript-mode . zc-typescript/add-node-modules-bin-to-path)
+  (typescript-mode . zc-typescript/disable-flycheck-linters)
+  (typescript-mode . zc-typescript/disable-flycheck-for-flow)
+  (typescript-mode . zc-typescript/disable-flycheck-for-node-modules)
+  (typescript-mode . lsp)
 
   :config
   (setq typescript-indent-level 2)
@@ -148,13 +164,14 @@
 
 
 (use-package tide
+  :disabled ; switched to LSP
   :straight t
   :after (typescript-mode company flycheck)
 
   :general
-  (:states '(normal insert) :keymaps 'tide-mode-map
-   "M-." #'tide-jump-to-definition
-   "M-," #'tide-jump-back)
+  (:keymaps 'tide-mode-map
+   [remap xref-find-definitions] #'tide-jump-to-definition
+   [remap xref-pop-marker-stack] #'tide-jump-back)
 
   (:states 'normal :keymaps 'tide-references-mode-map
    "RET" #'tide-goto-reference
@@ -172,34 +189,7 @@
     (eldoc-mode +1)
     (flycheck-mode +1))
 
-  :preface
-  (defun zc-typescript/disable-flycheck-linters ()
-    "Linters are pretty slow, and we use Prettier anyway."
-    (zc-flycheck/disable-checkers 'javascript-jshint 'typescript-tslint))
-
-  :preface
-  (defun zc-typescript/disable-flycheck-for-flow ()
-    (when (and buffer-file-name
-               (string= (f-ext buffer-file-name) "js")
-               (save-excursion (goto-char (point-min))
-                               (search-forward "@flow" nil t)))
-      (zc-flycheck/disable-checkers 'typescript-tide)))
-
-  :preface
-  (defun zc-typescript/disable-flycheck-for-node-modules ()
-    (when (and buffer-file-name
-               (s-contains-p "/node_modules/" buffer-file-name))
-      (apply 'zc-flycheck/disable-checkers
-             (->> flycheck-checkers
-                  (-map #'symbol-name)
-                  (--filter (or (string-prefix-p "javascript" it)
-                                (string-prefix-p "typescript" it)))
-                  (-map #'intern)))))
-
-  :hook ((typescript-mode . zc-typescript/maybe-setup-tide)
-         (typescript-mode . zc-typescript/disable-flycheck-linters)
-         (typescript-mode . zc-typescript/disable-flycheck-for-flow)
-         (typescript-mode . zc-typescript/disable-flycheck-for-node-modules))
+  :hook (typescript-mode . zc-typescript/maybe-setup-tide)
 
   :init
   ;; HACK: This is hacky, is there any better way?
