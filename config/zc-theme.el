@@ -33,7 +33,9 @@
           doom-themes-enable-italic t)
 
     ;; Load the theme
-    (load-theme 'zc-dracula t)
+    (if (display-graphic-p)
+        (load-theme 'zc-dracula t)
+      (load-theme 'doom-one t))
 
     ;; Enable custom treemacs theme
     (doom-themes-treemacs-config)
@@ -50,18 +52,6 @@
   :straight t
   :demand t
   :commands (global-page-break-lines-mode)
-  :preface
-  (defun zc-theme/disable-all-the-icons-in-tty (orig-fn &rest args)
-    (when (display-graphic-p)
-      (apply orig-fn args)))
-  :init
-  (dolist (fn '(all-the-icons-octicon
-                all-the-icons-material
-                all-the-icons-faicon
-                all-the-icons-fileicon
-                all-the-icons-wicon
-                all-the-icons-alltheicon))
-    (advice-add fn :around #'zc-theme/disable-all-the-icons-in-tty))
   :config
   (progn
     (setq page-break-lines-modes

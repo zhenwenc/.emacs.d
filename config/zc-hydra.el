@@ -309,6 +309,7 @@
 
 (use-package hydra
   :straight t
+  :if (display-graphic-p)
   :config
   (setq hydra-hint-display-type 'posframe)
   (setq hydra-posframe-show-params

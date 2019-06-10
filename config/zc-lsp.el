@@ -120,7 +120,7 @@
         lsp-ui-sideline-show-hover t
         lsp-ui-sideline-show-diagnostics nil
         lsp-ui-sideline-show-code-actions t
-        lsp-ui-sideline-code-actions-prefix ""
+        lsp-ui-sideline-code-actions-prefix (if (display-graphic-p) "" "")
 
         lsp-ui-imenu-kind-position 'top
         lsp-ui-imenu-colors (list (doom-color 'blue) (doom-color 'yellow))

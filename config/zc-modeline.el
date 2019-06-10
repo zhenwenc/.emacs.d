@@ -75,16 +75,17 @@
   "Face for indicating evil readonly state."
   :group 'mode-line)
 
-(let* ((bg            "#1d2026") ;; #2C323C
+(let* ((gui           (display-graphic-p))
+       (bg            (if gui "#1D2026" "black")) ;; #2C323C
        (text          "#D5D8DC")
-       (text-inverse  "#3b4044")
+       (text-inverse  "#3B4044")
        (text-inactive "#5B6268")
-       (primary       "#4296ec")
-       (accent        "#ffd203")
+       (primary       "#4296EC")
+       (accent        "#FFD203")
        (warning       "#FF0266")
-       (normal        "#e6af3f")
+       (normal        "#E6AF3F")
        (insert        "#2ECC71")
-       (motion        "#ee42f4")
+       (motion        "#EE42F4")
        (visual        "#ECF0F1")
        (padded         3))
 
@@ -290,11 +291,11 @@
                  (propertize
                   " "
                   'display `((space :align-to
-                                    (- (+ right
-                                          right-fringe
-                                          right-margin
-                                          -2) ;; what is this?
-                                       ,(zc-modeline/get-width rhs))))
+                               (- (+ right
+                                     right-fringe
+                                     right-margin
+                                     -2) ;; what is this?
+                                  ,(zc-modeline/get-width rhs))))
                   'face face))))
 
       (-concat lhs spc rhs)))

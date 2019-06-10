@@ -117,6 +117,7 @@
 
 (use-package ivy-posframe
   :straight t
+  :if (display-graphic-p)
   :custom-face
   (ivy-posframe        ((t (:background ,(doom-color 'bg-alt)))))
   (ivy-posframe-border ((t (:background ,(doom-color 'bg-alt)))))
