@@ -49,7 +49,8 @@
 
 
 (use-package pretty-hydra
-  :straight (:host github :repo "jerrypnz/major-mode-hydra.el")
+  :straight (:host github :repo "jerrypnz/major-mode-hydra.el"
+             :branch "major-mode-hydra-define")
   :after (hydra)
 
   :config
@@ -70,7 +71,11 @@
 
      "Resize"
      (("w=" balance-windows "balance")
-      ("wm" zc/toggle-maximize-window "maximize"))
+      ("wm" zc/toggle-maximize-window "maximize")
+      ("w," shrink-window "resize ←" :color pink)
+      ("w." enlarge-window "resize ↑" :color pink)
+      ("w<" shrink-window-horizontally "resize ←" :color pink)
+      ("w>" enlarge-window-horizontally "resize →" :color pink))
 
      "Killer"
      (("wd" delete-window "kill")

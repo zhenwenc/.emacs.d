@@ -8,12 +8,12 @@
 
 
 (defun zc-hydra/title-with-faicon (name icon)
-  (format "\n %s %s"
+  (format "%s %s"
           (all-the-icons-faicon icon :v-adjust 0.01 :height 1.1)
           (propertize name 'face '(:height 1.1 :weight bold))))
 
 (defun zc-hydra/major-mode-title (mode)
-  (format "\n %s %s"
+  (format "%s %s"
           (all-the-icons-icon-for-mode mode :v-adjust 0.01 :height 1.1)
           (propertize (symbol-name mode) 'face '(:height 1.1 :weight bold))))
 

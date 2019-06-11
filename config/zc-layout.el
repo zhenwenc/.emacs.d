@@ -64,6 +64,7 @@
         aw-background t))
 
 
+;; Popup Windows
 
 (dolist (item `((,(rx bos "*tide-documentation*" eos)
                  (display-buffer-reuse-window
