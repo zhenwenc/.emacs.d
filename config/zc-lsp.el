@@ -21,7 +21,7 @@
   :preface
   (defun zc-lsp/imenu-symbol-filter (orig-fn sym)
     "Advice `lsp--symbol-filter' with language specific
-filters."
+  filters."
     (or (funcall orig-fn sym)
         (when (derived-mode-p 'typescript-mode)
           (not (zc-typescript/lsp-symbol-filter sym)))))
@@ -29,7 +29,7 @@ filters."
   :preface
   (defun zc-lsp/imenu-filter-symbols (orig-fn symbols)
     "Advice `lsp--imenu-filter-symbols' with language
-specific filters."
+  specific filters."
     (--> (funcall orig-fn symbols)
          (cond
           ((derived-mode-p 'typescript-mode)
@@ -80,7 +80,7 @@ specific filters."
 
 (use-package lsp-ui
   :straight t
-  :hook (lsp-mode . lsp-ui-mode)
+  :after lsp
 
   :general
   (:keymaps 'lsp-ui-mode-map
@@ -110,6 +110,8 @@ specific filters."
           (lsp-ui-sideline-mode
            (lsp-ui-sideline-apply-code-actions))
           (t (user-error "No code action available"))))
+
+  :hook (lsp-mode . lsp-ui-mode)
 
   :custom-face
   (lsp-ui-doc-header     ((t (:background ,(doom-color 'blue)
@@ -153,6 +155,7 @@ specific filters."
 
 (use-package company-lsp
   :straight t
+  :after lsp
   :config
   (setq company-lsp-cache-candidates 'auto
         company-lsp-async t
@@ -161,6 +164,7 @@ specific filters."
 
 (use-package dap-mode
   :straight t
+  :after lsp
   :config
   (require 'dap-hydra)
   (dap-mode 1)
