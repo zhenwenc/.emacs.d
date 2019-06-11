@@ -93,6 +93,13 @@
    "C-k" #'lsp-ui-peek--select-prev)
 
   :preface
+  (defun zc-lsp/setup ()
+    "Function for `lsp-after-open-hook' to setup the opened
+new file with LSP support."
+    (when (lsp--capability "documentSymbolProvider")
+      (lsp-enable-imenu)))
+
+  :preface
   (defun zc-lsp/toggle-lsp-ui-doc-mode ()
     (interactive)
     (if lsp-ui-doc-mode
@@ -112,7 +119,8 @@
            (lsp-ui-sideline-apply-code-actions))
           (t (user-error "No code action available"))))
 
-  :hook (lsp-mode . lsp-ui-mode)
+  :hook ((lsp-mode       . lsp-ui-mode)
+         (lsp-after-open . zc-lsp/setup))
 
   :custom-face
   (lsp-ui-doc-header     ((t (:background ,(doom-color 'blue)
