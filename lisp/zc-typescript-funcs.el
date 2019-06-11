@@ -1,3 +1,5 @@
+(require 's)
+(require 'dash)
 (require 'subr-x)
 
 (autoload 'sp--looking-at-p "smartparens")
@@ -7,6 +9,7 @@
 (autoload 'tide-net-sentinel "tide")
 
 (defvar tide-servers)
+(defvar lsp--symbol-kind)
 
 
 ;; Smartparens
@@ -84,6 +87,57 @@
             (json (shell-command-to-string "tsc --showConfig")))
         (json-read-from-string json))
     (error '())))
+
+
+;; LSP
+
+;; TODO: Remove `zc-yas/test-buffer-p'
+(defun zc-typescript/test-buffer-p ()
+  "Return t if buffer name contains .(test|spec). infix."
+  (string-match-p ".\\(test\\|spec\\)." (buffer-name)))
+
+(defun zc-typescript/lsp-jest-re (name)
+  "Return regexp matching a callback function signature."
+  (eval `(rx ,name "(" (group-n 1 (+ anything)) ") callback")))
+
+;;;###autoload
+(defun zc-typescript/lsp-symbol-filter (sym)
+  "Used by `zc-lsp/imenu-symbol-filter' for TypeScript.
+
+This function assumes the LSP complection requests are *not*
+cached, where it may mutate the elements."
+  (-when-let* (((&hash "name") sym)
+               (kind (lsp--get-symbol-type sym)))
+    (cond
+     ;; For test files, assuming Jest framework
+     ((zc-typescript/test-buffer-p)
+      (pcase name
+        ;; For Jest function: "describe"
+        ((and (pred (string-match (zc-typescript/lsp-jest-re "describe")))
+              (app (match-string 1) desc))
+         (--> (or (gethash "children" sym) [])
+              (seq-filter (lambda (node)
+                            (string= "Function" (lsp--get-symbol-type node)))
+                          it)
+              (puthash "children" (vconcat it) sym))
+         (puthash "name" (or desc name) sym))
+        ;; For Jest function: "it"
+        ((and (pred (string-match (zc-typescript/lsp-jest-re "it")))
+              (app (match-string 1) desc))
+         (remhash "children" sym)
+         (puthash "name" (or desc name) sym))))
+     ;; Remove private scope variable nodes
+     ((member kind '("Method" "Function"))
+      (remhash "children" sym))))
+  t)
+
+;;;###autoload
+(defun zc-typescript/lsp-filter-symbols (symbols)
+  "Used by `zc-lsp/imenu-symbols-filter' for TypeScript."
+  (let ((-compare-fn (-lambda ((&hash "kind" k1 "name" n1)
+                               (&hash "kind" k2 "name" n2))
+                       (and (equal n1 n2) (equal k1 k2)))))
+    (-uniq symbols)))
 
 
 ;; TypeScript

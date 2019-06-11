@@ -19,6 +19,24 @@
                    (-union '(,@heads) rheads))))))
 
   :preface
+  (defun zc-lsp/imenu-symbol-filter (orig-fn sym)
+    "Advice `lsp--symbol-filter' with language specific
+filters."
+    (or (funcall orig-fn sym)
+        (when (derived-mode-p 'typescript-mode)
+          (not (zc-typescript/lsp-symbol-filter sym)))))
+
+  :preface
+  (defun zc-lsp/imenu-filter-symbols (orig-fn symbols)
+    "Advice `lsp--imenu-filter-symbols' with language
+specific filters."
+    (--> (funcall orig-fn symbols)
+         (cond
+          ((derived-mode-p 'typescript-mode)
+           (zc-typescript/lsp-filter-symbols it))
+          (t it))))
+
+  :preface
   (zc-lsp/hydra-build-section "server" "n"
     (("s" lsp-restart-workspace           "restart")
      ("S" lsp-shutdown-workspace          "shutdown")
@@ -55,7 +73,10 @@
         lsp-session-file (concat paths-cache-dir ".lsp-session-v1")
 
         lsp-prefer-flymake nil
-        lsp-enable-symbol-highlighting nil))
+        lsp-enable-symbol-highlighting nil)
+
+  (advice-add 'lsp--symbol-filter :around #'zc-lsp/imenu-symbol-filter)
+  (advice-add 'lsp--imenu-filter-symbols :around #'zc-lsp/imenu-filter-symbols))
 
 (use-package lsp-ui
   :straight t
