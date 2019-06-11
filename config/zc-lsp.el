@@ -62,7 +62,6 @@
      ("a" zc-lsp/execute-code-action-dwim "action")))
 
   :config
-  (require 'lsp-clients)
   (setq lsp-trace nil
         lsp-log-io nil
         lsp-print-performance nil
@@ -72,9 +71,11 @@
         lsp-document-sync-method 'incremental
         lsp-session-file (concat paths-cache-dir ".lsp-session-v1")
 
+        lsp-auto-configure nil ; No magic!
         lsp-prefer-flymake nil
         lsp-enable-symbol-highlighting nil)
 
+  (require 'lsp-clients)
   (advice-add 'lsp--symbol-filter :around #'zc-lsp/imenu-symbol-filter)
   (advice-add 'lsp--imenu-filter-symbols :around #'zc-lsp/imenu-filter-symbols))
 
@@ -134,8 +135,19 @@
         lsp-ui-doc-use-webkit t
         lsp-ui-doc-use-childframe t
 
-        lsp-ui-flycheck-enable t
+        ;; Flycheck is fast enough to report errors after every
+        ;; change, but any unbalanced bracket can blow up the UI.
+        ;;
+        ;; However, there is a racing condition after disabling
+        ;; live reporting and only trigger flycheck update on
+        ;; buffer save. Sucks!
+        ;;
+        ;; Potential solution:
+        ;;
+        ;; Compare buffer last modified timestamp when
+        ;; `lsp-after-diagnostics-hook', had been triggered.
         lsp-ui-flycheck-live-reporting t
+        lsp-ui-flycheck-enable t
 
         lsp-ui-sideline-enable nil
         lsp-ui-sideline-ignore-duplicate t
@@ -151,7 +163,11 @@
         lsp-ui-peek-enable nil
         lsp-ui-peek-list-width 50
         lsp-ui-peek-peek-height 20
-        lsp-ui-peek-fontify 'on-demand))
+        lsp-ui-peek-fontify 'on-demand)
+
+  ;; FIXME: This is kinda risky, if there is performance
+  ;; issue, maybe we can workaround the racing condition.
+  (setq-local flycheck-checker-error-threshold nil))
 
 (use-package company-lsp
   :straight t
