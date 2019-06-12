@@ -98,6 +98,7 @@
 
 (use-package highlight-sexp
   :straight t
+  :if (display-graphic-p)
   :hook ((lisp-mode       . highlight-sexp-mode)
          (emacs-lisp-mode . highlight-sexp-mode))
   :custom
@@ -138,6 +139,22 @@
        (or (not (stringp thing)) (> (length thing) 1)))))
   (advice-add 'highlight-thing-should-highlight-p
               :around #'zc-theme/maybe-disable-highlight-thing))
+
+(use-package beacon
+  :straight t
+  :if (display-graphic-p)
+  :preface
+  (defun zc-theme/beacon-blink-line (&rest _)
+    "By default, beacon will blink on the current pointer."
+    (save-excursion
+      (beginning-of-line)
+      ;; Blink on line break (^L) causes line wrap
+      (unless (char-equal (char-after) ?\C-l)
+        (beacon-blink))))
+  :hook (imenu-after-jump . zc-theme/beacon-blink-line)
+  :init
+  (setq beacon-color (doom-darken 'cyan 0.5))
+  (advice-add 'recenter-top-bottom :after #'zc-theme/beacon-blink-line))
 
 
 
