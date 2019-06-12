@@ -53,7 +53,7 @@
      ("l" lsp-lens-mode                   "toggle lenses")
      ("d" zc-lsp/toggle-lsp-ui-doc-mode   "toggle doc")
      ("h" lsp-describe-thing-at-point     "doc at point")
-     ("r" lsp-ui-peek-find-references     "show references")))
+     ("u" lsp-ui-peek-find-references     "show references")))
 
   :preface
   (zc-lsp/hydra-build-section "refactor" "r"
@@ -73,6 +73,7 @@
 
         lsp-auto-configure nil ; No magic!
         lsp-prefer-flymake nil
+        lsp-enable-completion-at-point nil
         lsp-enable-symbol-highlighting nil)
 
   (require 'lsp-clients)
@@ -89,8 +90,8 @@
    [remap xref-pop-marker-stack] #'lsp-ui-peek-jump-backward)
 
   (:keymaps 'lsp-ui-peek-mode-map
-   "C-j" #'lsp-ui-peek--select-next
-   "C-k" #'lsp-ui-peek--select-prev)
+   "j" #'lsp-ui-peek--select-next
+   "k" #'lsp-ui-peek--select-prev)
 
   :preface
   (defun zc-lsp/setup ()
@@ -181,7 +182,7 @@ new file with LSP support."
   :straight t
   :after lsp
   :config
-  (setq company-lsp-cache-candidates 'auto
+  (setq company-lsp-cache-candidates t
         company-lsp-async t
         company-lsp-enable-snippet t
         company-lsp-enable-recompletion t))
