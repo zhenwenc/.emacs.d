@@ -38,8 +38,8 @@
 
   :preface
   (zc-lsp/hydra-build-section "server" "n"
-    (("s" lsp-restart-workspace           "restart")
-     ("S" lsp-shutdown-workspace          "shutdown")
+    (("s" lsp-workspace-restart           "restart")
+     ("S" lsp-workspace-shutdown          "shutdown")
      ("a" lsp-workspace-folders-add       "add folders")
      ("x" lsp-workspace-folders-remove    "remove folders")
      ("o" lsp-workspace-folders-switch    "switch folders")
