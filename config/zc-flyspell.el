@@ -23,7 +23,6 @@
 
   :hook
   ((org-mode         . flyspell-mode)
-   (yaml-mode        . flyspell-mode)
    (git-commit-mode  . flyspell-mode)
    (before-save-hook . flyspell-buffer)
    (flyspell-mode    . zc-flyspell/setup))
