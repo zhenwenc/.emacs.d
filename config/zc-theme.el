@@ -188,9 +188,10 @@
 similar to using: `(setq-default line-spacing 1)', but avoid
 affecting minibuffers which may cause problem on `ivy'."
   (setq-local default-text-properties
-              '(line-spacing 0.25 line-height 1.25)))
-(add-hook 'text-mode-hook #'zc-theme/set-line-spacing)
-(add-hook 'text-mode-hook #'zc-theme/set-line-spacing)
+              '(line-spacing 0.125 line-height 1.125)))
+;; NOTE: Enable these hooks when needed.
+;; (add-hook 'text-mode-hook #'zc-theme/set-line-spacing)
+;; (add-hook 'prog-mode-hook #'zc-theme/set-line-spacing)
 
 
 
