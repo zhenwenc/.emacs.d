@@ -90,8 +90,10 @@
    [remap xref-pop-marker-stack] #'lsp-ui-peek-jump-backward)
 
   (:keymaps 'lsp-ui-peek-mode-map
-   "j" #'lsp-ui-peek--select-next
-   "k" #'lsp-ui-peek--select-prev)
+   "j"   #'lsp-ui-peek--select-next
+   "k"   #'lsp-ui-peek--select-prev
+   "C-j" #'lsp-ui-peek--select-next
+   "C-k" #'lsp-ui-peek--select-prev)
 
   :preface
   (defun zc-lsp/setup ()
@@ -137,10 +139,10 @@ new file with LSP support."
   (setq lsp-ui-doc-enable nil
         lsp-ui-doc-header t
         lsp-ui-doc-include-signature nil
-        lsp-ui-doc-position 'at-point
+        lsp-ui-doc-position 'top
         lsp-ui-doc-border (doom-color 'blue)
-        lsp-ui-doc-max-width 30
-        lsp-ui-doc-max-height 8
+        lsp-ui-doc-max-width 80
+        lsp-ui-doc-max-height 30
         lsp-ui-doc-use-webkit t
         lsp-ui-doc-use-childframe t
 
