@@ -59,93 +59,92 @@
         org-work-todos-file    (f-join org-directory "work/todos.org"))
 
   :config
-  (progn
-    (setq org-M-RET-may-split-line nil
-          org-blank-before-new-entry '((heading . always)
-                                       (plain-list-item . nil))
-          org-catch-invisible-edits 'smart
-          org-enforce-todo-dependencies t
-          org-indirect-buffer-display 'current-window
-          org-insert-heading-respect-content t
-          org-src-window-setup 'current-window
-          org-imenu-depth 3
-          org-refile-targets '((nil              :maxlevel . 2)
-                               (org-agenda-files :maxlevel . 2)))
+  (setq org-M-RET-may-split-line nil
+        org-blank-before-new-entry '((heading . always)
+                                     (plain-list-item . nil))
+        org-catch-invisible-edits 'smart
+        org-enforce-todo-dependencies t
+        org-indirect-buffer-display 'current-window
+        org-insert-heading-respect-content t
+        org-src-window-setup 'current-window
+        org-imenu-depth 3
+        org-refile-targets '((nil              :maxlevel . 2)
+                             (org-agenda-files :maxlevel . 2)))
 
-    (setq org-eldoc-breadcrumb-separator " → "
-          org-image-actual-width nil
-          org-pretty-entities t
-          org-tags-column 0
-          org-use-sub-superscripts '{})
+  (setq org-eldoc-breadcrumb-separator " → "
+        org-image-actual-width nil
+        org-pretty-entities t
+        org-tags-column 0
+        org-use-sub-superscripts '{})
 
-    (setq  org-todo-keywords
-           '((type "TODO(t)" "MAYBE(m)" "|" "DONE(d)")
-             (type "NEXT(n)" "WAITING(w)" "LATER(l)" "|" "CANCELLED(c)")
-             (type "[ ](T)" "[-](P)" "[?](M)" "|" "[X](D)")))
+  (setq  org-todo-keywords
+         '((type "TODO(t)" "MAYBE(m)" "|" "DONE(d)")
+           (type "NEXT(n)" "WAITING(w)" "LATER(l)" "|" "CANCELLED(c)")
+           (type "[ ](T)" "[-](P)" "[?](M)" "|" "[X](D)")))
 
-    (setq org-capture-templates
-          (cl-labels ((entry
-                       (key label template target
-                            &rest properties
-                            &key
-                            (type 'entry)
-                            (prepend t)
-                            (clock-keep t)
-                            (empty-lines 1)
-                            &allow-other-keys)
-                       (append
-                        (list key label type target template
-                              :clock-keep clock-keep
-                              :empty-lines empty-lines
-                              :prepend prepend)
-                        properties)))
+  (setq org-capture-templates
+        (cl-labels ((entry
+                     (key label template target
+                          &rest properties
+                          &key
+                          (type 'entry)
+                          (prepend t)
+                          (clock-keep t)
+                          (empty-lines 1)
+                          &allow-other-keys)
+                     (append
+                      (list key label type target template
+                            :clock-keep clock-keep
+                            :empty-lines empty-lines
+                            :prepend prepend)
+                      properties)))
 
-            (list (entry
-                   "i" "Idea" "* MAYBE %?\n%i :idea:"
-                   '(file org-default-notes-file))
+          (list (entry
+                 "i" "Idea" "* MAYBE %?\n%i :idea:"
+                 '(file org-default-notes-file))
 
-                  (entry
-                   "t" "Todo" "* TODO %?\n%i"
-                   '(file+headline org-default-todos-file "Inbox")
-                   :kill-buffer t)
+                (entry
+                 "t" "Todo" "* TODO %?\n%i"
+                 '(file+headline org-default-todos-file "Inbox")
+                 :kill-buffer t)
 
-                  (entry
-                   "n" "Note" "* %?\n%(zc-org/capture-code-snippet \"%F\")"
-                   '(file org-default-notes-file))
+                (entry
+                 "n" "Note" "* %?\n%(zc-org/capture-code-snippet \"%F\")"
+                 '(file org-default-notes-file))
 
-                  (entry
-                   "T" "Work Todo" "* TODO %?\n%i"
-                   '(file+headline org-work-todos-file "Inbox")
-                   :kill-buffer t)
+                (entry
+                 "T" "Work Todo" "* TODO %?\n%i"
+                 '(file+headline org-work-todos-file "Inbox")
+                 :kill-buffer t)
 
-                  (entry
-                   "r" "Read later" "* MAYBE %i%? :Read:"
-                   '(file+olp org-default-notes-file)))))
+                (entry
+                 "r" "Read later" "* MAYBE %i%? :Read:"
+                 '(file+olp org-default-notes-file)))))
 
-    (setq org-confirm-babel-evaluate #'zc-org/babel-confirm-evaluate)
+  (setq org-confirm-babel-evaluate #'zc-org/babel-confirm-evaluate)
 
-    ;; Activate babel source code blocks
-    (org-babel-do-load-languages 'org-babel-load-languages
-                                 '((emacs-lisp . t)
-                                   (sql        . t)
-                                   (shell      . t)))
+  ;; Activate babel source code blocks
+  (org-babel-do-load-languages 'org-babel-load-languages
+                               '((emacs-lisp . t)
+                                 (sql        . t)
+                                 (shell      . t)))
 
-    ;; Narrow to headline after jump, which affects:
-    ;; - `counsel-org-goto'
-    ;; - `counsel-org-goto-all'
-    (advice-add 'org-goto-marker-or-bmk :after #'zc-org/narrow-after-jump)
+  ;; Narrow to headline after jump, which affects:
+  ;; - `counsel-org-goto'
+  ;; - `counsel-org-goto-all'
+  (advice-add 'org-goto-marker-or-bmk :after #'zc-org/narrow-after-jump)
 
-    ;; Instruct `smartparens' not to impose itself in org-mode
-    ;; make delimiter auto-closing a little more conservative
-    (with-eval-after-load 'smartparens
-      (sp-with-modes 'org-mode
-        (sp-local-pair "*" "*" :unless '(:add sp-point-before-word-p
-                                         zc-org/sp-point-at-bol-p))
-        (sp-local-pair "_" "_" :unless '(:add sp-point-before-word-p))
-        (sp-local-pair "/" "/" :unless '(:add sp-point-before-word-p
-                                         zc-org/sp-point-in-checkbox-p))
-        (sp-local-pair "~" "~" :unless '(:add sp-point-before-word-p))
-        (sp-local-pair "=" "=" :unless '(:add sp-point-before-word-p))))))
+  ;; Instruct `smartparens' not to impose itself in org-mode
+  ;; make delimiter auto-closing a little more conservative
+  (with-eval-after-load 'smartparens
+    (sp-with-modes 'org-mode
+      (sp-local-pair "*" "*" :unless '(:add sp-point-before-word-p
+                                       zc-org/sp-point-at-bol-p))
+      (sp-local-pair "_" "_" :unless '(:add sp-point-before-word-p))
+      (sp-local-pair "/" "/" :unless '(:add sp-point-before-word-p
+                                       zc-org/sp-point-in-checkbox-p))
+      (sp-local-pair "~" "~" :unless '(:add sp-point-before-word-p))
+      (sp-local-pair "=" "=" :unless '(:add sp-point-before-word-p)))))
 
 
 
@@ -219,11 +218,10 @@
         org-agenda-files       (zc-org/file-with-exts '("org")))
 
   :config
-  (progn
-    (setq org-agenda-restore-windows-after-quit t
-          org-agenda-window-setup 'reorganize-frame)
+  (setq org-agenda-restore-windows-after-quit t
+        org-agenda-window-setup 'reorganize-frame)
 
-    (advice-add 'org-agenda-quit :before 'org-save-all-org-buffers)))
+  (advice-add 'org-agenda-quit :before 'org-save-all-org-buffers))
 
 
 ;; https://orgmode.org/manual/Easy-templates.html
