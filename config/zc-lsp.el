@@ -187,7 +187,8 @@ new file with LSP support."
   (setq company-lsp-cache-candidates t
         company-lsp-async t
         company-lsp-enable-snippet t
-        company-lsp-enable-recompletion t))
+        company-lsp-enable-recompletion t
+        company-lsp-match-candidate-predicate #'company-lsp-match-candidate-prefix))
 
 (use-package dap-mode
   :straight t
