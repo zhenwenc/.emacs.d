@@ -121,8 +121,10 @@
   ;; overlays. Otherwise it can flicker between the two faces
   ;; as you move between candidates.
   (defun zc-theme/clear-highlight-for-swiper (&rest _)
-    (when highlight-thing-mode (highlight-thing-remove-last))
-    (when highlight-sexp-mode (move-overlay hl-sexp-overlay 0 0)))
+    (when (bound-and-true-p highlight-thing-mode)
+      (highlight-thing-remove-last))
+    (when (bound-and-true-p highlight-sexp-mode)
+      (move-overlay hl-sexp-overlay 0 0)))
   (advice-add 'swiper :before #'zc-theme/clear-highlight-for-swiper)
 
   ;; Disable `highlight-thing' for various cases
