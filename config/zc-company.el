@@ -71,10 +71,10 @@
         company-dabbrev-downcase nil
 
         ;; Always display suggestions in the tooltip, even if
-        ;; there is only one. Also display metadata in the echo
-        ;; area. (But this conflicts with ElDoc)
-        company-frontends '(company-pseudo-tooltip-frontend
-                            company-echo-metadata-frontend)
+        ;; there is only one. If displaying metadata in the echo
+        ;; area, this may conflicts with ElDoc.
+        ;; NOTE: disabled `company-echo-metadata-frontend'
+        company-frontends '(company-pseudo-tooltip-frontend)
         company-backends '(company-capf)
         company-transformers '(company-sort-by-occurrence)))
 
