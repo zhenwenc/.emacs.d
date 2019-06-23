@@ -66,10 +66,15 @@
         lsp-log-io nil
         lsp-print-performance nil
 
+
         lsp-auto-guess-root t
         lsp-response-timeout 10
         lsp-document-sync-method 'incremental
         lsp-session-file (concat paths-cache-dir ".lsp-session-v1")
+
+        ;; Show only the currently active signature, hide any
+        ;; overloaded function signatures.
+        lsp-eldoc-prefer-signature-help nil
 
         lsp-auto-configure nil ; No magic!
         lsp-prefer-flymake nil
