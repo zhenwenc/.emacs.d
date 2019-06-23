@@ -12,17 +12,17 @@
   :straight nil
   :defer t
 
-  :hydra
-  ("Basic"
-   (("f" zc-sql/format-region-or-buffer "format")))
+  :init
+  (zc-hydra/major-mode-define sql-mode
+    ("Basic"
+     (("f" zc-sql/format-region-or-buffer "format"))))
 
   :config
-  (progn
-    ;; PostgreSQL databases with underscores in their names
-    ;; trip up the prompt specified in `sql.el'.
-    (sql-set-product-feature 'postgres :prompt-regexp "^[-[:alnum:]_]*=[#>] ")
-    (sql-set-product-feature 'postgres :prompt-cont-regexp
-                             "^[-[:alnum:]_]*[-(][#>] ")))
+  ;; PostgreSQL databases with underscores in their names
+  ;; trip up the prompt specified in `sql.el'.
+  (sql-set-product-feature 'postgres :prompt-regexp "^[-[:alnum:]_]*=[#>] ")
+  (sql-set-product-feature 'postgres :prompt-cont-regexp
+                           "^[-[:alnum:]_]*[-(][#>] "))
 
 
 
