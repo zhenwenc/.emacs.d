@@ -78,8 +78,7 @@
   :straight t
   :preface
   (defun zc-theme/maybe-init-hl-line ()
-    (unless (or (derived-mode-p 'lisp-mode)
-                (derived-mode-p 'emacs-lisp-mode))
+    (unless (bound-and-true-p highlight-sexp-mode)
       (hl-line-mode)))
   :hook
   (text-mode . zc-theme/maybe-init-hl-line)
@@ -97,6 +96,7 @@
   (prog-mode . zc-theme/maybe-init-hl-todo))
 
 (use-package highlight-sexp
+  :disabled
   :straight t
   :if (display-graphic-p)
   :hook ((lisp-mode       . highlight-sexp-mode)
