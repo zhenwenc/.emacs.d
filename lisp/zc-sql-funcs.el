@@ -2,7 +2,7 @@
 
 
 
-(defun zc-sql/format-region-or-buffer (beg end)
+(defun zc-sql/format-region-or-buffer (&optional beg end)
   "Format SQL for the entire buffer or the marked region
 between BEG and END.
 
@@ -14,8 +14,11 @@ Alternatives:
 - https://github.com/purcell/sqlformat
 - https://github.com/purcell/reformatter.el
 "
-  (interactive "r")
-  (unless (use-region-p)
+  (interactive)
+  (if (use-region-p)
+      (setq beg (region-beginning)
+            end (region-end))
+    ;; Format region between comments.
     (setq beg (save-excursion
                 (backward-paragraph)
                 (skip-syntax-forward " >")
@@ -23,7 +26,11 @@ Alternatives:
           end (save-excursion
                 (forward-paragraph)
                 (skip-syntax-backward " >")
-                (point))))
+                (point)))
+    ;; Format whole region if no comment found.
+    (when (equal beg end)
+      (setq beg (save-excursion (point-min))
+            end (save-excursion (point-max)))))
   (save-excursion
     (shell-command-on-region beg end "sqlformat -r -k upper -" nil t)))
 
