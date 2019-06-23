@@ -5,7 +5,7 @@
 
 (use-package lsp-mode
   :straight t
-  :commands (lsp)
+  :commands (lsp lsp-deferred)
 
   :preface
   (defmacro zc-lsp/hydra-build-section (name prefix heads)
