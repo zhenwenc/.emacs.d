@@ -60,27 +60,29 @@
 
   :config
   (setq org-M-RET-may-split-line nil
-        org-blank-before-new-entry '((heading . always)
+        org-blank-before-new-entry '((heading         . auto)
                                      (plain-list-item . nil))
+        org-startup-indented t
         org-catch-invisible-edits 'smart
-        org-enforce-todo-dependencies t
         org-indirect-buffer-display 'current-window
         org-insert-heading-respect-content t
-        org-src-window-setup 'current-window
+
+        ;; Reduce search results.
         org-imenu-depth 3
         org-refile-targets '((nil              :maxlevel . 2)
                              (org-agenda-files :maxlevel . 2)))
 
   (setq org-eldoc-breadcrumb-separator " → "
+        org-ellipsis (if (char-displayable-p ?) "  " nil)
         org-image-actual-width nil
         org-pretty-entities t
         org-tags-column 0
         org-use-sub-superscripts '{})
 
-  (setq  org-todo-keywords
-         '((type "TODO(t)" "MAYBE(m)" "|" "DONE(d)")
-           (type "NEXT(n)" "WAITING(w)" "LATER(l)" "|" "CANCELLED(c)")
-           (type "[ ](T)" "[-](P)" "[?](M)" "|" "[X](D)")))
+  (setq org-enforce-todo-dependencies t
+        org-todo-keywords
+        '((sequence "TODO(t)" "NEXT(n)" "MAYBE(m)" "|" "DONE(d)" "CANCEL(c)")
+          (sequence "⚑(T)" "🏴(N)" "❓(M)" "|" "✔(D)" "✘(C)")))
 
   (setq org-capture-templates
         (cl-labels ((entry
@@ -121,6 +123,10 @@
                  "r" "Read later" "* MAYBE %i%? :Read:"
                  '(file+olp org-default-notes-file)))))
 
+  ;; Babel
+  (setq org-src-window-setup 'current-window)
+
+  ;; Maybe skip confirmation before evaluate
   (setq org-confirm-babel-evaluate #'zc-org/babel-confirm-evaluate)
 
   ;; Activate babel source code blocks
