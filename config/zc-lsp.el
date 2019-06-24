@@ -1,5 +1,6 @@
 (eval-when-compile
-  (require 'use-package))
+  (require 'use-package)
+  (require 'el-patch))
 
 
 
@@ -188,6 +189,23 @@ new file with LSP support."
 (use-package company-lsp
   :straight t
   :after lsp
+  :config/el-patch
+  ;; HACK: Fix error when starting completion on TS annotation.
+  (defun company-lsp--candidate-filter-text (candidate)
+    "Return filter string of CANDIDATE.
+
+CANDIDATE is a string created by `company-lsp--make-candidate'.
+If the CompletionItem of CANDIDATE has filterText field, return
+the value of filterText. Otherwise return CANDIDATE itself."
+    (el-patch-let
+        (($vars ((candidate-item (company-lsp--candidate-item candidate))
+                 (filter-text (gethash "filterText" candidate-item)))))
+      (el-patch-swap
+        (let* $vars
+          (or filter-text candidate))
+        (-if-let* $vars
+            filter-text
+          (or candidate "")))))
   :config
   (setq company-lsp-cache-candidates t
         company-lsp-async t
