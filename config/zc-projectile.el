@@ -65,7 +65,7 @@
              counsel-projectile-find-dir)
 
   :general (:keymaps 'projectile-command-map
-                     "/"  #'counsel-projectile-rg)
+            "/"  #'counsel-projectile-rg)
 
   :config
   (progn

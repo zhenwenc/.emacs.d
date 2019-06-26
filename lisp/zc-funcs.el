@@ -242,6 +242,8 @@ Behave the same as 'Command + delete' at macOS"
 (defun zc/indent-buffer ()
   "Indent the entire buffer."
   (interactive)
+  (when (derived-mode-p 'yaml-mode)
+    (user-error "You won't wanna indent YAML buffer!"))
   (save-excursion
     (delete-trailing-whitespace)
     (indent-region (point-min) (point-max) nil)
