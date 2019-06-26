@@ -133,7 +133,8 @@
   (org-babel-do-load-languages 'org-babel-load-languages
                                '((emacs-lisp . t)
                                  (sql        . t)
-                                 (shell      . t)))
+                                 (shell      . t)
+                                 (restclient . t)))
 
   ;; Narrow to headline after jump, which affects:
   ;; - `counsel-org-goto'
@@ -252,6 +253,9 @@
 
 
 ;; Org Babel
+
+(use-package ob-restclient
+  :straight t)
 
 (use-package ob-async
   :straight t

@@ -287,7 +287,8 @@ function and the file."
 source code block should be executed."
   ;; If `EVAL_NO_CONFIRM: yes' is defined
   (pcase (org-entry-get (point) "eval_no_confirm" t)
-    ("yes" nil) ((or "no" `nil) t)
+    ("yes" nil)
+    ((or "no" `nil) (string-equal lang "shell"))
     (_ (error "Invalid 'EVAL_NO_CONFIRM' value, use yes/no"))))
 
 (defun zc-org/babel-block-in-session-p (&optional name)
