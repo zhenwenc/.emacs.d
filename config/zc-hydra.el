@@ -125,7 +125,8 @@
 
      "Treemacs"
      (("fT" treemacs-select-window "treemacs show")
-      ("ft" treemacs "treemacs toggle"))))
+      ("ft" treemacs "treemacs toggle")
+      ("fp" treemacs-add-and-display-current-project "treemacs project"))))
 
   (zc-hydra/define zc-main-hydra--symbol
     (:color teal :title "Symbol Hydra" :icon "strikethrough" :prefix "s")
