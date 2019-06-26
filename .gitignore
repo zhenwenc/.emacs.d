@@ -45,6 +45,7 @@ flycheck_*.el
 /cookies
 /bookmarks
 /magithub/cache
+/vendor
 
 # Straight
 /straight/*

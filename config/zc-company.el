@@ -11,6 +11,7 @@
     (css-mode        :exact   (company-css))
     (tide-mode       :exact   (company-tide))
     (typescript-mode :exact   (company-lsp))
+    (python-mode     :exact   (company-lsp))
     (ensime-mode     :exact   (ensime-company))
     (terraform-mode  :exact   (company-dabbrev)))
   "An alist matching modes to company backends.")
