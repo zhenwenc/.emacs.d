@@ -2,6 +2,8 @@
   (require 'use-package)
   (require 'el-patch))
 
+(require 'zc-lsp-funcs)
+
 
 
 (use-package lsp-mode
@@ -18,24 +20,6 @@
                (-compare-fn (lambda (a b) (equal (car a) (car b)))))
            (mapcar (-lambda ((k . v)) (cons (concat prefix k) v))
                    (-union '(,@heads) rheads))))))
-
-  :preface
-  (defun zc-lsp/imenu-symbol-filter (orig-fn sym)
-    "Advice `lsp--symbol-filter' with language specific
-  filters."
-    (or (funcall orig-fn sym)
-        (when (derived-mode-p 'typescript-mode)
-          (not (zc-typescript/lsp-symbol-filter sym)))))
-
-  :preface
-  (defun zc-lsp/imenu-filter-symbols (orig-fn symbols)
-    "Advice `lsp--imenu-filter-symbols' with language
-  specific filters."
-    (--> (funcall orig-fn symbols)
-         (cond
-          ((derived-mode-p 'typescript-mode)
-           (zc-typescript/lsp-filter-symbols it))
-          (t it))))
 
   :preface
   (zc-lsp/hydra-build-section "server" "n"
@@ -63,10 +47,11 @@
      ("a" zc-lsp/execute-code-action-dwim "action")))
 
   :config
+  (require 'lsp-clients)
+
   (setq lsp-trace nil
         lsp-log-io nil
         lsp-print-performance nil
-
 
         lsp-auto-guess-root t
         lsp-response-timeout 10
@@ -82,7 +67,7 @@
         lsp-enable-completion-at-point nil
         lsp-enable-symbol-highlighting nil)
 
-  (require 'lsp-clients)
+  ;; Enhance with language specific features
   (advice-add 'lsp--symbol-filter :around #'zc-lsp/imenu-symbol-filter)
   (advice-add 'lsp--imenu-filter-symbols :around #'zc-lsp/imenu-filter-symbols))
 
@@ -211,7 +196,10 @@ the value of filterText. Otherwise return CANDIDATE itself."
         company-lsp-async t
         company-lsp-enable-snippet t
         company-lsp-enable-recompletion t
-        company-lsp-match-candidate-predicate #'company-lsp-match-candidate-prefix))
+        company-lsp-match-candidate-predicate #'company-lsp-match-candidate-prefix)
+
+  ;; Enhance with language specific features
+  (advice-add 'company-lsp :around #'zc-lsp/company-lsp))
 
 (use-package dap-mode
   :straight t
