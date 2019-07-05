@@ -231,8 +231,11 @@
       ("tF" toggle-frame-maximized "maximize frame")
       ("td" toggle-debug-on-error "emacs debug")
       ("tn" toggle-linum "line numbers")
-      ("tw" whitespace-mode "whitespace")
       ("tk" which-key-mode "which key"))
+
+     "Edit"
+     (("tw" whitespace-mode "whitespace")
+      ("tW" auto-fill-mode "auto fill"))
 
      "Apps"
      (("tp" prodigy "prodigy services")
