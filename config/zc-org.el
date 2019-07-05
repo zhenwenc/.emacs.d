@@ -47,6 +47,9 @@
    (("ti" org-toggle-item "item")
     ("th" org-toggle-heading "heading")))
 
+  :hook
+  ((org-mode . auto-fill-mode))
+
   :init
   ;; Org file directories must be defined at `:init' block
   ;; so that they are visible to the navigation functions,
@@ -236,7 +239,6 @@
 
 (use-package org-tempo
   :after org
-
   :preface
   (defun zc-org/post-org-tempo-add-templates ()
     (mapc #'(lambda (entry)
@@ -245,7 +247,6 @@
                 (set key (-map-when 'stringp 'upcase value))))
           org-tempo-tags)
     (message "HACK: Org complete templates with uppercase keycords."))
-
   :config
   ;; Complete src block templates with uppercased keywords
   (advice-add 'org-tempo-add-templates
@@ -255,10 +256,12 @@
 ;; Org Babel
 
 (use-package ob-restclient
-  :straight t)
+  :straight t
+  :after org)
 
 (use-package ob-async
   :straight t
+  :after org
   :preface
   (defun zc-org/pre-execute-async-src-block ()
     (setq org-plantuml-jar-path (concat paths-vendor-dir "plantuml.jar")))
