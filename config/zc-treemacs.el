@@ -7,6 +7,7 @@
 
 (use-package treemacs
   :straight t
+  :commands (treemacs)
   :after (:and projectile pretty-hydra)
 
   :hydra
@@ -51,49 +52,7 @@
                #'zc-treemacs/is-file-ignored?)
 
   ;; Disable the indicator next to open files--hl-line is sufficient
-  (treemacs-fringe-indicator-mode nil)
-
-  ;; Theme
-  (treemacs-create-theme "all-the-icons"
-    :config
-    (progn
-      (treemacs-create-icon
-       :icon (concat " " (all-the-icons-octicon
-                          "repo"
-                          :height 1.1
-                          :v-adjust 0
-                          :face '(:inherit font-lock-doc-face :slant normal))
-                     " ")
-       :extensions (root))
-      (treemacs-create-icon
-       :icon (concat (all-the-icons-octicon
-                      "chevron-right"
-                      :height 0.75
-                      :face '(:inherit font-lock-doc-face :slant normal))
-                     " "
-                     (all-the-icons-octicon
-                      "file-directory"
-                      :v-adjust 0
-                      :face '(:inherit font-lock-doc-face :slant normal))
-                     " ")
-       :extensions (dir-closed))
-      (treemacs-create-icon
-       :icon (concat (all-the-icons-octicon
-                      "chevron-down"
-                      :height 0.75
-                      :face '(:inherit font-lock-doc-face :slant normal))
-                     " "
-                     (all-the-icons-octicon
-                      "file-directory"
-                      :v-adjust 0
-                      :face '(:inherit font-lock-doc-face :slant normal))
-                     " ")
-       :extensions (dir-open))
-      (treemacs-create-icon
-       :icon (concat "  " (all-the-icons-octicon "file-code" :v-adjust 0) " ")
-       :extensions (fallback))))
-
-  (treemacs-load-theme "all-the-icons"))
+  (treemacs-fringe-indicator-mode nil))
 
 (use-package treemacs-evil
   :straight t
