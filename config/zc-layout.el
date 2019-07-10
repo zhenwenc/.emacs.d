@@ -36,7 +36,8 @@
   :config
   (setq winum-auto-assign-0-to-minibuffer nil
         winum-auto-setup-mode-line nil
-        winum-ignored-buffers '(" *which-key*"))
+        winum-ignored-buffers '(" *which-key*")
+        winum-scope 'frame-local)
   (winum-mode))
 
 (use-package winner
