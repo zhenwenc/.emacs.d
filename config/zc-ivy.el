@@ -15,6 +15,10 @@
   (:keymaps 'ivy-occur-mode-map
    "C-x C-w"    #'ivy-wgrep-change-to-wgrep-mode)
 
+  (:keymaps 'ivy-switch-buffer-map
+   ;; Don't kill my buffers!
+   "C-k"        #'ivy-previous-line)
+
   (:keymaps 'ivy-minibuffer-map
    "<f1>"       #'zc-ivy/show-help
    "C-j"        #'ivy-next-line
