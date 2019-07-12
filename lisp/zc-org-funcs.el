@@ -15,6 +15,7 @@
 (defvar org-agenda-category-filter)
 (defvar org-babel-src-block-regexp)
 (defvar org-default-notes-file)
+(defvar org-default-babel-file)
 (defvar org-work-notes-file)
 (defvar counsel-outline-settings)
 (defvar counsel-outline--preselect)
@@ -124,9 +125,7 @@ See also `counsel-org-goto-all'."
   (interactive)
   (let ((files (pcase type
                  ('notes (list org-default-notes-file org-work-notes-file))
-                 ('babel (zc-org/file-with-exts
-                          '("org")
-                          (f-join zc-org/directory "babel")))
+                 ('babel (list org-default-babel-file))
                  (_ org-agenda-files))))
     (ivy-read "Goto: " (zc-org/get-outline-candidates files)
               :history 'counsel-org-goto-history

@@ -58,6 +58,7 @@
         org-attach-directory   (f-join org-directory "data")
         org-default-notes-file (f-join org-directory "notes.org")
         org-default-todos-file (f-join org-directory "todos.org")
+        org-default-babel-file (f-join org-directory "babel.org")
         org-work-notes-file    (f-join org-directory "work/notes.org")
         org-work-todos-file    (f-join org-directory "work/todos.org"))
 
