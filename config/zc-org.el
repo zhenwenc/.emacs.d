@@ -142,6 +142,8 @@
                                '((emacs-lisp . t)
                                  (sql        . t)
                                  (shell      . t)
+                                 (python     . t)
+                                 (ipython    . t)
                                  (restclient . t)))
 
   ;; Narrow to headline after jump, which affects:
@@ -219,8 +221,7 @@
     ("gc" org-agenda-goto-calendar "goto calendar")
     ("gC" org-agenda-convert-date "convert date")
     ("gd" org-agenda-goto-date "goto date")
-    ("gt" org-agenda-show-tags "show tags"))
-   )
+    ("gt" org-agenda-show-tags "show tags")))
 
   :hook
   ((org-agenda-after-show . org-narrow-to-subtree))
@@ -264,6 +265,11 @@
   :straight t
   :after org)
 
+(use-package ob-ipython
+  :straight t
+  :after org
+  :if (executable-find "jupyter"))
+
 (use-package ob-async
   :straight t
   :after org
@@ -271,7 +277,10 @@
   (defun zc-org/pre-execute-async-src-block ()
     (setq org-plantuml-jar-path (concat paths-vendor-dir "plantuml.jar")))
   :hook ((org-babel-after-execute . org-redisplay-inline-images)
-         (ob-async-pre-execute-src-block . zc-org/pre-execute-async-src-block)))
+         (ob-async-pre-execute-src-block . zc-org/pre-execute-async-src-block))
+  :config
+  ;; ipython has its own async keyword
+  (add-to-list 'ob-async-no-async-languages-alist "ipython"))
 
 
 
