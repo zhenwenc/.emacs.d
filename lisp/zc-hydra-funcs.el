@@ -72,7 +72,7 @@
 (defmacro zc-hydra/major-mode-define (mode heads-plist)
   "Define hydra for major mode MODE with HEADS-PLIST."
   (declare (indent defun))
-  (let ((name  (intern (format "major-mode-hydra--%s" mode)))
+  (let ((name  (zc-hydra/major-mode-name mode))
         (title (zc-hydra/major-mode-title mode))
         (heads (--> heads-plist
                     (mapcar #'zc-hydra/normalize-head it)
@@ -83,24 +83,58 @@
 (defun zc-hydra/major-mode-hydra ()
   "Show the hydra for the current-buffer's major mode."
   (interactive)
-  (let ((fname (intern (format "major-mode-hydra--%s/body" major-mode))))
+  (let ((fname (zc-hydra/major-mode-name major-mode "body")))
     (if (fboundp fname)
         (call-interactively fname)
       (user-error "No major mode hydra for %s" major-mode))))
 
+(defun zc-hydra/major-mode-name (mode &optional fn)
+  "Return hydra symbol for the major mode MODE."
+  (intern (format "major-mode-hydra--%s"
+                  (s-join "/" (remove nil (list (symbol-name mode) fn))))))
+
 
 
-(defun use-package-normalize/:hydra (name keyword args)
-  (use-package-only-one (symbol-name keyword) args
-    #'use-package-normalize-value))
+(defun use-package-normalize/:hydra (package keyword args)
+  (-map
+   (lambda (arg)
+     (cond ((stringp (car arg)) ; only hydra heads
+            `(nil nil nil ,arg))
+           ((= 2 (length arg))  ; major mode hydra + heads
+            (-let [((&plist :name name :mode mode) heads) arg]
+              (unless (or name mode)
+                (use-package-error "hydra wants name or major mode"))
+              (unless (and mode (stringp (car heads)))
+                (use-package-error "hydra wants body list"))
+              `(,name ,mode nil ,heads)))
+           ((= 3 (length arg))  ; meta + hydra body + heads
+            (-let [((&plist :name name :mode mode) body heads) arg]
+              (unless (plist-get body :title)
+                (use-package-error "hydra body wants title"))
+              `(,name ,mode ,body ,heads)))
+           (t (use-package-error "invalid hydra arguments"))))
+   args))
 
-(defun use-package-handler/:hydra (name _keyword arg rest state)
+(defun use-package-handler/:hydra (package _keyword args rest state)
   "Handle `:hydra' keyword."
-  (let ((body (use-package-process-keywords name rest state))
-        (mode (use-package-as-mode name)))
-    (use-package-concat
-     body
-     `((zc-hydra/major-mode-define ,mode ,arg)))))
+  (use-package-concat
+   (use-package-process-keywords package rest state)
+   (-mapcat
+    (-lambda ((name modes body heads))
+      (when (and name modes)
+        (use-package-error ":name is not allowed for major mode hydra."))
+      ;; When `:name' is specified, defines normal hydra,
+      ;; otherwise major mode hydra will be defined. A major
+      ;; mode will be inferred from the package name if none
+      ;; is given.
+      (unless (or name modes)
+        (setq modes (list (use-package-as-mode package))))
+      (if modes
+          (-map (lambda (mode)
+                  `(zc-hydra/major-mode-define ,mode ,heads))
+                (-list modes))
+        `((zc-hydra/define ,name ,body ,heads))))
+    args)))
 
 (with-eval-after-load 'use-package-core
   (when (and (boundp 'use-package-keywords)

@@ -17,16 +17,10 @@
 
   :interpreter (("node" . typescript-mode))
 
-  :hydra
-  ("Server"
-   (zc-lsp/hydra-section--server '(:prefix "n"))
-
-   "Docs"
-   (zc-lsp/hydra-section--help '(:prefix "h"))
-
-   "Refactor"
-   (zc-lsp/hydra-section--refactor '(:prefix "r")
-     '(("f" prettier-js "format"))))
+  ;; TODO: How to control hydra override order?
+  ;; :hydra
+  ;; ("Refactor"
+  ;;  (("rf" prettier-js "format")))
 
   :preface
   (defun zc-typescript/set-node-modules-readonly ()

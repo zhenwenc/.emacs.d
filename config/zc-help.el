@@ -15,6 +15,21 @@
    "gs" #'Info-goto-node
    "gu" #'Info-follow-reference)
 
+  :hydra
+  ((:mode Info-mode)
+   ("Navigation"
+    (("gs" Info-goto-node "goto node")
+     ("gt" Info-top-node "goto top node")
+     ("gT" Info-toc "table of contents")
+     ("gu" Info-follow-reference "follow reference")
+     ("gm" Info-menu "menu"))
+
+    "Hints"
+    (("C-j" Info-next "next")
+     ("C-k" Info-prev "previous")
+     ("C-o" Info-history-back "history back")
+     ("C-i" Info-history-forward "history forward"))))
+
   :config
   (setq info-lookup-other-window-flag nil))
 
@@ -66,22 +81,6 @@
    google-translate-default-source-language "en"
    google-translate-default-target-language "zh-CN"
    google-translate-pop-up-buffer-set-focus t))
-
-
-
-(zc-hydra/major-mode-define Info-mode
-  ("Navigation"
-   (("gs" Info-goto-node "goto node")
-    ("gt" Info-top-node "goto top node")
-    ("gT" Info-toc "table of contents")
-    ("gu" Info-follow-reference "follow reference")
-    ("gm" Info-menu "menu"))
-
-   "Hints"
-   (("C-j" Info-next "next")
-    ("C-k" Info-prev "previous")
-    ("C-o" Info-history-back "history back")
-    ("C-i" Info-history-forward "history forward"))))
 
 
 

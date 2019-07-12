@@ -55,6 +55,12 @@
    "f"   #'zc-eval/compilation-send-self
    "RET" #'zc-eval/compilation-send-self)
 
+  :hydra
+  ((:mode compilation-mode)
+   ("Basic"
+    (("i" zc-eval/compilation-send-input "send input")
+     ("I" zc-eval/compilation-toggle-comint "toggle comint"))))
+
   :preface
   (defun zc-eval/compilation-colorize-buffer ()
     "Apply ansi codes to the compilation buffers."
@@ -86,13 +92,6 @@
 
   (advice-add #'projectile-read-command :override
               #'zc-eval/projectile-read-command))
-
-
-
-(zc-hydra/major-mode-define compilation-mode
-  ("Basic"
-   (("i" zc-eval/compilation-send-input "send input")
-    ("I" zc-eval/compilation-toggle-comint "toggle comint"))))
 
 
 

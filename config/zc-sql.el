@@ -12,10 +12,9 @@
   :straight nil
   :defer t
 
-  :init
-  (zc-hydra/major-mode-define sql-mode
-    ("Basic"
-     (("f" zc-sql/format-region-or-buffer "format"))))
+  :hydra
+  ("Basic"
+   (("f" zc-sql/format-region-or-buffer "format")))
 
   :config
   ;; PostgreSQL databases with underscores in their names

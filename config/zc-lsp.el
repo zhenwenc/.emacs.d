@@ -10,41 +10,29 @@
   :straight t
   :commands (lsp lsp-deferred)
 
-  :preface
-  (defmacro zc-lsp/hydra-build-section (name prefix heads)
-    (declare (indent defun))
-    (let ((fname (intern (format "zc-lsp/hydra-section--%s" name))))
-      `(cl-defun ,fname (&optional body rheads)
-         (declare (indent defun))
-         (let ((prefix (or (plist-get body :prefix) ,prefix))
-               (-compare-fn (lambda (a b) (equal (car a) (car b)))))
-           (mapcar (-lambda ((k . v)) (cons (concat prefix k) v))
-                   (-union '(,@heads) rheads))))))
+  :hydra
+  ((:mode (typescript-mode python-mode))
+   ("Server"
+    (("ns" lsp-workspace-restart           "restart")
+     ("nS" lsp-workspace-shutdown          "shutdown")
+     ("na" lsp-workspace-folders-add       "add folders")
+     ("nx" lsp-workspace-folders-remove    "remove folders")
+     ("no" lsp-workspace-folders-switch    "switch folders")
+     ("ni" lsp-describe-session            "show sessions")
+     ("nl" lsp-switch-to-io-log-buffer     "show log"))
 
-  :preface
-  (zc-lsp/hydra-build-section "server" "n"
-    (("s" lsp-workspace-restart           "restart")
-     ("S" lsp-workspace-shutdown          "shutdown")
-     ("a" lsp-workspace-folders-add       "add folders")
-     ("x" lsp-workspace-folders-remove    "remove folders")
-     ("o" lsp-workspace-folders-switch    "switch folders")
-     ("i" lsp-describe-session            "show sessions")
-     ("l" lsp-switch-to-io-log-buffer     "show log")))
+    "Docs"
+    (("hi" lsp-ui-imenu                    "toggle imenu")
+     ("hs" lsp-ui-sideline-mode            "toggle sideline")
+     ("hl" lsp-lens-mode                   "toggle lenses")
+     ("hd" zc-lsp/toggle-lsp-ui-doc-mode   "toggle doc")
+     ("hh" lsp-describe-thing-at-point     "doc at point")
+     ("hu" lsp-ui-peek-find-references     "show references"))
 
-  :preface
-  (zc-lsp/hydra-build-section "help" "h"
-    (("i" lsp-ui-imenu                    "toggle imenu")
-     ("s" lsp-ui-sideline-mode            "toggle sideline")
-     ("l" lsp-lens-mode                   "toggle lenses")
-     ("d" zc-lsp/toggle-lsp-ui-doc-mode   "toggle doc")
-     ("h" lsp-describe-thing-at-point     "doc at point")
-     ("u" lsp-ui-peek-find-references     "show references")))
-
-  :preface
-  (zc-lsp/hydra-build-section "refactor" "r"
-    (("r" lsp-rename                      "rename")
-     ("f" lsp-format-buffer               "format")
-     ("a" zc-lsp/execute-code-action-dwim "action")))
+    "Refactor"
+    (("rr" lsp-rename                      "rename")
+     ("rf" lsp-format-buffer               "format")
+     ("ra" zc-lsp/execute-code-action-dwim "action"))))
 
   :config
   (require 'lsp-clients)
