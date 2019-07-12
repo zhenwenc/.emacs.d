@@ -29,15 +29,20 @@
   ("Basic"
    (("?" org-info "org info"))
 
-   "Edit & Execute"
+   "Edit"
    (("ee" org-edit-special "edit")
-    ("ea" org-babel-insert-header-arg "edit arg")
+    ("ed" org-cut-special "cut")
+    ("ey" org-copy-special "copy")
+    ("eP" org-paste-special "paste")
     ("et" counsel-org-tag "edit tag")
-    ("ep" org-property-action "edit property")
-    ("ei" org-babel-view-src-block-info "block info")
-    ("eo" org-babel-open-src-block-result "open result")
-    ("ec" org-babel-remove-result-one-or-many "clear result")
-    ("eC" zc-org/babel-remove-result-all "clear result*"))
+    ("ea" org-babel-insert-header-arg "edit argument")
+    ("ep" org-property-action "edit property"))
+
+   "Babel"
+   (("bi" org-babel-view-src-block-info "block info")
+    ("bo" org-babel-open-src-block-result "open result")
+    ("bc" org-babel-remove-result-one-or-many "clear result")
+    ("bC" zc-org/babel-remove-result-all "clear result*"))
 
    "Refactor"
    (("rs" org-sort "sort")
@@ -128,10 +133,9 @@
                  '(file+olp org-default-notes-file)))))
 
   ;; Babel
-  (setq org-src-window-setup 'current-window)
-
-  ;; Maybe skip confirmation before evaluate
-  (setq org-confirm-babel-evaluate #'zc-org/babel-confirm-evaluate)
+  (setq org-src-preserve-indentation t ; use major-mode indentation
+        org-src-window-setup 'current-window
+        org-confirm-babel-evaluate #'zc-org/babel-confirm-evaluate)
 
   ;; Activate babel source code blocks
   (org-babel-do-load-languages 'org-babel-load-languages
