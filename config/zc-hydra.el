@@ -57,6 +57,8 @@
     (:color teal :title "Window Hydra" :icon "windows" :prefix "w")
     ("Basic"
      (("w SPC" zc/toggle-current-window-dedication "dedicate")
+      ("wp" ivy-push-view "push view")
+      ("wP" ivy-switch-view "switch view")
       ("wo" ace-select-window "select")
       ("w0" (text-scale-set 0) "scale reset")
       ("w+" text-scale-increase "scale ↑" :color pink)
