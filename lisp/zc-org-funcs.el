@@ -48,7 +48,6 @@ is actived, make it align with evil behaviour.
                (>= (point) (org-element-property :contents-begin context))
                (< (point) (org-element-property :contents-end context)))
           (org-element-lineage context '(table-row table-cell) t))
-
       (call-interactively #'org-table-next-row))
      ;; On a link or a timestamp, call `org-open-at-point'.
      ((or (and (eq 'link (org-element-type context))

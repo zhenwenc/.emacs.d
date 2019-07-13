@@ -16,6 +16,7 @@
 
 (use-package org
   :straight org-plus-contrib
+  :commands org-try-structure-completion
   :defer t
 
   :general
@@ -245,7 +246,8 @@
 
 (use-package org-tempo
   :after org
-  :preface
+  :config
+  ;; Complete src block templates with uppercased keywords
   (defun zc-org/post-org-tempo-add-templates ()
     (mapc #'(lambda (entry)
               (let* ((key (cdr entry))
@@ -253,10 +255,8 @@
                 (set key (-map-when 'stringp 'upcase value))))
           org-tempo-tags)
     (message "HACK: Org complete templates with uppercase keycords."))
-  :config
-  ;; Complete src block templates with uppercased keywords
-  (advice-add 'org-tempo-add-templates
-              :after #'zc-org/post-org-tempo-add-templates))
+  (advice-add 'org-tempo-add-templates :after
+              #'zc-org/post-org-tempo-add-templates))
 
 
 ;; Org Babel
