@@ -249,7 +249,8 @@
      (("hi" info "info")
       ("hI" counsel-info-lookup-symbol "find info")
       ("hm" man "man")
-      ("hh" helpful-at-point "doc at point"))
+      ("hh" helpful-at-point "doc at point")
+      ("hl" counsel-find-library "find library"))
 
      "Describe"
      (("hdc" describe-char "char")

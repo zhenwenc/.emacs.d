@@ -51,7 +51,8 @@
 
    "Toggle"
    (("ti" org-toggle-item "item")
-    ("th" org-toggle-heading "heading")))
+    ("th" org-toggle-heading "heading")
+    ("tl" org-toggle-link-display "link")))
 
   :hook
   ((org-mode . auto-fill-mode))
