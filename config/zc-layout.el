@@ -121,8 +121,7 @@
                  (window-height   . 0.35))
 
                 (,(rx bos "*helpful ")
-                 (display-buffer-reuse-window
-                  display-buffer-in-side-window)
+                 (display-buffer-reuse-window)
                  (reusable-frames . visible)
                  (side            . right)
                  (slot            . 1)
