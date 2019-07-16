@@ -117,46 +117,6 @@
 
 
 
-(use-package js-mode
-  :defer t
-  :defines (js-indent-level)
-  :config
-  (setq js-indent-level 2))
-
-
-
-(use-package prettier-js
-  :straight t
-  :after (:any zc-web-modes typescript-mode graphql-mode)
-  :commands (prettier-js prettier-js-mode)
-  :hook ((graphql-mode    . zc-typescript/maybe-enable-prettier)
-         (typescript-mode . zc-typescript/maybe-enable-prettier)
-         (zc-web-css-mode . zc-typescript/maybe-enable-prettier))
-  :preface
-  (defun zc-typescript/maybe-enable-prettier ()
-    (unless (or (not buffer-file-name) ; maybe scratch
-                (s-contains-p "/github/" buffer-file-name)
-                (s-contains-p "/node_modules/" buffer-file-name))
-      (prettier-js-mode)))
-  :config
-  ;; NOTE: If the prettier version seems outdated, check .nvmrc
-  (setq prettier-js-args '("--single-quote" "--trailing-comma" "es5")))
-
-
-
-(use-package nvm
-  :disabled t ; use nodenv
-  :straight t
-  :functions (nvm-use-for-buffer)
-  :preface
-  (defun zc-typescript/maybe-use-nvm ()
-    ;; NOTE: `nvm use' command doesn't update .nvmrc
-    (if (locate-dominating-file default-directory ".nvmrc")
-        (progn (nvm-use-for-buffer) t)
-      (message "Looks like [.nvmrc] is missing!"))))
-
-
-
 (use-package tide
   :disabled ; switched to LSP
   :straight t
