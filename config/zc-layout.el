@@ -1,6 +1,7 @@
 (eval-when-compile
   (require 'use-package))
 
+(require 'dash)
 (require 'zc-layout-funcs)
 
 
@@ -10,9 +11,12 @@
 
   :preface
   (defun zc-layout/create-initial-layouts ()
-    (zc-projectile/with-switch-project-action "*scratch*"
-      (zc-layout/create-project-layout "~/.emacs.d")
-      (setq-local default-directory "~/.emacs.d")))
+    (-each '(("~/.emacs.d" ".gitignore")
+             ("~/dotfile"  ".gitignore"))
+      (-lambda ((project buffer))
+        (zc-projectile/with-switch-project-action buffer
+          (zc-layout/create-project-layout project)
+          (setq-local default-directory project)))))
 
   :config
   (setq eyebrowse-tagged-slot-format "%s [%t]")
