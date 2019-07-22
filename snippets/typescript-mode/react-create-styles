@@ -1,7 +1,8 @@
 # -*- mode: snippet -*-
 # name: React Create Styles
 # key: rcs
+# condition: (zc-yas/buffer-match-p "react")
 # --
-const styles = Theme.createStyles({
+const createStyles = Theme.createStyles(theme => ({
   $0
-});
+}));
