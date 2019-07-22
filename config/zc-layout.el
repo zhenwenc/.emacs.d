@@ -12,7 +12,7 @@
   :preface
   (defun zc-layout/create-initial-layouts ()
     (-each '(("~/.emacs.d" ".gitignore")
-             ("~/dotfile"  ".gitignore"))
+             ("~/dotfiles" ".gitignore"))
       (-lambda ((project buffer))
         (zc-projectile/with-switch-project-action buffer
           (zc-layout/create-project-layout project)
