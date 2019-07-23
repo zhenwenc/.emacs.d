@@ -60,31 +60,33 @@
   :init
   (setq evil-want-integration t
         evil-want-Y-yank-to-eol t
-        evil-want-visual-char-semi-exclusive t
         evil-want-keybinding nil ; required for evil-collection
-        evil-mode-line-format nil)
+        ;; FIXME: This may lead to unwanted behaviour, such as
+        ;;        when cursor on the closing curly braces.
+        evil-want-visual-char-semi-exclusive t
+        evil-mode-line-format nil
+        evil-insert-skip-empty-lines t)
 
   :config
-  (progn
-    (evil-mode +1)
-    (setq-default evil-shift-width 2)
-    (setq-default evil-symbol-word-search t)
+  (evil-mode +1)
+  (setq-default evil-shift-width 2)
+  (setq-default evil-symbol-word-search t)
 
-    ;; Configure cursors.
-    (setq evil-motion-state-cursor '("plum3" box))
-    (setq evil-visual-state-cursor '("gray" (hbar . 2)))
-    (setq evil-normal-state-cursor '("DarkGoldenrod2" box))
-    (setq evil-insert-state-cursor '("chartreuse3" (bar . 2)))
-    (setq evil-emacs-state-cursor  '("SkyBlue2" hbar))
+  ;; Configure cursors.
+  (setq evil-motion-state-cursor '("plum3" box))
+  (setq evil-visual-state-cursor '("gray" (hbar . 2)))
+  (setq evil-normal-state-cursor '("DarkGoldenrod2" box))
+  (setq evil-insert-state-cursor '("chartreuse3" (bar . 2)))
+  (setq evil-emacs-state-cursor  '("SkyBlue2" hbar))
 
-    ;; Configure initial state for modes
-    (evil-set-initial-state 'diff-mode                'motion)
-    (evil-set-initial-state 'ibuffer-mode             'motion)
-    (evil-set-initial-state 'prodigy-mode             'motion)
-    (evil-set-initial-state 'org-agenda-mode          'motion)
-    (evil-set-initial-state 'compilation-mode         'motion)
-    (evil-set-initial-state 'tide-references-mode     'normal)
-    (evil-set-initial-state 'tide-project-errors-mode 'motion)))
+  ;; Configure initial state for modes
+  (evil-set-initial-state 'diff-mode                'motion)
+  (evil-set-initial-state 'ibuffer-mode             'motion)
+  (evil-set-initial-state 'prodigy-mode             'motion)
+  (evil-set-initial-state 'org-agenda-mode          'motion)
+  (evil-set-initial-state 'compilation-mode         'motion)
+  (evil-set-initial-state 'tide-references-mode     'normal)
+  (evil-set-initial-state 'tide-project-errors-mode 'motion))
 
 
 ;; Provide motions and text objects for delimited arguments
