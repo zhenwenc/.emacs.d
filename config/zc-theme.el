@@ -81,8 +81,9 @@
     (unless (bound-and-true-p highlight-sexp-mode)
       (hl-line-mode)))
   :hook
-  (text-mode . zc-theme/maybe-init-hl-line)
-  (prog-mode . zc-theme/maybe-init-hl-line))
+  (text-mode            . zc-theme/maybe-init-hl-line)
+  (prog-mode            . zc-theme/maybe-init-hl-line)
+  (profiler-report-mode . zc-theme/maybe-init-hl-line))
 
 (use-package hl-todo
   :straight t
