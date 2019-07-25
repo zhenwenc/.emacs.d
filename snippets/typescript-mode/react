@@ -9,8 +9,6 @@ ${1:export interface ${2:`(file-name-base)`Props} {
 
 }}
 
-${3:export interface ${4:`(file-name-base)`State} {
-
-}}
-
-$0
+export function `(file-name-base)`(${3:props: $2}) {
+  $0
+}
