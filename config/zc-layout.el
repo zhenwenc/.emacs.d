@@ -11,12 +11,15 @@
 
   :preface
   (defun zc-layout/create-initial-layouts ()
-    (-each '(("~/.emacs.d" ".gitignore")
-             ("~/dotfiles" ".gitignore"))
-      (-lambda ((project buffer))
-        (zc-projectile/with-switch-project-action buffer
-          (zc-layout/create-project-layout project)
-          (setq-local default-directory project)))))
+    (-each-r
+     '(("~/.emacs.d" ".gitignore")
+       ("~/dotfiles" ".gitignore"))
+     (-lambda ((project buffer))
+       (message "Before creating layout %s" buffer)
+       (zc-projectile/with-switch-project-action
+         '(find-file buffer) ; open initial buffer
+         (zc-layout/create-project-layout project)
+         (setq-local default-directory project)))))
 
   :config
   (setq eyebrowse-tagged-slot-format "%s [%t]")

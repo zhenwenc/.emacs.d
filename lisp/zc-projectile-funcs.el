@@ -61,12 +61,21 @@ by using the magic dynamic binding."
                    (root (zc-projectile/find-project-root name))
                    (default-directory root))
               (pcase ,action
+                ;; Switch to the previous visited buffer.
                 ('previous
                  (projectile-previous-project-buffer))
+                ;; Switch to the specified buffer, be careful
+                ;; the buffer may not track to a file.
                 ((pred ,(-orfn 'bufferp 'stringp))
                  (switch-to-buffer ,action))
+                ;; Evaluate a function.
                 ((pred functionp)
                  (funcall ,action root name))
+                ;; Evaluate a self-evaluation form (sexp).
+                ((and (pred listp)
+                      (pred (-compose 'functionp 'car)))
+                 (eval ,action))
+                ;; Fallback to projectile find file.
                 (_
                  (projectile-find-file)))))))
      ,@body))
