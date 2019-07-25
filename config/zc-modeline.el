@@ -205,6 +205,11 @@
     (format "%s/" (f-base default-directory)))
    (t default-directory)))
 
+(defun zc-modeline/buffer-info ()
+  (or (and (buffer-file-name)
+           (f-filename (buffer-file-name)))
+      (buffer-name)))
+
 (defun zc-modeline/dedicated-icon ()
   (all-the-icons-faicon "lock" :height 0.8 :v-adjust 0.05))
 
@@ -251,7 +256,7 @@
                  (propertize (zc-modeline/directory-info) 'face face)
 
                  ;; Current buffer name
-                 "%[" (propertize (buffer-name) 'face primary) "%]"
+                 "%[" (propertize (zc-modeline/buffer-info) 'face primary) "%]"
 
                  ;; Window status info
                  (when (window-dedicated-p)
