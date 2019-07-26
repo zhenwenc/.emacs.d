@@ -17,9 +17,8 @@
 
   :interpreter (("node" . typescript-mode))
 
-  ;; FIXME: hydra-define+ not working!
   :hydra
-  ((:mode typescript-mode :after lsp)
+  ((:mode typescript-mode :after lsp-mode)
    ("Refactor"
     (("rf" prettier-js "prettier format"))))
 
