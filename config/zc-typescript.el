@@ -17,10 +17,11 @@
 
   :interpreter (("node" . typescript-mode))
 
-  ;; TODO: How to control hydra override order?
-  ;; :hydra
-  ;; ("Refactor"
-  ;;  (("rf" prettier-js "format")))
+  ;; FIXME: hydra-define+ not working!
+  :hydra
+  ((:mode typescript-mode :after lsp)
+   ("Refactor"
+    (("rf" prettier-js "prettier format"))))
 
   :preface
   (defun zc-typescript/set-node-modules-readonly ()

@@ -49,7 +49,7 @@
 
 
 (use-package pretty-hydra
-  :straight (:host github :repo "jerrypnz/major-mode-hydra.el" :branch "develop")
+  :straight (:host github :repo "jerrypnz/major-mode-hydra.el")
   :after (hydra)
 
   :config

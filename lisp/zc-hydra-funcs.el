@@ -77,7 +77,7 @@
         (heads (--> heads-plist
                     (mapcar #'zc-hydra/normalize-head it)
                     (zc-hydra/maybe-add-exit-head it))))
-    `(pretty-hydra-define ,name
+    `(pretty-hydra-define+ ,name
        (:hint nil :color teal :title ,title) ,heads)))
 
 (defun zc-hydra/major-mode-hydra ()
@@ -93,25 +93,33 @@
   (intern (format "major-mode-hydra--%s"
                   (s-join "/" (remove nil (list (symbol-name mode) fn))))))
 
+(defmacro zc-hydra/require-after-load (features* body)
+  "Define hydra after FEATURES* are loaded, accepts same
+arguments as `:after' directive in `use-package'."
+  (declare (indent defun))
+  (if (null features*)
+      body
+    `(use-package-require-after-load ,features* ,body)))
+
 
 
 (defun use-package-normalize/:hydra (package keyword args)
   (-map
    (lambda (arg)
      (cond ((stringp (car arg)) ; only hydra heads
-            `(nil nil nil ,arg))
+            `(nil nil nil ,arg nil))
            ((= 2 (length arg))  ; major mode hydra + heads
-            (-let [((&plist :name name :mode mode) heads) arg]
+            (-let [((meta &as &plist :name name :mode mode) heads) arg]
               (unless (or name mode)
                 (use-package-error "hydra wants name or major mode"))
               (unless (and mode (stringp (car heads)))
                 (use-package-error "hydra wants body list"))
-              `(,name ,mode nil ,heads)))
+              `(,name ,mode nil ,heads ,meta)))
            ((= 3 (length arg))  ; meta + hydra body + heads
-            (-let [((&plist :name name :mode mode) body heads) arg]
+            (-let [((meta &as &plist :name name :mode mode) body heads) arg]
               (unless (plist-get body :title)
                 (use-package-error "hydra body wants title"))
-              `(,name ,mode ,body ,heads)))
+              `(,name ,mode ,body ,heads ,meta)))
            (t (use-package-error "invalid hydra arguments"))))
    args))
 
@@ -120,7 +128,8 @@
   (use-package-concat
    (use-package-process-keywords package rest state)
    (-mapcat
-    (-lambda ((name modes body heads))
+    (-lambda ((name modes body heads (&plist :after after)))
+      ;; Inhibit specifying hydra name when defining major mode hydra.
       (when (and name modes)
         (use-package-error ":name is not allowed for major mode hydra."))
       ;; When `:name' is specified, defines normal hydra,
@@ -129,11 +138,12 @@
       ;; is given.
       (unless (or name modes)
         (setq modes (list (use-package-as-mode package))))
-      (if modes
-          (-map (lambda (mode)
-                  `(zc-hydra/major-mode-define ,mode ,heads))
-                (-list modes))
-        `((zc-hydra/define ,name ,body ,heads))))
+      (zc-hydra/require-after-load after
+        (if modes
+            (-map (lambda (mode)
+                    `(zc-hydra/major-mode-define ,mode ,heads))
+                  (-list modes))
+          `((zc-hydra/define ,name ,body ,heads)))))
     args)))
 
 (with-eval-after-load 'use-package-core
