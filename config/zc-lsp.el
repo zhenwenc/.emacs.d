@@ -125,17 +125,6 @@ new file with LSP support."
         lsp-ui-doc-use-webkit t
         lsp-ui-doc-use-childframe t
 
-        ;; Flycheck is fast enough to report errors after every
-        ;; change, but any unbalanced bracket can blow up the UI.
-        ;;
-        ;; However, there is a racing condition after disabling
-        ;; live reporting and only trigger flycheck update on
-        ;; buffer save. Sucks!
-        ;;
-        ;; Potential solution:
-        ;;
-        ;; Compare buffer last modified timestamp when
-        ;; `lsp-after-diagnostics-hook', had been triggered.
         lsp-ui-flycheck-live-reporting t
         lsp-ui-flycheck-enable t
 
