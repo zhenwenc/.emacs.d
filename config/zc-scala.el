@@ -3,7 +3,9 @@
 
 (require 'general)
 (require 'straight)
-(require 'zc-ensime)
+(require 'zc-paths)
+
+(defconst zc-metals-executable (concat paths-vendor-dir "metals/metals-emacs"))
 
 
 ;; Automatically replace arrows with unicode ones when enabled
@@ -46,13 +48,44 @@ replace it with the unicode arrow."
   :straight t
   :defer t
 
-  :mode ("\\.scala\\'" . scala-mode)
+  :mode "\\.s\\(cala\\|bt\\|c\\)$"
 
   :general
   ;; Replace arrows with unicode ones when enabled
   (:keymaps 'scala-mode-map
-            ">" #'zc-scala/unicode-gt
-            "-" #'zc-scala/unicode-hyphen)
+   ">" #'zc-scala/unicode-gt
+   "-" #'zc-scala/unicode-hyphen)
+
+  :preface
+  (defun zc-scala/setup ()
+    (zc-scala/metals-setup)
+    (lsp-deferred))
+
+  :preface
+  (defun zc-scala/metals-setup (&optional forced)
+    "Download Metals Scala Language Server for Emacs."
+    (interactive "P")
+    (unless (and (not forced)
+                 (executable-find zc-metals-executable))
+      (unless (executable-find "coursier")
+        (error "Unable to install metals! Required 'coursier' executable."))
+      (message "Downloading Metals Scala Language Server...")
+      ;; https://scalameta.org/metals/docs/editors/emacs.html
+      ;; https://scalameta.org/metals/docs/editors/new-editor.html
+      (shell-command (concat "coursier bootstrap"
+                             " --java-opt -Xss4m"
+                             " --java-opt -Xms100m"
+                             ;; " --java-opt -XX:+UseStringDeduplication"
+                             " --java-opt -Dmetals.client=emacs"
+                             " --java-opt -Dmetals.verbose=on"
+                             ;; " --java-opt -Dmetals.http=on"
+                             ;; " --java-opt -Dmetals.execute-client-command=off"
+                             " org.scalameta:metals_2.12:0.7.0"
+                             " -r bintray:scalacenter/releases"
+                             " -r sonatype:snapshots"
+                             " -o " zc-metals-executable
+                             " -f"))
+      (message "Downloaded Metals Scala Language Server!")))
 
   :preface
   (defun zc-scala/disable-flycheck-scala ()
@@ -60,50 +93,63 @@ replace it with the unicode arrow."
     (when (boundp 'flycheck-disabled-checkers)
       (push 'scala flycheck-disabled-checkers)))
 
-  :hook ((scala-mode  . flycheck-mode-on-safe)
+  :hook ((scala-mode  . zc-scala/setup)
+         (scala-mode  . flycheck-mode-on-safe)
          (ensime-mode . zc-scala/disable-flycheck-scala))
 
   :init
-  (progn
-    ;; For Play Framework
-    (add-to-list 'auto-mode-alist '("/conf/routes\\'" . conf-mode))
-    ;; Hope it will be faster
-    (dolist (ext '(".cfe" ".cfs" ".si" ".gen" ".lock"))
-      (add-to-list 'completion-ignored-extensions ext)))
+  ;; Configure LSP client
+  (setq lsp-metals-server-command zc-metals-executable)
+  ;; For Play Framework
+  (add-to-list 'auto-mode-alist '("/conf/routes\\'" . conf-mode))
+  ;; Hope it will be faster
+  (dolist (ext '(".cfe" ".cfs" ".si" ".gen" ".lock"))
+    (add-to-list 'completion-ignored-extensions ext))
 
   :config
-  (progn
-    (setq scala-indent:align-forms t)
-    (setq scala-indent:align-parameters t)
-    (setq scala-indent:default-run-on-strategy scala-indent:operator-strategy)
+  (setq scala-indent:align-forms t)
+  (setq scala-indent:align-parameters t)
+  (setq scala-indent:default-run-on-strategy scala-indent:operator-strategy)
 
-    (setq flycheck-scalastylerc "~/.scalastyle.xml")
+  (setq flycheck-scalastylerc "~/.scalastyle.xml")
 
-    ;; Compatibility with `aggressive-indent'
-    (setq scala-indent:align-forms t
-          scala-indent:align-parameters nil
-          scala-indent:default-run-on-strategy
-          scala-indent:operator-strategy)
+  ;; Compatibility with `aggressive-indent'
+  (setq scala-indent:align-forms t
+        scala-indent:align-parameters nil
+        scala-indent:default-run-on-strategy
+        scala-indent:operator-strategy)
 
-    (with-eval-after-load 'aggressive-indent
-      (add-to-list 'aggressive-indent-excluded-modes 'scala-mode)
-      (add-to-list 'aggressive-indent-excluded-modes 'sbt-file-mode))
+  (with-eval-after-load 'aggressive-indent
+    (add-to-list 'aggressive-indent-excluded-modes 'scala-mode)
+    (add-to-list 'aggressive-indent-excluded-modes 'sbt-file-mode))
 
-    (with-eval-after-load 'ensime
-      (setq ensime-sem-high-faces
-            `((var                . scala-font-lock:var-face)
-              (varField           . scala-font-lock:var-face)
-              (functionCall       . font-lock-function-name-face)
-              (operator           . font-lock-keyword-face)
-              (param              . (:slant italic))
-              (class              . font-lock-type-face)
-              (trait              . (:inherit font-lock-type-face :slant italic))
-              (object             . font-lock-constant-face)
-              (package            . font-lock-preprocessor-face)
-              (implicitConversion . (:underline ,(with-no-warnings "#2aa198")))
-              (implicitParams     . (:underline ,(with-no-warnings "#2aa198")))
-              (deprecated         . (:strike-through "dark gray")))))
+  ;; (with-eval-after-load 'ensime
+  ;;   (setq ensime-sem-high-faces
+  ;;         `((var                . scala-font-lock:var-face)
+  ;;           (varField           . scala-font-lock:var-face)
+  ;;           (functionCall       . font-lock-function-name-face)
+  ;;           (operator           . font-lock-keyword-face)
+  ;;           (param              . (:slant italic))
+  ;;           (class              . font-lock-type-face)
+  ;;           (trait              . (:inherit font-lock-type-face :slant italic))
+  ;;           (object             . font-lock-constant-face)
+  ;;           (package            . font-lock-preprocessor-face)
+  ;;           (implicitConversion . (:underline ,(with-no-warnings "#2aa198")))
+  ;;           (implicitParams     . (:underline ,(with-no-warnings "#2aa198")))
+  ;;           (deprecated         . (:strike-through "dark gray")))))
+  )
 
-    (zc-ensime/hydra-define scala-mode)))
+(use-package sbt-mode
+  :straight t
+  :commands sbt-start sbt-command
+  :config
+  ;; WORKAROUND: https://github.com/ensime/emacs-sbt-mode/issues/31
+  ;; allows using SPACE when in the minibuffer
+  (substitute-key-definition
+   'minibuffer-complete-word
+   'self-insert-command
+   minibuffer-local-completion-map))
+
+
 
 (provide 'zc-scala)
