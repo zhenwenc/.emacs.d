@@ -45,15 +45,14 @@
     ("TAB" prodigy-display-process "view output")))
 
   :config
-  (progn
-    ;; Truncate buffers.
-    (setq prodigy-view-truncate-by-default t)
+  ;; Truncate buffers.
+  (setq prodigy-view-truncate-by-default t)
 
-    ;; Use standard completing-read.
-    (setq prodigy-completion-system 'default)
+  ;; Use standard completing-read.
+  (setq prodigy-completion-system 'default)
 
-    ;; Load service configs
-    (zc/load-private-package 'config-prodigy "config-prodigy.el.gpg")))
+  ;; Load service configs
+  (zc/load-private-package 'config-prodigy "config-prodigy.el.gpg"))
 
 
 

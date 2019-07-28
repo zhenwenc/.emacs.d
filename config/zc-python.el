@@ -10,6 +10,7 @@
 ;;   pip install autopep8
 (use-package python
   :straight t
+  :defer t
   :defines (gud-pdb-command-name pdb-path)
   :config
   ;; Disable readline based native completion

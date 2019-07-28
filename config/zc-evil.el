@@ -224,13 +224,12 @@
   (:states 'insert :keymaps 'evil-org-mode-map
    "C-d" nil)
   :config
-  (progn
-    (require 'evil-org-agenda)
-    (evil-org-agenda-set-keys)
+  (require 'evil-org-agenda)
+  (evil-org-agenda-set-keys)
 
-    ;; Remove weird keybindings.
-    (general-unbind :states '(normal insert) :keymaps 'evil-org-mode-map
-      "M-l" "M-h" "J" "O" "M-l" "M-h")))
+  ;; Remove weird keybindings.
+  (general-unbind :states '(normal insert) :keymaps 'evil-org-mode-map
+    "M-l" "M-h" "J" "O" "M-l" "M-h"))
 
 
 

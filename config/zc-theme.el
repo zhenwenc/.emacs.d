@@ -58,8 +58,8 @@
     (add-to-list 'all-the-icons-mode-icon-alist icon)))
 
 (use-package page-break-lines
+  :demand
   :straight t
-  :commands (global-page-break-lines-mode)
   :config
   (setq page-break-lines-modes
         '(prog-mode

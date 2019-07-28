@@ -30,31 +30,30 @@
    "C-c C-e"    #'zc-ivy/occur-then-wgrep)
 
   :config
-  (progn
-    (setq ivy-height 10)
-    (setq ivy-count-format "(%d/%d) ")
+  (setq ivy-height 10)
+  (setq ivy-count-format "(%d/%d) ")
 
-    ;; Show recent files in switch-buffer
-    (setq ivy-use-virtual-buffers t)
+  ;; Show recent files in switch-buffer
+  (setq ivy-use-virtual-buffers t)
 
-    ;; Keep minibuffer even if no input
-    (setq ivy-on-del-error-function nil)
+  ;; Keep minibuffer even if no input
+  (setq ivy-on-del-error-function nil)
 
-    (dolist (item '((helpful-key      . "^")
-                    (helpful-callable . "^")
-                    (helpful-variable . "^")
-                    (helpful-macro    . "^")))
-      (add-to-list 'ivy-initial-inputs-alist item))
+  (dolist (item '((helpful-key      . "^")
+                  (helpful-callable . "^")
+                  (helpful-variable . "^")
+                  (helpful-macro    . "^")))
+    (add-to-list 'ivy-initial-inputs-alist item))
 
-    ;; Re-sort matching candidates
-    (add-to-list 'ivy-sort-matches-functions-alist
-                 '(counsel-projectile-find-file . zc-ivy/sort-matches-by-length))
+  ;; Re-sort matching candidates
+  (add-to-list 'ivy-sort-matches-functions-alist
+               '(counsel-projectile-find-file . zc-ivy/sort-matches-by-length))
 
-    ;; Use ivy for yasnippet prompt
-    (with-eval-after-load 'yasnippet
-      (add-to-list 'yas-prompt-functions #'zc-ivy/yas-prompt nil #'eq))
+  ;; Use ivy for yasnippet prompt
+  (with-eval-after-load 'yasnippet
+    (add-to-list 'yas-prompt-functions #'zc-ivy/yas-prompt nil #'eq))
 
-    (ivy-mode)))
+  (ivy-mode))
 
 (use-package ivy-hydra
   :straight t)

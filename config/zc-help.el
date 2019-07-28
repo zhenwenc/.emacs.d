@@ -76,11 +76,14 @@
 
 (use-package google-translate
   :straight t
-  :config
-  (setq
-   google-translate-default-source-language "en"
-   google-translate-default-target-language "zh-CN"
-   google-translate-pop-up-buffer-set-focus t))
+  :commands (google-translate-query-translate
+             google-translate-query-translate-reverse
+             google-translate-at-point
+             google-translate-at-point-reverse)
+  :init
+  (setq google-translate-default-source-language "en"
+        google-translate-default-target-language "zh-CN"
+        google-translate-pop-up-buffer-set-focus t))
 
 
 

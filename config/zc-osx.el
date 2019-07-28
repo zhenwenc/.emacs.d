@@ -57,9 +57,8 @@
   :init
   (setq exec-path-from-shell-arguments '("-l"))
   :config
-  (progn
-    (add-to-list 'exec-path-from-shell-variables "GOPATH")
-    (exec-path-from-shell-initialize)))
+  (add-to-list 'exec-path-from-shell-variables "GOPATH")
+  (exec-path-from-shell-initialize))
 
 (use-package osx-trash
   :straight t

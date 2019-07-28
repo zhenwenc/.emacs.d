@@ -28,19 +28,19 @@
 
 (use-package whitespace
   :preface
-  (progn
-    (defun zc-editing/show-trailing-whitespace ()
-      (setq show-trailing-whitespace 1))
+  (defun zc-editing/show-trailing-whitespace ()
+    (setq show-trailing-whitespace 1))
 
-    (defun zc-editing/set-whitespace-style-for-diff ()
-      (setq-local whitespace-style
-                  '(face
-                    trailing
-                    tabs tab-mark
-                    spaces space-mark
-                    newline newline-mark
-                    indentation::space
-                    indentation::tab))))
+  :preface
+  (defun zc-editing/set-whitespace-style-for-diff ()
+    (setq-local whitespace-style
+                '(face
+                  trailing
+                  tabs tab-mark
+                  spaces space-mark
+                  newline newline-mark
+                  indentation::space
+                  indentation::tab)))
 
   :hook ((prog-mode . zc-editing/show-trailing-whitespace)
          (diff-mode . zc-editing/set-whitespace-style-for-diff)
@@ -55,17 +55,16 @@
   ;; Prevent the default keymap from getting created
   (defvar auto-highlight-symbol-mode-map (make-sparse-keymap))
   :config
-  (progn
-    (require 'zc-evil-ahs)
+  (require 'zc-evil-ahs)
 
-    (setq ahs-case-fold-search nil)
-    (setq ahs-default-range 'ahs-range-whole-buffer)
-    (setq ahs-idle-interval 0.25)
-    (setq ahs-inhibit-face-list nil)
+  (setq ahs-case-fold-search nil)
+  (setq ahs-default-range 'ahs-range-whole-buffer)
+  (setq ahs-idle-interval 0.25)
+  (setq ahs-inhibit-face-list nil)
 
-    ;; Disable by default, use keybinding instead.
-    ;; See `zc-evil-ahs'
-    (setq ahs-idle-timer 0)))
+  ;; Disable by default, use keybinding instead.
+  ;; See `zc-evil-ahs'
+  (setq ahs-idle-timer 0))
 
 (use-package aggressive-indent
   :straight t
