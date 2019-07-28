@@ -23,7 +23,7 @@
 
 
 ;; Speed up startup
-(setq gc-cons-threshold (* 800 1024 100))
+(setq gc-cons-threshold (* 256 1024 1024))
 (add-hook 'emacs-startup-hook #'zc/reset-gc-limit)
 
 

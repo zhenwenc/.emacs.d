@@ -269,7 +269,7 @@ Behave the same as 'Command + delete' at macOS"
 
 (defun zc/reset-gc-limit ()
   "Restore to defalut value, 16mb."
-  (setq gc-cons-threshold 16777216))
+  (setq gc-cons-threshold (* 16 1024 1024)))
 
 (defun zc/kill-emacs-or-frame (&optional persist-server-p)
   "Kill emacs process or the current frame."
