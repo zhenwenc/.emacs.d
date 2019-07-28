@@ -79,6 +79,10 @@
       scroll-margin          0
       scroll-preserve-screen-position t
 
+      ;; Reduce cursor movement lag
+      ;; https://emacs.stackexchange.com/questions/28736/emacs-pointcursor-movement-lag
+      auto-window-vscroll nil
+
       ;; Instantly display current keystrokes in mini buffer
       echo-keystrokes 0.02
 
