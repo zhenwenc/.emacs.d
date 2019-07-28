@@ -19,8 +19,7 @@
        (zc-projectile/with-switch-project-action
          '(find-file buffer) ; open initial buffer
          (zc-layout/create-project-layout project)
-         (setq-local default-directory project))))
-    (zc-layout/refresh-current-window-config))
+         (setq-local default-directory project)))))
 
   :config
   (setq eyebrowse-tagged-slot-format "%s [%t]")

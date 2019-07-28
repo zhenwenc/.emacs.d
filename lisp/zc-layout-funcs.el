@@ -78,8 +78,10 @@ reduce the overhead of recomputing the layout info.")
   (defun zc-layout/refresh-current-window-config ()
     (setq zc-layout/current-window-config-tag
           (zc-layout/current-window-config-tag)))
-  (add-hook 'eyebrowse-post-window-switch-hook
-            'zc-layout/refresh-current-window-config))
+  (dolist (hook '(eyebrowse-post-window-switch-hook
+                  projectile-after-switch-project-hook
+                  projectile-before-switch-project-hook))
+    (add-hook hook #'zc-layout/refresh-current-window-config)))
 
 
 
