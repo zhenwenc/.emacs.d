@@ -61,5 +61,16 @@
     (t (apply orig-fn (cons command args)))))
 
 
+;; Misc.
+
+(defun zc-lsp/switch-to-std-log-buffer ()
+  "Switch to standard LSP *lsp-log* buffer."
+  (interactive)
+  (let ((buffer (get-buffer "*lsp-log*")))
+    (unless buffer
+      (error "No LSP log buffer found."))
+    (pop-to-buffer buffer)))
+
+
 
 (provide 'zc-lsp-funcs)

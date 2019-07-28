@@ -19,7 +19,8 @@
      ("nx" lsp-workspace-folders-remove    "remove folders")
      ("no" lsp-workspace-folders-switch    "switch folders")
      ("ni" lsp-describe-session            "show sessions")
-     ("nl" lsp-switch-to-io-log-buffer     "show log"))
+     ("nl" lsp-switch-to-io-log-buffer     "show workspace log")
+     ("nL" zc-lsp/switch-to-std-log-buffer "show log"))
 
     "Docs"
     (("hi" lsp-ui-imenu                    "toggle imenu")
