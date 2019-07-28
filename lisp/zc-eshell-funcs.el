@@ -1,8 +1,8 @@
 (require 'f)
 (require 'dash)
-(require 'eshell)
 
 (autoload 'shrink-path-file "shrink-path")
+(autoload 'projectile-project-root "projectile")
 
 (defvar eshell-buffer-name)
 (defvar eshell-last-output-end)
