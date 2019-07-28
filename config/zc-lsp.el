@@ -34,7 +34,17 @@
      ("rf" lsp-format-buffer               "format")
      ("ra" zc-lsp/execute-code-action-dwim "action"))))
 
+  :preface
+  (defun zc-lsp/setup-after-open ()
+    "Function for `lsp-after-open-hook' to setup the opened
+new file with LSP support."
+    (when (lsp--capability "documentSymbolProvider")
+      (lsp-enable-imenu)))
+
+  :hook (lsp-after-open . zc-lsp/setup-after-open)
+
   :config
+  ;; Load LSP clients, hmm..
   (require 'lsp-clients)
 
   (setq lsp-trace nil
@@ -42,15 +52,25 @@
         lsp-print-performance nil
 
         lsp-auto-guess-root t
-        lsp-response-timeout 10
-        lsp-document-sync-method 'incremental
         lsp-session-file (concat paths-cache-dir ".lsp-session-v1")
+
+        ;; The client may send a cancel event, but most LSP
+        ;; servers seems doesn't care about it at all! :P
+        lsp-response-timeout 10
+
+        ;; Ensure to respect the server recommented sync
+        ;; method, otherwise it may cause issues!
+        lsp-document-sync-method nil
 
         ;; Show only the currently active signature, hide any
         ;; overloaded function signatures.
         lsp-eldoc-prefer-signature-help nil
 
-        lsp-auto-configure nil ; No magic!
+        ;; LSP does some opinionated settings, which can be
+        ;; incompatible with my config, such as how to set
+        ;; the company backends.
+        lsp-auto-configure nil ; No Magic!
+
         lsp-prefer-flymake nil
         lsp-enable-completion-at-point nil
         lsp-enable-symbol-highlighting nil)
@@ -75,13 +95,6 @@
    "C-k" #'lsp-ui-peek--select-prev)
 
   :preface
-  (defun zc-lsp/setup ()
-    "Function for `lsp-after-open-hook' to setup the opened
-new file with LSP support."
-    (when (lsp--capability "documentSymbolProvider")
-      (lsp-enable-imenu)))
-
-  :preface
   (defun zc-lsp/toggle-lsp-ui-doc-mode ()
     (interactive)
     (if lsp-ui-doc-mode
@@ -101,8 +114,7 @@ new file with LSP support."
            (lsp-ui-sideline-apply-code-actions))
           (t (user-error "No code action available"))))
 
-  :hook ((lsp-mode       . lsp-ui-mode)
-         (lsp-after-open . zc-lsp/setup))
+  :hook (lsp-mode . lsp-ui-mode)
 
   :custom-face
   (lsp-ui-doc-header     ((t (:background ,(doom-color 'blue)
