@@ -231,13 +231,13 @@
     ("Basic"
      (("tf" toggle-frame-fullscreen "fullscreen")
       ("tF" toggle-frame-maximized "maximize frame")
-      ("td" toggle-debug-on-error "emacs debug")
-      ("tn" toggle-linum "line numbers")
-      ("tk" which-key-mode "which key"))
+      ("td" toggle-debug-on-error "emacs debug" :toggle (default-value 'debug-on-error))
+      ("tn" linum-mode "line numbers" :toggle t)
+      ("tk" which-key-mode "which key" :toggle t))
 
      "Edit"
-     (("tw" whitespace-mode "whitespace")
-      ("tW" auto-fill-mode "auto fill"))
+     (("tw" whitespace-mode "whitespace" :toggle t)
+      ("tW" auto-fill-mode "auto fill" :toggle t))
 
      "Apps"
      (("tp" prodigy "prodigy services")
