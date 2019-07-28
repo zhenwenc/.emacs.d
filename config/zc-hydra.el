@@ -1,4 +1,5 @@
 (eval-when-compile
+  (require 'el-patch)
   (require 'use-package))
 
 (require 's)
@@ -321,6 +322,20 @@
 (use-package hydra
   :straight t
   :if (display-graphic-p)
+  :config/el-patch
+  ;; HACK: Fix posframe doesn't respect newline character
+  ;;       when calculating the child frame height, which
+  ;;       causes hydra shows incomplete docstring.
+  (defun hydra-posframe-show (str)
+    (require 'posframe)
+    (when hydra--posframe-timer
+      (cancel-timer hydra--posframe-timer))
+    (setq hydra--posframe-timer nil)
+    (apply #'posframe-show " *hydra-posframe*"
+           :string str
+           (el-patch-add
+             :min-height (length (s-lines str)))
+           hydra-posframe-show-params))
   :config
   (setq hydra-hint-display-type 'posframe)
   (setq hydra-posframe-show-params

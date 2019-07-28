@@ -1,6 +1,6 @@
 (eval-when-compile
-  (require 'use-package)
-  (require 'el-patch))
+  (require 'el-patch)
+  (require 'use-package))
 
 (require 'zc-lsp-funcs)
 
