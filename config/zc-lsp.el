@@ -124,8 +124,9 @@ new file with LSP support."
   :hook (lsp-mode . lsp-ui-mode)
 
   :custom-face
-  (lsp-ui-doc-header     ((t (:background ,(doom-color 'blue)
-                              :foreground ,(doom-color 'bg)))))
+  (lsp-ui-doc-header     ((t (:weight     semi-bold
+                              :background ,(doom-color 'bg)))))
+  (lsp-ui-doc-background ((t (:background ,(doom-color 'bg)))))
   (lsp-ui-peek-header    ((t (:background ,(doom-color 'violet)
                               :foreground ,(doom-color 'bg)))))
   (lsp-ui-peek-footer    ((t (:background ,(doom-color 'violet)))))
@@ -138,7 +139,7 @@ new file with LSP support."
         lsp-ui-doc-header t
         lsp-ui-doc-include-signature nil
         lsp-ui-doc-position 'top
-        lsp-ui-doc-border (doom-color 'blue)
+        lsp-ui-doc-border (doom-color 'base3)
         lsp-ui-doc-max-width 80
         lsp-ui-doc-max-height 30
         lsp-ui-doc-use-webkit t
