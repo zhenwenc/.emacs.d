@@ -20,6 +20,9 @@
     (setq zc-modeline/active-window (selected-window))))
 (add-function :before pre-redisplay-function #'zc-modeline/set-active-window)
 
+
+;; Functions
+
 (defun zc-modeline/get-width (values)
   "Get the length of VALUES."
   (if values
@@ -162,7 +165,7 @@
             mode-name)))
 
 (defun zc-modeline/status-info ()
-  (let* ((layout (zc-layout/current-window-config-tag))
+  (let* ((layout zc-layout/current-window-config-tag)
          (window-number (winum-get-number-string))
          (window-unicode (pcase window-number
                            ("1"   "➊")

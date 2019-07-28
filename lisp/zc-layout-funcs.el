@@ -69,6 +69,19 @@ the layout project."
     (and project (string= project current))))
 
 
+;; Helpers for modeline
+
+(defvar zc-layout/current-window-config-tag nil
+  "The cached current window config tag. This is useful to
+reduce the overhead of recomputing the layout info.")
+(with-eval-after-load 'eyebrowse
+  (defun zc-layout/refresh-current-window-config ()
+    (setq zc-layout/current-window-config-tag
+          (zc-layout/current-window-config-tag)))
+  (add-hook 'eyebrowse-post-window-switch-hook
+            'zc-layout/refresh-current-window-config))
+
+
 
 (defun zc-layout/poshandler-frame-bottom-center (info)
   "Posframe's position handler.
