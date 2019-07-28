@@ -22,6 +22,14 @@
 
 
 
+(defun zc/max-gc-limit ()
+  "Disable garbage collection when entering commands."
+  (setq gc-cons-threshold most-positive-fixnum))
+
+(defun zc/reset-gc-limit ()
+  "Restore to defalut value, 16mb."
+  (setq gc-cons-threshold (* 16 1024 1024)))
+
 ;; Speed up startup
 (setq gc-cons-threshold (* 256 1024 1024))
 (add-hook 'emacs-startup-hook #'zc/reset-gc-limit)
@@ -62,8 +70,11 @@
 (straight-use-package 'posframe)
 (straight-use-package 'el-patch)
 
-(with-no-warnings
-  (setq use-package-verbose t))
+;; Must set before loading `use-package'.
+;; Don't use `use-package-always-ensure' with straight!
+(eval-when-compile
+  (with-no-warnings
+    (setq use-package-verbose t)))
 
 (straight-use-package 'bind-map)
 (straight-use-package 'use-package)

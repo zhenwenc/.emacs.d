@@ -5,6 +5,8 @@
 (require 'color)
 (require 'general)
 
+(autoload 'doom-color "doom-themes")
+
 (defvar ahs-highlighted)
 
 
@@ -27,49 +29,46 @@
 (use-package doom-themes
   :straight t
   :config
-  (progn
-    ;; Global settings (defaults)
-    (setq doom-themes-enable-bold t
-          doom-themes-enable-italic t)
+  ;; Global settings (defaults)
+  (setq doom-themes-enable-bold t
+        doom-themes-enable-italic t)
 
-    ;; Load the theme
-    (if (display-graphic-p)
-        (load-theme 'zc-dracula t)
-      (load-theme 'doom-one t))
+  ;; Load the theme
+  (if (display-graphic-p)
+      (load-theme 'zc-dracula t)
+    (load-theme 'doom-one t))
 
-    ;; Enable custom treemacs theme
-    (doom-themes-treemacs-config)
+  ;; Enable custom treemacs theme
+  (doom-themes-treemacs-config)
 
-    ;; Corrects (and improves) org-mode's native fontification.
-    (doom-themes-org-config)))
+  ;; Corrects (and improves) org-mode's native fontification.
+  (doom-themes-org-config))
 
 
 
 (use-package all-the-icons
-  :straight t)
+  :straight t
+  :if (display-graphic-p)
+  :config
+  ;; Use `all-the-icons-insert-*' to find available icons.
+  (dolist (icon '((prodigy-mode   all-the-icons-faicon "bar-chart"
+                                  :face all-the-icons-blue)
+                  (terraform-mode all-the-icons-faicon "tree"
+                                  :face all-the-icons-blue)))
+    (add-to-list 'all-the-icons-mode-icon-alist icon)))
 
 (use-package page-break-lines
   :straight t
-  :demand t
   :commands (global-page-break-lines-mode)
   :config
-  (progn
-    (setq page-break-lines-modes
-          '(prog-mode
-            text-mode
-            help-mode
-            imenu-list-major-mode
-            compilation-mode
-            org-agenda-mode))
-
-    ;; Use `all-the-icons-insert-*' to find available icons.
-    (dolist (icon '((prodigy-mode   all-the-icons-faicon "bar-chart"
-                                    :face all-the-icons-blue)
-                    (terraform-mode all-the-icons-faicon "tree"
-                                    :face all-the-icons-blue)))
-      (add-to-list 'all-the-icons-mode-icon-alist icon))
-
-    (global-page-break-lines-mode)))
+  (setq page-break-lines-modes
+        '(prog-mode
+          text-mode
+          help-mode
+          imenu-list-major-mode
+          compilation-mode
+          org-agenda-mode))
+  (global-page-break-lines-mode))
 
 (use-package rainbow-delimiters
   :straight t)
