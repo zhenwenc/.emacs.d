@@ -334,7 +334,7 @@
     (apply #'posframe-show " *hydra-posframe*"
            :string str
            (el-patch-add
-             :min-height (length (s-lines str)))
+             :min-height (1+ (s-count-matches "\n" str)))
            hydra-posframe-show-params))
   :config
   (setq hydra-hint-display-type 'posframe)
