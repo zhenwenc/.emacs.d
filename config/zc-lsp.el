@@ -41,7 +41,13 @@ new file with LSP support."
     (when (lsp--capability "documentSymbolProvider")
       (lsp-enable-imenu)))
 
-  :hook (lsp-after-open . zc-lsp/setup-after-open)
+  :preface
+  (defun zc-lsp/inhibit-restart-prompt ()
+    "Don't prompt to restart LSP servers while quitting Emacs."
+    (setq lsp-restart 'ignore))
+
+  :hook ((lsp-after-open . zc-lsp/setup-after-open)
+         (kill-emacs     . zc-lsp/inhibit-restart-prompt))
 
   :config
   ;; Load LSP clients, hmm..
