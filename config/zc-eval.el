@@ -50,10 +50,12 @@
    "h"   #'evil-backward-char)
 
   (:states 'insert :keymaps 'compilation-mode-map
-   "g"   #'recompile
    "a"   #'zc-eval/compilation-send-self
    "f"   #'zc-eval/compilation-send-self
-   "RET" #'zc-eval/compilation-send-self)
+   "RET" #'zc-eval/compilation-send-self
+
+   :predicate '(not (derived-mode-p 'rustic-compilation-mode))
+   "g"   #'recompile)
 
   :hydra
   ((:mode compilation-mode)
