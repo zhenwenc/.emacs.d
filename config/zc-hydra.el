@@ -241,6 +241,7 @@
 
      "Apps"
      (("tp" prodigy "prodigy services")
+      ("tP" list-processes "process list")
       ("tc" zc-eval/compile-on-save-mode "auto recompile")
       ("ti" imenu-list-smart-toggle "imenu list"))))
 
