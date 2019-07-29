@@ -122,6 +122,7 @@
 (use-package zc-web)
 (use-package zc-lua)
 (use-package zc-yaml)
+(use-package zc-rust)
 (use-package zc-scala)
 (use-package zc-python)
 (use-package zc-markdown)

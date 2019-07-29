@@ -11,7 +11,7 @@
   :commands (lsp lsp-deferred)
 
   :hydra
-  ((:mode (typescript-mode python-mode scala-mode))
+  ((:mode (typescript-mode python-mode scala-mode rustic-mode))
    ("Server"
     (("ns" lsp-workspace-restart           "restart")
      ("nS" lsp-workspace-shutdown          "shutdown")

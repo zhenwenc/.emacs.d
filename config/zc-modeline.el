@@ -157,6 +157,7 @@
   (let* ((mode-name (pcase major-mode
                       ('sh-mode         "sh")
                       ('scala-mode      "Scala")
+                      ('rustic-mode     "Rust")
                       ('typescript-mode "Typescript")
                       ('emacs-lisp-mode "Elisp")
                       (guard major-mode))))

@@ -13,6 +13,7 @@
     (typescript-mode :exact   (company-lsp))
     (python-mode     :exact   (company-lsp))
     (scala-mode      :exact   (company-lsp))
+    (rustic-mode     :exact   (company-lsp))
     (ensime-mode     :exact   (ensime-company))
     (terraform-mode  :exact   (company-dabbrev)))
   "An alist matching modes to company backends.")

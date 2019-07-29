@@ -51,7 +51,9 @@
   :if (display-graphic-p)
   :config
   ;; Use `all-the-icons-insert-*' to find available icons.
-  (dolist (icon '((prodigy-mode   all-the-icons-faicon "bar-chart"
+  (dolist (icon '((rustic-mode    all-the-icons-alltheicon "rust"
+                                  :face all-the-icons-maroon :height 1.2)
+                  (prodigy-mode   all-the-icons-faicon "bar-chart"
                                   :face all-the-icons-blue)
                   (terraform-mode all-the-icons-faicon "tree"
                                   :face all-the-icons-blue)))
