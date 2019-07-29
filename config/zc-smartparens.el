@@ -14,6 +14,7 @@
 
   :general
   (:keymaps 'smartparens-mode-map
+   :predicate '(not (derived-mode-p 'org-mode))
    "M-<right>"   #'sp-forward-slurp-sexp
    "M-<left>"    #'sp-forward-barf-sexp
    "M-S-<right>" #'sp-backward-slurp-sexp
