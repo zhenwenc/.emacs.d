@@ -11,6 +11,8 @@
 
   :preface
   (defun zc-layout/create-initial-layouts ()
+    "Prepare initial layers on startup."
+    (eyebrowse-mode t)
     (-each-r
      '(("~/.emacs.d" ".gitignore")
        ("~/dotfiles" ".gitignore"))
@@ -21,16 +23,13 @@
          (zc-layout/create-project-layout project)
          (setq-local default-directory project)))))
 
+  :hook ((emacs-startup . toggle-frame-maximized)
+         (emacs-startup . zc-layout/create-initial-layouts))
+
+  :init (setq eyebrowse-tagged-slot-format "%s [%t]")
   :config
-  (setq eyebrowse-tagged-slot-format "%s [%t]")
-
   ;; Unset all default key bindings
-  (define-key eyebrowse-mode-map eyebrowse-keymap-prefix nil)
-
-  ;; Create the initial layer on startup
-  (add-hook 'emacs-startup-hook #'zc-layout/create-initial-layouts)
-
-  (eyebrowse-mode t))
+  (define-key eyebrowse-mode-map eyebrowse-keymap-prefix nil))
 
 (use-package winum
   :straight t
