@@ -14,7 +14,12 @@
   ((:mode rustic-mode :after lsp-mode)
    ("Build"
     (("bB" rustic-popup       "popup")
-     ("bb" rustic-cargo-build "build"))))
+     ("bb" rustic-cargo-build "build")
+     ("bc" rustic-cargo-check "check"))
+
+    "Execute & Test"
+    (("er" rustic-cargo-run   "run")
+     ("et" rustic-cargo-test  "test"))))
 
   :preface
   (defun zc-rust/setup ()
@@ -44,7 +49,24 @@
         rustic-flycheck-setup-mode-line-p nil)
 
   ;; The auto-LSP setup doesn't compatible.
-  (advice-add 'rustic-setup-rls :override #'ignore))
+  (advice-add 'rustic-setup-rls :override #'ignore)
+
+  :config
+  ;; The default ansi colors looks better in terminal.
+  (setq rustic-ansi-faces (if (display-graphic-p)
+                              (vector "black"
+                                      (doom-color 'red)
+                                      (doom-color 'green)
+                                      (doom-color 'yellow)
+                                      (doom-color 'blue)
+                                      (doom-color 'magenta)
+                                      (doom-color 'cyan)
+                                      "white")
+                            rustic-ansi-faces))
+
+  (with-eval-after-load 'org
+    ;; Alias source code block language
+    (add-to-list 'org-src-lang-modes '("rust" . rustic))))
 
 
 
