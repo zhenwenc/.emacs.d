@@ -29,7 +29,22 @@
    "S-<return>"                #'company-complete)
 
   (:keymaps 'comint-mode-map
+   ;; C-M-i
    [remap indent-for-tab-command] #'company-manual-begin)
+
+  (:keymaps 'company-active-map
+   [return] #'company-complete-selection
+   "RET"    #'company-complete-selection
+
+   :states 'insert
+   "C-e"    #'evil-end-of-line
+   "C-d"    #'evil-delete-char
+
+
+   [tab] (general-predicate-dispatch nil
+           (and (bound-and-true-p yas-minor-mode)
+                (yas-maybe-expand-abbrev-key-filter 'yas-expand))
+           'yas-expand))
 
   :preface
   (defun zc-company/setup ()
@@ -46,13 +61,38 @@
     ;; Correct settings messed up by `evil-collection-company'.
     (general-define-key
      :keymaps 'company-active-map
-     [return] #'company-complete-selection
-     "RET"    #'company-complete-selection)
+     [return]    #'company-complete-selection
+     "RET"       #'company-complete-selection
+     "C-e"       #'zc-company/evil-end-of-line
+     "C-d"       #'zc-company/evil-delete-char
+     "<backtab>" #'zc-company/complete-yasnippet
 
-    (general-define-key
-     :states 'insert :keymaps 'company-active-map
-     "C-e"    #'evil-end-of-line
-     "C-d"    #'evil-delete-char))
+     [tab] (general-predicate-dispatch nil
+             ;; Expand snippet if available
+             (and (bound-and-true-p yas-minor-mode)
+                  (yas-maybe-expand-abbrev-key-filter 'yas-expand))
+             'yas-expand
+             ;; Show available snippets
+             (bound-and-true-p yas-minor-mode)
+             'zc-company/complete-yasnippet)))
+
+  :preface
+  (defun zc-company/complete-yasnippet ()
+    (interactive)
+    (company-abort)
+    (call-interactively 'company-yasnippet))
+
+  :preface
+  (defun zc-company/evil-end-of-line ()
+    (interactive)
+    (company-abort)
+    (call-interactively 'evil-end-of-line))
+
+  :preface
+  (defun zc-company/evil-delete-char ()
+    (interactive)
+    (company-abort)
+    (call-interactively 'evil-delete-char))
 
   :hook ((after-init . global-company-mode)
          (company-mode . zc-company/setup))
