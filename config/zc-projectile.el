@@ -32,6 +32,7 @@
   (setq projectile-globally-ignored-directories
         '(".git"
           ".cache"
+          ".rustup"
           ".ensime_cache"
           "dist"
           "build"
