@@ -151,6 +151,9 @@
                     :keymaps '(special-mode-map messages-buffer-mode-map)
                     "SPC"    #'zc-main-hydra/body)
 
+;; We have hydra to adjust the text scale.
+(general-define-key :states 'normal :keymaps 'view-mode-map "0" nil)
+
 
 ;; Build-in packages
 
