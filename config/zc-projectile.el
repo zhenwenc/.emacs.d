@@ -1,6 +1,8 @@
 (eval-when-compile
   (require 'use-package))
 
+(require 'f)
+(require 'dash)
 (require 'zc-projectile-funcs)
 
 
@@ -32,7 +34,6 @@
   (setq projectile-globally-ignored-directories
         '(".git"
           ".cache"
-          ".rustup"
           ".ensime_cache"
           "dist"
           "build"
@@ -40,6 +41,14 @@
           "vendor"
           "node_modules"
           "straight/repos"))
+  (setq zc-projectile/ignored-project-dirs
+        '("~/.rustup"))
+
+  (defun zc-projectile/ignore-projects-filter (dir)
+    (let ((-compare-fn 'f-descendant-of?))
+      (-contains? zc-projectile/ignored-project-dirs dir)))
+  (setq projectile-ignored-project-function
+        'zc-projectile/ignore-projects-filter)
 
   ;; Replace default npm project type with yarn
   (setq projectile-project-types
