@@ -31,27 +31,28 @@
    (("?" org-info "org info"))
 
    "Edit"
-   (("ee" org-edit-special "edit")
-    ("ed" org-cut-special "cut")
-    ("ey" org-copy-special "copy")
-    ("eP" org-paste-special "paste")
-    ("et" counsel-org-tag "edit tag")
-    ("ea" org-babel-insert-header-arg "edit argument")
-    ("ep" org-property-action "edit property"))
+   (("ee" org-edit-special                        "edit")
+    ("ed" org-cut-special                         "kill")
+    ("ey" org-copy-special                        "copy")
+    ("eP" org-paste-special                       "paste")
+    ("et" counsel-org-tag                         "tag")
+    ("eT" org-table-create-or-convert-from-region "table")
+    ("ea" org-babel-insert-header-arg             "argument")
+    ("ep" org-property-action                     "property"))
 
    "Babel"
-   (("bi" org-babel-view-src-block-info "block info")
-    ("bo" org-babel-open-src-block-result "open result")
-    ("bc" org-babel-remove-result-one-or-many "clear result")
-    ("bC" zc-org/babel-remove-result-all "clear result*"))
+   (("bi" org-babel-view-src-block-info       "info")
+    ("bo" org-babel-open-src-block-result     "open res")
+    ("bc" org-babel-remove-result-one-or-many "clear res")
+    ("bC" zc-org/babel-remove-result-all      "clear res*"))
 
    "Refactor"
-   (("rs" org-sort "sort")
+   (("rs" org-sort   "sort")
     ("rw" org-refile "refile"))
 
    "Toggle"
-   (("ti" org-toggle-item "item")
-    ("th" org-toggle-heading "heading")
+   (("ti" org-toggle-item         "item")
+    ("th" org-toggle-heading      "heading")
     ("tl" org-toggle-link-display "link")))
 
   :hook
