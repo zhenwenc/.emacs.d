@@ -64,8 +64,13 @@
                                       "white")
                             rustic-ansi-faces))
 
+  ;; Enhance smartparens
+  (with-eval-after-load 'smartparens
+    (sp-with-modes '(rustic-mode)
+      (sp-local-pair "<" ">")))
+
+  ;; Alias source code block language
   (with-eval-after-load 'org
-    ;; Alias source code block language
     (add-to-list 'org-src-lang-modes '("rust" . rustic))))
 
 
