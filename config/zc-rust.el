@@ -65,9 +65,19 @@
                             rustic-ansi-faces))
 
   ;; Enhance smartparens
+  ;; We have to port the configs to rustic from rust-mode.
+  ;; https://github.com/Fuco1/smartparens/blob/master/smartparens-rust.el
   (with-eval-after-load 'smartparens
+    (require 'smartparens-rust)
     (sp-with-modes '(rustic-mode)
-      (sp-local-pair "<" ">")))
+      (sp-local-pair "'" "'"
+                     :unless '(sp-in-comment-p
+                               sp-in-string-quotes-p
+                               sp-in-rust-lifetime-context)
+                     :post-handlers'(:rem sp-escape-quotes-after-insert))
+      (sp-local-pair "<" ">"
+                     :when '(sp-rust-filter-angle-brackets)
+                     :skip-match 'sp-rust-skip-match-angle-bracket)))
 
   ;; Alias source code block language
   (with-eval-after-load 'org

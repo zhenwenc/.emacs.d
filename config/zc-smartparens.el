@@ -58,8 +58,7 @@
                    :actions '(insert wrap)))
 
   (sp-with-modes 'org-mode
-    (sp-local-pair "[" "]"
-                   :post-handlers '(("|" "SPC"))))
+    (sp-local-pair "[" "]" :post-handlers '(("|" "SPC"))))
 
   (set-face-attribute 'show-paren-match nil
                       :background "#434956"
