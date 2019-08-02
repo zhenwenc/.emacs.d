@@ -21,6 +21,24 @@
 (add-function :before pre-redisplay-function #'zc-modeline/set-active-window)
 
 
+;; LSP Info
+
+(defvar-local zc-modeline/lsp-info nil
+  "Current LSP workspace and status.")
+
+(defun zc-modeline/update-lsp-info (&rest _)
+  (let* ((workspace (and (bound-and-true-p lsp-mode)
+                         (car (lsp-workspaces))))
+         (server-id (when workspace (lsp--workspace-print workspace))))
+    (setq zc-modeline/lsp-info server-id)))
+
+(with-eval-after-load 'lsp
+  (dolist (hook '(lsp-mode-hook
+                  lsp-after-initialize-hook
+                  lsp-after-uninitialized-hook))
+    (add-hook hook #'zc-modeline/update-lsp-info)))
+
+
 ;; Functions
 
 (defun zc-modeline/get-width (values)
@@ -282,6 +300,9 @@
                  ))
 
            (rhs (list
+                 (zc-modeline/separator)
+                 (or zc-modeline/lsp-info "")
+
                  ;; Current column and line positions
                  (zc-modeline/separator)
                  (propertize "%4l:" 'face face)
@@ -309,6 +330,8 @@
 
       (-concat lhs spc rhs)))
    ))
+
+
 
 ;; Testing
 (setq mode-line-format (default-value 'mode-line-format))
