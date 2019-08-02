@@ -48,6 +48,10 @@
       recentf-save-file     (concat paths-cache-dir "recentf")
       bookmark-default-file (concat paths-cache-dir "bookmarks")
 
+      ;; These are generated custom configurations, stop it
+      ;; from polluting our init.el file!
+      custom-file           (concat paths-cache-dir "custom.el")
+
       ;; Quiet startup
       inhibit-startup-screen t
       inhibit-startup-message t
