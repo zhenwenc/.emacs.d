@@ -153,7 +153,16 @@
                  (reusable-frames . visible)
                  (side            . bottom)
                  (slot            . 1)
-                 (window-height   . 0.3))))
+                 (window-height   . 0.3))
+
+                (,(rx bos "*rustfmt*" eos)
+                 (display-buffer-reuse-window
+                  display-buffer-in-side-window)
+                 (reusable-frames . visible)
+                 (side            . bottom)
+                 (slot            . 1)
+                 (window-height   . 0.2))
+                ))
   (add-to-list 'display-buffer-alist item))
 
 
