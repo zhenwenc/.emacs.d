@@ -24,18 +24,45 @@
   :preface
   (defun zc-rust/setup ()
     "Download Rust Language Server required packages."
+    (zc-rust/download-rls-packages)
+    (lsp-deferred))
+
+  :preface
+  (defun zc-rust/download-rls-packages ()
+    "Download Rust Language Server required components with
+rustup if not already installed."
     (unless (executable-find "rustup")
       (error "No rustup executable found!"))
     ;; Install the required rust components with rustup.
-    (let ((pkgs '("rustfmt" "rls" "rust-analysis" "rust-src" "clippy"))
+    (let ((pkgs '("rls" "clippy" "rustfmt" "rust-analysis" "rust-src"))
           (-compare-fn #'s-starts-with-p))
-      (dolist (package (--> (shell-command-to-string
-                             "rustup component list --installed")
-                            (s-split "\n" it t)
-                            (-remove (-partial #'-contains? it) pkgs)))
+      (dolist (package
+               (--> (shell-command-to-string
+                     "rustup component list --installed")
+                    (s-split "\n" it t)
+                    (-remove (-partial #'-contains? it) pkgs)))
         (shell-command (concat "rustup component add " package))
-        (message "Installed %s!" package)))
-    (lsp-deferred))
+        (message "Installed %s!" package))))
+
+  :config/el-patch
+  (defun rustic-format-file-sentinel (proc output)
+    "Sentinel for rustfmt processes when formatting a file."
+    (el-patch-let
+        (($old (revert-buffer t t))
+         ($new (progn
+                 ;; HACK: Auto delete rustfmt buffer if succeed
+                 (-when-let (win (get-buffer-window proc-buffer))
+                   (delete-window win))
+                 (revert-buffer t t))))
+      (let ((proc-buffer (process-buffer proc)))
+        (with-current-buffer proc-buffer
+          (if (string-match-p "^finished" output)
+              (progn
+                (with-current-buffer next-error-last-buffer
+                  (el-patch-swap $old $new)))
+            (goto-char (point-min))
+            (funcall rustic-format-display-method proc-buffer)
+            (message "Rustfmt error."))))))
 
   :hook (rustic-mode . zc-rust/setup)
 
@@ -44,14 +71,17 @@
   (rustic-cargo-outdated-upgrade-face ((t (:foreground ,(doom-color 'success)))))
 
   :init
-  ;; Disable some unused features
-  (setq rustic-display-spinner nil
-        rustic-flycheck-setup-mode-line-p nil)
-
   ;; The auto-LSP setup doesn't compatible.
   (advice-add 'rustic-setup-rls :override #'ignore)
 
   :config
+  ;; Disable some unused features
+  (setq rustic-display-spinner nil
+        rustic-flycheck-setup-mode-line-p nil)
+
+  ;; Display rustfmt errors without popping to the buffer.
+  (setq rustic-format-display-method 'display-buffer)
+
   ;; The default ansi colors looks better in terminal.
   (setq rustic-ansi-faces (if (display-graphic-p)
                               (vector "black"
