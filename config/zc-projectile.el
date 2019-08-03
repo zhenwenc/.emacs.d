@@ -42,7 +42,7 @@
           "node_modules"
           "straight/repos"))
   (setq zc-projectile/ignored-project-dirs
-        '("~/.rustup"))
+        '("~/.cargo" "~/.rustup"))
 
   (defun zc-projectile/ignore-projects-filter (dir)
     (let ((-compare-fn 'f-descendant-of?))
