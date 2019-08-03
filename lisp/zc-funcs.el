@@ -54,6 +54,10 @@ org subtree if in `org-mode'.
        `(define-key ,map ,key func)))
     (funcall (intern name) t)))
 
+(defun zc/buffer-visible-p (buf)
+  "Return t if BUF does belongs to any window."
+  (get-buffer-window buf))
+
 (defun zc/buffer-invisible-p (buf)
   "Return t if BUF doesn't belongs to any window."
   (not (get-buffer-window buf)))
