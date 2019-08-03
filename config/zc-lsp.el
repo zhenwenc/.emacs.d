@@ -13,7 +13,7 @@
   :hydra
   ((:mode (typescript-mode python-mode scala-mode rustic-mode))
    ("Server"
-    (("ns" lsp-workspace-restart           "restart")
+    (("ns" zc-lsp/workspace-maybe-restart  "restart")
      ("nS" lsp-workspace-shutdown          "shutdown")
      ("na" lsp-workspace-folders-add       "add folders")
      ("nx" lsp-workspace-folders-remove    "remove folders")

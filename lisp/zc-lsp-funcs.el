@@ -63,6 +63,16 @@
 
 ;; Misc.
 
+;;;###autoload
+(defun zc-lsp/workspace-maybe-restart ()
+  "Enable `lsp-mode' if not currently enabled, otherwise delegate
+to `lsp-workspace-restart'."
+  (interactive)
+  (if (bound-and-true-p lsp-mode)
+      (call-interactively 'lsp-workspace-restart)
+    (call-interactively 'lsp)))
+
+;;;###autoload
 (defun zc-lsp/switch-to-std-log-buffer ()
   "Switch to standard LSP *lsp-log* buffer."
   (interactive)
