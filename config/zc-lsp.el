@@ -84,7 +84,8 @@ new file with LSP support."
 
   ;; Enhance with language specific features
   (advice-add 'lsp--symbol-filter :around #'zc-lsp/imenu-symbol-filter)
-  (advice-add 'lsp--imenu-filter-symbols :around #'zc-lsp/imenu-filter-symbols))
+  (advice-add 'lsp--imenu-filter-symbols :around #'zc-lsp/imenu-filter-symbols)
+  (advice-add 'lsp--suggest-project-root :around #'zc-lsp/infer-project-root))
 
 (use-package lsp-ui
   :straight t

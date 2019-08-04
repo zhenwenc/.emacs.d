@@ -4,20 +4,28 @@
 (autoload 'company-grab-symbol-cons "company")
 
 
+;; Internal
+
+;;;###autoload
+(defun zc-lsp/infer-project-root (orig-fn &rest args)
+  "Advice `lsp--suggest-project-root' to be smarter."
+  (or (and (eq major-mode 'rustic-mode) ;; Rust
+           (rustic-buffer-workspace t))
+      (apply orig-fn args)))
+
+
 ;; IMenu
 
 ;;;###autoload
 (defun zc-lsp/imenu-symbol-filter (orig-fn sym)
-  "Advice `lsp--symbol-filter' with language specific
-  filters."
+  "Advice `lsp--symbol-filter' with language specific filters."
   (or (funcall orig-fn sym)
       (when (derived-mode-p 'typescript-mode)
         (not (zc-typescript/lsp-symbol-filter sym)))))
 
 ;;;###autoload
 (defun zc-lsp/imenu-filter-symbols (orig-fn symbols)
-  "Advice `lsp--imenu-filter-symbols' with language
-  specific filters."
+  "Advice `lsp--imenu-filter-symbols' with language specific filters."
   (--> (funcall orig-fn symbols)
        (cond
         ((derived-mode-p 'typescript-mode)
