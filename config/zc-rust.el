@@ -4,6 +4,8 @@
 (require 'general)
 (require 'straight)
 
+(autoload 'lsp-workspace-folders-add "lsp")
+
 
 
 (use-package rustic
@@ -25,6 +27,7 @@
   (defun zc-rust/setup ()
     "Download Rust Language Server required packages."
     (zc-rust/download-rls-packages)
+    (lsp-workspace-folders-add (rustic-buffer-workspace))
     (lsp-deferred))
 
   :preface
