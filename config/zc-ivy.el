@@ -126,9 +126,9 @@
   (ivy-posframe-border ((t (:background ,(doom-color 'bg-alt)))))
   (ivy-posframe-cursor ((t (:background ,(doom-color 'blue)))))
   :config
-  (defun zc-ivy/posframe-display (str)
+  (defun ivy-posframe-display--custom (str)
     (ivy-posframe--display str #'zc-layout/poshandler-frame-bottom-center))
-  (setq ivy-posframe-display-functions-alist '((t . zc-ivy/posframe-display)))
+  (setq ivy-posframe-display-functions-alist '((t . ivy-posframe-display--custom)))
   (setq ivy-posframe-parameters '((alpha 98 98))
         ivy-posframe-border-width 16
         ivy-posframe-min-height 10)
