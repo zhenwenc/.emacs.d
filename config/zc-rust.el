@@ -3,6 +3,7 @@
 
 (require 'general)
 (require 'straight)
+(require 'zc-rust-funcs)
 
 (autoload 'lsp-workspace-folders-add "lsp")
 
@@ -98,19 +99,26 @@ rustup if not already installed."
                             rustic-ansi-faces))
 
   ;; Enhance smartparens
-  ;; We have to port the configs to rustic from rust-mode.
-  ;; https://github.com/Fuco1/smartparens/blob/master/smartparens-rust.el
   (with-eval-after-load 'smartparens
     (require 'smartparens-rust)
     (sp-with-modes '(rustic-mode)
+      ;; We have to port the configs to rustic from rust-mode.
+      ;; https://github.com/Fuco1/smartparens/blob/master/smartparens-rust.el
       (sp-local-pair "'" "'"
                      :unless '(sp-in-comment-p
                                sp-in-string-quotes-p
                                sp-in-rust-lifetime-context)
-                     :post-handlers'(:rem sp-escape-quotes-after-insert))
+                     :post-handlers '(:rem sp-escape-quotes-after-insert))
       (sp-local-pair "<" ">"
                      :when '(sp-rust-filter-angle-brackets)
-                     :skip-match 'sp-rust-skip-match-angle-bracket)))
+                     :skip-match 'sp-rust-skip-match-angle-bracket)
+
+      ;; Eagerly expand || to closure form with yasnippet.
+      (sp-local-pair "|" "|"
+                     :unless '(sp-in-comment-p sp-in-string-quotes-p)
+                     :post-handlers '(("[d1]|" "SPC") ; Bitwise OR / Pattern alternative
+                                      ("[d1] |" "=")  ; Bitwise OR & Assignment
+                                      zc-rust/sp-expand-closure))))
 
   ;; Alias source code block language
   (with-eval-after-load 'org
