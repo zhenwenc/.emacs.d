@@ -243,7 +243,8 @@
       ("tL" auto-fill-mode "auto fill" :toggle t))
 
      "Apps"
-     (("tp" prodigy "prodigy services")
+     (("tT" counsel-tramp "tramp")
+      ("tp" prodigy "prodigy services")
       ("tP" list-processes "process list")
       ("tc" zc-eval/compile-on-save-mode "auto recompile")
       ("ti" imenu-list-smart-toggle "imenu list"))))

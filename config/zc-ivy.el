@@ -136,6 +136,11 @@
         ivy-posframe-min-height 10)
   (ivy-posframe-mode +1))
 
+(use-package counsel-tramp
+  :straight t
+  :commands (counsel-tramp)
+  :after (:and ivy counsel))
+
 
 
 (provide 'zc-ivy)
