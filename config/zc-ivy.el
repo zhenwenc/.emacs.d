@@ -102,6 +102,11 @@
    ;; never used. Setting it too high (e.g. 10000) causes lag.
    ivy-flx-limit 2000))
 
+(use-package ivy-prescient
+  :straight t
+  :after ivy
+  :hook (ivy-mode . ivy-prescient-mode))
+
 (use-package ivy-posframe
   :straight t
   :if (display-graphic-p)

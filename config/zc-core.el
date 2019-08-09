@@ -223,6 +223,13 @@
   :defer t
   :config (setq which-key-idle-delay 0.3))
 
+;; Provides intelligent sorting and filtering for candidates.
+(use-package prescient
+  :straight t
+  :config
+  (setq prescient-save-file (concat paths-cache-dir "prescient-save.el"))
+  (prescient-persist-mode +1))
+
 
 
 (require 'server)

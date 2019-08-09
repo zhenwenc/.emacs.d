@@ -124,14 +124,10 @@
 (use-package company-dabbrev
   :after company)
 
-;; Provides intelligent sorting and filtering for candidates.
 (use-package company-prescient
   :straight t
   :after company
-  :hook (company-mode . company-prescient-mode)
-  :config
-  (setq prescient-save-file (concat paths-cache-dir "prescient-save.el"))
-  (prescient-persist-mode +1))
+  :hook (company-mode . company-prescient-mode))
 
 (use-package company-box
   :straight t
