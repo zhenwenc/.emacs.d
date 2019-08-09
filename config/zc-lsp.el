@@ -23,10 +23,10 @@
      ("nL" zc-lsp/switch-to-std-log-buffer "show log"))
 
     "Docs"
-    (("hi" lsp-ui-imenu                    "toggle imenu")
-     ("hs" lsp-ui-sideline-mode            "toggle sideline")
-     ("hl" lsp-lens-mode                   "toggle lenses")
-     ("hd" zc-lsp/toggle-lsp-ui-doc-mode   "toggle doc")
+    (("hi" lsp-ui-imenu                    "imenu")
+     ("hs" lsp-ui-sideline-mode            "sideline" :toggle t)
+     ("hl" lsp-lens-mode                   "lenses" :toggle t)
+     ("hd" zc-lsp/toggle-lsp-ui-doc-mode   "doc" :toggle (bound-and-true-p lsp-ui-doc-mode))
      ("hh" lsp-describe-thing-at-point     "doc at point")
      ("hu" lsp-ui-peek-find-references     "show references"))
 
@@ -104,26 +104,6 @@ new file with LSP support."
    "k"   #'lsp-ui-peek--select-prev
    "C-j" #'lsp-ui-peek--select-next
    "C-k" #'lsp-ui-peek--select-prev)
-
-  :preface
-  (defun zc-lsp/toggle-lsp-ui-doc-mode ()
-    (interactive)
-    (if lsp-ui-doc-mode
-        (progn
-          (lsp-ui-doc-mode -1)
-          (lsp-ui-doc-hide)
-          (message "Disabled LSP Document!"))
-      (lsp-ui-doc-mode +1)
-      (message "Enabled LSP Document!")))
-
-  :preface
-  (defun zc-lsp/execute-code-action-dwim ()
-    (interactive)
-    (cond ((lsp-code-actions-at-point)
-           (call-interactively #'lsp-execute-code-action))
-          (lsp-ui-sideline-mode
-           (lsp-ui-sideline-apply-code-actions))
-          (t (user-error "No code action available"))))
 
   :hook (lsp-mode . lsp-ui-mode)
 

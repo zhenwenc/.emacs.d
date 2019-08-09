@@ -134,7 +134,8 @@
     (:color teal :title "Symbol Hydra" :icon "strikethrough" :prefix "s")
     ("Basic"
      (("sj" (zc-ivy/imenu) "imenu")
-      ("sJ" (zc-ivy/imenu t) "imenu widen"))
+      ("sJ" (zc-ivy/imenu t) "imenu widen")
+      ("su" counsel-unicode-char "unicode"))
 
      "Symbol"
      (("se" evil-iedit-state/iedit-mode "edit")

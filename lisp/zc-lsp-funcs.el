@@ -5,6 +5,9 @@
 (autoload 'company-grab "company")
 (autoload 'company-grab-symbol-cons "company")
 
+(defvar lsp-ui-doc-mode)
+(defvar lsp-ui-sideline-mode)
+
 
 ;; Internal
 
@@ -128,6 +131,26 @@ delegate to `lsp-workspace-restart'."
     (unless buffer
       (error "No LSP log buffer found."))
     (pop-to-buffer buffer)))
+
+;;;###autoload
+(defun zc-lsp/toggle-lsp-ui-doc-mode ()
+  (interactive)
+  (if lsp-ui-doc-mode
+      (progn
+        (lsp-ui-doc-mode -1)
+        (lsp-ui-doc-hide)
+        (message "Disabled LSP Document!"))
+    (lsp-ui-doc-mode +1)
+    (message "Enabled LSP Document!")))
+
+;;;###autoload
+(defun zc-lsp/execute-code-action-dwim ()
+  (interactive)
+  (cond ((lsp-code-actions-at-point)
+         (call-interactively #'lsp-execute-code-action))
+        (lsp-ui-sideline-mode
+         (lsp-ui-sideline-apply-code-actions))
+        (t (user-error "No code action available"))))
 
 
 

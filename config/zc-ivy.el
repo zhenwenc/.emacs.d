@@ -65,6 +65,8 @@
   (:states '(motion normal insert visual)
    "M-x" #'counsel-M-x
    "M-y" #'counsel-yank-pop)
+  (:keymaps 'swiper-map
+   "M-%" #'swiper-query-replace)
   :config
   ;; Display separator in kill-ring buffer
   (setq counsel-yank-pop-separator
