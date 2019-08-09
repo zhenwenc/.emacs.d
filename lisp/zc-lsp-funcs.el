@@ -1,3 +1,5 @@
+(require 's)
+(require 'ht)
 (require 'dash)
 
 (autoload 'company-grab "company")
@@ -69,12 +71,50 @@
     (t (apply orig-fn (cons command args)))))
 
 
+;; Execute code lens commands
+
+(defun zc-lsp/lens-command-candidates ()
+  "Returns the available lenses with command in the buffer
+for completion."
+  (require 'ht)
+  (->> (lsp-request "textDocument/codeLens"
+                    `(:textDocument
+                      (:uri ,(lsp--path-to-uri buffer-file-name))))
+       (--filter (gethash "command" it))
+       (--map (-let* (((command &as &hash "command" (&hash "title" "arguments")) it)
+                      ((&hash "env" "binary" "args" "cwd") (seq-first arguments))
+                      (cwd (or cwd (lsp-workspace-root) default-directory))
+                      (cmd-envs (s-join " " (ht-amap (format "%s=%s" key value) env)))
+                      (cmd-args (s-join " " args))
+                      (cmd (format "%s %s %s" cmd-envs binary cmd-args)))
+                ;; TODO Handle non-command lenses? see `lsp-lens-show'.
+                (pcase command
+                  (rls.run (cons (format "%s > %s %s" title binary cmd-args)
+                                 `(:cwd ,cwd :cmd ,cmd))))))))
+
+(defun zc-lsp/lens-command-action (x)
+  "Execute the selected lens candidate LENS."
+  (-let* (((&plist :cwd cwd :cmd cmd) (cdr x))
+          (default-directory cwd))
+    (compile cmd)))
+
+;;;###autoload
+(defun zc-lsp/lens-command-run ()
+  "Prompt with available lens commands and execute."
+  (interactive)
+  (ivy-read "Command: " (zc-lsp/lens-command-candidates)
+            :action  'zc-lsp/lens-command-action
+            :history 'zc-lsp/lens-command-run
+            :caller  'zc-lsp/lens-command-run
+            :require-match t))
+
+
 ;; Misc.
 
 ;;;###autoload
 (defun zc-lsp/workspace-maybe-restart ()
-  "Enable `lsp-mode' if not currently enabled, otherwise delegate
-to `lsp-workspace-restart'."
+  "Enable `lsp-mode' if not currently enabled, otherwise
+delegate to `lsp-workspace-restart'."
   (interactive)
   (if (bound-and-true-p lsp-mode)
       (call-interactively 'lsp-workspace-restart)

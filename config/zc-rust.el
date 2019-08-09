@@ -20,9 +20,16 @@
      ("bb" rustic-cargo-build "build")
      ("bc" rustic-cargo-check "check"))
 
-    "Execute & Test"
-    (("er" rustic-cargo-run   "run")
-     ("et" rustic-cargo-test  "test"))))
+    "Eval & Test"
+    (("er" rustic-cargo-run          "run")
+     ("eT" rustic-cargo-test         "test")
+     ;; FIXME This command doesn't work when rust function
+     ;;       imports module with `mod' keyword. Maybe we
+     ;;       can ask LSP for the current function at point
+     ;;       instead of by guessing like what rustic does.
+     ;;
+     ;; Let's wait for rustic's new cargo popup first.
+     ("et" rustic-cargo-current-test "test this"))))
 
   :preface
   (defun zc-rust/setup ()

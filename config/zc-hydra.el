@@ -189,8 +189,8 @@
 
      "Eval"
      (("ec" compile "compile")
-      ("er" recompile "recompile")
-      ("ep" projectile-compile-project "compile project"))))
+      ("ep" projectile-compile-project "compile project")
+      ("er" recompile "recompile"))))
 
   (zc-hydra/define zc-main-hydra--org
     (:color teal :title "Org Hydra" :icon "empire" :prefix "o")

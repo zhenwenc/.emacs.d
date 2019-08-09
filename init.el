@@ -64,6 +64,7 @@
 (straight-use-package 'f)
 (straight-use-package 's)
 (straight-use-package 'lv)
+(straight-use-package 'ht)
 (straight-use-package 'noflet)
 (straight-use-package 'memoize)
 (straight-use-package 'general)
