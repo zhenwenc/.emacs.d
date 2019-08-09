@@ -28,98 +28,99 @@
 (set-keyboard-coding-system 'utf-8)
 (set-language-environment   'utf-8)
 
-;; General settings.
-(setq-default fill-column 80
-              indent-tabs-mode nil
-              sentence-end-double-space t)
+(setq-default
+ apropos-do-all t
+ mouse-yank-at-point t
+ require-final-newline t
+ load-prefer-newer t
+ save-interprogram-paste-before-kill t
+ ediff-window-setup-function 'ediff-setup-windows-plain
 
-;; Evil breaks cursor settings when combined with hydra.
-(setq-default cursor-in-non-selected-windows nil)
+ save-place-file       (concat paths-cache-dir "places")
+ url-cookie-file       (concat paths-cache-dir "cookies")
+ recentf-save-file     (concat paths-cache-dir "recentf")
+ bookmark-default-file (concat paths-cache-dir "bookmarks")
 
-(setq apropos-do-all t
-      mouse-yank-at-point t
-      require-final-newline t
-      load-prefer-newer t
-      save-interprogram-paste-before-kill t
-      ediff-window-setup-function 'ediff-setup-windows-plain
+ ;; General settings.
+ fill-column 80
+ indent-tabs-mode nil
+ sentence-end-double-space t
 
-      save-place-file       (concat paths-cache-dir "places")
-      url-cookie-file       (concat paths-cache-dir "cookies")
-      recentf-save-file     (concat paths-cache-dir "recentf")
-      bookmark-default-file (concat paths-cache-dir "bookmarks")
+ ;; Evil breaks cursor settings when combined with hydra.
+ cursor-in-non-selected-windows nil
 
-      ;; These are generated custom configurations, stop it
-      ;; from polluting our init.el file!
-      custom-file           (concat paths-cache-dir "custom.el")
+ ;; These are generated custom configurations, stop it
+ ;; from polluting our init.el file!
+ custom-file           (concat paths-cache-dir "custom.el")
 
-      ;; Quiet startup
-      inhibit-startup-screen t
-      inhibit-startup-message t
-      inhibit-startup-echo-area-message t
-      initial-scratch-message nil
+ ;; Quiet startup
+ inhibit-startup-screen t
+ inhibit-startup-message t
+ inhibit-startup-echo-area-message t
+ initial-scratch-message nil
 
-      ;; Disable useless features
-      frame-title-format nil
+ ;; Disable useless features
+ frame-title-format nil
 
-      ;; Prefer splitting windows horizontally
-      split-height-threshold nil
+ ;; Prefer splitting windows horizontally
+ split-height-threshold nil
 
-      ;; Save backup files in the temporary directory
-      make-backup-files               nil
-      backup-directory-alist         `((".*" . ,(concat paths-cache-dir "backup/")))
-      auto-save-file-name-transforms `((".*" ,temporary-file-directory t))
-      auto-save-list-file-name        (concat paths-cache-dir "autosave")
-      auto-save-list-file-prefix      (concat paths-cache-dir "autosave/.saves-")
+ ;; Save backup files in the temporary directory
+ make-backup-files               nil
+ backup-directory-alist         `((".*" . ,(concat paths-cache-dir "backup/")))
+ auto-save-file-name-transforms `((".*" ,temporary-file-directory t))
+ auto-save-list-file-name        (concat paths-cache-dir "autosave")
+ auto-save-list-file-prefix      (concat paths-cache-dir "autosave/.saves-")
 
-      ;; Tramp
-      tramp-default-method            "ssh"
-      tramp-persistency-file-name     (concat paths-cache-dir "tramp")
-      tramp-auto-save-directory       (concat paths-cache-dir "tramp-autosave")
-      tramp-backup-directory-alist    backup-directory-alist
-      tramp-histfile-override         "/tmp/.tramp" ; shhh!
+ ;; Tramp
+ tramp-default-method            "ssh"
+ tramp-persistency-file-name     (concat paths-cache-dir "tramp")
+ tramp-auto-save-directory       (concat paths-cache-dir "tramp-autosave")
+ tramp-backup-directory-alist    backup-directory-alist
+ tramp-histfile-override         "/tmp/.tramp" ; shhh!
 
-      ;; Smooth scroll
-      scroll-step            1
-      scroll-conservatively  101
-      scroll-margin          0
-      scroll-preserve-screen-position t
+ ;; Smooth scroll
+ scroll-step            1
+ scroll-conservatively  101
+ scroll-margin          0
+ scroll-preserve-screen-position t
 
-      ;; Reduce cursor movement lag
-      ;; https://emacs.stackexchange.com/questions/28736/emacs-pointcursor-movement-lag
-      auto-window-vscroll nil
+ ;; Reduce cursor movement lag
+ ;; https://emacs.stackexchange.com/questions/28736/emacs-pointcursor-movement-lag
+ auto-window-vscroll nil
 
-      ;; Instantly display current keystrokes in mini buffer
-      echo-keystrokes 0.02
+ ;; Instantly display current keystrokes in mini buffer
+ echo-keystrokes 0.02
 
-      ;; Don't pollute directories with lockfiles
-      create-lockfiles nil
+ ;; Don't pollute directories with lockfiles
+ create-lockfiles nil
 
-      ;; Save clipboard strings into kill ring before replacing them
-      save-interprogram-paste-before-kill t
+ ;; Save clipboard strings into kill ring before replacing them
+ save-interprogram-paste-before-kill t
 
-      ;; Don't prompt when following symlinks to vc files.
-      vc-follow-symlinks t
+ ;; Don't prompt when following symlinks to vc files.
+ vc-follow-symlinks t
 
-      ;; Don't try to ping things that look like domain names
-      ffap-machine-p-known 'reject
+ ;; Don't try to ping things that look like domain names
+ ffap-machine-p-known 'reject
 
-      ;; Disable warnings from obsolete advice system, since these are
-      ;; generally not actionable.
-      ad-redefinition-action 'accept
+ ;; Disable warnings from obsolete advice system, since these are
+ ;; generally not actionable.
+ ad-redefinition-action 'accept
 
-      comint-prompt-read-only t
+ comint-prompt-read-only t
 
-      ;; Always focus on help windows
-      help-window-select t
+ ;; Always focus on help windows
+ help-window-select t
 
-      ;; Prevent duplicated entries in the kill ring.
-      kill-do-not-save-duplicates t
+ ;; Prevent duplicated entries in the kill ring.
+ kill-do-not-save-duplicates t
 
-      ;; Don't confirm before killing subprocesses on exit.
-      confirm-kill-processes nil
+ ;; Don't confirm before killing subprocesses on exit.
+ confirm-kill-processes nil
 
-      apropos-do-all t
-      doc-view-continuous t)
+ apropos-do-all t
+ doc-view-continuous t)
 
 
 ;; Performance
