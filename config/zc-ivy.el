@@ -120,8 +120,7 @@
 
 (use-package counsel-tramp
   :straight t
-  :commands (counsel-tramp)
-  :after (:and ivy counsel))
+  :commands (counsel-tramp))
 
 
 

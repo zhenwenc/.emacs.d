@@ -66,14 +66,15 @@
 
       ;; Save backup files in the temporary directory
       make-backup-files               nil
-      backup-directory-alist         `((".*" . ,temporary-file-directory))
+      backup-directory-alist         `((".*" . ,(concat paths-cache-dir "backup/")))
       auto-save-file-name-transforms `((".*" ,temporary-file-directory t))
       auto-save-list-file-name        (concat paths-cache-dir "autosave")
       auto-save-list-file-prefix      (concat paths-cache-dir "autosave/.saves-")
 
       ;; Tramp
+      tramp-default-method            "ssh"
       tramp-persistency-file-name     (concat paths-cache-dir "tramp")
-      tramp-auto-save-directory       (concat paths-cache-dir "autosave/tramp")
+      tramp-auto-save-directory       (concat paths-cache-dir "tramp-autosave")
       tramp-backup-directory-alist    backup-directory-alist
       tramp-histfile-override         "/tmp/.tramp" ; shhh!
 

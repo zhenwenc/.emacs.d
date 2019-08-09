@@ -167,6 +167,8 @@
      (("pp" zc-layout/switch-project-layout "switch layout")
       ("pP" (zc-layout/switch-project-layout t) "create layout")
       ("pd" eyebrowse-close-window-config "close layout")
+      ("pt" counsel-tramp "tramp")
+      ("pT" counsel-tramp-quit "tramp quit")
       ("p <tab>" eyebrowse-last-window-config "last project"))))
 
   (zc-hydra/define zc-main-hydra--git
@@ -243,8 +245,7 @@
       ("tL" auto-fill-mode "auto fill" :toggle t))
 
      "Apps"
-     (("tT" counsel-tramp "tramp")
-      ("tp" prodigy "prodigy services")
+     (("tp" prodigy "prodigy services")
       ("tP" list-processes "process list")
       ("tc" zc-eval/compile-on-save-mode "auto recompile")
       ("ti" imenu-list-smart-toggle "imenu list"))))
