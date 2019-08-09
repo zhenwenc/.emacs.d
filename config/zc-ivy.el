@@ -102,24 +102,6 @@
    ;; never used. Setting it too high (e.g. 10000) causes lag.
    ivy-flx-limit 2000))
 
-(use-package historian
-  :straight t
-  :commands (historian-mode)
-  :after ivy
-  :config
-  (setq historian-save-file (concat paths-cache-dir "historian"))
-  (historian-mode +1))
-
-(use-package ivy-historian
-  :straight t
-  :commands (ivy-historian-mode)
-  :after (:and ivy historian)
-  :config
-  (setq ivy-historian-freq-boost-factor 2000
-        ivy-historian-recent-boost 2000
-        ivy-historian-recent-decrement 1000)
-  (ivy-historian-mode 1))
-
 (use-package ivy-posframe
   :straight t
   :if (display-graphic-p)
