@@ -100,6 +100,7 @@
 
  ;; Don't prompt when following symlinks to vc files.
  vc-follow-symlinks t
+ vc-handled-backends '(Git) ; don't border trying others!
 
  ;; Don't try to ping things that look like domain names
  ffap-machine-p-known 'reject
