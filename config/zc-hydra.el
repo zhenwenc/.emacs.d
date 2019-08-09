@@ -210,7 +210,8 @@
     ("Basic"
      (("jj" evil-avy-goto-char "goto char")
       ("jJ" evil-avy-goto-char-2 "goto char 2")
-      ("jl" evil-avy-goto-line "goto line"))
+      ("jl" evil-avy-goto-line "goto line")
+      ("js" xref-find-apropos "find symbol"))
 
      "Navigation"
      (("jf" sp-forward-sexp "sp forward")
