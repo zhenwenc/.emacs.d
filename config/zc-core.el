@@ -120,6 +120,9 @@
  ;; Don't confirm before killing subprocesses on exit.
  confirm-kill-processes nil
 
+ ;; Reduce `line-move' CUP usage overhead.
+ line-move-visual nil
+
  apropos-do-all t
  doc-view-continuous t)
 
