@@ -30,13 +30,13 @@
      ("hh" lsp-describe-thing-at-point     "doc at point")
      ("hu" lsp-ui-peek-find-references     "show references"))
 
-    "Eval & Test"
-    (("ee" zc-lsp/lens-command-run         "command"))
-
     "Refactor"
     (("rr" lsp-rename                      "rename")
      ("rf" lsp-format-buffer               "format")
-     ("ra" zc-lsp/execute-code-action-dwim "action"))))
+     ("ra" zc-lsp/execute-code-action-dwim "action"))
+
+    "Eval"
+    (("ee" zc-lsp/lens-command-run         "command"))))
 
   :preface
   (defun zc-lsp/setup-after-open ()

@@ -15,21 +15,21 @@
 
   :hydra
   ((:mode rustic-mode :after lsp-mode)
-   ("Build"
-    (("bB" rustic-popup       "popup")
-     ("bb" rustic-cargo-build "build")
-     ("bc" rustic-cargo-check "check"))
+   ("Eval"
+    (("er" rustic-cargo-run   "run")
+     ("eB" rustic-popup       "popup")
+     ("eb" rustic-cargo-build "build")
+     ("ec" rustic-cargo-check "check"))
 
-    "Eval & Test"
-    (("er" rustic-cargo-run          "run")
-     ("eT" rustic-cargo-test         "test")
-     ;; FIXME This command doesn't work when rust function
+    "Test"
+    (;; FIXME This command doesn't work when rust function
      ;;       imports module with `mod' keyword. Maybe we
      ;;       can ask LSP for the current function at point
      ;;       instead of by guessing like what rustic does.
      ;;
      ;; Let's wait for rustic's new cargo popup first.
-     ("et" rustic-cargo-current-test "test this"))))
+     ("tt" rustic-cargo-current-test "test")
+     ("ta" rustic-cargo-test         "test all"))))
 
   :preface
   (defun zc-rust/setup ()
