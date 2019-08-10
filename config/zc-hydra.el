@@ -167,8 +167,7 @@
      (("pp" zc-layout/switch-project-layout "switch layout")
       ("pP" (zc-layout/switch-project-layout t) "create layout")
       ("pd" eyebrowse-close-window-config "close layout")
-      ("pt" counsel-tramp "tramp")
-      ("pT" counsel-tramp-quit "tramp quit")
+      ("pT" counsel-tramp "tramp")
       ("p <tab>" eyebrowse-last-window-config "last project"))))
 
   (zc-hydra/define zc-main-hydra--git
