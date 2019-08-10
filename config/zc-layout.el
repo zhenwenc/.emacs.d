@@ -12,7 +12,7 @@
   :preface
   (defun zc-layout/create-initial-layouts ()
     "Prepare initial layers on startup."
-    (eyebrowse-mode t)
+    (eyebrowse-mode +1)
     (-each-r
      '(("~/.emacs.d" ".gitignore")
        ("~/dotfiles" ".gitignore"))
@@ -21,7 +21,11 @@
        (zc-projectile/with-switch-project-action
          '(find-file buffer) ; open initial buffer
          (zc-layout/create-project-layout project)
-         (setq-local default-directory project)))))
+         (setq-local default-directory project))))
+    ;; Switch to scratch buffer
+    (let ((dir default-directory))
+      (switch-to-buffer "*scratch*" t)
+      (setq default-directory dir)))
 
   :hook ((emacs-startup . toggle-frame-maximized)
          (emacs-startup . zc-layout/create-initial-layouts))
