@@ -68,6 +68,7 @@
     "Apply ansi codes to the compilation buffers."
     (unless (derived-mode-p 'rg-mode)
       (with-silent-modifications
+        ;; FIXME: Maybe try the alternative `xterm-color'.
         (ansi-color-apply-on-region compilation-filter-start (point)))))
 
   :preface

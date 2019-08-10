@@ -22,14 +22,10 @@
      ("ec" rustic-cargo-check "check"))
 
     "Test"
-    (;; FIXME This command doesn't work when rust function
-     ;;       imports module with `mod' keyword. Maybe we
-     ;;       can ask LSP for the current function at point
-     ;;       instead of by guessing like what rustic does.
-     ;;
-     ;; Let's wait for rustic's new cargo popup first.
-     ("tt" rustic-cargo-current-test "test")
-     ("ta" rustic-cargo-test         "test all"))))
+    (("tt" zc-rust/cargo-test-dwim        "test")
+     ("ta" zc-rust/cargo-test-all         "test all")
+     ("tB" zc-rust/cargo-toggle-backtrace "backtrace"
+      :toggle (zc-rust/cargo-backtrace-enabled-p)))))
 
   :preface
   (defun zc-rust/setup ()
@@ -84,6 +80,9 @@ rustup if not already installed."
   :init
   ;; The auto-LSP setup doesn't compatible.
   (advice-add 'rustic-setup-rls :override #'ignore)
+
+  ;; HACK: Fix find current function issue.
+  (advice-add 'rustic-cargo--get-current-fn-name :around #'zc-rust/get-current-fn-name)
 
   :config
   ;; Disable some unused features
