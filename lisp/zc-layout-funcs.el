@@ -66,7 +66,7 @@ If SLOT is nil, default to current slot."
   "Return the associated project for SLOT.
 
 See also `zc-layout/config-for-slot'."
-  (plist-get (zc-layout/config-for-slot :project)))
+  (plist-get (zc-layout/config-for-slot slot) :project))
 
 (defun zc-layout/layout-tag-for-project (dir)
   "Return the eyebrowse window config tag for PROJECT."
