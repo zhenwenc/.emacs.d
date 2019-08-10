@@ -69,6 +69,18 @@ cases if not found any test function."
           (if arg "full" "1"))))
 
 
+;; Integration with `cargo-expand'
+
+;;;###autoload
+(defun zc-rust/cargo-expand ()
+  "FIXME Run 'cargo expand' to expand macros."
+  (interactive)
+  (let* ((command (list rustic-cargo-bin "expand"))
+         (args (read-from-minibuffer "Cargo expand: ")))
+    (rustic-compilation-process-live)
+    (rustic-compilation-start (concat (s-join " " command) " " args))))
+
+
 ;; Smartparens
 
 (defun zc-rust/sp-expand-closure (id action &rest _ignored)
