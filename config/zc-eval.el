@@ -69,7 +69,12 @@
     (unless (derived-mode-p 'rg-mode)
       (with-silent-modifications
         ;; FIXME: Maybe try the alternative `xterm-color'.
-        (ansi-color-apply-on-region compilation-filter-start (point)))))
+        (ansi-color-apply-on-region compilation-filter-start (point))
+        ;; FIXME: Are there any proper solution to remove
+        ;;        these unwanted carriage characters?
+        ;;
+        ;; Run rust cargo test all to reproduce the issue.
+        (replace-string "" "" nil compilation-filter-start (point)))))
 
   :preface
   (defun zc-eval/compilation-resize-buffer ()
