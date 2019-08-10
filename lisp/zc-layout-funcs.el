@@ -9,10 +9,19 @@
 (defvar counsel-projectile-sort-projects)
 (defvar eyebrowse-default-workspace-slot)
 
-(defvar zc-layout/window-config-project-alist nil
-  "Alist of window config slots with their associated project.
+
 
-Each element looks like (SLOT . PROJECT).")
+(defvar zc-layout/window-config-alist nil
+  "Alist of layout configurations keyed by eyebrowse window
+config slot.
+
+Each element looks like (SLOT . PLIST), where
+
+:project
+The associated projectile project root directory.
+
+:tag
+The eyebrowse window config tag, doesn't guarantee uniqueness.")
 
 
 
@@ -46,12 +55,18 @@ slot if unoccupied, otherwise fine a free one."
         (tag-equals? (-compose (-partial 's-equals? tag) '-last-item)))
     (-find tag-equals? windows)))
 
-(defun zc-layout/project-for-slot (&optional slot)
-  "Return the associated project for SLOT.
+(defun zc-layout/config-for-slot (&optional slot)
+  "Return the window config plist for SLOT.
 
 If SLOT is nil, default to current slot."
   (alist-get (or slot (eyebrowse--get 'current-slot))
-             zc-layout/window-config-project-alist nil nil 'equal))
+             zc-layout/window-config-alist nil nil 'equal))
+
+(defun zc-layout/project-for-slot (&optional slot)
+  "Return the associated project for SLOT.
+
+See also `zc-layout/config-for-slot'."
+  (plist-get (zc-layout/config-for-slot :project)))
 
 (defun zc-layout/layout-tag-for-project (dir)
   "Return the eyebrowse window config tag for PROJECT."
@@ -84,12 +99,13 @@ reduce the overhead of recomputing the layout info.")
     (add-hook hook #'zc-layout/refresh-current-window-config)))
 
 
+;; Posframe
 
 (defun zc-layout/poshandler-frame-bottom-center (info)
   "Posframe's position handler.
 
-Get a position which let posframe stay onto its
-parent-frame's bottom center."
+Get a position which let posframe stay onto its parent-frame's
+bottom center."
   (cons (car (posframe-poshandler-frame-center info))
         (- (cdr (posframe-poshandler-frame-bottom-left-corner info)) 2)))
 
@@ -125,7 +141,8 @@ layout if no layout found and return the created slot."
         ;; Actually switch to the project
         (projectile-switch-project-by-name project)
         ;; Memorize the window config associated project
-        (map-put zc-layout/window-config-project-alist slot project)
+        (map-put zc-layout/window-config-alist slot
+                 (list :project project :tag tag))
         ;; Kill other windows, they belong to the last layout
         (delete-other-windows)))))
 
@@ -134,7 +151,7 @@ layout if no layout found and return the created slot."
   "Switch to a layout for the project in DIR, create a new layout
 if not found or NEW."
   (interactive "P")
-  (if (and zc-layout/window-config-project-alist (not create))
+  (if (and zc-layout/window-config-alist (not create))
       (eyebrowse-switch-to-window-config (eyebrowse--read-slot))
     (zc-layout/create-project-layout)))
 
