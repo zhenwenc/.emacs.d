@@ -178,12 +178,6 @@
   :config
   (global-auto-revert-mode))
 
-(use-package ispell
-  :init
-  (setq ispell-really-hunspell t
-        ispell-dictionary "english"
-        ispell-program-name "hunspell"))
-
 (use-package conf-mode
   :mode ("\\.ovpn\\'" . conf-space-mode))
 

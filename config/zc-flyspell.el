@@ -1,7 +1,16 @@
 (eval-when-compile
   (require 'use-package))
 
+(require 'zc-paths)
+
 
+
+(use-package ispell
+  :init
+  (setq ispell-really-hunspell t
+        ispell-dictionary "english"
+        ispell-program-name "hunspell"
+        ispell-personal-dictionary (concat paths-private-dir "aspell.lang.pws")))
 
 (use-package flyspell
   :if (executable-find "aspell")
