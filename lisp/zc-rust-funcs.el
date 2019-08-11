@@ -1,3 +1,4 @@
+(require 'f)
 (require 's)
 (require 'dash)
 
@@ -48,7 +49,9 @@ cases if not found any test function."
   (interactive "P")
   (let* ((backtrace (format "RUST_BACKTRACE=%s" rustic-compile-backtrace))
          (command  `(,backtrace ,rustic-cargo-bin "test"))
-         (args (if arg (read-from-minibuffer "Cargo test arguments: ")
+         (args (if arg (read-from-minibuffer
+                        "Cargo test arguments: "
+                        (file-name-sans-extension (f-filename buffer-file-name)))
                  (--when-let (rustic-cargo--get-current-fn-fullname)
                    (list "--nocapture" it)))))
     (zc-rust/cargo-test-run (list command "--" args))))
