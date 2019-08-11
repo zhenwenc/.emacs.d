@@ -167,6 +167,9 @@
    (highlight-thing :background (doom-blend yellow base3 0.1)
                     :foreground nil :inherit bold)
 
+   ;; Darken markdown code block background
+   (markdown-code-face :background bg-alt)
+
    ;; eshell
    (zc-eshell/prompt-pwd :foreground violet)
    (zc-eshell/prompt-git-branch :foreground cyan)
