@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: Diesel Print Query
+# key: plq
+# --
+println!("{}", diesel::debug_query::<diesel::pg::Pg, _>(&$1));
