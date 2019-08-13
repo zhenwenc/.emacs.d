@@ -50,4 +50,12 @@ If argument INTERACTIVE-P is set, log additional information."
           (message "Load path updated. Added: %S" added)
         (message "No change to load-path")))))
 
+(defun zc-paths/maybe-require-local ()
+  "Require local configuration if presented."
+  (-when-let* ((path (concat user-emacs-directory "local.el"))
+               (exists (f-file? path)))
+    (require 'local path)))
+
+
+
 (provide 'zc-paths)

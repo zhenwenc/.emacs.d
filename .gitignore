@@ -51,3 +51,6 @@ flycheck_*.el
 /straight/*
 !/straight/versions/
 !/straight/versions/*
+
+# Custom Local Files
+local.el

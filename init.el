@@ -89,6 +89,7 @@
 (require 'zc-paths
          (expand-file-name "config/zc-paths.el" user-emacs-directory))
 (zc-paths/init-load-paths)
+(zc-paths/maybe-require-local)
 
 
 ;; Load features

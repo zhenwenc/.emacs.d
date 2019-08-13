@@ -8,19 +8,20 @@
 (autoload 'doom-color "doom-themes")
 
 (defvar ahs-highlighted)
+(defvar zc-local/default-font nil)
 
 
 
 (defvar zc-default-font
-  "Fira Code 13"
+  (or zc-local/default-font "Fira Code 13")
   "The universal default font.")
 
 (defvar zc-variable-pitch-font
-  "Fira Code 13"
+  (or zc-local/default-font "Fira Code 13")
   "The font to use in the variable-pitch face.")
 
 (defvar zc-fixed-pitch-font
-  "Fira Code 13"
+  (or zc-local/default-font "Fira Code 13")
   "The font to use in the fixed-pitch face.")
 
 
