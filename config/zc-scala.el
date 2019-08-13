@@ -57,9 +57,9 @@ replace it with the unicode arrow."
    "-" #'zc-scala/unicode-hyphen)
 
   :preface
-  ;; NOTE: Don't enable LSP!
   (defun zc-scala/setup ()
-    (zc-scala/metals-setup))
+    (zc-scala/metals-setup)
+    (lsp-deferred))
 
   :preface
   (defun zc-scala/metals-setup (&optional forced)
