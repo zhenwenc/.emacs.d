@@ -206,7 +206,10 @@
 (use-package smex
   :straight t
   :defer t
-  :init (setq-default smex-history-length 32))
+  :defines (smex-history-length smex-save-file)
+  :init
+  (setq smex-history-length 32
+        smex-save-file (concat paths-cache-dir "smex-items")))
 
 (use-package undo-tree
   :straight t
