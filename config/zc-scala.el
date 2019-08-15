@@ -7,6 +7,9 @@
 
 (defconst zc-metals-executable (concat paths-vendor-dir "metals/metals-emacs"))
 
+(defvar zc-scala/use-unicode-arrows t
+  "If non-nil, replace arrows with unicode characters.")
+
 
 ;; Automatically replace arrows with unicode ones when enabled
 
@@ -19,14 +22,15 @@
   "Replace the arrow at point (if any) with unicode ones.
 An undo boundary is inserted before doing the replacement so that
 it can be undone."
-  (let* ((end (point))
-         (start (max (- end 2) (point-min)))
-         (x (buffer-substring start end))
-         (arrow (assoc x zc-scala/unicode-arrows-alist)))
-    (when arrow
-      (undo-boundary)
-      (backward-delete-char 2)
-      (insert (cdr arrow)))))
+  (when zc-scala/use-unicode-arrows
+    (let* ((end (point))
+           (start (max (- end 2) (point-min)))
+           (x (buffer-substring start end))
+           (arrow (assoc x zc-scala/unicode-arrows-alist)))
+      (when arrow
+        (undo-boundary)
+        (backward-delete-char 2)
+        (insert (cdr arrow))))))
 
 (defun zc-scala/unicode-gt ()
   "Insert a `>' to the buffer. If it's part of an right arrow (`->' or `=>'),
