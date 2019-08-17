@@ -97,7 +97,7 @@
   :group 'mode-line)
 
 (let* ((gui           (display-graphic-p))
-       (bg            (if gui "#1D2026" "black")) ;; #2C323C
+       (bg            (if gui "#1D2026" nil))
        (text          "#D5D8DC")
        (text-inverse  "#3B4044")
        (text-inactive "#5B6268")

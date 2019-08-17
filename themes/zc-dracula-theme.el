@@ -24,7 +24,7 @@
    (green      '("#50fa7b" "#99bb66" "green"        ))
    (teal       '("#0189cc" "#44b9b1" "brightgreen"  ))
    (yellow     '("#f1fa8c" "#ECBE7B" "yellow"       ))
-   (blue       '("#61bfff" "#61bfff" "brightblue"   ))
+   (blue       '("#61bfff" "#51afef" "brightblue"   ))
    (dark-blue  '("#0189cc" "#2257A0" "blue"         ))
    (magenta    '("#ff79c6" "#c678dd" "magenta"      ))
    (violet     '("#bd93f9" "#a9a1e1" "brightmagenta"))
@@ -32,7 +32,7 @@
    (dark-cyan  '("#8be9fd" "#5699AF" "cyan"         ))
 
    ;; override dracula color palette
-   (fg             (doom-darken -fg 0.1))
+   (fg             (if (display-graphic-p) (doom-darken -fg 0.1) "#bfbfbf"))
 
    ;; face categories -- required for all themes
    (highlight      violet)
@@ -43,12 +43,12 @@
    (doc-comments   (doom-lighten base5 0.25))
    (constants      cyan)
    (functions      magenta)
-   (keywords       dark-cyan)
+   (keywords       (if (display-graphic-p) dark-cyan blue))
    (methods        teal)
    (operators      violet)
    (type           blue)
-   (strings        (doom-blend yellow bg 0.9))
-   (variables      fg)
+   (strings        (if (display-graphic-p) (doom-blend yellow bg 0.9) green))
+   (variables      (if (display-graphic-p) fg (doom-lighten magenta 0.4)))
    (numbers        red)
    (region         (doom-blend blue base3 0.2))
    (error          red)
@@ -165,7 +165,8 @@
 
    ;; highlight-thing
    (highlight-thing :background (doom-blend yellow base3 0.1)
-                    :foreground nil :inherit bold)
+                    :foreground (if (display-graphic-p) nil "#FFF")
+                    :inherit bold)
 
    ;; Darken markdown code block background
    (markdown-code-face :background bg-alt)

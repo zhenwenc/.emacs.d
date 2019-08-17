@@ -32,9 +32,7 @@
         doom-themes-enable-italic t)
 
   ;; Load the theme
-  (if (display-graphic-p)
-      (load-theme 'zc-dracula t)
-    (load-theme 'doom-one t))
+  (load-theme 'zc-dracula t)
 
   ;; Enable custom treemacs theme
   (doom-themes-treemacs-config)
