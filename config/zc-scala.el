@@ -10,6 +10,9 @@
 (defvar zc-scala/use-unicode-arrows t
   "If non-nil, replace arrows with unicode characters.")
 
+(defvar zc-scala/auto-metals-setup nil
+  "If non-nil, check and maybe download the metals executable.")
+
 
 ;; Automatically replace arrows with unicode ones when enabled
 
@@ -62,8 +65,18 @@ replace it with the unicode arrow."
 
   :preface
   (defun zc-scala/setup ()
-    (zc-scala/metals-setup)
-    (lsp-deferred))
+    (require 'lsp)
+    ;; Ensure Metals executable is available.
+    (when zc-scala/auto-metals-setup
+      (zc-scala/metals-setup))
+    ;; Connect to the current LSP workspace session if available.
+    (-when-let (workspace
+                (->> (lsp-session)
+                     (lsp--session-workspaces)
+                     (--filter (eq 'initialized (lsp--workspace-status it)))
+                     (--first (f-ancestor-of? (lsp--workspace-root it)
+                                              (buffer-file-name)))))
+      (lsp-deferred)))
 
   :preface
   (defun zc-scala/metals-setup (&optional forced)
