@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name : println(s"")
+# key: pl
+# --
+println(s"$1")
