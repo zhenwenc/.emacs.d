@@ -34,6 +34,7 @@
   (setq projectile-globally-ignored-directories
         '(".git"
           ".cache"
+          ".metals"
           ".ensime_cache"
           "dist"
           "build"
