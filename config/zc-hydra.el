@@ -160,13 +160,14 @@
 
      "Search"
      (("pf" counsel-projectile-find-file "find file")
+      ("pl" projectile-find-file-in-directory "find in directory")
       ("pb" counsel-projectile-switch-to-buffer "find buffer")
       ("pd" counsel-projectile-find-dir "find directory"))
 
      "Layer"
      (("pp" zc-layout/switch-project-layout "switch layout")
       ("pP" (zc-layout/switch-project-layout t) "create layout")
-      ("pd" eyebrowse-close-window-config "close layout")
+      ("pD" eyebrowse-close-window-config "close layout")
       ("pT" counsel-tramp "tramp")
       ("p <tab>" eyebrowse-last-window-config "last project"))))
 

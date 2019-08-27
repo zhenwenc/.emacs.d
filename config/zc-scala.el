@@ -7,7 +7,7 @@
 
 (defconst zc-metals-executable (concat paths-vendor-dir "metals/metals-emacs"))
 
-(defvar zc-scala/use-unicode-arrows t
+(defvar zc-scala/use-unicode-arrows nil
   "If non-nil, replace arrows with unicode characters.")
 
 (defvar zc-scala/auto-metals-setup nil
