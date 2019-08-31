@@ -139,6 +139,7 @@
    (org-agenda-structure :foreground violet)
    (org-block            :background (doom-darken base1 0.125) :foreground violet)
    (org-block-begin-line :background (doom-darken base1 0.125) :foreground comments)
+   (org-quote            :background (doom-darken base1 0.125) :foreground base7)
    (org-code :foreground yellow)
    (org-column :background base1)
    (org-column-title :background base1 :bold t :underline t)
