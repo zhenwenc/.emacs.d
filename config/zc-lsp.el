@@ -187,6 +187,7 @@ the value of filterText. Otherwise return CANDIDATE itself."
   :after lsp
   :config
   (require 'dap-hydra)
+  (setq dap-breakpoints-file (concat paths-cache-dir "dap-breakpoints"))
   (dap-mode 1)
   (dap-ui-mode 1))
 
