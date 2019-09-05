@@ -79,6 +79,7 @@
   (defun zc-web/maybe-enable-prettier ()
     (unless (or (not buffer-file-name) ; maybe scratch
                 (file-remote-p buffer-file-name)
+                (f-ext-p buffer-file-name "js") ; JS are shit!
                 (s-contains-p "/github/" buffer-file-name)
                 (s-contains-p "/node_modules/" buffer-file-name))
       (prettier-js-mode)))
