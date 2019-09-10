@@ -137,6 +137,14 @@
                  (slot            . 1)
                  (window-width    . 0.5))
 
+                (,(rx bos "*wclock*" eos)
+                 (display-buffer-reuse-window
+                  display-buffer-in-side-window)
+                 (reusable-frames . visible)
+                 (side            . bottom)
+                 (slot            . 1)
+                 (window-height   . 0.2))
+
                 (,(rx bos "*Google Translate*" eos)
                  (display-buffer-reuse-window
                   display-buffer-in-side-window)

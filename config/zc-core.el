@@ -123,6 +123,14 @@
  ;; Reduce `line-move' CUP usage overhead.
  line-move-visual nil
 
+ ;; Display Work Clock with `display-time-world'
+ display-time-world-time-format "%a %d %b %T %Z"
+ zoneinfo-style-world-list '(("Pacific/Auckland" "New Zealand Auckland")
+                             ("Australia/Sydney" "Australia   Sydney")
+                             ("Asia/Shanghai"    "China       Beijing")
+                             ("Europe/London"    "Europe      London")
+                             ("America/New_York" "America     New York"))
+
  apropos-do-all t
  doc-view-continuous t)
 

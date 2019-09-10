@@ -248,7 +248,8 @@
      (("tp" prodigy "prodigy services")
       ("tP" list-processes "process list")
       ("tc" zc-eval/compile-on-save-mode "auto recompile")
-      ("ti" imenu-list-smart-toggle "imenu list"))))
+      ("ti" imenu-list-smart-toggle "imenu list")
+      ("tW" display-time-world "world clock"))))
 
   (zc-hydra/define zc-main-hydra--help
     (:color teal :title "Help Hydra" :icon "question" :prefix "h")
