@@ -14,12 +14,8 @@
 
 ;; Smartparens
 
-(defun zc-typescript/sp-react-buffer-p (&rest _ignored)
-  "Return t if the current buffer is a TSX/JSX buffer."
-  (string-match-p "jsx\\|tsx" (file-name-extension (buffer-name))))
-
-(defun zc-typescript/sp-comment-expand (&rest _ignored)
-  "Expand Javascript comment block."
+(defun zc-typescript/sp-javadoc-expand (&rest _ignored)
+  "Expand Javadoc style multiline comment block."
   (save-excursion
     (forward-line -1)
     (end-of-line)
@@ -29,6 +25,10 @@
     (insert "\n")
     (indent-according-to-mode))
   (indent-according-to-mode))
+
+(defun zc-typescript/sp-react-buffer-p (&rest _ignored)
+  "Return t if the current buffer is a TSX/JSX buffer."
+  (string-match-p "jsx\\|tsx" (file-name-extension (buffer-name))))
 
 (defun zc-typescript/sp-jsx-expand-tag (id action _context)
   "Expand JSX tag <> to self-closing form </> if point is not after a word."
@@ -138,24 +138,6 @@ cached, where it may mutate the elements."
                                (&hash "kind" k2 "name" n2))
                        (and (equal n1 n2) (equal k1 k2)))))
     (-uniq symbols)))
-
-
-;; TypeScript
-
-(defun zc-typescript/post-command-hook-handler ()
-  "Handler for `post-command-hook'."
-  (with-demoted-errors "zc-typescript/post-command-hook-handler: %S"
-    (when (derived-mode-p 'typescript-mode)
-      (zc-typescript/maybe-insert-asterisk))))
-
-(defun zc-typescript/maybe-insert-asterisk ()
-  (when (and (member this-command '(newline evil-open-below))
-             (save-excursion
-               (forward-line -1)
-               (string-match-p (rx bol (* space) "*" (not (any "/")))
-                               (thing-at-point 'line t))))
-    (insert " * ")
-    (indent-according-to-mode)))
 
 
 

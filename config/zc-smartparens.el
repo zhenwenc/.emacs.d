@@ -8,9 +8,10 @@
 (use-package smartparens
   :straight t
 
-  :hook ((prog-mode . smartparens-mode)
-         (text-mode . smartparens-mode)
-         (eshell-mode . smartparens-mode))
+  :hook ((prog-mode    . smartparens-mode)
+         (text-mode    . smartparens-mode)
+         (eshell-mode  . smartparens-mode)
+         (post-command . zc-sp/post-command-hook-handler))
 
   :general
   (:keymaps 'smartparens-mode-map
@@ -28,6 +29,24 @@
   :commands (smartparens-mode
              smartparens-global-mode
              show-smartparens-global-mode)
+
+  :init
+
+  (defun zc-sp/post-command-hook-handler ()
+    "Handler for `post-command-hook'."
+    (with-demoted-errors "zc-sp/post-command-hook-handler: %S"
+      (when (derived-mode-p 'typescript-mode 'scala-mode)
+        (zc-sp/maybe-insert-asterisk))))
+
+  (defun zc-sp/maybe-insert-asterisk ()
+    "Insert asterisk when in Javadoc style multiline comment."
+    (when (and (member this-command '(newline evil-open-below))
+               (save-excursion
+                 (forward-line -1)
+                 (string-match-p (rx bol (* space) "*" (not (any "/")))
+                                 (thing-at-point 'line t))))
+      (insert " * ")
+      (indent-according-to-mode)))
 
   :config
   (setq sp-show-pair-delay 0.2
@@ -52,17 +71,34 @@
            :bind "M-("
            :post-handlers '(("||\n[i]" "RET") ("| " "SPC")))
 
+  ;; Language specific pairs
+
   (sp-with-modes '(markdown-mode gfm-mode)
-    (sp-local-pair "*" "*"
-                   :unless '(sp-in-string-p)
-                   :actions '(insert wrap)))
+    (sp-local-pair "*" "*" :unless '(sp-in-string-p) :actions '(insert wrap)))
+
+  (sp-with-modes '(typescript-mode scala-mode)
+    (sp-local-pair "/*" "*/" :post-handlers '(("| " "SPC")
+                                              (zc-typescript/sp-javadoc-expand "RET"))))
+
+  (sp-with-modes '(typescript-mode)
+    ;; Enter < inserts </> to start a new JSX node
+    ;; Also see `zc-typescript/sp-jsx-rewrap-tag'
+    (sp-local-pair "<" ">" :post-handlers '(zc-typescript/sp-jsx-expand-tag)))
 
   (sp-with-modes 'org-mode
-    (sp-local-pair "[" "]" :post-handlers '(("|" "SPC"))))
+    (sp-local-pair "[" "]" :post-handlers '(("|" "SPC")))
 
-  (set-face-attribute 'show-paren-match nil
-                      :background "#434956"
-                      :foreground nil)
+    ;; Instruct `smartparens' not to impose itself in org-mode
+    ;; make delimiter auto-closing a little more conservative
+    (sp-local-pair "*" "*" :unless '(:add sp-point-before-word-p zc-org/sp-point-at-bol-p))
+    (sp-local-pair "_" "_" :unless '(:add sp-point-before-word-p))
+    (sp-local-pair "/" "/" :unless '(:add sp-point-before-word-p zc-org/sp-point-in-checkbox-p))
+    (sp-local-pair "~" "~" :unless '(:add sp-point-before-word-p))
+    (sp-local-pair "=" "=" :unless '(:add sp-point-before-word-p)))
+
+  ;; Global settings
+
+  (set-face-attribute 'show-paren-match nil :background "#434956" :foreground nil)
 
   (smartparens-global-mode +1)
   (show-smartparens-global-mode +1))

@@ -152,19 +152,7 @@
   ;; Narrow to headline after jump, which affects:
   ;; - `counsel-org-goto'
   ;; - `counsel-org-goto-all'
-  (advice-add 'org-goto-marker-or-bmk :after #'zc-org/narrow-after-jump)
-
-  ;; Instruct `smartparens' not to impose itself in org-mode
-  ;; make delimiter auto-closing a little more conservative
-  (with-eval-after-load 'smartparens
-    (sp-with-modes 'org-mode
-      (sp-local-pair "*" "*" :unless '(:add sp-point-before-word-p
-                                       zc-org/sp-point-at-bol-p))
-      (sp-local-pair "_" "_" :unless '(:add sp-point-before-word-p))
-      (sp-local-pair "/" "/" :unless '(:add sp-point-before-word-p
-                                       zc-org/sp-point-in-checkbox-p))
-      (sp-local-pair "~" "~" :unless '(:add sp-point-before-word-p))
-      (sp-local-pair "=" "=" :unless '(:add sp-point-before-word-p)))))
+  (advice-add 'org-goto-marker-or-bmk :after #'zc-org/narrow-after-jump))
 
 
 

@@ -61,7 +61,6 @@
 
   :hook
   (find-file       . zc-typescript/set-node-modules-readonly)
-  (post-command    . zc-typescript/post-command-hook-handler)
   (typescript-mode . zc-typescript/add-node-modules-bin-to-path)
   (typescript-mode . zc-typescript/disable-flycheck-linters)
   (typescript-mode . zc-typescript/disable-flycheck-for-flow)
@@ -98,17 +97,6 @@
                   (, zc-typescript/method-heading-re   1 font-lock-function-name-face)
                   (, zc-typescript/function-heading-re 1 font-lock-function-name-face)))
     (add-to-list 'typescript--font-lock-keywords-3 item))
-
-  ;; Enhance smartparens
-  (with-eval-after-load 'smartparens
-    (sp-with-modes '(typescript-mode)
-      (sp-local-pair "/*" "*/"
-                     :post-handlers '(("| " "SPC")
-                                      (zc-typescript/sp-comment-expand "RET")))
-
-      ;; Enter < inserts </> to start a new JSX node
-      (sp-local-pair "<" ">"
-                     :post-handlers '(zc-typescript/sp-jsx-expand-tag))))
 
   ;; Enter > right before the slash in a self-closing tag automatically
   ;; inserts a closing tag and places point inside the element
