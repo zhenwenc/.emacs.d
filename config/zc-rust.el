@@ -29,10 +29,20 @@
 
   :preface
   (defun zc-rust/setup ()
-    "Download Rust Language Server required packages."
+    (require 'lsp)
+    ;; Prefer LSP checker
+    (zc-flycheck/disable-checkers 'rustic-clippy)
+    ;; Ensure RLS executable is available.
     (zc-rust/download-rls-packages)
-    (lsp-workspace-folders-add (rustic-buffer-workspace))
-    (lsp-deferred))
+    ;; Connect to the current LSP workspace session if available.
+    (-when-let (workspace
+                (->> (lsp-session)
+                     (lsp--session-workspaces)
+                     (--filter (eq 'initialized (lsp--workspace-status it)))
+                     (--first (f-ancestor-of? (lsp--workspace-root it)
+                                              (buffer-file-name)))))
+      (lsp-workspace-folders-add (rustic-buffer-workspace))
+      (lsp-deferred)))
 
   :preface
   (defun zc-rust/download-rls-packages ()
