@@ -73,7 +73,8 @@ replace it with the unicode arrow."
     (-when-let (workspace
                 (->> (lsp-session)
                      (lsp--session-workspaces)
-                     (--filter (eq 'initialized (lsp--workspace-status it)))
+                     (--filter (and (eq 'initialized (lsp--workspace-status it))
+                                    (eq 'metals (lsp--client-server-id (lsp--workspace-client it)))))
                      (--first (f-ancestor-of? (lsp--workspace-root it)
                                               (buffer-file-name)))))
       (lsp-deferred)))
