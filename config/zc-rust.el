@@ -38,7 +38,8 @@
     (-when-let (workspace
                 (->> (lsp-session)
                      (lsp--session-workspaces)
-                     (--filter (eq 'initialized (lsp--workspace-status it)))
+                     (--filter (and (eq 'initialized (lsp--workspace-status it))
+                                    (eq 'rls (lsp--client-server-id (lsp--workspace-client it)))))
                      (--first (f-ancestor-of? (lsp--workspace-root it)
                                               (buffer-file-name)))))
       (lsp-workspace-folders-add (rustic-buffer-workspace))
