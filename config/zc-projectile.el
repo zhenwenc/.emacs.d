@@ -106,7 +106,7 @@
     (unless (eq ibuffer-sorting-mode 'alphabetic)
       (ibuffer-do-sort-by-alphabetic)))
   :hook
-  (ibuffer-hook . zc-projectile/ibuffer-setup)
+  (ibuffer . zc-projectile/ibuffer-setup)
   :init
   (setq ibuffer-projectile-prefix "Project: "))
 

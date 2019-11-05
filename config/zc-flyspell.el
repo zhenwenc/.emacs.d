@@ -23,7 +23,7 @@
   :hook
   ((org-mode         . flyspell-mode)
    (git-commit-mode  . flyspell-mode)
-   (before-save-hook . flyspell-buffer)
+   (before-save      . flyspell-buffer)
    (flyspell-mode    . zc-flyspell/setup))
 
   :custom-face

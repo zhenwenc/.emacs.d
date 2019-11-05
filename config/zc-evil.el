@@ -166,7 +166,7 @@
     (push '(?\` . ("`" . "'")) evil-surround-pairs-alist))
   :hook
   ;; TODO: Why need this hook?
-  (emacs-lisp-mode-hook . zc-evil/init-evil-surround-pairs)
+  (emacs-lisp-mode . zc-evil/init-evil-surround-pairs)
   :init
   (setq-default evil-surround-pairs-alist
                 '((?\( . ("(" . ")"))
