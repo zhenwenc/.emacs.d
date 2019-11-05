@@ -242,7 +242,7 @@
      "Edit"
      (("tw" whitespace-mode "whitespace" :toggle t)
       ("tl" visual-line-mode "virsual line" :toggle t)
-      ("tL" auto-fill-mode "auto fill" :toggle t))
+      ("tL" auto-fill-mode "auto fill" :toggle (symbol-value 'auto-fill-function)))
 
      "Apps"
      (("tp" prodigy "prodigy services")
