@@ -120,14 +120,15 @@ new file with LSP support."
 
   :config
   (setq lsp-ui-doc-enable nil
-        lsp-ui-doc-header t
+        lsp-ui-doc-header nil
         lsp-ui-doc-include-signature nil
         lsp-ui-doc-position 'top
         lsp-ui-doc-border (doom-color 'base3)
         lsp-ui-doc-max-width 80
         lsp-ui-doc-max-height 30
-        lsp-ui-doc-use-webkit t
+        lsp-ui-doc-use-webkit nil
         lsp-ui-doc-use-childframe t
+        lsp-ui-doc-delay 0.5
 
         lsp-ui-flycheck-live-reporting t
         lsp-ui-flycheck-enable t
@@ -135,7 +136,7 @@ new file with LSP support."
         lsp-ui-sideline-enable nil
         lsp-ui-sideline-ignore-duplicate t
         lsp-ui-sideline-show-symbol t
-        lsp-ui-sideline-show-hover t
+        lsp-ui-sideline-show-hover nil
         lsp-ui-sideline-show-diagnostics nil
         lsp-ui-sideline-show-code-actions t
         lsp-ui-sideline-code-actions-prefix (if (display-graphic-p) "" "")
