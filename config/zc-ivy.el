@@ -80,8 +80,8 @@
 
   ;; The default counsel rg command ending with a dot, this will
   ;; produce duplicated result for `counsel-projectile-rg'.
-  (setq counsel-rg-base-command "rg -zS -M 120 --no-heading --line-number --color never %s ."
-        counsel-ag-base-command "ag -zS -W 120 --nocolor --nogroup %s")
+  (setq counsel-rg-base-command "rg -S -M 120 --no-heading --line-number --color never '%s' %s"
+        counsel-ag-base-command "ag -S -W 120 --nocolor --nogroup %s")
 
   ;; Use `helpful' describe functions
   (setq counsel-describe-function-function #'helpful-callable
