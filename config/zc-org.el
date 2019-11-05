@@ -56,7 +56,7 @@
     ("tl" org-toggle-link-display "link")))
 
   :hook
-  ((org-mode . auto-fill-mode))
+  ((org-mode . visual-line-mode))
 
   :init
   ;; Org file directories must be defined at `:init' block
