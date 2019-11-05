@@ -4,9 +4,8 @@
 (use-package magit
   :straight t
 
-  :general
-  (:states 'normal :keymaps 'magit-status-mode-map
-           "q" #'magit-mode-bury-buffer)
+  :general (:states 'normal :keymaps 'magit-status-mode-map
+            "q" #'magit-mode-bury-buffer)
 
   :config
   (setq magit-repository-directories
@@ -35,8 +34,7 @@
 
 (use-package transient
   :straight t
-  :general
-  (:keymaps 'transient-map
+  :general (:keymaps 'transient-map
             "<escape>" #'transient-quit-one
             "q"        #'transient-quit-one)
   :init
@@ -62,12 +60,11 @@
 
 (use-package vc-annotate
   :commands (vc-annotate)
-  :general
-  (:states 'normal :keymaps 'vc-annotate-mode-map
-           "n" 'vc-annotate-next-revision
-           "f" 'vc-annotate-next-revision
-           "p" 'vc-annotate-prev-revision
-           "b" 'vc-annotate-prev-revision
-           "." 'vc-annotate-working-revision))
+  :general (:states 'normal :keymaps 'vc-annotate-mode-map
+            "n" 'vc-annotate-next-revision
+            "f" 'vc-annotate-next-revision
+            "p" 'vc-annotate-prev-revision
+            "b" 'vc-annotate-prev-revision
+            "." 'vc-annotate-working-revision))
 
 (provide 'zc-git)
