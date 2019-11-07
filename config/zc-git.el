@@ -58,6 +58,12 @@
   :straight t
   :defer t)
 
+;; Browse github/gitlab/bitbucket page
+
+(use-package browse-at-remote
+  :straight t
+  :defer t)
+
 (use-package vc-annotate
   :commands (vc-annotate)
   :general (:states 'normal :keymaps 'vc-annotate-mode-map

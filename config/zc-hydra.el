@@ -177,8 +177,9 @@
      (("gs" magit-status "status")
       ("gl" magit-log-buffer-file "file log")
       ("gL" magit-log-current "project log")
+      ("gt" git-timemachine "time machine")
       ("gb" magit-blame "blame")
-      ("gt" git-timemachine "time machine"))))
+      ("gB" browse-at-remote "browse remote"))))
 
   (zc-hydra/define zc-main-hydra--error
     (:color teal :title "Error & Eval Hydra" :icon "bug" :prefix "e")
