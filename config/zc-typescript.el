@@ -70,6 +70,9 @@
   :config
   (setq typescript-indent-level 2)
 
+  ;; Disable the new font lock level introduced on #110
+  (setq-local font-lock-maximum-decoration 3)
+
   (defconst zc-typescript/method-keyword-re
     (regexp-opt '("async" "static" "public" "private" "protected" "get" "set")))
 
