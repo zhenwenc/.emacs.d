@@ -83,6 +83,8 @@ nor requires Flycheck to be loaded."
   :after (flycheck)
   :if (display-graphic-p)
   :hook (flycheck-mode . flycheck-posframe-mode)
+  :custom-face
+  (flycheck-posframe-info-face ((t (:foreground ,(doom-color 'green)))))
   :config
   (add-to-list 'flycheck-posframe-inhibit-functions
                #'(lambda () (bound-and-true-p company-backend))))
