@@ -74,10 +74,12 @@
   (setq org-M-RET-may-split-line nil
         org-blank-before-new-entry '((heading         . auto)
                                      (plain-list-item . nil))
-        org-startup-indented t
         org-catch-invisible-edits 'smart
         org-indirect-buffer-display 'current-window
         org-insert-heading-respect-content t
+
+        ;; Disabled globally as it causes weird issue sometimes.
+        org-startup-indented nil
 
         ;; Reduce search results.
         org-imenu-depth 3
