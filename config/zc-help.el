@@ -74,16 +74,10 @@
   ;; helpful buffer, `quit-window' won't work.
   (advice-add 'quit-window :around #'zc-help/maybe-kill-buffer))
 
-(use-package google-translate
+(use-package youdao-dictionary
   :straight t
-  :commands (google-translate-query-translate
-             google-translate-query-translate-reverse
-             google-translate-at-point
-             google-translate-at-point-reverse)
-  :init
-  (setq google-translate-default-source-language "en"
-        google-translate-default-target-language "zh-CN"
-        google-translate-pop-up-buffer-set-focus t))
+  :commands (youdao-dictionary-search
+             youdao-dictionary-search-from-input))
 
 
 

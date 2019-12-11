@@ -42,10 +42,8 @@
 (autoload 'helpful-callable "helpful")
 (autoload 'helpful-at-point "helpful")
 
-(autoload 'google-translate-at-point "google-translate")
-(autoload 'google-translate-at-point-reverse "google-translate")
-(autoload 'google-translate-query-translate "google-translate")
-(autoload 'google-translate-query-translate-reverse "google-translate")
+(autoload 'youdao-dictionary-search "youdao-dictionary")
+(autoload 'youdao-dictionary-search-from-input "youdao-dictionary")
 
 
 
@@ -273,10 +271,8 @@
       ("hdp" describe-package "package"))
 
      "Translate"
-     (("htt" google-translate-query-translate "translate")
-      ("htT" google-translate-query-translate-reverse "translate (r)")
-      ("htp" google-translate-at-point "translate at point")
-      ("htP" google-translate-at-point-reverse "translate at point (r)"))))
+     (("htt" youdao-dictionary-search-from-input "translate")
+      ("htT" youdao-dictionary-search "translate at point"))))
 
   (zc-hydra/define zc-main-hydra
     (:hint nil :color teal :title "Main Hydra")

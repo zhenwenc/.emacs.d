@@ -145,13 +145,13 @@
                  (slot            . 1)
                  (window-height   . 0.2))
 
-                (,(rx bos "*Google Translate*" eos)
+                (,(rx bos "*Youdao Dictionary*" eos)
                  (display-buffer-reuse-window
                   display-buffer-in-side-window)
                  (reusable-frames . visible)
-                 (side            . bottom)
+                 (side            . right)
                  (slot            . 1)
-                 (window-height   . 0.45))
+                 (window-width    . 0.3))
 
                 (,(rx bos "*compilation*" eos)
                  (display-buffer-reuse-window)
