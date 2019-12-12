@@ -146,8 +146,7 @@
                  (window-height   . 0.2))
 
                 (,(rx bos "*Youdao Dictionary*" eos)
-                 (display-buffer-reuse-window
-                  display-buffer-in-side-window)
+                 (display-buffer-reuse-window)
                  (reusable-frames . visible)
                  (side            . right)
                  (slot            . 1)
