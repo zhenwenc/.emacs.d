@@ -168,7 +168,7 @@ Requires smartparens because all movement is done using `sp-up-sexp'."
             "C-M-." #'xref-find-apropos)
 
   :hydra
-  ((:mode emacs-lisp-mode)
+  ((:mode (emacs-lisp-mode lisp-interaction-mode))
    ("Basic"
     (("!" ielm "REPL"))
 
