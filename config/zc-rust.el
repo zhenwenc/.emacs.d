@@ -35,6 +35,9 @@
     ;; Ensure RLS executable is available.
     (zc-rust/download-rls-packages)
     ;; Connect to the current LSP workspace session if available.
+    ;; (lsp-workspace-folders-add (rustic-buffer-workspace))
+    ;; (lsp-deferred)
+
     (-when-let (workspace
                 (->> (lsp-session)
                      (lsp--session-workspaces)
@@ -43,7 +46,8 @@
                      (--first (f-ancestor-of? (lsp--workspace-root it)
                                               (buffer-file-name)))))
       (lsp-workspace-folders-add (rustic-buffer-workspace))
-      (lsp-deferred)))
+      (lsp-deferred))
+    )
 
   :preface
   (defun zc-rust/download-rls-packages ()
@@ -90,7 +94,7 @@ rustup if not already installed."
 
   :init
   ;; The auto-LSP setup doesn't compatible.
-  (advice-add 'rustic-setup-rls :override #'ignore)
+  (setq rustic-lsp-setup-p nil)
 
   ;; HACK: Fix find current function issue.
   (advice-add 'rustic-cargo--get-current-fn-name :around #'zc-rust/get-current-fn-name)
@@ -101,7 +105,9 @@ rustup if not already installed."
         rustic-flycheck-setup-mode-line-p nil)
 
   ;; Display rustfmt errors without popping to the buffer.
-  (setq rustic-format-display-method 'display-buffer)
+  (setq rustic-format-display-method 'display-buffer
+        rustic-format-on-save t
+        rustic-lsp-format t)
 
   ;; The default ansi colors looks better in terminal.
   (setq rustic-ansi-faces (if (display-graphic-p)
@@ -114,6 +120,14 @@ rustup if not already installed."
                                       (doom-color 'cyan)
                                       "white")
                             rustic-ansi-faces))
+
+  ;; Prefer rust-analyzer server (experiment)
+  (setq rustic-lsp-server 'rust-analyzer)
+
+  ;; Customize RLS server
+  (with-eval-after-load 'lsp-rust
+    ;; Only index the project when a file is saved
+    (setq lsp-rust-build-on-save t))
 
   ;; Enhance smartparens
   (with-eval-after-load 'smartparens
