@@ -22,7 +22,8 @@
 ;; Live Coding in Python
 (use-package live-py-mode
   :straight t
-  :after python)
+  :defer t
+  :hook (python-mode . live-py-mode))
 
 ;; Format using YAPF, required:
 ;;   pip install yapf
