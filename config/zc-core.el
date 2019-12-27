@@ -80,9 +80,11 @@
  tramp-histfile-override         "/tmp/.tramp" ; shhh!
 
  ;; Smooth scroll
- scroll-step            1
- scroll-conservatively  101
- scroll-margin          0
+ scroll-step                     1
+ scroll-conservatively           101
+ scroll-margin                   0
+ scroll-up-aggressively          0.01
+ scroll-down-aggressively        0.01
  scroll-preserve-screen-position t
 
  ;; Reduce cursor movement lag
