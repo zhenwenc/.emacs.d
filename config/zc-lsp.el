@@ -96,8 +96,11 @@ new file with LSP support."
 
   :general
   (:keymaps 'lsp-ui-mode-map
-   [remap xref-find-definitions] #'lsp-ui-peek-find-definitions
-   [remap xref-pop-marker-stack] #'lsp-ui-peek-jump-backward)
+   ;; Prefer `lsp-mode' functions, `lsp-ui-peek-find-definitions' causes
+   ;; undefined behaviour occasionally.
+   ;; [remap xref-find-definitions] #'lsp-ui-peek-find-definitions
+   ;; [remap xref-pop-marker-stack] #'lsp-ui-peek-jump-backward
+   [remap xref-find-definitions] #'lsp-find-definition)
 
   (:keymaps 'lsp-ui-peek-mode-map
    "j"   #'lsp-ui-peek--select-next
