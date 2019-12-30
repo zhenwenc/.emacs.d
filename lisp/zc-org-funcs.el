@@ -91,6 +91,19 @@ list item."
            (org-at-item-p))
        (invisible-p (point-at-eol))))
 
+(defun zc-org/export-pdf-and-open ()
+  "Run `org-latex-export-to-pdf', delete the tex file and open pdf in a new buffer."
+  (interactive)
+  (save-buffer)
+  (let* ((pdf-path (org-latex-export-to-pdf))
+         (pdf-name (file-name-nondirectory pdf-path)))
+    (if (try-completion pdf-name (mapcar #'buffer-name (buffer-list)))
+        (progn
+          (kill-matching-buffers (concat "^" pdf-name) t t)
+          (find-file-other-window pdf-name))
+      (find-file-other-window pdf-name))
+    (delete-file (concat (substring pdf-path 0 (string-match "[^\.]*\/?$" pdf-path)) "tex"))))
+
 
 ;; Navigation
 

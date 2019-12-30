@@ -28,7 +28,8 @@
 
   :hydra
   ("Basic"
-   (("?" org-info "org info"))
+   (("?" org-info "org info")
+    ("Ep" zc-org/export-pdf-and-open "export pdf"))
 
    "Edit"
    (("ee" org-edit-special                        "edit")
