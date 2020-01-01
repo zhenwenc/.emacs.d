@@ -114,6 +114,7 @@
   :straight t
   :after evil
   :config
+  (setq evil-collection-company-use-tng nil)
   (evil-collection-init))
 
 
