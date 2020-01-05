@@ -10,7 +10,6 @@
 
 (use-package sql-mode
   :straight nil
-  :defer t
 
   :hydra
   ("Basic"
