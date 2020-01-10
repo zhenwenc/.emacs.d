@@ -21,6 +21,7 @@
 
 (use-package magit-todos
   :straight t
+  :disabled t
   :hook (emacs-startup . magit-todos-mode))
 
 ;; Reconfigures magit keybindings to better support evil.
