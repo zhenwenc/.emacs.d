@@ -35,19 +35,18 @@
     ;; Ensure RLS executable is available.
     (zc-rust/download-rls-packages)
     ;; Connect to the current LSP workspace session if available.
-    ;; (lsp-workspace-folders-add (rustic-buffer-workspace))
-    ;; (lsp-deferred)
-
     (-when-let (workspace
                 (->> (lsp-session)
                      (lsp--session-workspaces)
                      (--filter (and (eq 'initialized (lsp--workspace-status it))
-                                    (eq 'rls (lsp--client-server-id (lsp--workspace-client it)))))
+                                    (let* ((client    (lsp--workspace-client it))
+                                           (client-id (lsp--client-server-id client)))
+                                      (or (eq client-id 'rls)
+                                          (eq client-id 'rust-analyzer)))))
                      (--first (f-ancestor-of? (lsp--workspace-root it)
                                               (buffer-file-name)))))
       (lsp-workspace-folders-add (rustic-buffer-workspace))
-      (lsp-deferred))
-    )
+      (lsp-deferred)))
 
   :preface
   (defun zc-rust/download-rls-packages ()
@@ -121,8 +120,10 @@ rustup if not already installed."
                                       "white")
                             rustic-ansi-faces))
 
-  ;; Prefer rust-analyzer server (experiment)
-  (setq rustic-lsp-server 'rust-analyzer)
+  ;; ;; Customize LSP backend
+  ;; (with-eval-after-load 'lsp
+  ;;   (setq lsp-rust-server   'rust-analyzer)
+  ;;   (setq rustic-lsp-server 'rust-analyzer))
 
   ;; Customize RLS server
   (with-eval-after-load 'lsp-rust
