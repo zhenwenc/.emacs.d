@@ -25,8 +25,8 @@
     "Docs"
     (("hi" lsp-ui-imenu                    "imenu")
      ("hs" lsp-ui-sideline-mode            "sideline" :toggle t)
-     ("hl" lsp-lens-mode                   "lenses" :toggle t)
-     ("hd" zc-lsp/toggle-lsp-ui-doc-mode   "doc" :toggle (bound-and-true-p lsp-ui-doc-mode))
+     ("hl" lsp-lens-mode                   "lenses"   :toggle t)
+     ("hd" zc-lsp/toggle-lsp-ui-doc-mode   "doc"      :toggle (bound-and-true-p lsp-ui-doc-mode))
      ("hh" lsp-describe-thing-at-point     "doc at point")
      ("hu" lsp-ui-peek-find-references     "show references"))
 
@@ -36,7 +36,8 @@
      ("ra" zc-lsp/execute-code-action-dwim "action"))
 
     "Eval"
-    (("ee" zc-lsp/lens-command-run         "command"))))
+    (("ee" zc-lsp/lens-command-run         "command")
+     ("el" lsp-ui-flycheck-list            "show errors"))))
 
   :preface
   (defun zc-lsp/setup-after-open ()
@@ -121,6 +122,25 @@ new file with LSP support."
   (lsp-ui-peek-highlight ((t (:background ,(doom-color 'yellow)
                               :foreground nil :bold t :box nil))))
 
+  :config/el-patch
+  (defun lsp-ui-flycheck-list ()
+    "List all the diagnostics in the whole workspace."
+    (interactive)
+    (let ((buffer (get-buffer-create "*lsp-diagnostics*"))
+          (workspace lsp--cur-workspace)
+          (window (selected-window)))
+      (with-current-buffer buffer
+        (lsp-ui-flycheck-list--update window workspace))
+      (add-hook 'lsp-after-diagnostics-hook 'lsp-ui-flycheck-list--refresh nil t)
+      (setq lsp-ui-flycheck-list--buffer buffer)
+      (el-patch-swap
+        (let ((win (display-buffer-in-side-window
+                    buffer `((side . ,lsp-ui-flycheck-list-position) (slot . 5) (window-width . 0.20)))))
+          (set-window-dedicated-p win t)
+          (select-window win)
+          (fit-window-to-buffer nil nil 10))
+        (select-window (display-buffer buffer)))))
+
   :config
   (setq lsp-ui-doc-enable nil
         lsp-ui-doc-header nil
@@ -133,8 +153,9 @@ new file with LSP support."
         lsp-ui-doc-use-childframe t
         lsp-ui-doc-delay 0.5
 
-        lsp-ui-flycheck-live-reporting t
         lsp-ui-flycheck-enable t
+        lsp-ui-flycheck-live-reporting t
+        lsp-ui-flycheck-list-position 'right
 
         lsp-ui-sideline-enable nil
         lsp-ui-sideline-ignore-duplicate t

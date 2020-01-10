@@ -173,6 +173,13 @@
                  (side            . bottom)
                  (slot            . 1)
                  (window-height   . 0.2))
+
+                (,(rx bos "*lsp-diagnostics*" eos)
+                 (display-buffer-reuse-window)
+                 (reusable-frames . visible)
+                 (side            . right)
+                 (slot            . 1)
+                 (window-width    . 0.5))
                 ))
   (add-to-list 'display-buffer-alist item))
 
