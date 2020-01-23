@@ -77,6 +77,10 @@ new file with LSP support."
         ;; overloaded function signatures.
         lsp-eldoc-prefer-signature-help nil
 
+        ;; Show only function signature on eldoc area, exclude
+        ;; the documentation markup content.
+        lsp-signature-render-documentation nil
+
         ;; LSP does some opinionated settings, which can be
         ;; incompatible with my config, such as how to set
         ;; the company backends.
