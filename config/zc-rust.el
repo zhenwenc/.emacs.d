@@ -6,6 +6,7 @@
 (require 'zc-paths)
 (require 'zc-rust-funcs)
 
+(autoload 'lsp-session "lsp")
 (autoload 'lsp-workspace-folders-add "lsp")
 
 (defconst zc-rust-analyzer-executable
@@ -36,10 +37,6 @@
     (require 'lsp)
     ;; Prefer LSP checker
     (zc-flycheck/disable-checkers 'rustic-clippy)
-    ;; Ensure RLS executable is available.
-    (pcase lsp-rust-server
-      ('rls           (zc-rust/download-rls-packages))
-      ('rust-analyzer (zc-rust/download-rust-analyzer)))
     ;; Connect to the current LSP workspace session if available.
     (-when-let (workspace
                 (->> (lsp-session)
@@ -47,11 +44,14 @@
                      (--filter (and (eq 'initialized (lsp--workspace-status it))
                                     (let* ((client (lsp--workspace-client it))
                                            (server (lsp--client-server-id client)))
-                                      (or (eq server 'rls)
-                                          (eq server 'rust-analyzer)))))
+                                      (eq server lsp-rust-server))))
                      (--first (f-ancestor-of? (lsp--workspace-root it)
                                               (buffer-file-name)))))
-      (lsp-workspace-folders-add (rustic-buffer-workspace))
+      ;; Ensure RLS executable is available.
+      (pcase lsp-rust-server
+        ('rls           (zc-rust/download-rls-packages))
+        ('rust-analyzer (zc-rust/download-rust-analyzer)))
+      ;; (lsp-workspace-folders-add (rustic-buffer-workspace))
       (lsp-deferred)))
 
   :preface
@@ -75,7 +75,7 @@ if not already installed."
                  (executable-find zc-rust-analyzer-executable))
       (message "Downloading rust-analyzer Rust Language Server...")
       (shell-command
-       (format "curl --create-dirs -s -o %s %s" zc-rust-analyzer-executable
+       (format "curl -L --create-dirs -s -o %s %s" zc-rust-analyzer-executable
                (--> (format "https://api.github.com/repos/%1$s/%1$s/releases/%s"
                             "rust-analyzer" "latest")
                     (shell-command-to-string (concat "curl -s " it))
@@ -85,6 +85,7 @@ if not already installed."
                                                       (alist-get 'name v)))
                               it)
                     (alist-get 'browser_download_url it))))
+      (chmod zc-rust-analyzer-executable 493)
       ;; Rust Analyzer needs sources of rust standard library
       (zc-rust/download-rust-packages)
       (message "Downloaded Rust Language Server!")))
@@ -104,6 +105,24 @@ if not already installed."
                     (-remove (-partial #'-contains? it) pkgs)))
         (shell-command (concat "rustup component add " package))
         (message "Installed %s!" package))))
+
+  :config/el-patch
+  (defun rustic-buffer-workspace (&optional nodefault)
+    "Get the workspace root.
+If NODEFAULT is t, return nil instead of `default-directory' if directory is
+not in a rust project."
+    (el-patch-let
+        (($old (locate-dominating-file
+                (or buffer-file-name default-directory) "Cargo.toml"))
+         ;; HACK: Use package instead of crate root for workspace
+         ($new (->> (concat "cargo metadata --format-version=1 --offline "
+                            "| jq -rM '.workspace_root'")
+                    (shell-command-to-string)
+                    (s-trim-right)
+                    (f-slash))))
+      (let ((dir (el-patch-swap $old $new)))
+        (if dir (expand-file-name dir)
+          (if nodefault nil default-directory)))))
 
   :config/el-patch
   (defun rustic-format-file-sentinel (proc output)
@@ -161,9 +180,11 @@ if not already installed."
                             rustic-ansi-faces))
 
   ;; ;; Customize LSP backend
-  ;; (with-eval-after-load 'lsp
-  ;;   (setq lsp-rust-server   'rust-analyzer)
-  ;;   (setq rustic-lsp-server 'rust-analyzer))
+  (with-eval-after-load 'lsp
+    (setq rustic-lsp-server 'rust-analyzer)
+    (setq lsp-rust-server   'rust-analyzer)
+    (setq lsp-rust-analyzer-use-client-watching nil)
+    (setq lsp-rust-analyzer-server-command `(,zc-rust-analyzer-executable)))
 
   ;; Customize RLS server
   (with-eval-after-load 'lsp-rust
