@@ -252,6 +252,14 @@
               #'zc-org/post-org-tempo-add-templates))
 
 
+;; Org Pretty
+
+(use-package org-bullets
+  :straight t
+  :after org
+  :hook (org-mode . org-bullets-mode))
+
+
 ;; Org Babel
 
 (use-package ob-restclient
