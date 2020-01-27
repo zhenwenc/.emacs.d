@@ -63,6 +63,11 @@ replace it with the unicode arrow."
    ">" #'zc-scala/unicode-gt
    "-" #'zc-scala/unicode-hyphen)
 
+  :hydra
+  ((:mode scala-mode :after lsp-mode)
+   ("Server"
+    (("nd" lsp-metals-doctor-run "metals docker"))))
+
   :preface
   (defun zc-scala/setup ()
     (require 'lsp)
