@@ -22,8 +22,12 @@
      ("nl" lsp-switch-to-io-log-buffer     "show workspace log")
      ("nL" zc-lsp/switch-to-std-log-buffer "show log"))
 
+    "Navigation"
+    (("gs" lsp-ui-find-workspace-symbol    "find symbol"))
+
     "Docs"
     (("hi" lsp-ui-imenu                    "imenu")
+     ("hS" lsp-treemacs-symbols            "symbols")
      ("hs" lsp-ui-sideline-mode            "sideline" :toggle t)
      ("hl" lsp-lens-mode                   "lenses"   :toggle t)
      ("hd" zc-lsp/toggle-lsp-ui-doc-mode   "doc"      :toggle (bound-and-true-p lsp-ui-doc-mode))
@@ -170,7 +174,10 @@ new file with LSP support."
         lsp-ui-sideline-code-actions-prefix (if (display-graphic-p) "" "")
 
         lsp-ui-imenu-kind-position 'top
-        lsp-ui-imenu-colors (list (doom-color 'blue) (doom-color 'yellow))
+        lsp-ui-imenu-colors `(,(face-foreground 'font-lock-keyword-face)
+                              ,(face-foreground 'font-lock-string-face)
+                              ,(face-foreground 'font-lock-constant-face)
+                              ,(face-foreground 'font-lock-variable-name-face))
 
         lsp-ui-peek-enable nil
         lsp-ui-peek-list-width 50
