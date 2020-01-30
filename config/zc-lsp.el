@@ -73,6 +73,9 @@ new file with LSP support."
         ;; servers seems doesn't care about it at all! :P
         lsp-response-timeout 10
 
+        ;; Enlarge file watch threshold for metals
+        lsp-file-watch-threshold 1500
+
         ;; Ensure to respect the server recommented sync
         ;; method, otherwise it may cause issues!
         lsp-document-sync-method nil
