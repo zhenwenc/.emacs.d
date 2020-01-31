@@ -150,6 +150,7 @@
                                  (shell      . t)
                                  (python     . t)
                                  (ipython    . t)
+                                 (plantuml   . t)
                                  (restclient . t)))
 
   ;; Narrow to headline after jump, which affects:

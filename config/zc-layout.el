@@ -180,6 +180,13 @@
                  (side            . right)
                  (slot            . 1)
                  (window-width    . 0.5))
+
+                (,(rx bos "*PLANTUML Preview*" eos)
+                 (display-buffer-reuse-window)
+                 (reusable-frames . visible)
+                 (side            . right)
+                 (slot            . 1)
+                 (window-width    . 0.5))
                 ))
   (add-to-list 'display-buffer-alist item))
 

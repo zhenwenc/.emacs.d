@@ -130,6 +130,7 @@
 (use-package zc-markdown)
 (use-package zc-restclient)
 (use-package zc-typescript)
+(use-package zc-plantuml)
 (use-package zc-prodigy)
 (use-package zc-help)
 
