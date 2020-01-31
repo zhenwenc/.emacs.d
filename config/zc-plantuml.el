@@ -89,6 +89,7 @@
   ;; - Retrieve the language specification:  "-language"
   ;; - Retrieve the list of installed fonts: "-printfonts"
   ;;
+  ;; https://plantuml.com/command-line
   (defun zc-plantuml/execute-command (args)
     "Execute PlantUML command with arguments."
     (interactive "MCommand: ")
