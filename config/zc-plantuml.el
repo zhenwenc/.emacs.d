@@ -29,7 +29,7 @@
       (plantuml-download-jar))
     ;; Download extra custom diagram types.
     (mapcar (-lambda ((filename url))
-              (unless (and (not forced) (file-exists? filename))
+              (unless (and (not forced) (f-exists? filename))
                 (with-current-buffer
                     (url-retrieve-synchronously url 'silent 'inhibit-cookies)
                   (delete-region (point-min) url-http-end-of-headers)
