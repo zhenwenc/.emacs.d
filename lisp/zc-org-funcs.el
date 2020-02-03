@@ -34,6 +34,8 @@
   "Instead of calling `org-return' when evil normal state
 is actived, make it align with evil behaviour.
 
+- When point is on an source block, call `org-babel-execute-src-block'.
+- When point is on an `:+CALL:' block, call `org-babel-execute-maybe'.
 - When point is on an Org table, call `org-table-next-row'.
 - When point is on a link, call `org-open-at-point'."
   (interactive)
@@ -43,6 +45,9 @@ is actived, make it align with evil behaviour.
      ((org-in-src-block-p)
       (org-babel-eval-wipe-error-buffer)
       (org-babel-execute-src-block current-prefix-arg))
+     ;; In a `:+CALL:' block, call `org-babel-execute-maybe'.
+     ((eq (org-element-type context) 'babel-call)
+      (call-interactively #'org-babel-execute-maybe))
      ;; In a table, all `org-table-next-row'.
      ((or (and (eq (org-element-type context) 'table)
                (>= (point) (org-element-property :contents-begin context))
