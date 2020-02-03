@@ -52,7 +52,8 @@
    "Toggle"
    (("th" org-toggle-heading                      "heading")
     ("ti" org-toggle-item                         "item")
-    ("tl" org-toggle-link-display                 "link")))
+    ("tl" org-toggle-link-display                 "link")
+    ("tb" (org-hide-block-toggle-all)             "block")))
 
   :hook
   ((org-mode . visual-line-mode))
@@ -249,6 +250,42 @@
     (message "HACK: Org complete templates with uppercase keycords."))
   (advice-add 'org-tempo-add-templates :after
               #'zc-org/post-org-tempo-add-templates))
+
+
+
+(use-package org-eldoc
+  :after org
+  :defer t
+
+  ;; HACK: Error when header argument value is numeric type, such as port number.
+  :config/el-patch
+  (defun org-eldoc-get-src-header ()
+    "Returns lang and list of header properties if on src
+definition line and nil otherwise."
+    (let ((case-fold-search t) info lang hdr-args)
+      (save-excursion
+        (beginning-of-line)
+        (save-match-data
+          (when (looking-at "^[ \t]*#\\+\\(begin\\|end\\)_src")
+            (setq info (org-babel-get-src-block-info 'light)
+                  lang (propertize (or (nth 0 info) "no lang")
+                                   'face 'font-lock-string-face)
+                  hdr-args (nth 2 info))
+            (concat
+             lang
+             ": "
+             (mapconcat
+              (lambda (elem)
+                (el-patch-let (($old (cdr elem))
+                               ($new (format "%s" (cdr elem))))
+                  (when (and (cdr elem)
+                             (not (string= "" (el-patch-swap $old $new))))
+                    (concat
+                     (propertize (symbol-name (car elem)) 'face 'org-list-dt)
+                     " "
+                     (propertize (el-patch-swap $old $new) 'face 'org-verbatim)
+                     " "))))
+              hdr-args " "))))))))
 
 
 ;; Org Pretty
