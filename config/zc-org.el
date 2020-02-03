@@ -28,33 +28,31 @@
 
   :hydra
   ("Basic"
-   (("?" org-info "org info")
-    ("Ep" zc-org/export-pdf-and-open "export pdf"))
+   (("?" org-info                                 "org info")
+    ("E" zc-org/export-pdf-and-open               "export pdf")
+    ("S" org-sort                                 "sort")
+    ("R" org-refile                               "refile"))
 
    "Edit"
    (("ee" org-edit-special                        "edit")
     ("ed" org-cut-special                         "kill")
     ("ey" org-copy-special                        "copy")
-    ("eP" org-paste-special                       "paste")
+    ("eY" org-paste-special                       "paste")
     ("et" counsel-org-tag                         "tag")
     ("eT" org-table-create-or-convert-from-region "table")
-    ("ea" org-babel-insert-header-arg             "argument")
-    ("ep" org-property-action                     "property"))
+    ("ea" org-babel-insert-header-arg             "args")
+    ("ep" org-property-action                     "props"))
 
    "Babel"
-   (("bi" org-babel-view-src-block-info       "info")
-    ("bo" org-babel-open-src-block-result     "open res")
-    ("bc" org-babel-remove-result-one-or-many "clear res")
-    ("bC" zc-org/babel-remove-result-all      "clear res*"))
-
-   "Refactor"
-   (("rs" org-sort   "sort")
-    ("rw" org-refile "refile"))
+   (("bi" org-babel-view-src-block-info           "info")
+    ("bo" org-babel-open-src-block-result         "open res")
+    ("bc" org-babel-remove-result-one-or-many     "clear res")
+    ("bC" zc-org/babel-remove-result-all          "clear res*"))
 
    "Toggle"
-   (("ti" org-toggle-item         "item")
-    ("th" org-toggle-heading      "heading")
-    ("tl" org-toggle-link-display "link")))
+   (("th" org-toggle-heading                      "heading")
+    ("ti" org-toggle-item                         "item")
+    ("tl" org-toggle-link-display                 "link")))
 
   :hook
   ((org-mode . visual-line-mode))
