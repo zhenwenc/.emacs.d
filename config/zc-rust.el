@@ -58,7 +58,7 @@
   (defun zc-rust/download-rls-packages (&optional forced)
     "Download Rust Language Server required components with
 rustup if not already installed."
-    (interactive "P")
+    (interactive)
     (unless (and (not forced)
                  (executable-find "rls"))
       (zc-rust/download-rust-packages)
@@ -70,7 +70,7 @@ rustup if not already installed."
   (defun zc-rust/download-rust-analyzer (&optional forced)
     "Download rust-analyzer Language Server binary `ra_lsp_server'
 if not already installed."
-    (interactive "P")
+    (interactive)
     (unless (and (not forced)
                  (executable-find zc-rust-analyzer-executable))
       (message "Downloading rust-analyzer Rust Language Server...")
