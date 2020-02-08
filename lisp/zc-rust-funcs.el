@@ -30,6 +30,19 @@ supporting function with `mod' declared."
   "Return t if RUST_BACKTRACE set to any value other than '0'."
   (not (equal "0" rustic-compile-backtrace)))
 
+(defun zc-rust/buffer-workspace-root (&optional nodefault)
+  "Get the workspace root from Cargo metadata command.
+
+If NODEFAULT is t, return nil instead of `default-directory' if directory is
+not in a rust project."
+  (-if-let* ((dir (->> (concat "cargo metadata --format-version=1 --offline "
+                               "| jq -rM '.workspace_root'")
+                       (shell-command-to-string)
+                       (s-trim-right))))
+      (when (f-exists? dir)
+        (expand-file-name (f-slash dir)))
+    (if nodefault nil default-directory)))
+
 
 ;; Commands
 

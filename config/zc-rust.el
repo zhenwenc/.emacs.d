@@ -107,24 +107,6 @@ if not already installed."
         (message "Installed %s!" package))))
 
   :config/el-patch
-  (defun rustic-buffer-workspace (&optional nodefault)
-    "Get the workspace root.
-If NODEFAULT is t, return nil instead of `default-directory' if directory is
-not in a rust project."
-    (el-patch-let
-        (($old (locate-dominating-file
-                (or buffer-file-name default-directory) "Cargo.toml"))
-         ;; HACK: Use package instead of crate root for workspace
-         ($new (->> (concat "cargo metadata --format-version=1 --offline "
-                            "| jq -rM '.workspace_root'")
-                    (shell-command-to-string)
-                    (s-trim-right)
-                    (f-slash))))
-      (let ((dir (el-patch-swap $old $new)))
-        (if dir (expand-file-name dir)
-          (if nodefault nil default-directory)))))
-
-  :config/el-patch
   (defun rustic-format-file-sentinel (proc output)
     "Sentinel for rustfmt processes when formatting a file."
     (el-patch-let
