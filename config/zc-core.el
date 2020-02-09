@@ -143,7 +143,7 @@
 ;; it temporarily to speed up minibuffer operations that tend
 ;; to be memory heavy like fuzzy searches.
 (add-hook 'minibuffer-setup-hook #'zc/max-gc-limit)
-(add-hook 'minibuffer-exit-hook #'zc/reset-gc-limit)
+(add-hook 'minibuffer-exit-hook  #'zc/reset-gc-limit)
 
 ;; Improve the performance of rendering long lines.
 (setq-default bidi-display-reordering nil)

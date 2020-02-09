@@ -30,8 +30,8 @@
   "Restore to defalut value, 16mb."
   (setq gc-cons-threshold (* 16 1024 1024)))
 
-;; Speed up startup
-(setq gc-cons-threshold (* 256 1024 1024))
+;; Defer GC further back to speed up startup
+(zc/max-gc-limit)
 (add-hook 'emacs-startup-hook #'zc/reset-gc-limit)
 
 
