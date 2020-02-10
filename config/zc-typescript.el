@@ -22,43 +22,6 @@
    ("Refactor"
     (("rf" prettier-js "prettier format"))))
 
-  :preface
-  (defun zc-typescript/set-node-modules-readonly ()
-    (when (and (buffer-file-name)
-               (s-contains-p "/node_modules/" buffer-file-name))
-      (read-only-mode +1)))
-
-  :preface
-  (defun zc-typescript/add-node-modules-bin-to-path ()
-    "Use binaries from node_modules, where available."
-    (when-let (root (projectile-project-p))
-      (make-local-variable 'exec-path)
-      (add-to-list 'exec-path (f-join root "node_modules" ".bin"))))
-
-  :preface
-  (defun zc-typescript/disable-flycheck-linters ()
-    "Linters are pretty slow, and we use Prettier anyway."
-    (zc-flycheck/disable-checkers 'javascript-jshint 'typescript-tslint))
-
-  :preface
-  (defun zc-typescript/disable-flycheck-for-flow ()
-    (when (and buffer-file-name
-               (string= (f-ext buffer-file-name) "js")
-               (save-excursion (goto-char (point-min))
-                               (search-forward "@flow" nil t)))
-      (zc-flycheck/disable-checkers 'typescript-tide)))
-
-  :preface
-  (defun zc-typescript/disable-flycheck-for-node-modules ()
-    (when (and buffer-file-name
-               (s-contains-p "/node_modules/" buffer-file-name))
-      (apply 'zc-flycheck/disable-checkers
-             (->> flycheck-checkers
-                  (-map #'symbol-name)
-                  (--filter (or (string-prefix-p "javascript" it)
-                                (string-prefix-p "typescript" it)))
-                  (-map #'intern)))))
-
   :hook
   (find-file       . zc-typescript/set-node-modules-readonly)
   (typescript-mode . zc-typescript/add-node-modules-bin-to-path)
