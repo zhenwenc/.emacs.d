@@ -44,6 +44,16 @@
      ("el" lsp-ui-flycheck-list            "show errors"))))
 
   :preface
+  (defun zc-lsp/setup ()
+    "Since `lsp-auto-configure' had been disabled, we have to
+configure the packages."
+    ;; Add flycheck checker and LSP specific settings
+    (lsp-flycheck-enable)
+    ;; The above function will explicitly select the checker,
+    ;; but preferably let flycheck decide!
+    (setq-local flycheck-checker nil))
+
+  :preface
   (defun zc-lsp/setup-after-open ()
     "Function for `lsp-after-open-hook' to setup the opened
 new file with LSP support."
@@ -55,13 +65,11 @@ new file with LSP support."
     "Don't prompt to restart LSP servers while quitting Emacs."
     (setq lsp-restart 'ignore))
 
-  :hook ((lsp-after-open . zc-lsp/setup-after-open)
+  :hook ((lsp-mode       . zc-lsp/setup)
+         (lsp-after-open . zc-lsp/setup-after-open)
          (kill-emacs     . zc-lsp/inhibit-restart-prompt))
 
   :config
-  ;; Load LSP clients, hmm..
-  (require 'lsp-clients)
-
   (setq lsp-trace nil
         lsp-log-io nil
         lsp-print-performance nil
@@ -96,6 +104,9 @@ new file with LSP support."
         lsp-prefer-flymake nil
         lsp-enable-completion-at-point nil
         lsp-enable-symbol-highlighting nil)
+
+  ;; Load LSP clients, hmm..
+  (require 'lsp-clients)
 
   ;; Enhance with language specific features
   (advice-add 'lsp--symbol-filter :around #'zc-lsp/imenu-symbol-filter)

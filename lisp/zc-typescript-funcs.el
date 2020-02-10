@@ -12,8 +12,8 @@
 (defvar lsp--symbol-kind)
 (defvar flycheck-checkers)
 
-;; Startup
 
+;; Startup
 
 (defun zc-typescript/set-node-modules-readonly ()
   (when (and (buffer-file-name)
@@ -28,7 +28,12 @@
 
 (defun zc-typescript/disable-flycheck-linters ()
   "Linters are pretty slow, and we use Prettier anyway."
-  (zc-flycheck/disable-checkers 'javascript-jshint 'typescript-tslint))
+  (zc-flycheck/disable-checkers 'javascript-jshint 'typescript-tslint)
+  (if (and buffer-file-name
+           (or (f-ext-p buffer-file-name "js")
+               (f-ext-p buffer-file-name "jsx")))
+      (zc-flycheck/disable-checkers 'lsp) ; JS are shit!
+    (zc-flycheck/disable-checkers 'javascript-eslint)))
 
 (defun zc-typescript/disable-flycheck-for-flow ()
   (when (and buffer-file-name
