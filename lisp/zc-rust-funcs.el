@@ -1,6 +1,7 @@
 (require 'f)
 (require 's)
 (require 'dash)
+(require 'zc-paths)
 
 (autoload 'yas-lookup-snippet "yasnippet")
 (autoload 'yas-expand-snippet "yasnippet")
@@ -12,6 +13,83 @@
 (defvar compilation-last-buffer)
 (defvar rustic-cargo-bin)
 (defvar rustic-compile-backtrace)
+(defvar lsp-rust-server)
+
+(defconst zc-rust-analyzer-executable
+  (f-join paths-vendor-dir "rust/ra_lsp_server-mac"))
+
+
+;; Startup
+
+(defun zc-rust/setup ()
+  (require 'lsp)
+  ;; Prefer LSP checker
+  (zc-flycheck/disable-checkers 'rustic-clippy)
+  ;; Connect to the current LSP workspace session if available.
+  (-when-let (workspace
+              (->> (lsp-session)
+                   (lsp--session-workspaces)
+                   (--filter (and (eq 'initialized (lsp--workspace-status it))
+                                  (let* ((client (lsp--workspace-client it))
+                                         (server (lsp--client-server-id client)))
+                                    (eq server lsp-rust-server))))
+                   (--first (f-ancestor-of? (lsp--workspace-root it)
+                                            (buffer-file-name)))))
+    ;; Ensure RLS executable is available.
+    (pcase lsp-rust-server
+      ('rls           (zc-rust/download-rls-packages))
+      ('rust-analyzer (zc-rust/download-rust-analyzer)))
+    ;; (lsp-workspace-folders-add (rustic-buffer-workspace))
+    (lsp-deferred)))
+
+(defun zc-rust/download-rls-packages (&optional forced)
+  "Download Rust Language Server required components with
+rustup if not already installed."
+  (interactive)
+  (unless (and (not forced)
+               (executable-find "rls"))
+    (zc-rust/download-rust-packages)
+    ;; Install the required rust components with rustup.
+    (shell-command "rustup component add rls")
+    (message "Downloaded Rust Language Server!")))
+
+(defun zc-rust/download-rust-analyzer (&optional forced)
+  "Download rust-analyzer Language Server binary `ra_lsp_server'
+if not already installed."
+  (interactive)
+  (unless (and (not forced)
+               (executable-find zc-rust-analyzer-executable))
+    (message "Downloading rust-analyzer Rust Language Server...")
+    (shell-command
+     (format "curl -L --create-dirs -s -o %s %s" zc-rust-analyzer-executable
+             (--> (format "https://api.github.com/repos/%1$s/%1$s/releases/%s"
+                          "rust-analyzer" "latest")
+                  (shell-command-to-string (concat "curl -s " it))
+                  (json-read-from-string it)
+                  (alist-get 'assets it) ;; assets array
+                  (seq-find (-lambda (v) (s-equals? "ra_lsp_server-mac"
+                                                    (alist-get 'name v)))
+                            it)
+                  (alist-get 'browser_download_url it))))
+    (chmod zc-rust-analyzer-executable 493)
+    ;; Rust Analyzer needs sources of rust standard library
+    (zc-rust/download-rust-packages)
+    (message "Downloaded Rust Language Server!")))
+
+(defun zc-rust/download-rust-packages ()
+  "Install Rust Language Server required common packages."
+  (unless (executable-find "rustup")
+    (error "No rustup executable found!"))
+  ;; Install required rust components with rustup.
+  (let ((pkgs '("clippy" "rustfmt" "rust-analysis" "rust-src"))
+        (-compare-fn #'s-starts-with-p))
+    (dolist (package
+             (--> (shell-command-to-string
+                   "rustup component list --installed")
+                  (s-split "\n" it t)
+                  (-remove (-partial #'-contains? it) pkgs)))
+      (shell-command (concat "rustup component add " package))
+      (message "Installed %s!" package))))
 
 
 ;; Helper Functions
