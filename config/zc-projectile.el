@@ -33,6 +33,7 @@
         '("gz" "zip" "tar" "elc"))
   (setq projectile-globally-ignored-directories
         '(".git"
+          ".log"
           ".cache"
           ".metals"
           ".ensime_cache"
