@@ -39,15 +39,16 @@
                  (-when-let (win (get-buffer-window proc-buffer))
                    (delete-window win))
                  (revert-buffer t t))))
-      (let ((proc-buffer (process-buffer proc)))
-        (with-current-buffer proc-buffer
-          (if (string-match-p "^finished" output)
-              (progn
-                (with-current-buffer next-error-last-buffer
-                  (el-patch-swap $old $new)))
-            (goto-char (point-min))
-            (funcall rustic-format-display-method proc-buffer)
-            (message "Rustfmt error."))))))
+      (ignore-errors
+        (let ((proc-buffer (process-buffer proc)))
+          (with-current-buffer proc-buffer
+            (if (string-match-p "^finished" output)
+                (progn
+                  (with-current-buffer next-error-last-buffer
+                    (el-patch-swap $old $new)))
+              (goto-char (point-min))
+              (funcall rustic-format-display-method proc-buffer)
+              (message "Rustfmt error.")))))))
 
   :hook (rustic-mode . zc-rust/setup)
 
