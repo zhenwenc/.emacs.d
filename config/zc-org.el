@@ -278,8 +278,7 @@ definition line and nil otherwise."
               (lambda (elem)
                 (el-patch-let (($old (cdr elem))
                                ($new (format "%s" (cdr elem))))
-                  (when (and (cdr elem)
-                             (not (string= "" (el-patch-swap $old $new))))
+                  (when (and (cdr elem) (not (string= "" (el-patch-swap $old $new))))
                     (concat
                      (propertize (symbol-name (car elem)) 'face 'org-list-dt)
                      " "
