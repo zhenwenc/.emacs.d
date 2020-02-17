@@ -213,7 +213,10 @@ affecting minibuffers which may cause problem on `ivy'."
  ;; `window-divider' does not. Available since Emacs 25.1.
  window-divider-default-places t
  window-divider-default-bottom-width 0
- window-divider-default-right-width 1)
+ window-divider-default-right-width 1
+
+ ;; Initialize default value with a list
+ font-lock-maximum-decoration '((t . t)))
 
 ;; Disable ugly build-in modes
 (when (fboundp 'tool-bar-mode) (tool-bar-mode -1))
