@@ -1,6 +1,10 @@
 (eval-when-compile
   (require 'use-package))
 
+(require 'zc-paths)
+
+
+
 (use-package graphql-mode
   :straight t
   :defer t
@@ -23,5 +27,13 @@
   :config
   ;; Ensure the same indent level as 'terraform fmt'
   (setq terraform-indent-level 2))
+
+(use-package request
+  :straight t
+  :command (request)
+  :config
+  (setq request-storage-directory (concat paths-cache-dir "request")))
+
+
 
 (provide 'zc-tools)
