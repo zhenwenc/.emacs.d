@@ -26,13 +26,13 @@
     (("gs" lsp-ui-find-workspace-symbol    "find symbol"))
 
     "Docs"
-    (("hi" lsp-ui-imenu                    "imenu")
-     ("hS" lsp-treemacs-symbols            "symbols")
+    (("hi" lsp-ui-imenu                    "show imenu")
+     ("hu" lsp-ui-peek-find-references     "show references")
+     ("hS" lsp-treemacs-symbols            "treemacs symbols")
      ("hs" lsp-ui-sideline-mode            "sideline" :toggle t)
      ("hl" lsp-lens-mode                   "lenses"   :toggle t)
      ("hd" zc-lsp/toggle-lsp-ui-doc-mode   "doc"      :toggle (bound-and-true-p lsp-ui-doc-mode))
-     ("hh" lsp-describe-thing-at-point     "doc at point")
-     ("hu" lsp-ui-peek-find-references     "show references"))
+     ("hh" lsp-describe-thing-at-point     "doc at point"))
 
     "Refactor"
     (("rr" lsp-rename                      "rename")
@@ -46,7 +46,7 @@
   :preface
   (defun zc-lsp/setup ()
     "Since `lsp-auto-configure' had been disabled, we have to
-configure the packages."
+configure the packages ourself."
     ;; Add flycheck checker and LSP specific settings
     (lsp-flycheck-enable)
     ;; The above function will explicitly select the checker,
