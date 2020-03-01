@@ -101,7 +101,7 @@ replace it with the unicode arrow."
                              " --java-opt -XX:+UseStringDeduplication"
                              " --java-opt -Dmetals.client=emacs"
                              " --java-opt -Dmetals.verbose=off"
-                             " org.scalameta:metals_2.12:0.8.0"
+                             " org.scalameta:metals_2.12:0.8.1"
                              " -r bintray:scalacenter/releases"
                              " -r sonatype:snapshots"
                              " -o " zc-metals-executable
