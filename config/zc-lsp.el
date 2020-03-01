@@ -105,8 +105,10 @@ new file with LSP support."
         lsp-enable-completion-at-point nil
         lsp-enable-symbol-highlighting nil)
 
-  ;; Load LSP clients, hmm..
-  (require 'lsp-clients)
+  ;; Load LSP client by the current major mode, hmm..
+  (require (pcase major-mode
+             ('scala-mode 'lsp-metals)
+             (_           'lsp-clients)))
 
   ;; Enhance with language specific features
   (advice-add 'lsp--symbol-filter :around #'zc-lsp/imenu-symbol-filter)
