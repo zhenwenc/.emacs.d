@@ -30,7 +30,6 @@
 
 (use-package request
   :straight t
-  :command (request)
   :config
   (setq request-storage-directory (concat paths-cache-dir "request")))
 
