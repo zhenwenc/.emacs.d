@@ -45,6 +45,7 @@
 
    "Babel"
    (("bi" org-babel-view-src-block-info           "info")
+    ("bv" org-babel-expand-src-block              "expand")
     ("bo" org-babel-open-src-block-result         "open res")
     ("bc" org-babel-remove-result-one-or-many     "clear res")
     ("bC" zc-org/babel-remove-result-all          "clear res*"))
