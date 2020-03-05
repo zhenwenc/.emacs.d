@@ -116,11 +116,9 @@
 
                 (,(rx bos "*Org Src")
                  (display-buffer-reuse-window
-                  display-buffer-in-side-window)
+                  display-buffer-same-window)
                  (reusable-frames . visible)
-                 (side            . bottom)
-                 (slot            . 1)
-                 (window-height   . 0.3))
+                 (slot            . 1))
 
                 (,(rx bos "*eshell" (*? anything) "*" eos)
                  (display-buffer-reuse-window
