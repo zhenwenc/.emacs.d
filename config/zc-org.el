@@ -11,6 +11,7 @@
 (autoload 'counsel-outline-candidates "counsel-projectile")
 
 (defvar org-tempo-tags)
+(defvar org-tempo-keywords-alist)
 
 
 
@@ -242,15 +243,17 @@
   :after org
   :config
   ;; Complete src block templates with uppercased keywords
-  (defun zc-org/post-org-tempo-add-templates ()
+  (defun zc-org/post-tempo-add-templates ()
     (mapc #'(lambda (entry)
               (let* ((key (cdr entry))
                      (value (symbol-value key)))
                 (set key (-map-when 'stringp 'upcase value))))
           org-tempo-tags)
     (message "HACK: Org complete templates with uppercase keycords."))
-  (advice-add 'org-tempo-add-templates :after
-              #'zc-org/post-org-tempo-add-templates))
+  (advice-add 'org-tempo-add-templates :after #'zc-org/post-tempo-add-templates)
+
+  ;; Expand "#+NAME:" with "<n"
+  (add-to-list 'org-tempo-keywords-alist '("n" . "name")))
 
 
 
