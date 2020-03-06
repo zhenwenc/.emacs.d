@@ -55,7 +55,8 @@
    (("th" org-toggle-heading                      "heading")
     ("ti" org-toggle-item                         "item")
     ("tl" org-toggle-link-display                 "link")
-    ("tb" (org-hide-block-toggle-all)             "block")))
+    ("tb" (org-hide-block-toggle-all)             "block")
+    ("tI" org-indent-mode                         "indent" :toggle t)))
 
   :hook
   ((org-mode . visual-line-mode))
