@@ -101,8 +101,20 @@ new file with LSP support."
         ;; the company backends.
         lsp-auto-configure nil ; No Magic!
 
-        lsp-prefer-flymake nil
+        ;; Haven't have chance to discover this feature.
+        ;; Possible alternative: `evil-matchit'.
+        lsp-enable-folding nil
+
+        ;; Prefer flycheck for on-the-fly syntax checking.
+        lsp-diagnostic-package :flycheck
+
+        ;; Not needed, doing it myself.
+        lsp-enable-snippet nil
+
+        ;; Regain ownership of company. My pressures!
         lsp-enable-completion-at-point nil
+
+        ;; Prefer `highlight-thing'.
         lsp-enable-symbol-highlighting nil)
 
   ;; Load LSP client by the current major mode, hmm..
@@ -111,8 +123,15 @@ new file with LSP support."
              ('python-mode 'lsp-python-ms)
              (_            'lsp-clients)))
 
-  ;; Enhance with language specific features
-  (advice-add 'lsp--symbol-filter :around #'zc-lsp/imenu-symbol-filter)
+  ;; Debounce `lsp-on-change' send changes to LSP server.
+  ;; (defvar lsp-on-touch-time 0)
+  ;; (defadvice lsp-on-change (around zc/lsp-on-change-hack activate)
+  ;;   (when (> (- (float-time (current-time)) lsp-on-touch-time) 30) ;; seconds
+  ;;     (setq lsp-on-touch-time (float-time (current-time)))
+  ;;     ad-do-it))
+
+  ;; Enhance with language specific features.
+  (advice-add 'lsp--symbol-filter        :around #'zc-lsp/imenu-symbol-filter)
   (advice-add 'lsp--imenu-filter-symbols :around #'zc-lsp/imenu-filter-symbols)
   (advice-add 'lsp--suggest-project-root :around #'zc-lsp/infer-project-root))
 
