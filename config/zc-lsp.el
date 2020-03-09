@@ -107,8 +107,9 @@ new file with LSP support."
 
   ;; Load LSP client by the current major mode, hmm..
   (require (pcase major-mode
-             ('scala-mode 'lsp-metals)
-             (_           'lsp-clients)))
+             ('scala-mode  'lsp-metals)
+             ('python-mode 'lsp-python-ms)
+             (_            'lsp-clients)))
 
   ;; Enhance with language specific features
   (advice-add 'lsp--symbol-filter :around #'zc-lsp/imenu-symbol-filter)

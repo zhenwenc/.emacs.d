@@ -38,8 +38,14 @@
   :straight t
   :preface
   (defun zc-python/init-python-ms ()
-    (require 'lsp-python-ms)
-    (lsp-deferred))
+    (-when-let (workspace
+                (->> (lsp-session)
+                     (lsp--session-workspaces)
+                     (--filter (and (eq 'initialized (lsp--workspace-status it))
+                                    (eq 'mspyls (lsp--client-server-id (lsp--workspace-client it)))))
+                     (--first (f-ancestor-of? (lsp--workspace-root it)
+                                              (buffer-file-name)))))
+      (lsp-deferred)))
   :hook (python-mode . zc-python/init-python-ms)
   :init
   (setq lsp-python-ms-dir (concat paths-vendor-dir "mspyls/")))
