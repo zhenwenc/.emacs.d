@@ -77,6 +77,9 @@ new file with LSP support."
         lsp-auto-guess-root t
         lsp-session-file (concat paths-cache-dir ".lsp-session-v1")
 
+        ;; Declare LSP clients we might use, hmm...
+        lsp-client-packages '(lsp-clients lsp-rust lsp-metals lsp-python-ms)
+
         ;; The client may send a cancel event, but most LSP
         ;; servers seems doesn't care about it at all! :P
         lsp-response-timeout 10
@@ -118,10 +121,7 @@ new file with LSP support."
         lsp-enable-symbol-highlighting nil)
 
   ;; Load LSP client by the current major mode, hmm..
-  (require (pcase major-mode
-             ('scala-mode  'lsp-metals)
-             ('python-mode 'lsp-python-ms)
-             (_            'lsp-clients)))
+  (-each lsp-client-packages (-rpartial #'require nil t))
 
   ;; Debounce `lsp-on-change' send changes to LSP server.
   ;; (defvar lsp-on-touch-time 0)
