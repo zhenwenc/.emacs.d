@@ -8,7 +8,7 @@
 
 
 
-(use-package sql-mode
+(use-package sql
   :straight nil
 
   :hydra
