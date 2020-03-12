@@ -67,7 +67,7 @@ if not already installed."
                   (shell-command-to-string (concat "curl -s " it))
                   (json-read-from-string it)
                   (alist-get 'assets it) ;; assets array
-                  (seq-find (-lambda (v) (s-equals? "ra_lsp_server-mac"
+                  (seq-find (-lambda (v) (s-equals? "rust-analyzer-mac"
                                                     (alist-get 'name v)))
                             it)
                   (alist-get 'browser_download_url it))))
