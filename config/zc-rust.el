@@ -27,7 +27,10 @@
     (("tt" zc-rust/cargo-test-dwim        "test")
      ("ta" zc-rust/cargo-test-all         "test all")
      ("tB" zc-rust/cargo-toggle-backtrace "backtrace"
-      :toggle (zc-rust/cargo-backtrace-enabled-p)))))
+      :toggle (zc-rust/cargo-backtrace-enabled-p)))
+
+    "Docs"
+    (("hI" lsp-rust-analyzer-inlay-hints-mode "inlay" :toggle t))))
 
   :config/el-patch
   (defun rustic-format-file-sentinel (proc output)
