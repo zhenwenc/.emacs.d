@@ -90,6 +90,18 @@
 
 
 
+(use-package electric
+  :after (:any zc-web-mode typescript-mode)
+  :hook ((typescript-mode . zc-web/maybe-enable-electric-indent))
+  :preface
+  (defun zc-web/maybe-enable-electric-indent ()
+    (when (and buffer-file-name ; maybe scratch
+               (or (f-ext-p buffer-file-name "js")    ; JS are shit!
+                   (f-ext-p buffer-file-name "jsx"))) ; JS are shit!
+      (electric-indent-local-mode -1))))
+
+
+
 (use-package nvm
   :disabled t ; use nodenv
   :straight t
