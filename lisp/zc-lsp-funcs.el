@@ -7,6 +7,7 @@
 
 (defvar lsp-ui-doc-mode)
 (defvar lsp-ui-sideline-mode)
+(defvar lsp-document-sync-method)
 
 
 ;; IMenu
@@ -98,6 +99,72 @@ for completion."
             :history 'zc-lsp/lens-command-run
             :caller  'zc-lsp/lens-command-run
             :require-match t))
+
+
+;; Batching / debounce file change events
+
+(defvar zc-lsp/on-change--pending-events nil)
+
+(defun zc-lsp/on-change (&rest args)
+  "HACK: `lsp-on-change' event handler.
+
+The initial intention was reducing the load on the TypeScript LSP
+server due to `lsp-mode' notifies every single change.
+
+Learn from `coc-tsserver', we buffer the change events.
+"
+  (if (and (not (null buffer-file-name))
+           (not revert-buffer-in-progress-p)
+           (zc-lsp/support-batching-update))
+      (->> (lsp-workspaces)
+           (-filter (lambda (workspace)
+                      "when server supports incremental updates."
+                      (eq 2 (or lsp-document-sync-method
+                                (lsp--workspace-sync-method workspace)))))
+           (-map (lambda (workspace)
+                   "defer changes on the same file."
+                   (if (or (null zc-lsp/on-change--pending-events)
+                           (assoc (current-buffer) zc-lsp/on-change--pending-events))
+                       (add-to-list 'zc-lsp/on-change--pending-events
+                                    (list (current-buffer) args))
+                     (zc-lsp/flush-pending-changes)))))
+    (zc-lsp/flush-pending-changes)
+    (apply #'lsp-on-change args)))
+
+(defun zc-lsp/on-save (&rest ignore)
+  "Flush all deferred change events.
+
+- Due to `typescript-language-server' doesn't handle `didSave'
+  events, we have to issue `didChange' on the whole buffer to
+  trigger diagnostic, similar to revert buffer.
+"
+  (when (and (not revert-buffer-in-progress-p)
+             (zc-lsp/support-batching-update))
+    (-map (-lambda ((buffer event-args))
+            (with-current-buffer buffer
+              (let ((n (buffer-size)))
+                (lsp-on-change 0 n n))))
+          zc-lsp/on-change--pending-events)
+    (setq zc-lsp/on-change--pending-events nil)))
+
+(defun zc-lsp/flush-pending-changes ()
+  "Notify deferred didChange events."
+  (-map (-lambda ((buffer event-args))
+          (with-current-buffer buffer
+            (apply #'lsp-on-change event-args)))
+        zc-lsp/on-change--pending-events)
+  (setq zc-lsp/on-change--pending-events nil))
+
+(defun zc-lsp/support-batching-update ()
+  "Check if buffer support batching updates."
+  (eq major-mode 'typescript-mode))
+
+(with-eval-after-load 'lsp-mode
+  (defun zc-lsp/replace-on-change-hook ()
+    (remove-hook 'after-change-functions #'lsp-on-change t)
+    (add-hook    'after-change-functions #'zc-lsp/on-change nil t)
+    (add-hook    'after-save-hook #'zc-lsp/on-save nil t))
+  (add-hook 'lsp-managed-mode-hook 'zc-lsp/replace-on-change-hook))
 
 
 ;; Misc.
