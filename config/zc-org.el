@@ -294,10 +294,10 @@ definition line and nil otherwise."
 
 ;; Org Pretty
 
-(use-package org-bullets
-  :straight t
+(use-package org-superstar
+  :straight (:host github :repo "integral-dw/org-superstar-mode")
   :after org
-  :hook (org-mode . org-bullets-mode))
+  :hook (org-mode . org-superstar-mode))
 
 
 ;; Org Babel
