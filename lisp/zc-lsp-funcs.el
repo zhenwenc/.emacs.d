@@ -157,7 +157,8 @@ Learn from `coc-tsserver', we buffer the change events.
 
 (defun zc-lsp/support-batching-update ()
   "Check if buffer support batching updates."
-  (eq major-mode 'typescript-mode))
+  (and nil ;; disabled
+       (eq major-mode 'typescript-mode)))
 
 (with-eval-after-load 'lsp-mode
   (defun zc-lsp/replace-on-change-hook ()
