@@ -32,7 +32,7 @@
          (server-id (when workspace (lsp--workspace-print workspace))))
     (setq zc-modeline/lsp-info server-id)))
 
-(with-eval-after-load 'lsp
+(with-eval-after-load 'lsp-mode
   (dolist (hook '(lsp-mode-hook
                   lsp-after-initialize-hook
                   lsp-after-uninitialized-hook))
