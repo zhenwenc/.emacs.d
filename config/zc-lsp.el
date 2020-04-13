@@ -111,6 +111,11 @@ new file with LSP support."
         ;; Prefer flycheck for on-the-fly syntax checking.
         lsp-diagnostic-package :flycheck
 
+        ;; Reduce the overhead of unnecessary diagnostics in
+        ;; buffer. This also brutally manipulate my customized
+        ;; `flycheck-check-syntax-automatically' value.
+        lsp-flycheck-live-reporting nil
+
         ;; Not needed, doing it myself.
         lsp-enable-snippet nil
 
