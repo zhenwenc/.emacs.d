@@ -21,6 +21,7 @@
 
 ;; Live Coding in Python
 (use-package live-py-mode
+  :disabled t
   :straight t
   :defer t
   :hook (python-mode . live-py-mode))
@@ -28,6 +29,7 @@
 ;; Format using YAPF, required:
 ;;   pip install yapf
 (use-package yapfify
+  :disabled t
   :straight t
   :hook (python-mode . yapf-mode))
 
@@ -38,6 +40,8 @@
   :straight t
   :preface
   (defun zc-python/init-python-ms ()
+    (require 'lsp)
+    ;; Connect to the current LSP workspace session if available.
     (-when-let (workspace
                 (->> (lsp-session)
                      (lsp--session-workspaces)
