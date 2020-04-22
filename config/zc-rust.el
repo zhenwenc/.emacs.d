@@ -63,6 +63,9 @@
   ;; The auto-LSP setup doesn't compatible.
   (setq rustic-lsp-setup-p nil)
 
+  ;; HACK: Variable will be used when loading `lsp-mode'.
+  (defvar lsp-rust-server 'rust-analyzer)
+
   ;; HACK: Fix find current function issue.
   (advice-add 'rustic-cargo--get-current-fn-name :around #'zc-rust/get-current-fn-name)
 
@@ -88,10 +91,9 @@
                                       "white")
                             rustic-ansi-faces))
 
-  ;; ;; Customize LSP backend
-  (with-eval-after-load 'lsp
+  ;; Customize LSP backend
+  (with-eval-after-load 'lsp-mode
     (setq rustic-lsp-server 'rust-analyzer)
-    (setq lsp-rust-server   'rust-analyzer)
     (setq lsp-rust-analyzer-use-client-watching nil)
     (setq lsp-rust-analyzer-server-command `(,zc-rust-analyzer-executable)))
 
