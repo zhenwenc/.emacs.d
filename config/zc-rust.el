@@ -95,6 +95,8 @@
   (with-eval-after-load 'lsp-mode
     (setq rustic-lsp-server 'rust-analyzer)
     (setq lsp-rust-analyzer-use-client-watching nil)
+    (setq lsp-rust-analyzer-cargo-watch-command "clippy")
+    (setq lsp-rust-analyzer-cargo-watch-args ["--tests"])
     (setq lsp-rust-analyzer-server-command `(,zc-rust-analyzer-executable)))
 
   ;; Customize RLS server
