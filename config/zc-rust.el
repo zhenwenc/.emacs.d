@@ -18,10 +18,11 @@
   :hydra
   ((:mode rustic-mode :after lsp-mode)
    ("Eval"
-    (("er" rustic-cargo-run   "run")
-     ("eB" rustic-popup       "popup")
-     ("eb" rustic-cargo-build "build")
-     ("ec" rustic-cargo-check "check"))
+    (("er" rustic-cargo-run    "run")
+     ("eB" rustic-popup        "popup")
+     ("eb" rustic-cargo-build  "build")
+     ("eC" rustic-cargo-check  "check")
+     ("ec" rustic-cargo-clippy "clippy"))
 
     "Test"
     (("tt" zc-rust/cargo-test-dwim        "test")
