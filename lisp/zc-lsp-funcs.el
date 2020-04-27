@@ -157,15 +157,16 @@ Learn from `coc-tsserver', we buffer the change events.
 
 (defun zc-lsp/support-batching-update ()
   "Check if buffer support batching updates."
-  (and nil ;; disabled
-       (eq major-mode 'typescript-mode)))
+  (or (eq major-mode 'typescript-mode)))
 
-(with-eval-after-load 'lsp-mode
-  (defun zc-lsp/replace-on-change-hook ()
-    (remove-hook 'after-change-functions #'lsp-on-change t)
-    (add-hook    'after-change-functions #'zc-lsp/on-change nil t)
-    (add-hook    'after-save-hook #'zc-lsp/on-save nil t))
-  (add-hook 'lsp-managed-mode-hook 'zc-lsp/replace-on-change-hook))
+;; Disabled as problematic.
+;;
+;; (with-eval-after-load 'lsp-mode
+;;   (defun zc-lsp/replace-on-change-hook ()
+;;     (remove-hook 'after-change-functions #'lsp-on-change t)
+;;     (add-hook    'after-change-functions #'zc-lsp/on-change nil t)
+;;     (add-hook    'after-save-hook #'zc-lsp/on-save nil t))
+;;   (add-hook 'lsp-managed-mode-hook 'zc-lsp/replace-on-change-hook))
 
 
 ;; Misc.
