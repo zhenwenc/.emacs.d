@@ -31,7 +31,8 @@
       :toggle (zc-rust/cargo-backtrace-enabled-p)))
 
     "Docs"
-    (("hI" lsp-rust-analyzer-inlay-hints-mode "inlay" :toggle t))))
+    (("hI" lsp-rust-analyzer-inlay-hints-mode "inlay" :toggle t)
+     ("hm" lsp-rust-analyzer-expand-macro     "expand macro"))))
 
   :config/el-patch
   (defun rustic-format-file-sentinel (proc output)
