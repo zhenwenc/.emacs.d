@@ -120,7 +120,9 @@ new file with LSP support."
         lsp-enable-snippet nil
 
         ;; Regain ownership of company. My pressures!
-        lsp-enable-completion-at-point nil
+        ;;
+        ;; [2020-05-13] This hack is no longer needed.
+        lsp-enable-completion-at-point t
 
         ;; Prefer `highlight-thing'.
         lsp-enable-symbol-highlighting nil)
@@ -237,6 +239,7 @@ new file with LSP support."
   (setq-local flycheck-checker-error-threshold nil))
 
 (use-package company-lsp
+  :disabled t ;; replace with company-capf
   :straight t
   :after lsp
   :config/el-patch
