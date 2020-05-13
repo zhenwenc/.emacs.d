@@ -49,26 +49,34 @@
       (indent-according-to-mode)))
 
   :config
-  (setq sp-show-pair-delay 0.2
-        sp-show-pair-from-inside t
-        sp-cancel-autoskip-on-backward-movement nil
-        sp-highlight-pair-overlay nil
-        sp-highlight-wrap-overlay nil
-        sp-highlight-wrap-tag-overlay nil
-        sp-navigate-close-if-unbalanced t)
+  (setq
+   sp-show-pair-delay                      0.2
+   sp-show-pair-from-inside                t
+   sp-cancel-autoskip-on-backward-movement nil
+   sp-highlight-pair-overlay               nil
+   sp-highlight-wrap-overlay               nil
+   sp-highlight-wrap-tag-overlay           nil
+   sp-navigate-close-if-unbalanced         t
 
+   ;; Navigation feature doesn't seem to be useful for evil users.
+   sp-navigate-skip-match         nil
+   sp-navigate-consider-sgml-tags nil
+
+   ;; Improve performance but sacrifice accuracy, because
+   ;; smartparen's scans are relatively expensive.
+   sp-max-pair-length   4
+   sp-max-prefix-length 25)
+
+  ;; Load default rules
   (require 'smartparens-config)
 
   ;; Global pairs
 
-  (sp-pair "{" "}"
-           :bind "M-{"
+  (sp-pair "{" "}" :bind "M-{"
            :post-handlers '(("||\n[i]" "RET") ("| " "SPC")))
-  (sp-pair "[" "]"
-           :bind "M-["
+  (sp-pair "[" "]" :bind "M-["
            :post-handlers '(("||\n[i]" "RET") ("| " "SPC")))
-  (sp-pair "(" ")"
-           :bind "M-("
+  (sp-pair "(" ")" :bind "M-("
            :post-handlers '(("||\n[i]" "RET") ("| " "SPC")))
 
   ;; Language specific pairs
@@ -97,6 +105,10 @@
     (sp-local-pair "=" "=" :unless '(:add sp-point-before-word-p)))
 
   ;; Global settings
+
+  ;; Silence some harmless but annoying echo-area spam
+  (dolist (key '(:unmatched-expression :no-matching-tag))
+    (setf (alist-get key sp-message-alist) nil))
 
   (set-face-attribute 'show-paren-match nil :background "#434956" :foreground nil)
 
