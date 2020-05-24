@@ -23,7 +23,7 @@
      ("nL" zc-lsp/switch-to-std-log-buffer "show log"))
 
     "Navigation"
-    (("gs" lsp-ui-find-workspace-symbol    "find symbol"))
+    (("js" lsp-ui-find-workspace-symbol    "find symbol"))
 
     "Docs"
     (("hi" lsp-ui-imenu                    "show imenu")
@@ -32,7 +32,7 @@
      ("hs" lsp-ui-sideline-mode            "sideline" :toggle t)
      ("hl" lsp-lens-mode                   "lenses"   :toggle t)
      ("hd" zc-lsp/toggle-lsp-ui-doc-mode   "doc"      :toggle (bound-and-true-p lsp-ui-doc-mode))
-     ("hh" lsp-describe-thing-at-point     "doc at point"))
+     ("hh" lsp-ui-doc-glance               "doc at point"))
 
     "Refactor"
     (("rr" lsp-rename                      "rename")
@@ -157,7 +157,7 @@ new file with LSP support."
 
 (use-package lsp-ui
   :straight t
-  :after lsp
+  :after lsp-mode
 
   :general
   (:keymaps 'lsp-ui-mode-map
@@ -208,7 +208,7 @@ new file with LSP support."
   :config
   (setq lsp-ui-doc-enable nil
         lsp-ui-doc-header nil
-        lsp-ui-doc-include-signature nil
+        lsp-ui-doc-include-signature t
         lsp-ui-doc-position 'top
         lsp-ui-doc-border (doom-color 'base3)
         lsp-ui-doc-max-width 80
@@ -244,10 +244,12 @@ new file with LSP support."
   ;; issue, maybe we can workaround the racing condition.
   (setq-local flycheck-checker-error-threshold nil))
 
+
+
 (use-package company-lsp
   :disabled t ;; replace with company-capf
   :straight t
-  :after lsp
+  :after lsp-mode
   :config/el-patch
   ;; HACK: Fix error when starting completion on TS annotation.
   (defun company-lsp--candidate-filter-text (candidate)
@@ -278,7 +280,7 @@ the value of filterText. Otherwise return CANDIDATE itself."
 (use-package dap-mode
   :disabled t ;; never use this yet
   :straight t
-  :after lsp
+  :after lsp-mode
   :config
   (require 'dap-hydra)
   (setq dap-breakpoints-file (concat paths-cache-dir "dap-breakpoints"))
