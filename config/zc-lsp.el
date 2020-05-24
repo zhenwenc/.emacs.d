@@ -276,6 +276,7 @@ the value of filterText. Otherwise return CANDIDATE itself."
   (advice-add 'company-lsp :around #'zc-lsp/company-lsp))
 
 (use-package dap-mode
+  :disabled t ;; never use this yet
   :straight t
   :after lsp
   :config
