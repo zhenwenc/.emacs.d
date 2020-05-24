@@ -37,6 +37,7 @@
 
 ;; Bootstrap straight.el package manager.
 
+(defvar bootstrap-version)
 (let ((bootstrap-version 5)
       (bootstrap-file
        (expand-file-name "straight/repos/straight.el/bootstrap.el" user-emacs-directory)))
@@ -48,8 +49,8 @@
       (goto-char (point-max))
       (eval-print-last-sexp)))
 
-  ;; Improve bootstrap speed. The cache wile may grow quite large
-  ;; overtime, if so run `straight-prune-build'.
+  ;; Improve bootstrap speed. The cache wile may grow quite
+  ;; large overtime, if so run `straight-prune-build'.
   (with-no-warnings
     (setq straight-cache-autoloads t)
     (setq straight-check-for-modifications 'live))
@@ -80,6 +81,10 @@
 (straight-use-package 'bind-map)
 (straight-use-package 'use-package)
 
+;; To avoid an obsolete version of Org get loaded.
+(straight-use-package 'org)
+(straight-use-package 'org-plus-contrib)
+
 (eval-when-compile
   (require 'use-package))
 
@@ -93,8 +98,6 @@
 
 
 ;; Load features
-
-(ignore-errors (require 'org-version))
 
 (use-package zc-theme)
 (use-package zc-core)
