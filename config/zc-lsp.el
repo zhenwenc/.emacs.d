@@ -91,6 +91,12 @@ new file with LSP support."
         ;; method, otherwise it may cause issues!
         lsp-document-sync-method nil
 
+        ;; The hover message is very distracting and unuseful
+        ;; most of the time.
+        ;;
+        ;; NOTE: This completely disabled the hover document!
+        lsp-eldoc-enable-hover nil
+
         ;; Show only the currently active signature, hide any
         ;; overloaded function signatures.
         lsp-eldoc-prefer-signature-help nil
