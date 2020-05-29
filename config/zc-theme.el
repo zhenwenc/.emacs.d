@@ -8,7 +8,6 @@
 (autoload 'doom-color "doom-themes")
 
 (defvar ahs-highlighted)
-(defvar zc-local/default-font nil)
 
 
 
