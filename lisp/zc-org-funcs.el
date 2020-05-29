@@ -2,11 +2,11 @@
 (require 'dash)
 
 (autoload 'ivy-read "ivy")
+(autoload 'org-element-type "org")
+(autoload 'org-element-at-point "org")
 (autoload 'org-agenda-filter-apply "org")
 (autoload 'org-capture-target-buffer "org")
 (autoload 'org-capture-put-target-region-and-position "org")
-(autoload 'org-element-type "org")
-(autoload 'org-element-at-point "org")
 
 (defvar org-any-link-re)
 (defvar org-ts-regexp-both)
@@ -20,7 +20,7 @@
 (defvar counsel-outline-settings)
 (defvar counsel-outline--preselect)
 
-(defconst zc-org/directory "~/org")
+(defconst zc-org/directory "~/notes")
 
 
 ;; General
