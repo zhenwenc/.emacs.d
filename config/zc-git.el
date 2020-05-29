@@ -10,8 +10,8 @@
   :config
   (setq magit-repository-directories
         '(("~/.emacs.d/" . 0)
-          ("~/org/"      . 0)
           ("~/code/"     . 2)
+          ("~/notes/"    . 0)
           ("~/dotfiles/" . 0)))
 
   ;; Display magit buffer in fullframe
