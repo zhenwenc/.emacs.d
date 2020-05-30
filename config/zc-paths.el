@@ -24,7 +24,7 @@
   (concat user-emacs-directory "themes/"))
 
 (defconst paths-private-dir
-  (concat user-emacs-directory "private/"))
+  (concat "~/dotfiles/" "private/"))
 
 
 
