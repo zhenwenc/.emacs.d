@@ -52,7 +52,7 @@
   (setq prodigy-completion-system 'default)
 
   ;; Load service configs
-  (zc/load-private-package 'config-prodigy "config-prodigy.el.gpg"))
+  (zc/load-private-package 'private-prodigy "prodigy.el.gpg"))
 
 
 
