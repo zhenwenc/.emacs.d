@@ -11,6 +11,7 @@
   (setq magit-repository-directories
         '(("~/.emacs.d/" . 0)
           ("~/code/"     . 2)
+          ("~/work/"     . 1)
           ("~/notes/"    . 0)
           ("~/dotfiles/" . 0)))
 
