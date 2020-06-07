@@ -235,7 +235,7 @@
     ("Basic"
      (("tf" toggle-frame-fullscreen "fullscreen")
       ("tF" toggle-frame-maximized "maximize frame")
-      ("td" toggle-debug-on-error "emacs debug" :toggle (default-value 'debug-on-error))
+      ("tD" toggle-debug-on-error "emacs debug" :toggle (default-value 'debug-on-error))
       ("tn" linum-mode "line numbers" :toggle t)
       ("tk" which-key-mode "which key" :toggle t))
 
@@ -247,6 +247,7 @@
      "Apps"
      (("tp" prodigy "prodigy services")
       ("tP" list-processes "process list")
+      ("td" docker-compose "docker compose")
       ("tc" zc-eval/compile-on-save-mode "auto recompile")
       ("ti" imenu-list-smart-toggle "imenu list")
       ("tW" display-time-world "world clock"))))
