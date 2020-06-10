@@ -152,7 +152,7 @@
                                  (sql        . t)
                                  (shell      . t)
                                  (python     . t)
-                                 (ipython    . t)
+                                 (ipython    . nil)
                                  (plantuml   . t)
                                  (restclient . t)))
 
@@ -308,6 +308,10 @@ definition line and nil otherwise."
   :after org)
 
 (use-package ob-ipython
+  :disabled t ;; not used
+  :straight t
+  :after org
+  :if (executable-find "jupyter"))
   :straight t
   :after org
   :if (executable-find "jupyter"))
