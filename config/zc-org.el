@@ -149,12 +149,17 @@
   ;; Activate babel source code blocks
   (org-babel-do-load-languages 'org-babel-load-languages
                                '((emacs-lisp . t)
+                                 (js         . t)
                                  (sql        . t)
                                  (shell      . t)
                                  (python     . t)
                                  (ipython    . nil)
                                  (plantuml   . t)
                                  (restclient . t)))
+
+  ;; A bit hacky, but works fine for myself :p
+  ;; Alternatively we can use `ts-node' instead.
+  (defalias 'org-babel-execute:typescript 'org-babel-execute:js)
 
   ;; Narrow to headline after jump, which affects:
   ;; - `counsel-org-goto'
@@ -309,9 +314,6 @@ definition line and nil otherwise."
 
 (use-package ob-ipython
   :disabled t ;; not used
-  :straight t
-  :after org
-  :if (executable-find "jupyter"))
   :straight t
   :after org
   :if (executable-find "jupyter"))
