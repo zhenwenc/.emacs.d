@@ -32,8 +32,8 @@
 
   :hook ((lua-mode . company-mode)
          (lua-mode . flycheck-mode-on-safe))
-  :init
-  (setq lua-indent-level 2
+  :config
+  (setq lua-indent-level 3
         lua-indent-string-contents t))
 
 
