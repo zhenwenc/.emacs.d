@@ -125,6 +125,9 @@ new file with LSP support."
         ;; Not needed, doing it myself.
         lsp-enable-snippet nil
 
+        ;; Use recommended `company-capf' backend.
+        lsp-prefer-capf t
+
         ;; Regain ownership of company. My pressures!
         ;;
         ;; [2020-05-13] This hack is no longer needed.
