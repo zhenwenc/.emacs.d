@@ -29,6 +29,7 @@
   (typescript-mode . zc-typescript/disable-flycheck-for-flow)
   (typescript-mode . zc-typescript/disable-flycheck-for-node-modules)
   (typescript-mode . lsp-deferred)
+  (lsp-after-open  . zc-typescript/setup-lsp-workspace)
 
   :config
   (setq typescript-indent-level 2)
