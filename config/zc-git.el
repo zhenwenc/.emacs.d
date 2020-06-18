@@ -1,6 +1,8 @@
 (eval-when-compile
   (require 'use-package))
 
+
+
 (use-package magit
   :straight t
 
@@ -32,6 +34,7 @@
   :after (:and magit evil-common)
   :config (evil-magit-init))
 
+
 ;; Transient commands (previously known as magit-popup)
 
 (use-package transient
@@ -44,6 +47,7 @@
         transient-values-file  (concat paths-cache-dir "transient/values.el")
         transient-history-file (concat paths-cache-dir "transient/history.el")))
 
+
 ;; Interfaces to GitHub integration
 
 (use-package forge
@@ -53,6 +57,7 @@
   :init
   (setq forge-database-file (concat paths-cache-dir "forge/database.sqlite")))
 
+
 ;; Interactively step forward and backwards through a
 ;; buffer's git versions.
 
@@ -65,6 +70,23 @@
 (use-package browse-at-remote
   :straight t
   :defer t)
+
+;; Automatically prepends the ticket number
+
+(use-package git-commit-jira-prefix
+  :straight (:host github :repo "chrisbarrett/git-commit-jira-prefix")
+  :after git-commit
+  :init
+  (defun zc-git/find-ticket-number (&rest _ignored)
+    (pcase (magit-get-current-branch)
+      ;; Extract JIRA ticket number
+      ((rx (+ word) "/" (let ticket (+ upper) "-" (+ num)) "/" (+ anything))
+       (concat "[" ticket "]"))))
+  (advice-add 'git-commit-jira-prefix--ticket-number :override
+              'zc-git/find-ticket-number)
+  :config (git-commit-jira-prefix-init))
+
+
 
 (use-package vc-annotate
   :commands (vc-annotate)
