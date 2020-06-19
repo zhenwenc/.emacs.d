@@ -90,6 +90,13 @@
                   display-buffer-in-side-window)
                  (reusable-frames . visible))
 
+                (,(rx bos "*explain-pause-top*" eos)
+                 (display-buffer-reuse-window
+                  display-buffer-in-side-window)
+                 (reusable-frames . visible)
+                 (side            . bottom)
+                 (slot            . 0.3))
+
                 (,(rx bos "*Flycheck errors*" eos)
                  (display-buffer-reuse-window
                   display-buffer-in-side-window)

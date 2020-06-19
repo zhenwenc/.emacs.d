@@ -242,12 +242,14 @@
      "Edit"
      (("tw" whitespace-mode "whitespace" :toggle t)
       ("tl" visual-line-mode "virsual line" :toggle t)
-      ("tL" auto-fill-mode "auto fill" :toggle (symbol-value 'auto-fill-function)))
+      ("tL" auto-fill-mode "auto fill" :toggle (symbol-value 'auto-fill-function))
+      ("tE" explain-pause-mode "monitor pause" :toggle t))
 
      "Apps"
      (("tp" prodigy "prodigy services")
       ("tP" list-processes "process list")
       ("td" docker-compose "docker compose")
+      ("te" explain-pause-top "explain pause")
       ("tc" zc-eval/compile-on-save-mode "auto recompile")
       ("ti" imenu-list-smart-toggle "imenu list")
       ("tW" display-time-world "world clock"))))

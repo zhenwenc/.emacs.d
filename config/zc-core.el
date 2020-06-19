@@ -241,6 +241,10 @@
   (setq prescient-save-file (concat paths-cache-dir "prescient-save.el"))
   (prescient-persist-mode +1))
 
+;; Watches for long pauses and reports
+(use-package explain-pause-mode
+  :straight (:host github :repo "lastquestion/explain-pause-mode"))
+
 
 
 (require 'server)
