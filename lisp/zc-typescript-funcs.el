@@ -53,7 +53,10 @@
                 (-map #'intern)))))
 
 (defun zc-typescript/setup-lsp-workspace ()
-  "Handler for `lsp-after-open-hook' to setup the workspace."
+  "Handler for `lsp-after-open-hook' to setup the workspace.
+
+TODO: Maybe set `lsp-enable-completion-at-point' to `nil'?
+"
   (-when-let (workspace
               (->> (lsp-session)
                    (lsp--session-workspaces)
@@ -62,11 +65,11 @@
                                         (server (lsp--client-server-id client)))
                                    (eq server 'ts-ls))))))
     ;; Trigger completion by "<" or ")" freeze Emacs
-    (-some->> (lsp--capability :completionProvider)
-      (puthash "triggerCharacters" ["."]))
+    (-some--> (lsp--capability :completionProvider)
+      (lsp-put it :triggerCharacters ["."]))
     ;; Disable annoying useless signature help
-    (-some->> (lsp--capability :signatureHelpProvider)
-      (puthash "triggerCharacters" []))))
+    (-some--> (lsp--capability :signatureHelpProvider)
+      (lsp-put it :triggerCharacters []))))
 
 
 ;; Smartparens
