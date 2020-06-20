@@ -28,8 +28,14 @@
   (typescript-mode . zc-typescript/disable-flycheck-linters)
   (typescript-mode . zc-typescript/disable-flycheck-for-flow)
   (typescript-mode . zc-typescript/disable-flycheck-for-node-modules)
-  (typescript-mode . lsp-deferred)
-  (lsp-after-open  . zc-typescript/setup-lsp-workspace)
+
+  ;; [2020-06-20] Switched back to Tide
+  ;;
+  ;; - The user experience (performance) with `lsp-mode' was really bad.
+  ;; - All known TS/JS LSP server projects are abandoned.
+  ;;
+  ;; (typescript-mode . lsp-deferred)
+  ;; (lsp-after-open  . zc-typescript/setup-lsp-workspace)
 
   :config
   (setq typescript-indent-level 2)
@@ -73,7 +79,6 @@
 
 
 (use-package tide
-  :disabled ; switched to LSP
   :straight t
   :after (typescript-mode company flycheck)
 
@@ -87,6 +92,31 @@
    "p"   #'tide-find-previous-reference
    "n"   #'tide-find-next-reference
    "q"   #'quit-window)
+
+  :hydra
+  ((:mode (typescript-mode))
+   ("Server"
+    (("ns" tide-restart-server             "restart")
+     ("nS" tide-kill-server                "shutdown")
+     ("ni" tide-list-servers               "servers"))
+
+    "Navigation"
+    (("js" lsp-ui-find-workspace-symbol    "find symbol"))
+
+    "Docs"
+    (("hu" tide-references                 "show references")
+     ("hh" tide-documentation-at-point     "doc at point")
+     ("he" tide-error-at-point             "error at point"))
+
+    "Refactor"
+    (("rr" tide-rename-symbol              "rename")
+     ("rf" tide-format                     "format")
+     ("ra" tide-refactor                   "action")
+     ("rF" tide-fix                        "code fix")
+     ("ro" tide-organize-imports           "sort imports"))
+
+    "Eval"
+    (("ev" tide-verify-setup               "verify"))))
 
   :preface
   (defun zc-typescript/maybe-setup-tide ()
