@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: type
+# key: t
+# --
+${1:export }type $2 = $0
