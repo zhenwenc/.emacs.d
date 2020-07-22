@@ -243,6 +243,7 @@
      (("tw" whitespace-mode "whitespace" :toggle t)
       ("tl" visual-line-mode "virsual line" :toggle t)
       ("tL" auto-fill-mode "auto fill" :toggle (symbol-value 'auto-fill-function))
+      ("tS" flyspell-mode "spell check" :toggle t)
       ("tE" explain-pause-mode "monitor pause" :toggle t))
 
      "Apps"

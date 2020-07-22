@@ -21,9 +21,8 @@
       (unbind-key key flyspell-mode-map)))
 
   :hook
-  ((org-mode         . flyspell-mode)
-   (git-commit-mode  . flyspell-mode)
-   (flyspell-mode    . zc-flyspell/setup))
+  ((git-commit-mode . flyspell-mode)
+   (flyspell-mode   . zc-flyspell/setup))
 
   :custom-face
   (flyspell-incorrect ((t (:underline (:color "#f1fa8c" :style wave)))))
