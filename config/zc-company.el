@@ -114,8 +114,7 @@
         ;; area, this may conflicts with ElDoc.
         ;; NOTE: disabled `company-echo-metadata-frontend'
         company-frontends '(company-pseudo-tooltip-frontend)
-        company-backends '(company-capf)
-        company-transformers '(company-sort-by-occurrence)))
+        company-backends '(company-capf)))
 
 (use-package company-dabbrev
   :after company)

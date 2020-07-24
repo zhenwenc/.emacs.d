@@ -128,10 +128,8 @@ See also `counsel-outline'."
                                  (org-narrow-to-subtree)))
                       (counsel-outline-candidates settings))))
     (ivy-read "Outline: " candidates
-              :action (or (plist-get settings :action)
-                          #'counsel-outline-action)
-              :history (or (plist-get settings :history)
-                           'counsel-outline-history)
+              :action  (or (plist-get settings :action) #'counsel-outline-action)
+              :history (or (plist-get settings :history) 'counsel-outline-history)
               :preselect (max (1- counsel-outline--preselect) 0)
               :caller 'zc-org/goto-with-widen-buffer)))
 
