@@ -117,27 +117,32 @@
   ;; should be removed, because `swiper' applies its own
   ;; overlays. Otherwise it can flicker between the two faces
   ;; as you move between candidates.
-  (defun zc-theme/clear-highlight-for-swiper (&rest _)
+  (defun zc-theme/highlight-thing-clear-for-swiper (&rest _)
     (when (bound-and-true-p highlight-thing-mode)
       (highlight-thing-remove-last))
     (when (bound-and-true-p highlight-sexp-mode)
       (move-overlay hl-sexp-overlay 0 0)))
-  (advice-add 'swiper :before #'zc-theme/clear-highlight-for-swiper)
+  (advice-add 'swiper :before #'zc-theme/highlight-thing-clear-for-swiper)
 
   ;; Disable `highlight-thing' for various cases
-  (defun zc-theme/maybe-disable-highlight-thing (fn &rest args)
+  (defun zc-theme/highlight-thing-should-highlight-p (fn &rest args)
     (and
      ;; If symbol is highlighted by `ahs-highlight-now',
      ;; the flicker effect occurs on other candidates.
      (not (bound-and-true-p ahs-highlighted))
      ;; Ensure the original condition satisfies.
      (apply fn args)
-     ;; Highlight the occurrences of a single character is
-     ;; nonsense.
+     ;; Check custom conditions.
      (let ((thing (highlight-thing-get-thing-at-point)))
-       (or (not (stringp thing)) (> (length thing) 1)))))
+       (or (not (stringp thing))
+           (and
+            ;; Highlight occurrences of a single character is nonsense
+            (> (length thing) 1)
+            ;; Ignore Org mode specific keywords
+            (not (s-matches? (rx bos (+ "*") eos) thing)))))))
+
   (advice-add 'highlight-thing-should-highlight-p
-              :around #'zc-theme/maybe-disable-highlight-thing))
+              :around #'zc-theme/highlight-thing-should-highlight-p))
 
 (use-package beacon
   :straight t
