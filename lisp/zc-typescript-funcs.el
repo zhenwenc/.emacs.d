@@ -148,6 +148,11 @@ TODO: Maybe set `lsp-enable-completion-at-point' to `nil'?
         (json-read-from-string json))
     (error '())))
 
+(defun zc-typescript/tide-eldoc-maybe-show (orig-fn text)
+  "Advice `tide-eldoc-maybe-show' with magics."
+  (-let (((head . tail) (s-lines text)))
+    (funcall orig-fn (concat head (unless (null tail) " ...")))))
+
 
 ;; LSP
 

@@ -134,6 +134,7 @@
   ;; HACK: This is hacky, is there any better way?
   (advice-add 'tide-completion-doc-buffer :override #'ignore)
   (advice-add 'tide-load-tsconfig :override #'zc-typescript/tide-load-tsconfig)
+  (advice-add 'tide-eldoc-maybe-show :around #'zc-typescript/tide-eldoc-maybe-show)
 
   :config
   (setq tide-completion-detailed nil
