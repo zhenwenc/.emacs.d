@@ -163,8 +163,11 @@ Ensure we are are in `org' layout to avoid chaos"
   (counsel-org-goto-action x))
 
 (defun zc-org/get-outline-candidates (filenames)
-  "Return an alist of counsel outline heading completion
-candidates, using `counsel-outline-candidates'."
+  "Return an alist of counsel outline heading completion candidates,
+using `counsel-outline-candidates'.
+
+Each element is a pair (HEADING . MARKER), where the string HEADING
+is located at the position of MARKER."
   (->> filenames
        (-filter #'f-exists?)
        (-map-when (-compose #'not #'bufferp)
