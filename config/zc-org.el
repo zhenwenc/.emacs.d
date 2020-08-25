@@ -60,7 +60,8 @@
     ("tI" org-indent-mode                         "indent" :toggle t)))
 
   :hook
-  ((org-mode . visual-line-mode))
+  ((org-mode      . visual-line-mode)
+   (org-tab-first . zc-org/cycle-tab-skip-src-block))
 
   :init
   ;; Org file directories must be defined at `:init' block
@@ -87,6 +88,7 @@
 
         ;; Reduce search results.
         org-imenu-depth 3
+
         org-refile-targets '((nil              :maxlevel . 2)
                              (org-agenda-files :maxlevel . 2)))
 
