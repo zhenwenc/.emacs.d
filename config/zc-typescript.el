@@ -17,11 +17,6 @@
 
   :interpreter (("node" . typescript-mode))
 
-  :hydra
-  ((:mode typescript-mode :after lsp-mode)
-   ("Refactor"
-    (("rf" prettier-js "prettier format"))))
-
   :hook
   (find-file       . zc-typescript/set-node-modules-readonly)
   (typescript-mode . zc-typescript/add-node-modules-bin-to-path)
