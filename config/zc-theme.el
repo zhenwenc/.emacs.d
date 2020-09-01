@@ -139,7 +139,10 @@
             ;; Highlight occurrences of a single character is nonsense
             (> (length thing) 1)
             ;; Ignore Org mode specific keywords
-            (not (s-matches? (rx bos (+ "*") eos) thing)))))))
+            (or (not (eq major-mode 'org-mode))
+                (not (or (s-matches? (rx bos (+ "*") eos) thing)
+                         (s-matches? (rx bos "+BEGIN_" (+ upper) eos) thing))))
+            )))))
 
   (advice-add 'highlight-thing-should-highlight-p
               :around #'zc-theme/highlight-thing-should-highlight-p))
