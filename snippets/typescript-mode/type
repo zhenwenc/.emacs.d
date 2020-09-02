@@ -1,5 +1,6 @@
 # -*- mode: snippet -*-
 # name: type
 # key: t
+# group: es6
 # --
 ${1:export }type $2 = $0

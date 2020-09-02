@@ -1,7 +1,7 @@
 # -*- mode: snippet -*-
 # name: React Bootstrap
 # key: r
-# condition: (and (zc-yas/react-buffer-p) (not (zc-yas/buffer-match-p "react")))
+# condition: (and (zc-yas/react-buffer-p) (not (zc-yas/react-story-buffer-p)) (not (zc-yas/buffer-match-p "react")))
 # --
 import React from 'react';
 

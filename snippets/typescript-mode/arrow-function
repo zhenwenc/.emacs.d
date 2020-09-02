@@ -2,5 +2,6 @@
 # name: arrow function
 # key: fn
 # group: es6
+# condition: (not (zc-yas/line-match-p "\\`fn"))
 # --
-(${1:{ $2:args }}) => $0
+($1) => $0

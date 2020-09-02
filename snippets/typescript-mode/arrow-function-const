@@ -1,0 +1,7 @@
+# -*- mode: snippet; require-final-newline: nil -*-
+# name: arrow function export
+# key: fn
+# group: es6
+# condition: (zc-yas/line-match-p "\\`fn")
+# --
+${1:export }const ${2:name} = ($3) => $0

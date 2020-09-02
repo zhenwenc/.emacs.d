@@ -33,6 +33,10 @@
   (let ((ext (file-name-extension (buffer-name))))
     (string-match-p "jsx\\|tsx" ext)))
 
+(defun zc-yas/react-story-buffer-p ()
+  "Return t if buffer name ends with .story.(tsx|jsx)."
+  (string-match-p "\\.story.\\(jsx\\|tsx\\)\\'" (buffer-name)))
+
 (defun zc-yas/test-buffer-p ()
   "Return t if buffer name contains .(test|spec). infix."
   (string-match-p ".\\(test\\|spec\\)." (buffer-name)))
