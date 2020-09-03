@@ -62,7 +62,7 @@ org subtree if in `org-mode'.
   "Return t if BUF doesn't belongs to any window."
   (not (get-buffer-window buf)))
 
-(defmacro zc/with-wide-buffer (&rest body)
+(defmacro zc/with-widen-buffer (&rest body)
   "Execute body while temporarily widening the buffer."
   (declare (debug (body)))
   `(save-excursion

@@ -122,7 +122,7 @@ Filter candidates with TREE:
 See also `counsel-outline'."
   (interactive)
   (let* ((settings (cdr (assq major-mode counsel-outline-settings)))
-         (candidates (zc/with-wide-buffer
+         (candidates (zc/with-widen-buffer
                       (pcase tree
                         ('parent (ignore-errors (outline-up-heading 1))
                                  (org-narrow-to-subtree)))
@@ -175,8 +175,9 @@ is located at the position of MARKER."
        ;; Collect headline candidates
        (mapcan (lambda (buffer)
                  (with-current-buffer buffer
-                   (zc/with-wide-buffer
-                    (counsel-outline-candidates)))))
+                   (zc/with-widen-buffer
+                    (counsel-outline-candidates
+                     (cdr (assq 'org-mode counsel-outline-settings)))))))
        ;; Prepend the file name
        (-map (-lambda ((head . marker))
                (--> marker
