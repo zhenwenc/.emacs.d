@@ -202,16 +202,6 @@ Expand the headline and narrow to current subtree."
     (org-narrow-to-subtree)
     (message "Narrowed to subtree!")))
 
-(defun zc-org/cycle-tab-skip-src-block ()
-  "Hook for `org-tab-first-hook' that does nothing when
-pressing tab ob babel src block.
-
-Alternative is setting `org-cycle-emulate-tab' to `nil', but
-it will fold the subtree."
-  (when (and (derived-mode-p 'org-mode)
-             (org-in-src-block-p t))
-    (message "Skipped TAB on src block.") t))
-
 
 ;; Agenda
 

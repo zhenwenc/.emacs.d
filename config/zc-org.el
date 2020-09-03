@@ -60,8 +60,7 @@
     ("tI" org-indent-mode                         "indent" :toggle t)))
 
   :hook
-  ((org-mode      . visual-line-mode)
-   (org-tab-first . zc-org/cycle-tab-skip-src-block))
+  ((org-mode . visual-line-mode))
 
   :init
   ;; Org file directories must be defined at `:init' block
@@ -79,16 +78,17 @@
   (setq org-M-RET-may-split-line nil
         org-blank-before-new-entry '((heading         . auto)
                                      (plain-list-item . nil))
-        org-catch-invisible-edits 'smart
         org-indirect-buffer-display 'current-window
         org-insert-heading-respect-content t
 
-        ;; Disabled globally as it causes weird issue sometimes.
+        ;; FIXME Is this correct?
+        org-catch-invisible-edits 'smart
+
+        ;; Disabled globally as it causes weird issue.
         org-startup-indented nil
 
         ;; Reduce search results.
         org-imenu-depth 3
-
         org-refile-targets '((nil              :maxlevel . 2)
                              (org-agenda-files :maxlevel . 2)))
 
@@ -144,8 +144,12 @@
                  '(file+olp org-default-notes-file)))))
 
   ;; Babel
-  (setq org-src-preserve-indentation t ; use major-mode indentation
-        org-src-window-setup 'current-window
+  (setq org-src-window-setup 'current-window
+        ;; Use major-mode indentation
+        org-src-preserve-indentation t
+        ;; This cause TAB on src block behaves quite weird.
+        org-src-tab-acts-natively nil
+        ;; Ask for confirmation before executing src block.
         org-confirm-babel-evaluate #'zc-org/babel-confirm-evaluate)
 
   ;; Activate babel source code blocks
