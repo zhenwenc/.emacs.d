@@ -81,6 +81,12 @@
         org-indirect-buffer-display 'current-window
         org-insert-heading-respect-content t
 
+        ;; Hide empty line on shift-tab
+        ;;
+        ;; We usually add extra empty line at the end of a
+        ;; subtree for properly display babel result.
+        org-cycle-separator-lines 3
+
         ;; FIXME Is this correct?
         org-catch-invisible-edits 'smart
 
