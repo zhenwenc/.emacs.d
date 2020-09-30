@@ -110,7 +110,7 @@
   (setq highlight-thing-delay-seconds 0.5
         highlight-thing-case-sensitive-p t
         highlight-thing-exclude-thing-under-point t
-        highlight-thing-excluded-major-modes '(magit-status-mode))
+        highlight-thing-excluded-major-modes '(magit-status-mode org-mode))
 
   ;; If the search string happens to be the symbol being
   ;; highlighted by `highlight-thing', the overlays it applies
