@@ -139,9 +139,10 @@ new file with LSP support."
   ;; Customize `lsp-lsp-flycheck-warning-unnecessary-face'.
   ;;
   ;; This variable controls the values of LSP flycheck faces
-  ;; which are dynamically declared.
-  (setf (cdr (assoc 'unnecessary lsp-diagnostics-attributes))
-        (list :background nil))
+  ;; which is dynamically declared.
+  (with-eval-after-load 'lsp-diagnostics
+    (setf (cdr (assoc 'unnecessary lsp-diagnostics-attributes))
+          (list :background nil)))
 
   ;; Load LSP client by the current major mode, hmm..
   (-each lsp-client-packages (-rpartial #'require nil t))
