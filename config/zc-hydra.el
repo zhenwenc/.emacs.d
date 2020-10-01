@@ -249,7 +249,7 @@
      "Apps"
      (("tp" prodigy "prodigy services")
       ("tP" list-processes "process list")
-      ("td" docker-compose "docker compose")
+      ("td" docker "docker")
       ("te" explain-pause-top "explain pause")
       ("tc" zc-eval/compile-on-save-mode "auto recompile")
       ("ti" imenu-list-smart-toggle "imenu list")
