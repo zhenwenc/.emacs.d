@@ -101,7 +101,7 @@
   (setq org-eldoc-breadcrumb-separator " → "
         org-ellipsis (if (char-displayable-p ?) "  " nil)
         org-image-actual-width nil
-        org-pretty-entities t
+        org-pretty-entities nil
         org-tags-column 0
         org-use-sub-superscripts '{})
 
