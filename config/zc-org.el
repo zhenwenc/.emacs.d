@@ -103,7 +103,12 @@
         org-image-actual-width nil
         org-pretty-entities nil
         org-tags-column 0
-        org-use-sub-superscripts '{})
+        org-use-sub-superscripts '{}
+
+        ;; Hide markers for structural markup elements:
+        ;;
+        ;;   *bold* → bold
+        org-hide-emphasis-markers t)
 
   (setq org-enforce-todo-dependencies t
         org-todo-keywords
