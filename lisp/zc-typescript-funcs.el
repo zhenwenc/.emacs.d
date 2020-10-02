@@ -149,7 +149,13 @@ TODO: Maybe set `lsp-enable-completion-at-point' to `nil'?
     (error '())))
 
 (defun zc-typescript/tide-eldoc-maybe-show (orig-fn text)
-  "Advice `tide-eldoc-maybe-show' with magics."
+  "Advice `tide-eldoc-maybe-show' with magics.
+
+Documentations with multiple lines will expand the echo area,
+which is very distracted.
+
+Use `tide-documentation-at-point' to show complex types, need
+to enable `tide-always-show-documentation'."
   (-let (((head . tail) (s-lines text)))
     (funcall orig-fn (concat head (unless (null tail) " ...")))))
 

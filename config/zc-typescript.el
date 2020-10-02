@@ -134,7 +134,8 @@
 
   :config
   (setq tide-completion-detailed nil
-        tide-completion-ignore-case t)
+        tide-completion-ignore-case t
+        tide-always-show-documentation t)
 
   ;; HACK: Flycheck generated temporary file hammers file watchers.
   ;;       Remove the hack after these issues are fixed:
