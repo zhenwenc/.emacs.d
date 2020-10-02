@@ -94,25 +94,25 @@
     (("ns" tide-restart-server                     "restart")
      ("nS" tide-kill-server                        "shutdown")
      ("nK" zc-typescript/tide-stop-all-servers     "shutdown all")
-     ("ni" tide-list-servers                       "servers"))
+     ("ni" tide-list-servers                       "servers")
+     ("nv" tide-verify-setup                       "verify"))
 
-    "Navigation"
-    (("js" lsp-ui-find-workspace-symbol            "find symbol"))
+    "Edit"
+    (("ed" tide-jsdoc-template                     "jsdoc template")
+     ("ei" tide-add-tslint-disable-next-line       "tslint ignore"))
 
     "Docs"
-    (("hu" tide-references                         "show references")
-     ("hh" tide-documentation-at-point             "doc at point")
-     ("he" tide-error-at-point                     "error at point"))
+    (("hh" tide-documentation-at-point             "show docs")
+     ("hu" tide-references                         "show refs")
+     ("he" tide-error-at-point                     "show error")
+     ("hE" tide-project-errors                     "show errors"))
 
     "Refactor"
     (("rr" tide-rename-symbol                      "rename")
      ("rf" tide-format                             "format")
      ("ra" tide-refactor                           "action")
      ("rF" tide-fix                                "code fix")
-     ("ro" tide-organize-imports                   "sort imports"))
-
-    "Eval"
-    (("ev" tide-verify-setup                       "verify"))))
+     ("ro" tide-organize-imports                   "sort imports"))))
 
   :preface
   (defun zc-typescript/maybe-setup-tide ()
