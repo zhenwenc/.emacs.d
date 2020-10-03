@@ -87,7 +87,9 @@
   (zc-hydra/define zc-main-hydra--buffer
     (:color teal :title "Buffer Hydra" :icon "drupal" :prefix "b")
     ("Basic"
-     (("b SPC" zc/buffer-toggle-narrow "narrow"))
+     (("b SPC" (zc/buffer-narrow 'toggle) "toggle")
+      ("bw" (zc/buffer-narrow 'narrow) "narrow")
+      ("bW" (zc/buffer-narrow 'widen) "widen"))
 
      "Navigation"
      (("bb" ivy-switch-buffer "switch")

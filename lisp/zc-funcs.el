@@ -23,7 +23,7 @@
   (interactive)
   (clipboard-kill-ring-save (point-min) (point-max)))
 
-(defun zc/buffer-toggle-narrow ()
+(defun zc/buffer-narrow (&optional action)
   "Restrict editing in this buffer to the current region or
 org subtree if in `org-mode'.
 
@@ -34,11 +34,12 @@ org subtree if in `org-mode'.
   (interactive)
   (save-excursion
     (cond
-     ((buffer-narrowed-p)        (widen) (recenter))
-     ((use-region-p)             (narrow-to-region (region-beginning)
-                                                   (region-end)))
-     ((derived-mode-p 'org-mode) (org-narrow-to-subtree))
-     (t                          (narrow-to-defun)))))
+     ((or (eq action 'widen)
+          (and (buffer-narrowed-p) (eq action 'toggle)))
+      (widen) (recenter))
+     ((use-region-p) (narrow-to-region (region-beginning) (region-end)))
+     ((eq major-mode 'org-mode) (org-narrow-to-subtree))
+     (t                         (narrow-to-defun)))))
 
 ;; https://www.emacswiki.org/emacs/BufferLocalKeys
 (defun zc/buffer-local-set-key (key func)
