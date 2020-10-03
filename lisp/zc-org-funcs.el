@@ -160,7 +160,8 @@ Ensure we are are in `org' layout to avoid chaos"
         (zc-projectile/with-switch-project-action buffer
           (zc-layout/create-project-layout project))
       (zc-layout/create-project-layout project)))
-  (counsel-org-goto-action x))
+  (counsel-org-goto-action x)
+  (zc-org/narrow-to-subtree))
 
 (defun zc-org/get-outline-candidates (filenames)
   "Return an alist of counsel outline heading completion candidates,
@@ -191,10 +192,16 @@ is located at the position of MARKER."
 
 ;; Hooks and Advices
 
-(defun zc-org/narrow-after-jump (&rest _)
-  "Function called after org jumping to a location.
+(defun zc-org/narrow-to-subtree (&rest _)
+  "Expand the headline and narrow to current subtree.
 
-Expand the headline and narrow to current subtree."
+This function can be called after org jumping to a location:
+```
+;; Narrow to headline after jump, which affects:
+;; - `counsel-org-goto'
+;; - `counsel-org-goto-all'
+(advice-add 'org-goto-marker-or-bmk :after #'zc-org/narrow-to-subtree)
+'''"
   (when (and (derived-mode-p 'org-mode)
              (org-at-heading-p))
     (outline-hide-other)

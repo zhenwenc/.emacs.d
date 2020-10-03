@@ -176,12 +176,7 @@
 
   ;; A bit hacky, but works fine for myself :p
   ;; Alternatively we can use `ts-node' instead.
-  (defalias 'org-babel-execute:typescript 'org-babel-execute:js)
-
-  ;; Narrow to headline after jump, which affects:
-  ;; - `counsel-org-goto'
-  ;; - `counsel-org-goto-all'
-  (advice-add 'org-goto-marker-or-bmk :after #'zc-org/narrow-after-jump))
+  (defalias 'org-babel-execute:typescript 'org-babel-execute:js))
 
 
 
