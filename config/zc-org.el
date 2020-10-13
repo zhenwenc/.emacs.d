@@ -108,7 +108,9 @@
         ;; Hide markers for structural markup elements:
         ;;
         ;;   *bold* → bold
-        org-hide-emphasis-markers t)
+        ;;
+        ;; It doesn't work well with evil-mode :(
+        org-hide-emphasis-markers nil)
 
   (setq org-enforce-todo-dependencies t
         org-todo-keywords
