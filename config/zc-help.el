@@ -74,10 +74,17 @@
   ;; helpful buffer, `quit-window' won't work.
   (advice-add 'quit-window :around #'zc-help/maybe-kill-buffer))
 
-(use-package youdao-dictionary
+
+
+;; Integration with Google Translate
+;;
+;; It also contains a clean usage of `posframe' and `completing-read'.
+(use-package go-translate
   :straight t
-  :commands (youdao-dictionary-search
-             youdao-dictionary-search-from-input))
+  :commands (go-translate)
+  :config
+  (setq go-translate-local-language "en")
+  (setq go-translate-target-language "zh"))
 
 
 

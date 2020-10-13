@@ -278,8 +278,7 @@
       ("hdp" describe-package "package"))
 
      "Translate"
-     (("htt" youdao-dictionary-search-from-input "translate")
-      ("htT" youdao-dictionary-search "translate at point"))))
+     (("htt" go-translate "translate"))))
 
   (zc-hydra/define zc-main-hydra
     (:hint nil :color teal :title "Main Hydra")

@@ -150,7 +150,7 @@
                  (slot            . 1)
                  (window-height   . 0.2))
 
-                (,(rx bos "*Youdao Dictionary*" eos)
+                (,(rx bos "*Go Translate*" eos)
                  (display-buffer-reuse-window)
                  (reusable-frames . visible)
                  (side            . right)
