@@ -36,6 +36,8 @@
 
 
 ;; Microsoft python-language-server support
+;;
+;; TODO migrate to `lsp-pyright'
 (use-package lsp-python-ms
   :straight t
   :preface
