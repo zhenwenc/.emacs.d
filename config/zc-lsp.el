@@ -44,16 +44,6 @@
      ("el" lsp-ui-flycheck-list            "show errors"))))
 
   :preface
-  (defun zc-lsp/setup ()
-    "Since `lsp-auto-configure' had been disabled, we have to
-configure the packages ourself."
-    ;; Add flycheck checker and LSP specific settings
-    (lsp-flycheck-enable)
-    ;; The above function will explicitly select the checker,
-    ;; but preferably let flycheck decide!
-    (setq-local flycheck-checker nil))
-
-  :preface
   (defun zc-lsp/setup-after-open ()
     "Function for `lsp-after-open-hook' to setup the opened
 new file with LSP support."
@@ -65,20 +55,19 @@ new file with LSP support."
     "Don't prompt to restart LSP servers while quitting Emacs."
     (setq lsp-restart 'ignore))
 
-  :hook ((lsp-mode       . zc-lsp/setup)
-         (lsp-after-open . zc-lsp/setup-after-open)
+  :hook ((lsp-after-open . zc-lsp/setup-after-open)
          (kill-emacs     . zc-lsp/inhibit-restart-prompt))
 
   :config
   (setq lsp-trace nil
-        lsp-log-io nil
+        lsp-log-io t
         lsp-print-performance nil
 
         lsp-auto-guess-root t
         lsp-session-file (concat paths-cache-dir ".lsp-session-v1")
 
         ;; Declare LSP clients we might use, hmm...
-        lsp-client-packages '(lsp-clients lsp-rust lsp-metals lsp-python-ms)
+        lsp-client-packages '(lsp-clients lsp-rust lsp-metals lsp-pyright)
 
         ;; The client may send a cancel event, but most LSP
         ;; servers seems doesn't care about it at all! :P
@@ -106,9 +95,12 @@ new file with LSP support."
         lsp-signature-render-documentation nil
 
         ;; LSP does some opinionated settings, which can be
-        ;; incompatible with my config, such as how to set
-        ;; the company backends.
-        lsp-auto-configure nil ; No Magic!
+        ;; incompatible with my config, such as how to set the
+        ;; company backends.
+        ;;
+        ;; However, its been super painful to fixup those tons
+        ;; of breaking changes on every upgrade.
+        lsp-auto-configure t
 
         ;; Haven't have chance to discover this feature.
         ;; Possible alternative: `evil-matchit'.
