@@ -35,12 +35,11 @@
 
 
 
-;; Microsoft python-language-server support
-;;
-;; TODO migrate to `lsp-pyright'
 (use-package lsp-python-ms
+  :disabled t
   :straight t
-  :preface
+  :hook (python-mode . zc-python/init-python-ms)
+  :init
   (defun zc-python/init-python-ms ()
     (require 'lsp)
     ;; Connect to the current LSP workspace session if available.
@@ -52,9 +51,28 @@
                      (--first (f-ancestor-of? (lsp--workspace-root it)
                                               (buffer-file-name)))))
       (lsp-deferred)))
-  :hook (python-mode . zc-python/init-python-ms)
-  :init
   (setq lsp-python-ms-dir (concat paths-vendor-dir "mspyls/")))
+
+(use-package lsp-pyright
+  :straight t
+  :defines lsp-pyright-python-executable-cmd
+  :hook (python-mode . zc-python/init-pyright)
+  :init
+  (defun zc-python/init-pyright ()
+    (require 'lsp)
+    (require 'lsp-pyright)
+    ;; Connect to the current LSP workspace session if available.
+    (-when-let (workspace
+                (->> (lsp-session)
+                     (lsp--session-workspaces)
+                     (--filter (and (eq 'initialized (lsp--workspace-status it))
+                                    (eq 'pyright (lsp--client-server-id (lsp--workspace-client it)))))
+                     (--first (f-ancestor-of? (lsp--workspace-root it)
+                                              (buffer-file-name)))))
+      (lsp-deferred)))
+
+  (when (executable-find "python3")
+    (setq lsp-pyright-python-executable-cmd "python3")))
 
 
 
