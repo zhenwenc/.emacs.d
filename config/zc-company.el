@@ -42,7 +42,10 @@
                 (yas-maybe-expand-abbrev-key-filter 'yas-expand))
            'yas-expand))
 
-  :preface
+  :hook ((after-init . global-company-mode)
+         (company-mode . zc-company/setup))
+
+  :config
   (defun zc-company/setup ()
     ;; Set `company-backends' for the current buffer.
     (set (make-local-variable 'company-backends)
@@ -72,28 +75,22 @@
              (bound-and-true-p yas-minor-mode)
              'zc-company/complete-yasnippet)))
 
-  :preface
   (defun zc-company/complete-yasnippet ()
     (interactive)
     (company-abort)
     (call-interactively 'company-yasnippet))
 
-  :preface
   (defun zc-company/evil-end-of-line ()
     (interactive)
     (company-abort)
     (call-interactively 'evil-end-of-line))
 
-  :preface
   (defun zc-company/evil-delete-char ()
     (interactive)
     (company-abort)
     (call-interactively 'evil-delete-char))
 
-  :hook ((after-init . global-company-mode)
-         (company-mode . zc-company/setup))
-
-  :init
+  :config
   (setq company-idle-delay 0.2
         company-require-match nil
         company-minimum-prefix-length 2
@@ -101,30 +98,29 @@
         company-tooltip-limit 12
         company-tooltip-align-annotations t
 
-        ;; Only search the current buffer to get suggestions
-        ;; for `company-dabbrev'. This prevents company from
-        ;; causing lag when there are many buffers open.
-        company-dabbrev-other-buffers nil
-        company-dabbrev-code-ignore-case nil
-        company-dabbrev-ignore-case nil
-        company-dabbrev-downcase nil
-
         ;; Always display suggestions in the tooltip, even if
         ;; there is only one. If displaying metadata in the echo
         ;; area, this may conflicts with ElDoc.
         ;; NOTE: disabled `company-echo-metadata-frontend'
         company-frontends '(company-pseudo-tooltip-frontend)
-        company-backends '(company-capf)))
+        company-backends  '(company-capf))
 
-(use-package company-dabbrev
-  :after company)
+  (use-package company-dabbrev
+    :config
+    ;; Only search the current buffer to get suggestions
+    ;; for `company-dabbrev'. This prevents company from
+    ;; causing lag when there are many buffers open.
+    (setq company-dabbrev-other-buffers nil
+          company-dabbrev-code-ignore-case nil
+          company-dabbrev-ignore-case nil
+          company-dabbrev-downcase nil))
 
-(use-package company-prescient
-  :straight t
-  :after company
-  :hook (company-mode . company-prescient-mode))
+  (use-package company-prescient
+    :straight t
+    :hook (company-mode . company-prescient-mode)))
 
 (use-package company-box
+  :disabled t
   :straight t
   :after company
   :hook (company-mode . company-box-mode)
