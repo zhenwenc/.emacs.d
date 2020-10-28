@@ -99,7 +99,7 @@
                              (org-agenda-files :maxlevel . 2)))
 
   (setq org-eldoc-breadcrumb-separator " → "
-        org-ellipsis (if (char-displayable-p ?) "  " nil)
+        org-ellipsis (if (char-displayable-p ?) "  ▼ " nil)
         org-image-actual-width nil
         org-pretty-entities nil
         org-tags-column 0
