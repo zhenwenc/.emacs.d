@@ -392,6 +392,10 @@ session as the current block. ARG has same meaning as in
        (eq (char-before) ?*)
        (sp--looking-back-p "^\\**" (line-beginning-position))))
 
+(defun zc-org/sp-point-in-src-block-p (_id action _context)
+  (and (eq action 'insert)
+       (org-in-src-block-p t)))
+
 
 
 (provide 'zc-org-funcs)

@@ -81,28 +81,54 @@
 
   ;; Language specific pairs
 
-  (sp-with-modes '(markdown-mode gfm-mode)
-    (sp-local-pair "*" "*" :unless '(sp-in-string-p) :actions '(insert wrap)))
+  (with-eval-after-load 'smartparens-markdown
+    (sp-with-modes '(markdown-mode gfm-mode)
+      (sp-local-pair "*" "*" :unless '(sp-in-string-p) :actions '(insert wrap))))
 
-  (sp-with-modes '(typescript-mode scala-mode)
-    (sp-local-pair "/*" "*/" :post-handlers '(("| " "SPC")
-                                              (zc-typescript/sp-javadoc-expand "RET"))))
+  (with-eval-after-load 'scala-mode
+    (sp-with-modes '(scala-mode)
+      (sp-local-pair "/*" "*/" :post-handlers '(("| " "SPC")
+                                                (zc-typescript/sp-javadoc-expand "RET")))))
 
-  (sp-with-modes '(typescript-mode)
-    ;; Enter < inserts </> to start a new JSX node
-    ;; Also see `zc-typescript/sp-jsx-rewrap-tag'
-    (sp-local-pair "<" ">" :post-handlers '(zc-typescript/sp-jsx-expand-tag)))
+  (with-eval-after-load 'typescript-mode
+    (sp-with-modes '(typescript-mode)
+      (sp-local-pair "/*" "*/" :post-handlers '(("| " "SPC")
+                                                (zc-typescript/sp-javadoc-expand "RET")))
+      ;; Enter < inserts </> to start a new JSX node
+      ;; Also see `zc-typescript/sp-jsx-rewrap-tag'
+      (sp-local-pair "<" ">" :post-handlers '(zc-typescript/sp-jsx-expand-tag))))
 
-  (sp-with-modes 'org-mode
-    (sp-local-pair "[" "]" :post-handlers '(("|" "SPC")))
+  (with-eval-after-load 'smartparens-org
+    (sp-with-modes '(org-mode)
+      (sp-local-pair "[" "]" :post-handlers '(("|" "SPC")))
 
-    ;; Instruct `smartparens' not to impose itself in org-mode
-    ;; make delimiter auto-closing a little more conservative
-    (sp-local-pair "*" "*" :unless '(:add sp-point-before-word-p zc-org/sp-point-at-bol-p))
-    (sp-local-pair "_" "_" :unless '(:add sp-point-before-word-p))
-    (sp-local-pair "/" "/" :unless '(:add sp-point-before-word-p zc-org/sp-point-in-checkbox-p))
-    (sp-local-pair "~" "~" :unless '(:add sp-point-before-word-p))
-    (sp-local-pair "=" "=" :unless '(:add sp-point-before-word-p)))
+      ;; Instruct `smartparens' not to impose itself in org-mode
+      ;; make delimiter auto-closing a little more conservative
+      (sp-local-pair "*" "*" :unless '(:add sp-point-before-word-p zc-org/sp-point-at-bol-p zc-org/sp-point-in-src-block-p))
+      (sp-local-pair "_" "_" :unless '(:add sp-point-before-word-p))
+      (sp-local-pair "/" "/" :unless '(:add sp-point-before-word-p zc-org/sp-point-in-checkbox-p))
+      (sp-local-pair "~" "~" :unless '(:add sp-point-before-word-p))
+      (sp-local-pair "=" "=" :unless '(:add sp-point-before-word-p))))
+
+  (with-eval-after-load 'smartparens-rust
+    (sp-with-modes '(rustic-mode)
+      ;; We have to port the configs to rustic from rust-mode.
+      ;; https://github.com/Fuco1/smartparens/blob/master/smartparens-rust.el
+      (sp-local-pair "'" "'"
+                     :unless '(sp-in-comment-p
+                               sp-in-string-quotes-p
+                               sp-in-rust-lifetime-context)
+                     :post-handlers '(:rem sp-escape-quotes-after-insert))
+      (sp-local-pair "<" ">"
+                     :when '(sp-rust-filter-angle-brackets)
+                     :skip-match 'sp-rust-skip-match-angle-bracket)
+
+      ;; Eagerly expand || to closure form with yasnippet.
+      (sp-local-pair "|" "|"
+                     :unless '(sp-in-comment-p sp-in-string-quotes-p)
+                     :post-handlers '(("[d1]|" "SPC") ; Bitwise OR / Pattern alternative
+                                      ("[d1] |" "=")  ; Bitwise OR & Assignment
+                                      zc-rust/sp-expand-closure))))
 
   ;; Global settings
 
@@ -112,7 +138,7 @@
 
   (set-face-attribute 'show-paren-match nil :background "#434956" :foreground nil)
 
-  (smartparens-global-mode +1)
+  ;; (smartparens-global-mode +1)
   (show-smartparens-global-mode +1))
 
 
