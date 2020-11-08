@@ -102,17 +102,17 @@
     (sp-with-modes '(org-mode)
       (sp-local-pair "[" "]" :post-handlers '(("|" "SPC")))
 
-      ;; Instruct `smartparens' not to impose itself in org-mode
+      ;; Instruct `smartparens' not to impose itself in `org-mode'
       ;; make delimiter auto-closing a little more conservative
       (sp-local-pair "*" "*" :unless '(:add sp-point-before-word-p zc-org/sp-point-at-bol-p zc-org/sp-point-in-src-block-p))
-      (sp-local-pair "_" "_" :unless '(:add sp-point-before-word-p))
+      (sp-local-pair "_" "_" :unless '(:add sp-point-before-word-p zc-org/sp-point-in-src-block-p))
       (sp-local-pair "/" "/" :unless '(:add sp-point-before-word-p zc-org/sp-point-in-checkbox-p))
       (sp-local-pair "~" "~" :unless '(:add sp-point-before-word-p))
-      (sp-local-pair "=" "=" :unless '(:add sp-point-before-word-p))))
+      (sp-local-pair "=" "=" :unless '(:add sp-point-before-word-p zc-org/sp-point-in-src-block-p))))
 
   (with-eval-after-load 'smartparens-rust
     (sp-with-modes '(rustic-mode)
-      ;; We have to port the configs to rustic from rust-mode.
+      ;; We have to port the configs to rustic from `rust-mode'.
       ;; https://github.com/Fuco1/smartparens/blob/master/smartparens-rust.el
       (sp-local-pair "'" "'"
                      :unless '(sp-in-comment-p
