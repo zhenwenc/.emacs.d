@@ -120,8 +120,8 @@
     :hook (company-mode . company-prescient-mode)))
 
 (use-package company-box
-  :disabled t
   :straight t
+  :unless (version< emacs-version "27")
   :after company
   :hook (company-mode . company-box-mode)
   :config
