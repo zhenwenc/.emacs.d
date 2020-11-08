@@ -18,9 +18,10 @@
      ("na" lsp-workspace-folders-add       "add folders")
      ("nx" lsp-workspace-folders-remove    "remove folders")
      ("no" lsp-workspace-folders-switch    "switch folders")
+     ("nv" lsp-doctor                      "show doctor")
      ("ni" lsp-describe-session            "show sessions")
      ("nl" lsp-switch-to-io-log-buffer     "show workspace log")
-     ("nL" zc-lsp/switch-to-std-log-buffer "show log"))
+     ("nL" zc-lsp/switch-to-std-log-buffer "show std log"))
 
     "Navigation"
     (("js" lsp-ui-find-workspace-symbol    "find symbol"))
