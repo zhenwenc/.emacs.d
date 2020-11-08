@@ -78,12 +78,13 @@
   :after git-commit
   :init
   (defun zc-git/find-ticket-number (&rest _ignored)
-    (pcase (magit-get-current-branch)
-      ;; Extract JIRA ticket number
-      ((rx (+ word) "/" (let ticket (+ upper) "-" (+ num)) "/" (+ anything))
-       (concat "[" ticket "]"))))
-  (advice-add 'git-commit-jira-prefix--ticket-number :override
-              'zc-git/find-ticket-number)
+    (or (pcase (magit-get-current-branch)
+          ;; Extract JIRA ticket number from branch name
+          ((rx (+ word) "/" (let ticket (+ upper) "-" (+ num)) "/" (+ anything))
+           (concat "[" ticket "]")))
+        ;; Fixed commit messages for notes
+        (when (f-equal-p (projectile-project-root) zc-org/directory) "update")))
+  (advice-add 'git-commit-jira-prefix--ticket-number :override 'zc-git/find-ticket-number)
   :config (git-commit-jira-prefix-init))
 
 
@@ -96,5 +97,7 @@
             "p" 'vc-annotate-prev-revision
             "b" 'vc-annotate-prev-revision
             "." 'vc-annotate-working-revision))
+
+
 
 (provide 'zc-git)
