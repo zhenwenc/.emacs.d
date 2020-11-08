@@ -220,11 +220,14 @@
   :straight t
   :after (:and org evil-common)
   :hook (org-mode . evil-org-mode)
+
   :general
-  (:states 'normal :keymaps 'evil-org-mode-map
-   "t" #'org-todo)
-  (:states 'insert :keymaps 'evil-org-mode-map
-   "C-d" nil)
+  (:states 'normal :keymaps 'evil-org-mode-map "t" #'org-todo)
+
+  :init
+  ;; Disable overriding `C-t' and `C-d' keybindings.
+  (setq evil-disable-insert-state-bindings t)
+
   :config
   (require 'evil-org-agenda)
   (evil-org-agenda-set-keys)
