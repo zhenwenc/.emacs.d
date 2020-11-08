@@ -58,6 +58,10 @@ new file with LSP support."
   :hook ((lsp-after-open . zc-lsp/setup-after-open)
          (kill-emacs     . zc-lsp/inhibit-restart-prompt))
 
+  :init
+  ;; https://emacs-lsp.github.io/lsp-mode/page/performance
+  (setq read-process-output-max (* 1024 1024)) ;; 1MB
+
   :config
   (setq lsp-trace nil
         lsp-log-io t
