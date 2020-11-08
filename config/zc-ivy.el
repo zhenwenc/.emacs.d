@@ -39,10 +39,13 @@
   ;; Keep minibuffer even if no input
   (setq ivy-on-del-error-function nil)
 
-  (dolist (item '((helpful-key      . "^")
-                  (helpful-callable . "^")
-                  (helpful-variable . "^")
-                  (helpful-macro    . "^")))
+  (dolist (item '((helpful-key               . "^")
+                  (helpful-callable          . "^")
+                  (helpful-variable          . "^")
+                  (helpful-macro             . "^")
+                  (counsel-faces             . "^")
+                  (counsel-describe-function . "^")
+                  (counsel-describe-variable . "^")))
     (add-to-list 'ivy-initial-inputs-alist item))
 
   ;; Re-sort matching candidates
