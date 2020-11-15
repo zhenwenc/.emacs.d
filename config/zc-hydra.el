@@ -136,6 +136,7 @@
     ("Basic"
      (("sj" (zc-ivy/imenu) "imenu")
       ("sJ" (zc-ivy/imenu t) "imenu widen")
+      ("sl" imenu-list "imenu list")
       ("su" counsel-unicode-char "unicode"))
 
      "Symbol"
