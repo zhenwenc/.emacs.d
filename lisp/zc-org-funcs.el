@@ -16,7 +16,7 @@
 (defvar org-babel-src-block-regexp)
 (defvar org-default-notes-file)
 (defvar org-default-babel-file)
-(defvar org-work-notes-file)
+(defvar org-work-notes-directory)
 (defvar counsel-outline-settings)
 (defvar counsel-outline--preselect)
 
@@ -139,7 +139,9 @@ See also `counsel-outline'."
 See also `counsel-org-goto-all'."
   (interactive)
   (let ((files (pcase type
-                 ('notes (list org-default-notes-file org-work-notes-file))
+                 ('notes (cons org-default-notes-file
+                               (f-files org-work-notes-directory
+                                        (-rpartial #'f-ext-p "org"))))
                  ('babel (list org-default-babel-file))
                  (_ org-agenda-files))))
     (ivy-read "Goto: " (zc-org/get-outline-candidates files)

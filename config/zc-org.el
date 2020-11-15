@@ -40,10 +40,12 @@
     ("ed" org-cut-special                         "kill")
     ("ey" org-copy-special                        "copy")
     ("eY" org-paste-special                       "paste")
-    ("et" counsel-org-tag                         "tag")
-    ("eT" org-table-create-or-convert-from-region "table")
-    ("ea" org-babel-insert-header-arg             "args")
-    ("ep" org-property-action                     "props"))
+    ("ep" org-property-action                     "props")
+    ("et" counsel-org-tag                         "tag"))
+
+   "Insert"
+   (("ea" org-babel-insert-header-arg             "args")
+    ("eT" org-table-create-or-convert-from-region "table"))
 
    "Babel"
    (("bi" org-babel-view-src-block-info           "info")
@@ -67,13 +69,13 @@
   ;; Org file directories must be defined at `:init' block
   ;; so that they are visible to the navigation functions,
   ;; such as `zc-org/goto-agenda-file-heading'.
-  (setq org-directory          zc-org/directory
-        org-attach-directory   (f-join org-directory "data")
-        org-default-notes-file (f-join org-directory "notes.org")
-        org-default-todos-file (f-join org-directory "todos.org")
-        org-default-babel-file (f-join org-directory "babel.org")
-        org-work-notes-file    (f-join org-directory "work/notes.org")
-        org-work-todos-file    (f-join org-directory "work/todos.org"))
+  (setq org-directory            zc-org/directory
+        org-attach-directory     (f-join org-directory "data")
+        org-default-notes-file   (f-join org-directory "notes.org")
+        org-default-todos-file   (f-join org-directory "todos.org")
+        org-default-babel-file   (f-join org-directory "babel.org")
+        org-work-todos-file      (f-join org-directory "work/todos.org")
+        org-work-notes-directory (f-join org-directory "work"))
 
   :config
   (setq org-M-RET-may-split-line nil
