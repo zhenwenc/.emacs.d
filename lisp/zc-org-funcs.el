@@ -394,7 +394,7 @@ session as the current block. ARG has same meaning as in
 
 (defun zc-org/sp-point-in-src-block-p (_id action _context)
   (and (eq action 'insert)
-       (org-in-src-block-p t)))
+       (org-in-src-block-p nil)))
 
 
 
