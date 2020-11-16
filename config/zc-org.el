@@ -63,7 +63,8 @@
     ("tB" org-hide-block-all                      "blocks: hide")))
 
   :hook
-  ((org-mode . visual-line-mode))
+  ((org-mode . visual-line-mode)
+   (org-babel-after-execute . zc-org/babel-after-execute))
 
   :init
   ;; Org file directories must be defined at `:init' block

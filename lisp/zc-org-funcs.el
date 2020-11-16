@@ -14,6 +14,7 @@
 (defvar org-agenda-files)
 (defvar org-agenda-category-filter)
 (defvar org-babel-src-block-regexp)
+(defvar org-babel-result-regexp)
 (defvar org-default-notes-file)
 (defvar org-default-babel-file)
 (defvar org-work-notes-directory)
@@ -381,6 +382,23 @@ session as the current block. ARG has same meaning as in
   (save-window-excursion
     (org-babel-switch-to-session)
     (kill-current-buffer)))
+
+(defun zc-org/babel-after-execute ()
+  "Post-process babel execution result.
+
+Function for `org-babel-after-execute-hook'."
+  (interactive)
+  (-when-let* ((location (org-babel-where-is-src-block-result))
+               (info     (org-babel-get-src-block-info t))
+               (case-fold-search t))
+    (save-excursion
+      (goto-char location)
+      (when (looking-at org-babel-result-regexp)
+        ;; Resize table columns width for the result of the
+        ;; current babel source block.
+        (save-excursion
+          (forward-line)
+          (when (org-at-table-p) (org-table-shrink)))))))
 
 
 ;; Smartparens
