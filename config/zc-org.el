@@ -44,8 +44,9 @@
     ("et" counsel-org-tag                         "tag"))
 
    "Insert"
-   (("ea" org-babel-insert-header-arg             "args")
-    ("eT" org-table-create-or-convert-from-region "table"))
+   (("ia" org-babel-insert-header-arg             "args")
+    ("iT" org-table-create-or-convert-from-region "table")
+    ("in" org-add-note                            "note"))
 
    "Babel"
    (("bi" org-babel-view-src-block-info           "info")
@@ -103,7 +104,7 @@
                              (org-agenda-files :maxlevel . 2)))
 
   (setq org-eldoc-breadcrumb-separator " → "
-        org-ellipsis (if (char-displayable-p ?) "  ▼ " nil)
+        org-ellipsis (if (char-displayable-p ?) " ▼" nil)
         org-image-actual-width nil
         org-pretty-entities nil
         org-tags-column 0
