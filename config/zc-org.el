@@ -183,7 +183,16 @@
 
   ;; A bit hacky, but works fine for myself :p
   ;; Alternatively we can use `ts-node' instead.
-  (defalias 'org-babel-execute:typescript 'org-babel-execute:js))
+  (defalias 'org-babel-execute:typescript 'org-babel-execute:js)
+
+  ;; Enable LSP Mode for babel source block
+  ;; - centaur-emacs
+  (defun org-babel-edit-prep:python (info)
+    (let ((file-name (->> info caddr (alist-get :file))))
+      (unless file-name
+        (setq file-name (f-join org-babel-temporary-directory "edit.py")))
+      (setq buffer-file-name file-name)
+      (lsp-deferred))))
 
 
 
