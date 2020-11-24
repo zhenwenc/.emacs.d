@@ -62,13 +62,13 @@
     (require 'lsp)
     (require 'lsp-pyright)
     ;; Connect to the current LSP workspace session if available.
-    (-when-let (workspace
-                (->> (lsp-session)
-                     (lsp--session-workspaces)
-                     (--filter (and (eq 'initialized (lsp--workspace-status it))
-                                    (eq 'pyright (lsp--client-server-id (lsp--workspace-client it)))))
-                     (--first (f-ancestor-of? (lsp--workspace-root it)
-                                              (buffer-file-name)))))
+    (-when-let* ((file-name (buffer-file-name))
+                 (workspace
+                  (->> (lsp-session)
+                       (lsp--session-workspaces)
+                       (--filter (and (eq 'initialized (lsp--workspace-status it))
+                                      (eq 'pyright (lsp--client-server-id (lsp--workspace-client it)))))
+                       (--first (f-ancestor-of? (lsp--workspace-root it) file-name)))))
       (lsp-deferred)))
 
   (when (executable-find "python3")
