@@ -349,12 +349,11 @@ definition line and nil otherwise."
 (use-package ob-async
   :straight t
   :after org
-  :preface
-  (defun zc-org/pre-execute-async-src-block ()
-    (setq org-plantuml-jar-path (concat paths-vendor-dir "plantuml.jar")))
-  :hook ((org-babel-after-execute . org-redisplay-inline-images)
-         (ob-async-pre-execute-src-block . zc-org/pre-execute-async-src-block))
+  :hook (org-mode . (lambda () (require 'ob-async)))
   :config
+  (add-hook 'ob-async-pre-execute-src-block-hook
+            `(lambda ()
+               (setq org-plantuml-jar-path ,(concat paths-vendor-dir "plantuml.jar"))))
   ;; ipython has its own async keyword
   (add-to-list 'ob-async-no-async-languages-alist "ipython"))
 
