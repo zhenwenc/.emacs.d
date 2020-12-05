@@ -11,6 +11,12 @@
 
 ;; Install Emacs on MacOS:
 ;; https://github.com/railwaycat/homebrew-emacsmacport
+;;
+;;   brew install emacs-mac --with-emacs-sexy-icon
+;;
+;; https://github.com/d12frosted/homebrew-emacs-plus
+;;
+;;   brew install emacs-plus --with-modern-sexy-v2-icon
 
 (when (version< emacs-version "26")
   (error "This requires Emacs 26 and above!"))
