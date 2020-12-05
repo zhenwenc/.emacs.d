@@ -75,7 +75,7 @@
 
 (use-package tide
   :straight t
-  :after (typescript-mode company flycheck)
+  :after (:and typescript-mode company flycheck)
 
   :general
   (:keymaps 'tide-mode-map

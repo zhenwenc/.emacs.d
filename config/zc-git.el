@@ -27,13 +27,6 @@
   :disabled t
   :hook (emacs-startup . magit-todos-mode))
 
-;; Reconfigures magit keybindings to better support evil.
-
-(use-package evil-magit
-  :straight t
-  :after (:and magit evil-common)
-  :config (evil-magit-init))
-
 
 ;; Transient commands (previously known as magit-popup)
 

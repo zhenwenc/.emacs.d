@@ -69,7 +69,7 @@
 ;; counsel-projectile also loads projectile itself
 (use-package counsel-projectile
   :straight t
-  :after (counsel projectile)
+  :after (:and counsel projectile)
   :commands (counsel-projectile
              counsel-projectile-switch-project
              counsel-projectile-find-file
