@@ -353,7 +353,7 @@
         `(:internal-border-width 16
           :background-color ,(doom-color 'bg-alt)
           :override-parameters ((alpha 98 98))
-          :poshandler zc-layout/poshandler-frame-bottom-center)))
+          :poshandler posframe-poshandler-frame-bottom-center)))
 
 
 

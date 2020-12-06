@@ -99,17 +99,6 @@ reduce the overhead of recomputing the layout info.")
     (add-hook hook #'zc-layout/refresh-current-window-config)))
 
 
-;; Posframe
-
-(defun zc-layout/poshandler-frame-bottom-center (info)
-  "Posframe's position handler.
-
-Get a position which let posframe stay onto its parent-frame's
-bottom center."
-  (cons (car (posframe-poshandler-frame-center info))
-        (- (cdr (posframe-poshandler-frame-bottom-left-corner info)) 2)))
-
-
 
 ;;;###autoload
 (defun zc-layout/select-project-no-action ()
