@@ -57,15 +57,10 @@
 (use-package page-break-lines
   :demand
   :straight t
-  :config
-  (setq page-break-lines-modes
-        '(prog-mode
-          text-mode
-          help-mode
-          imenu-list-major-mode
-          compilation-mode
-          org-agenda-mode))
-  (global-page-break-lines-mode))
+  :hook
+  (lisp-mode       . page-break-lines-mode)
+  (emacs-lisp-mode . page-break-lines-mode)
+  (org-agenda-mode . page-break-lines-mode))
 
 (use-package rainbow-delimiters
   :straight t)
@@ -96,8 +91,9 @@
   :disabled
   :straight t
   :if (display-graphic-p)
-  :hook ((lisp-mode       . highlight-sexp-mode)
-         (emacs-lisp-mode . highlight-sexp-mode))
+  :hook
+  (lisp-mode       . highlight-sexp-mode)
+  (emacs-lisp-mode . highlight-sexp-mode)
   :custom
   ;; Lighten background color from doom theme
   (hl-sexp-background-color (doom-color 'bg-alt)))
