@@ -231,12 +231,15 @@ affecting minibuffers which may cause problem on `ivy'."
 (when (fboundp 'blink-cursor-mode) (blink-cursor-mode -1))
 
 (when (display-graphic-p)
-  (setq initial-frame-alist '((width . 160) (height . 60))))
+  (setq initial-frame-alist nil)
+  (setq frame-resize-pixelwise t)
 
-;; TODO: Default maximize frame and enter fullscreen mode
-;; (setq frame-resize-pixelwise t)
-;; (set-frame-parameter (selected-frame) 'fullscreen 'maximized)
-;; (run-at-time "2sec" nil (lambda () (toggle-frame-fullscreen)))
+  ;; NOTE Some Emacs release doesn't respect frame parameter
+  ;; (add-hook 'emacs-startup-hook #'toggle-frame-maximized)
+  ;; (run-at-time "2sec" nil (lambda () (toggle-frame-fullscreen)))
+
+  ;; Default maximize frame and enter fullscreen mode
+  (set-frame-parameter (selected-frame) 'fullscreen 'maximized))
 
 
 

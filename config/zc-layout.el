@@ -8,11 +8,15 @@
 
 (use-package eyebrowse
   :straight t
+  :hook (emacs-startup . zc-layout/create-initial-layouts)
+  :config
+  (setq eyebrowse-tagged-slot-format "%s [%t]")
 
-  :preface
+  ;; Unset all default key bindings
+  (define-key eyebrowse-mode-map eyebrowse-keymap-prefix nil)
+
+  ;; Prepare initial layers on startup.
   (defun zc-layout/create-initial-layouts ()
-    "Prepare initial layers on startup."
-    (eyebrowse-mode +1)
     (-each-r
      '(("~/.emacs.d" ".gitignore")
        ("~/dotfiles" ".gitignore"))
@@ -27,13 +31,7 @@
       (switch-to-buffer "*scratch*" t)
       (setq default-directory dir)))
 
-  :hook ((emacs-startup . toggle-frame-maximized)
-         (emacs-startup . zc-layout/create-initial-layouts))
-
-  :init (setq eyebrowse-tagged-slot-format "%s [%t]")
-  :config
-  ;; Unset all default key bindings
-  (define-key eyebrowse-mode-map eyebrowse-keymap-prefix nil))
+  (eyebrowse-mode +1))
 
 (use-package winum
   :straight t
