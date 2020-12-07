@@ -87,6 +87,10 @@
  scroll-down-aggressively        0.01
  scroll-preserve-screen-position t
 
+ ;; Improve page scrolling experience
+ ;; https://emacs.stackexchange.com/questions/31402
+ jit-lock-defer-time t
+
  ;; Reduce cursor movement lag
  ;; https://emacs.stackexchange.com/questions/28736/emacs-pointcursor-movement-lag
  auto-window-vscroll nil

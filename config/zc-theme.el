@@ -226,6 +226,7 @@ affecting minibuffers which may cause problem on `ivy'."
 (when (fboundp 'scroll-bar-mode) (scroll-bar-mode -1))
 (when (fboundp 'blink-cursor-mode) (blink-cursor-mode -1))
 
+;; Resize frame on start-up
 (when (display-graphic-p)
   (setq initial-frame-alist nil)
   (setq frame-resize-pixelwise t)
