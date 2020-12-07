@@ -185,6 +185,21 @@
   ;; Alternatively we can use `ts-node' instead.
   (defalias 'org-babel-execute:typescript 'org-babel-execute:js)
 
+  ;; TODO Let's improve TypeScript experience
+  ;; http://rwx.io/posts/org-with-babel-node-updated/
+  ;;
+  ;;   (defun org-babel-execute:typescript (body params)
+  ;;     "Execute a block of Typescript code with org-babel.
+  ;; This function is called by `org-babel-execute-src-block'."
+  ;;     (org-babel-execute:js body params))
+
+  ;; (setq org-babel-js-cmd "ts-node")
+  ;; (setq org-babel-js-function-wrapper "require('process').stdout.write(require('util').inspect(function(){%s}()));")
+  ;; (setenv "NODE_PATH"
+  ;;         (concat
+  ;;          (getenv "HOME") "/somewhere/node_modules" ":"
+  ;;          (getenv "NODE_PATH")))
+
   ;; Enable LSP Mode for babel source block
   ;; - centaur-emacs
   (defun org-babel-edit-prep:python (info)
