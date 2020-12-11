@@ -244,8 +244,9 @@
 
      "Edit"
      (("tw" whitespace-mode "whitespace" :toggle t)
-      ("tl" visual-line-mode "virsual line" :toggle t)
+      ("tl" global-display-fill-column-indicator-mode "show fill" :toggle t)
       ("tL" auto-fill-mode "auto fill" :toggle (symbol-value 'auto-fill-function))
+      ("tv" visual-line-mode "virsual line" :toggle t)
       ("tS" flyspell-mode "spell check" :toggle t)
       ("tE" explain-pause-mode "monitor pause" :toggle t))
 
