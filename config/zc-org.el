@@ -188,17 +188,20 @@
   ;; TODO Let's improve TypeScript experience
   ;; http://rwx.io/posts/org-with-babel-node-updated/
   ;;
-  ;;   (defun org-babel-execute:typescript (body params)
-  ;;     "Execute a block of Typescript code with org-babel.
-  ;; This function is called by `org-babel-execute-src-block'."
-  ;;     (org-babel-execute:js body params))
+  (defun org-babel-execute:typescript (body params)
+    "Execute a block of Typescript code with org-babel.
+  This function is called by `org-babel-execute-src-block'."
+    (let* ((ts-node-options (json-serialize '(module "CommonJS")))
+           (dir (or (cdr (assq :dir params)) zc-org/directory))
+           (cmd (or (cdr (assq :cmd params)) (format "ts-node -O '%s'" ts-node-options)))
+           (org-babel-js-cmd (format "NODE_PATH=%s %s" (f-join dir "node_modules") cmd)))
+      (org-babel-execute:js body params)))
 
-  ;; (setq org-babel-js-cmd "ts-node")
-  ;; (setq org-babel-js-function-wrapper "require('process').stdout.write(require('util').inspect(function(){%s}()));")
-  ;; (setenv "NODE_PATH"
-  ;;         (concat
-  ;;          (getenv "HOME") "/somewhere/node_modules" ":"
-  ;;          (getenv "NODE_PATH")))
+  (defun org-babel-edit-prep:typescript (info)
+    (let* ((dir (or (->> info caddr (alist-get :dir)) zc-org/directory))
+           (config (zc-typescript/tide-load-tsconfig dir)))
+      (setq-local tide-project-root (f-expand dir))
+      (puthash (tide-project-name) config tide-project-configs)))
 
   ;; Enable LSP Mode for babel source block
   ;; - centaur-emacs

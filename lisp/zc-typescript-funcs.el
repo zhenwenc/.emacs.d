@@ -144,7 +144,8 @@ TODO: Maybe set `lsp-enable-completion-at-point' to `nil'?
     (error "tsconfig file not found at %S." path))
   (condition-case nil
       (let ((json-object-type 'plist)
-            (json (shell-command-to-string "tsc --showConfig")))
+            (json (shell-command-to-string
+                   (format "tsc --project %s --showConfig" path))))
         (json-read-from-string json))
     (error '())))
 
