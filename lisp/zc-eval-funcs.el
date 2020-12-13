@@ -46,12 +46,16 @@ with Ivy."
             :action #'(lambda (x) (add-to-list 'compile-history x))
             :caller #'zc-eval/projectile-read-command))
 
+;;;###autoload
 (defun zc-eval/recompile ()
   "Call `recompile' if the compilation buffer was compiled
 manually, otherwise does nothing."
+  (interactive)
   (let ((buffer (compilation-find-buffer)))
     (unless (get-buffer-process buffer)
       (recompile))))
+
+
 
 (define-minor-mode zc-eval/compile-on-save-mode
   "Minor mode to automatically call `recompile' after saving
