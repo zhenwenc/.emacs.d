@@ -210,7 +210,10 @@
       (unless file-name
         (setq file-name (f-join org-babel-temporary-directory "edit.py")))
       (setq buffer-file-name file-name)
-      (lsp-deferred))))
+      (lsp-deferred)))
+
+  ;; Prefer python3
+  (setq org-babel-python-command "python3"))
 
 
 
