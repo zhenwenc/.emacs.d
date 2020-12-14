@@ -185,23 +185,36 @@
   ;; Alternatively we can use `ts-node' instead.
   (defalias 'org-babel-execute:typescript 'org-babel-execute:js)
 
-  ;; TODO Let's improve TypeScript experience
+  ;; Improve TypeScript source block experience
   ;; http://rwx.io/posts/org-with-babel-node-updated/
-  ;;
   (defun org-babel-execute:typescript (body params)
     "Execute a block of Typescript code with org-babel.
   This function is called by `org-babel-execute-src-block'."
-    (let* ((ts-node-options (json-serialize '(module "CommonJS")))
+    (let* ((ts-node-options (json-serialize '(module "commonjs" target "es5")))
            (dir (or (cdr (assq :dir params)) zc-org/directory))
            (cmd (or (cdr (assq :cmd params)) (format "ts-node -O '%s'" ts-node-options)))
+           ;; Transpile 'import' statements to 'require'
+           (script-file (org-babel-temp-file "js-script-" ".js"))
+           (output-file (org-babel-temp-file "js-script-" ".js"))
+           (babel-cmd (f-join zc-org/directory "node_modules/.bin/babel"))
+           (babel-res (progn (with-temp-file script-file (insert body))
+                             (shell-command-to-string
+                              (concat babel-cmd
+                                      " --no-babelrc"
+                                      " --presets '@babel/preset-env'"
+                                      " --out-file " output-file
+                                      " " script-file))))
+           (babel-body (f-read output-file))
            (org-babel-js-cmd (format "NODE_PATH=%s %s" (f-join dir "node_modules") cmd)))
-      (org-babel-execute:js body params)))
+      (org-babel-execute:js babel-body params)))
 
   (defun org-babel-edit-prep:typescript (info)
     (let* ((dir (or (->> info caddr (alist-get :dir)) zc-org/directory))
            (config (zc-typescript/tide-load-tsconfig dir)))
+      (message "Set tide project root to %s" dir)
       (setq-local tide-project-root (f-expand dir))
-      (puthash (tide-project-name) config tide-project-configs)))
+      (puthash (tide-project-name) config tide-project-configs)
+      (tide-restart-server)))
 
   ;; Enable LSP Mode for babel source block
   ;; - centaur-emacs
