@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: Export All
+# key: exa
+# --
+export * from '$0';
