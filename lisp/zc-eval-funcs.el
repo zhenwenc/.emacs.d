@@ -47,6 +47,12 @@ with Ivy."
             :caller #'zc-eval/projectile-read-command))
 
 ;;;###autoload
+(defun zc-eval/projectile-compile-file (arg)
+  "Run current script file with project compilation."
+  (interactive "P")
+  (projectile-run-compilation (buffer-file-name)))
+
+;;;###autoload
 (defun zc-eval/recompile ()
   "Call `recompile' if the compilation buffer was compiled
 manually, otherwise does nothing."

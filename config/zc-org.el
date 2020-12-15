@@ -190,11 +190,11 @@
   (defun org-babel-execute:typescript (body params)
     "Execute a block of Typescript code with org-babel.
   This function is called by `org-babel-execute-src-block'."
-    (let* ((ts-node-options (json-serialize '(module "commonjs" target "es5")))
+    (let* ((ts-node-options (json-serialize '(module "CommonJS" target "ES2017")))
            (dir (or (cdr (assq :dir params)) zc-org/directory))
-           (cmd (or (cdr (assq :cmd params)) (format "ts-node -O '%s'" ts-node-options)))
+           (cmd (or (cdr (assq :cmd params)) (format "ts-node -T -O '%s'" ts-node-options)))
            ;; Transpile 'import' statements to 'require'
-           (script-file (org-babel-temp-file "js-script-" ".js"))
+           (script-file (org-babel-temp-file "js-script-" ".ts"))
            (output-file (org-babel-temp-file "js-script-" ".js"))
            (babel-cmd (f-join zc-org/directory "node_modules/.bin/babel"))
            (babel-res (progn (with-temp-file script-file (insert body))
@@ -202,10 +202,14 @@
                               (concat babel-cmd
                                       " --no-babelrc"
                                       " --presets '@babel/preset-env'"
+                                      " --extensions .ts"
                                       " --out-file " output-file
                                       " " script-file))))
            (babel-body (f-read output-file))
+           (org-babel-js-function-wrapper "%s")
            (org-babel-js-cmd (format "NODE_PATH=%s %s" (f-join dir "node_modules") cmd)))
+      (when (s-equals? "yes" (cdr (assq :debug params)))
+        (message "[DEBUG] Transpiled TypeScript source code:\n\n%s" babel-body))
       (org-babel-execute:js babel-body params)))
 
   (defun org-babel-edit-prep:typescript (info)
