@@ -196,6 +196,7 @@
      "Eval"
      (("ec" compile "compile")
       ("ep" projectile-compile-project "compile project")
+      ("ef" zc-eval/projectile-compile-file "compile file")
       ("er" recompile "recompile"))))
 
   (zc-hydra/define zc-main-hydra--org

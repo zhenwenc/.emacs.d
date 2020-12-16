@@ -201,15 +201,18 @@
                              (shell-command-to-string
                               (concat babel-cmd
                                       " --no-babelrc"
-                                      " --presets '@babel/preset-env'"
+                                      " --presets @babel/preset-env"
+                                      " --plugins @babel/plugin-transform-runtime"
                                       " --extensions .ts"
                                       " --out-file " output-file
                                       " " script-file))))
            (babel-body (f-read output-file))
-           (org-babel-js-function-wrapper "%s")
-           (org-babel-js-cmd (format "NODE_PATH=%s %s" (f-join dir "node_modules") cmd)))
+           (node-path (concat "NODE_PATH=" (f-join dir "node_modules")))
+           (node-opts (format "NODE_OPTIONS='--unhandled-rejections=strict'"))
+           (org-babel-js-cmd (format "%s %s %s" node-path node-opts cmd))
+           (org-babel-js-function-wrapper "%s"))
       (when (s-equals? "yes" (cdr (assq :debug params)))
-        (message "[DEBUG] Transpiled TypeScript source code:\n\n%s" babel-body))
+        (message "[DEBUG] Transpiled source code:\n\n%s\n%s" babel-res babel-body))
       (org-babel-execute:js babel-body params)))
 
   (defun org-babel-edit-prep:typescript (info)
@@ -218,7 +221,7 @@
       (message "Set tide project root to %s" dir)
       (setq-local tide-project-root (f-expand dir))
       (puthash (tide-project-name) config tide-project-configs)
-      (tide-restart-server)))
+      (zc-typescript/maybe-setup-tide)))
 
   ;; Enable LSP Mode for babel source block
   ;; - centaur-emacs

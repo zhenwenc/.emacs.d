@@ -114,16 +114,6 @@
      ("rF" tide-fix                                "code fix")
      ("ro" tide-organize-imports                   "sort imports"))))
 
-  :preface
-  (defun zc-typescript/maybe-setup-tide ()
-    (interactive)
-    (unless (or (not buffer-file-name)
-                (f-ext? buffer-file-name))
-      (setq-local tide-require-manual-setup t))
-    (tide-setup)
-    (eldoc-mode +1)
-    (flycheck-mode +1))
-
   :hook (typescript-mode . zc-typescript/maybe-setup-tide)
 
   :init
@@ -131,6 +121,16 @@
   (advice-add 'tide-completion-doc-buffer :override #'ignore)
   (advice-add 'tide-load-tsconfig :override #'zc-typescript/tide-load-tsconfig)
   (advice-add 'tide-eldoc-maybe-show :around #'zc-typescript/tide-eldoc-maybe-show)
+
+  :config
+  (defun zc-typescript/maybe-setup-tide ()
+    (interactive)
+    ;; Format org-mode source block
+    (when (bound-and-true-p org-src-mode)
+      (add-hook 'before-save-hook #'tide-format-before-save nil t))
+    (tide-setup)
+    (eldoc-mode +1)
+    (flycheck-mode +1))
 
   :config
   (setq tide-completion-detailed nil

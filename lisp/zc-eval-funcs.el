@@ -50,7 +50,8 @@ with Ivy."
 (defun zc-eval/projectile-compile-file (arg)
   "Run current script file with project compilation."
   (interactive "P")
-  (projectile-run-compilation (buffer-file-name)))
+  (-when-let (file-name (buffer-file-name))
+    (projectile-run-compilation (buffer-file-name))))
 
 ;;;###autoload
 (defun zc-eval/recompile ()
