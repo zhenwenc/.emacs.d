@@ -25,7 +25,8 @@
    "C-c C-c" #'org-edit-src-exit)
 
   (:states 'normal :keymaps 'org-mode-map
-   "RET" #'zc-org/evil-normal-ret)
+   "RET" #'zc-org/evil-normal-ret
+   "C-e" #'evil-org-end-of-line)
 
   :hydra
   ("Basic"
