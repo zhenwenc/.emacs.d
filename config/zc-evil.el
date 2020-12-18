@@ -222,7 +222,7 @@
   :hook (org-mode . evil-org-mode)
 
   :general
-  (:states 'normal :keymaps 'evil-org-mode-map "t" #'org-todo)
+  (:states 'normal :keymaps 'org-mode-map "t" #'org-todo)
 
   :init
   ;; Disable overriding `C-t' and `C-d' keybindings.
