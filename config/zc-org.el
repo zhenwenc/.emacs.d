@@ -72,13 +72,19 @@
   ;; Org file directories must be defined at `:init' block
   ;; so that they are visible to the navigation functions,
   ;; such as `zc-org/goto-agenda-file-heading'.
-  (setq org-directory            zc-org/directory
-        org-attach-directory     (f-join org-directory "data")
-        org-default-notes-file   (f-join org-directory "notes.org")
-        org-default-todos-file   (f-join org-directory "todos.org")
-        org-default-babel-file   (f-join org-directory "babel.org")
-        org-work-todos-file      (f-join org-directory "work/todos.org")
-        org-work-notes-directory (f-join org-directory "work"))
+  (setq org-directory          zc-org/directory
+        org-attach-id-dir      (f-join org-directory "data")
+
+        zc-org/main-notes-dir  (f-join org-directory "main")
+        zc-org/work-notes-dir  (f-join org-directory "work")
+
+        org-default-notes-file (f-join zc-org/main-notes-dir "todos.org")
+        org-default-todos-file (f-join zc-org/main-notes-dir "todos.org")
+        org-default-babel-file (f-join zc-org/main-notes-dir "babel.org")
+
+        org-agenda-diary-file  (f-join zc-org/main-notes-dir "diary.org")
+        org-agenda-files       (append (zc-org/file-with-exts :dir zc-org/main-notes-dir)
+                                       (zc-org/file-with-exts :dir zc-org/work-notes-dir)))
 
   :config
   (setq org-M-RET-may-split-line nil
@@ -142,7 +148,7 @@
 
           (list (entry
                  "i" "Idea" "* MAYBE %?\n%i :idea:"
-                 '(file org-default-notes-file))
+                 '(file+headline org-default-todos-file "Inbox"))
 
                 (entry
                  "t" "Todo" "* TODO %?\n%i"
@@ -151,12 +157,7 @@
 
                 (entry
                  "n" "Note" "* %?\n%(zc-org/capture-code-snippet \"%F\")"
-                 '(file org-default-notes-file))
-
-                (entry
-                 "T" "Work Todo" "* TODO %?\n%i"
-                 '(file+headline org-work-todos-file "Inbox")
-                 :kill-buffer t)
+                 '(file+headline org-default-todos-file "Inbox"))
 
                 (entry
                  "r" "Read later" "* MAYBE %i%? :Read:"
@@ -254,7 +255,6 @@
    (("."  org-agenda-goto-today "goto today")
     ("+"  org-agenda-manipulate-query-add "query add")
     ("-"  org-agenda-manipulate-query-subtract "query remove")
-    ("%"  org-agenda-bulk-mark-regexp "bulk mark regexp")
     ("*"  org-agenda-bulk-mark-all "bulk mark all")
     ("~"  org-agenda-bulk-toggle-all "bulk toggle all")
     ("x"  org-agenda-bulk-action "bulk action")
@@ -262,7 +262,8 @@
     ("C"  org-agenda-capture "capture"))
 
    "Search"
-   (("sh" org-agenda-filter-by-top-headline "filter by headline")
+   (("%"  org-agenda-bulk-mark-regexp "bulk mark regexp")
+    ("sh" org-agenda-filter-by-top-headline "filter by headline")
     ("sc" zc-org/agenda-filter-by-category "filter by category")
     ("sC" org-agenda-filter-by-category "filter by category at point")
     ("se" org-agenda-filter-by-effort "filter by effort")
@@ -299,16 +300,13 @@
   :hook
   ((org-agenda-after-show . org-narrow-to-subtree))
 
-  :init
-  ;; Org file directories must be defined at `:init' block
-  ;; so that they are visible to the navigation functions,
-  ;; such as `zc-org/goto-agenda-file-heading'.
-  (setq org-agenda-diary-file  (f-join zc-org/directory "diary.org")
-        org-agenda-files       (zc-org/file-with-exts '("org")))
-
   :config
   (setq org-agenda-restore-windows-after-quit t
         org-agenda-window-setup 'reorganize-frame)
+
+  (setq org-agenda-start-with-log-mode t
+        org-log-into-drawer t
+        org-log-done 'time)
 
   (advice-add 'org-agenda-quit :before 'org-save-all-org-buffers))
 

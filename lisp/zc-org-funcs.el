@@ -17,7 +17,8 @@
 (defvar org-babel-result-regexp)
 (defvar org-default-notes-file)
 (defvar org-default-babel-file)
-(defvar org-work-notes-directory)
+(defvar zc-org/main-notes-dir)
+(defvar zc-org/work-notes-dir)
 (defvar counsel-outline-settings)
 (defvar counsel-outline--preselect)
 
@@ -26,10 +27,11 @@
 
 ;; General
 
-(defun zc-org/file-with-exts (exts &optional dir)
+(cl-defun zc-org/file-with-exts (&key ext dir)
   "Return files in `org-directory' that matches extension in EXTS."
   (unless dir (setq dir zc-org/directory))
-  (f-files dir (-compose (-partial #'-contains? exts) #'f-ext) nil))
+  (unless ext (setq ext '("org")))
+  (f-files dir (-compose (-partial #'-contains? ext) #'f-ext) nil))
 
 (defun zc-org/evil-normal-ret ()
   "Instead of calling `org-return' when evil normal state
@@ -134,15 +136,14 @@ See also `counsel-outline'."
               :preselect (max (1- counsel-outline--preselect) 0)
               :caller 'zc-org/goto-with-widen-buffer)))
 
-(defun zc-org/goto-file-heading (type)
+(defun zc-org/goto-file-heading (&optional type)
   "Jump to a heading in an org file.
 
 See also `counsel-org-goto-all'."
   (interactive)
   (let ((files (pcase type
-                 ('notes (cons org-default-notes-file
-                               (f-files org-work-notes-directory
-                                        (-rpartial #'f-ext-p "org"))))
+                 ('note  (f-files zc-org/main-notes-dir (-rpartial #'f-ext-p "org")))
+                 ('work  (f-files zc-org/work-notes-dir (-rpartial #'f-ext-p "org")))
                  ('babel (list org-default-babel-file))
                  (_ org-agenda-files))))
     (ivy-read "Goto: " (zc-org/get-outline-candidates files)
