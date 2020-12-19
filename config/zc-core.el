@@ -165,6 +165,7 @@
 (global-set-key (kbd "C-c e e") 'toggle-debug-on-error)
 (global-set-key (kbd "C-h c")   'describe-char)
 (global-set-key (kbd "s-u")     'revert-buffer)
+(global-set-key (kbd "C-c R")   'profiler-report)
 
 ;; Make <escape> issue a keyboard-quit in as many situations as possible.
 (define-key minibuffer-local-map            (kbd "<escape>") #'keyboard-escape-quit)

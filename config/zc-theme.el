@@ -54,8 +54,9 @@
                                   :face all-the-icons-blue)))
     (add-to-list 'all-the-icons-mode-icon-alist icon)))
 
+;; FIXME: This mode causes moving line up/down extremely slow
+;; https://github.com/purcell/page-break-lines/issues/19
 (use-package page-break-lines
-  :demand
   :straight t
   :hook
   (lisp-mode       . page-break-lines-mode)
