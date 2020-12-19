@@ -132,6 +132,8 @@
                         ("note"   . ?n)
                         ("idea"   . ?i)))
 
+  ;; TODO Refactor template definitions with Declarative Org Capture Templates
+  ;; https://github.com/progfolio/doct
   (setq org-capture-templates
         (cl-labels ((entry
                      (key label template target
