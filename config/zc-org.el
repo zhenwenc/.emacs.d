@@ -42,12 +42,8 @@
     ("ey" org-copy-special                        "copy")
     ("eY" org-paste-special                       "paste")
     ("ep" org-property-action                     "props")
-    ("et" counsel-org-tag                         "tag"))
-
-   "Insert"
-   (("ia" org-babel-insert-header-arg             "args")
-    ("iT" org-table-create-or-convert-from-region "table")
-    ("in" org-add-note                            "note"))
+    ("et" counsel-org-tag                         "tag")
+    ("en" org-add-note                            "note"))
 
    "Babel"
    (("bi" org-babel-view-src-block-info           "info")
@@ -62,7 +58,8 @@
     ("tl" org-toggle-link-display                 "link")
     ("tI" org-indent-mode                         "indent" :toggle t)
     ("tb" org-show-block-all                      "blocks: show")
-    ("tB" org-hide-block-all                      "blocks: hide")))
+    ("tB" org-hide-block-all                      "blocks: hide")
+    ("tt" org-sidebar-tree-toggle                 "sidebar tree")))
 
   :hook
   ((org-mode . visual-line-mode)
@@ -124,10 +121,16 @@
         ;; It doesn't work well with evil-mode :(
         org-hide-emphasis-markers nil)
 
-  (setq org-enforce-todo-dependencies t
-        org-todo-keywords
+  (setq org-todo-keywords
         '((sequence "TODO(t)" "NEXT(n)" "MAYBE(m)" "|" "DONE(d)" "CANCEL(c)")
-          (sequence "⚑(T)" "🏴(N)" "❓(M)" "|" "✔(D)" "✘(C)")))
+          (sequence "⚑(T)" "🏴(N)" "❓(M)" "|" "✔(D)" "✘(C)"))
+        org-enforce-todo-dependencies t)
+
+  ;; Basic pre-defined tags for `org-set-tags-command'.
+  (setq org-tag-alist '(("@home"  . ?h)
+                        ("@work"  . ?w)
+                        ("note"   . ?n)
+                        ("idea"   . ?i)))
 
   (setq org-capture-templates
         (cl-labels ((entry
@@ -372,6 +375,10 @@ definition line and nil otherwise."
   :straight (:host github :repo "integral-dw/org-superstar-mode")
   :after org
   :hook (org-mode . org-superstar-mode))
+
+(use-package org-sidebar
+  :straight (:host github :repo "alphapapa/org-sidebar")
+  :after org)
 
 
 ;; Org Babel

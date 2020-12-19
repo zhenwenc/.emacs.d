@@ -207,6 +207,10 @@
       ("ot" org-todo-list   "todo list")
       ("od" org-agenda-quit "quit"))
 
+     "View"
+     (("os" org-ql-search   "search")
+      ("ov" org-ql-view     "view"))
+
      "Navigation"
      (("oo" (zc-org/goto-file-heading 'all)   "all")
       ("ow" (zc-org/goto-file-heading 'work)  "work")
