@@ -285,6 +285,12 @@ Behave the same as 'Command + delete' at macOS"
         (require pkg path)
       (warn "Private package [%s] not found." path))))
 
+(defmacro zc/measure-time (&rest body)
+  "Measure the time it takes to evaluate BODY."
+  `(let ((time (current-time)))
+     ,@body
+     (message "%.06fs" (float-time (time-since time)))))
+
 
 
 (provide 'zc-funcs)

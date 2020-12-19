@@ -334,6 +334,8 @@
 
 
 ;; Testing
-(setq mode-line-format (default-value 'mode-line-format))
+;; (progn
+;;   (setq mode-line-format (default-value 'mode-line-format))
+;;   (zc/measure-time (format-mode-line mode-line-format)))
 
 (provide 'zc-modeline)
