@@ -21,6 +21,7 @@
 (defvar zc-org/work-notes-dir)
 (defvar counsel-outline-settings)
 (defvar counsel-outline--preselect)
+(defvar counsel-outline-path-separator)
 
 (defconst zc-org/directory "~/notes")
 
@@ -182,6 +183,9 @@ is located at the position of MARKER."
                    (zc/with-widen-buffer
                     (counsel-outline-candidates
                      (cdr (assq 'org-mode counsel-outline-settings)))))))
+       ;; Filter candidates by maximum headline depth
+       (-filter (-lambda ((head . marker))
+                  (< (length (s-split counsel-outline-path-separator head)) 4)))
        ;; Prepend the file name
        (-map (-lambda ((head . marker))
                (--> marker
