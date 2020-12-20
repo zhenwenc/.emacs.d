@@ -376,7 +376,9 @@ definition line and nil otherwise."
 (use-package org-superstar
   :straight (:host github :repo "integral-dw/org-superstar-mode")
   :after org
-  :hook (org-mode . org-superstar-mode))
+  :hook (org-mode . org-superstar-mode)
+  :config
+  (setq org-superstar-remove-leading-stars t))
 
 (use-package org-sidebar
   :straight (:host github :repo "alphapapa/org-sidebar")
