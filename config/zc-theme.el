@@ -64,7 +64,10 @@
   (org-agenda-mode . page-break-lines-mode))
 
 (use-package rainbow-delimiters
-  :straight t)
+  :straight t
+  :hook
+  (lisp-mode       . rainbow-delimiters-mode)
+  (emacs-lisp-mode . rainbow-delimiters-mode))
 
 (use-package hl-line
   :straight t
