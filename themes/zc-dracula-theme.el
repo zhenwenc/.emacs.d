@@ -1,3 +1,5 @@
+;;; Inspired by Doom Dracula Theme -*- no-byte-compile: t; -*-
+
 (require 'doom-themes)
 
 (def-doom-theme zc-dracula
