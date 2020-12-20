@@ -21,7 +21,7 @@
    '(("~/.emacs.d" ".gitignore")
      ("~/dotfiles" ".gitignore"))
    (-lambda ((project buffer))
-     (message "Before creating layout %s" buffer)
+     (message "Before creating layout %s" project)
      (zc-projectile/with-switch-project-action
        '(find-file buffer) ; open initial buffer
        (zc-layout/create-project-layout project)
