@@ -144,8 +144,7 @@ See also `counsel-org-goto-all'."
   (let ((files (pcase type
                  ('note  (f-files zc-org/main-notes-dir (-rpartial #'f-ext-p "org")))
                  ('work  (f-files zc-org/work-notes-dir (-rpartial #'f-ext-p "org")))
-                 ('babel (list org-default-babel-file))
-                 (_ org-agenda-files))))
+                 ('babel (list org-default-babel-file)))))
     (ivy-read "Goto: " (zc-org/get-outline-candidates files)
               :history 'counsel-org-goto-history
               :action #'zc-org/goto-file-heading-action
@@ -167,13 +166,13 @@ Ensure we are are in `org' layout to avoid chaos"
   (counsel-org-goto-action x)
   (zc-org/narrow-to-subtree))
 
-(defun zc-org/get-outline-candidates (filenames)
+(defun zc-org/get-outline-candidates (&optional filenames)
   "Return an alist of counsel outline heading completion candidates,
 using `counsel-outline-candidates'.
 
 Each element is a pair (HEADING . MARKER), where the string HEADING
 is located at the position of MARKER."
-  (->> filenames
+  (->> (or filenames org-agenda-files)
        (-filter #'f-exists?)
        (-map-when (-compose #'not #'bufferp)
                   (-rpartial #'find-file-noselect t))
