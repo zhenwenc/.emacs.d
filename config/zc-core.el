@@ -254,8 +254,12 @@
 
 
 
-(require 'server)
-(unless (server-running-p) (server-start))
+(use-package server
+  :when (display-graphic-p)
+  :defer 1
+  :config
+  (require 'server)
+  (unless (server-running-p) (server-start)))
 
 
 
