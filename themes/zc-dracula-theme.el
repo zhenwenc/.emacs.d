@@ -71,25 +71,25 @@
    (level8 magenta)
    (level9 violet)
 
-   (hidden         base1)
-   (-modeline-bright nil)
-   (-modeline-pad (when (integerp doom-themes-padded-modeline) 4))
+   (hidden          base1)
 
    (modeline-fg     nil)
    (modeline-fg-alt base5)
 
-   (modeline-bg
+   (modeline-bg          `(,(car bg-alt) nil))
+   (modeline-bg-inactive `(,(car bg-alt) nil))
 
-    (if -modeline-bright
-        (doom-darken  magenta 0.675)
-      `(,(car bg) ,@(cdr base0))))
-   (modeline-bg-l
-    (if -modeline-bright
-        (doom-darken magenta 0.6)
-      `(,(doom-darken (car bg) 0.15) ,@(cdr base0))))
-   (modeline-bg-inactive   (doom-darken bg 0.1))
-   (modeline-bg-inactive-l `(,(doom-darken (car bg) 0.075) ,@(cdr base1))))
-
+   (modeline-text          "#d5d8dc")
+   (modeline-text-inverse  "#3b4044")
+   (modeline-text-inactive "#5b6268")
+   (modeline-primary       "#4296ec")
+   (modeline-accent        "#ffd203")
+   (modeline-warning       "#ff0266")
+   (modeline-normal        "#e6af3f")
+   (modeline-insert        "#2ecc71")
+   (modeline-motion        "#ee42f4")
+   (modeline-visual        "#ecf0f1")
+   (modeline-pad           3))
 
   ;; --- extra faces ------------------------
   ((elscreen-tab-other-screen-face :background "#353a42" :foreground "#1e2022")
@@ -97,20 +97,53 @@
    ((line-number &override) :foreground base4)
    ((line-number-current-line &override) :foreground fg)
 
-   (font-lock-comment-face
-    :foreground comments)
-   (font-lock-doc-face
-    :inherit 'font-lock-comment-face
-    :foreground doc-comments)
-   (doom-modeline-bar :background (if -modeline-bright modeline-bg highlight))
+   (font-lock-comment-face :foreground comments)
+   (font-lock-doc-face :inherit 'font-lock-comment-face :foreground doc-comments)
+
+   ;; --- modeline faces ------------------------
    (mode-line
     :background modeline-bg :foreground modeline-fg
-    :box (if -modeline-pad `(:line-width ,-modeline-pad :color ,modeline-bg)))
+    :box (if modeline-pad `(:line-width ,modeline-pad :color ,modeline-bg)))
    (mode-line-inactive
     :background modeline-bg-inactive :foreground modeline-fg-alt
-    :box (if -modeline-pad `(:line-width ,-modeline-pad :color ,modeline-bg-inactive)))
-   (mode-line-emphasis
-    :foreground (if -modeline-bright base8 highlight))
+    :box (if modeline-pad `(:line-width ,modeline-pad :color ,modeline-bg-inactive)))
+   (mode-line-emphasis :foreground highlight)
+
+   (header-line :inherit 'mode-line)
+
+   (zc-modeline/active)
+   (zc-modeline/inactive :inherit 'mode-line-inactive)
+
+   (zc-modeline/primary
+    :inherit 'zc-modeline/active
+    :foreground modeline-primary)
+   (zc-modeline/accent
+    :inherit 'zc-modeline/active
+    :foreground modeline-accent)
+   (zc-modeline/warning
+    :inherit 'zc-modeline/active :weight 'bold
+    :foreground modeline-warning)
+
+   (zc-modeline/evil-active
+    :inherit 'zc-modeline/active :weight 'bold
+    :background modeline-bg :foreground modeline-text-inverse)
+   (zc-modeline/evil-inactive
+    :inherit 'zc-modeline/active :weight 'bold
+    :background modeline-bg :foreground modeline-text-inactive
+    :box `(:line-width ,modeline-pad :color ,modeline-bg :style nil))
+
+   (zc-modeline/evil-visual-state
+    :inherit 'zc-modeline/evil-active :background modeline-motion
+    :box `(:line-width ,modeline-pad :color ,modeline-motion :style nil))
+   (zc-modeline/evil-normal-state
+    :inherit 'zc-modeline/evil-active :background modeline-normal
+    :box `(:line-width ,modeline-pad :color ,modeline-normal :style nil))
+   (zc-modeline/evil-insert-state
+    :inherit 'zc-modeline/evil-active :background modeline-insert
+    :box `(:line-width ,modeline-pad :color ,modeline-insert :style nil))
+   (zc-modeline/evil-visual-state
+    :inherit 'zc-modeline/evil-active :background modeline-visual
+    :box `(:line-width ,modeline-pad :color ,modeline-visual :style nil))
 
    ;; --- major-mode faces -------------------
    ;; css-mode / scss-mode

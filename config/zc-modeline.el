@@ -3,12 +3,13 @@
 
 (require 's)
 (require 'f)
-(require 'zc-layout)
 
 (autoload 'winum-get-number-string "winum")
 (autoload 'all-the-icons-faicon "all-the-icons")
 (autoload 'all-the-icons-octicon "all-the-icons")
 (autoload 'all-the-icons-icon-for-mode "all-the-icons")
+
+(defvar zc-layout/current-window-config-tag)
 
 
 ;; Functions
@@ -28,116 +29,49 @@
 
 ;; Faces
 
-(defface zc-modeline/inactive '((t (:inherit mode-line)))
+(defface zc-modeline/inactive nil
   "Primary face for elements in inactive window."
   :group 'mode-line)
 
-(defface zc-modeline/active '((t (:inherit mode-line)))
+(defface zc-modeline/active nil
   "Default face for elements."
   :group 'mode-line)
 
-(defface zc-modeline/primary '((t (:inherit mode-line)))
+(defface zc-modeline/primary nil
   "Face for primary elements."
   :group 'mode-line)
 
-(defface zc-modeline/accent '((t (:inherit mode-line)))
+(defface zc-modeline/accent nil
   "Face for accented elements"
   :group 'mode-line)
 
-(defface zc-modeline/warning '((t (:inherit mode-line)))
+(defface zc-modeline/warning nil
   "Face for elements with warning"
   :group 'mode-line)
 
-(defface zc-modeline/evil-inactive '((t (:inherit mode-line)))
+(defface zc-modeline/evil-active nil
+  "Base face for evil state faces in active window."
+  :group 'mode-line)
+
+(defface zc-modeline/evil-inactive nil
   "Face for indicating evil state in inactive window."
   :group 'mode-line)
 
-(defface zc-modeline/evil-normal-state '((t (:inherit mode-line)))
+(defface zc-modeline/evil-normal-state nil
   "Face for indicating evil normal state."
   :group 'mode-line)
 
-(defface zc-modeline/evil-insert-state '((t (:inherit mode-line)))
+(defface zc-modeline/evil-insert-state nil
   "Face for indicating evil insert state."
   :group 'mode-line)
 
-(defface zc-modeline/evil-visual-state '((t (:inherit mode-line)))
+(defface zc-modeline/evil-visual-state nil
   "Face for indicating evil visual state."
   :group 'mode-line)
 
-(defface zc-modeline/evil-motion-state '((t (:inherit mode-line)))
+(defface zc-modeline/evil-motion-state nil
   "Face for indicating evil readonly state."
   :group 'mode-line)
-
-(let* ((gui           (display-graphic-p))
-       (bg            (if gui "#1D2026" nil))
-       (text          "#D5D8DC")
-       (text-inverse  "#3B4044")
-       (text-inactive "#5B6268")
-       (primary       "#4296EC")
-       (accent        "#FFD203")
-       (warning       "#FF0266")
-       (normal        "#E6AF3F")
-       (insert        "#2ECC71")
-       (motion        "#EE42F4")
-       (visual        "#ECF0F1")
-       (padded         3))
-
-  (set-face-attribute 'mode-line nil
-                      :foreground text :background bg
-                      :box `(:line-width ,padded :color ,bg :style nil))
-  (set-face-attribute 'mode-line-inactive nil
-                      :foreground text-inactive :background bg)
-
-  (set-face-attribute 'zc-modeline/active nil)
-  (set-face-attribute 'zc-modeline/inactive nil
-                      :inherit 'mode-line-inactive)
-
-  (set-face-attribute 'zc-modeline/primary nil
-                      :inherit 'zc-modeline/active
-                      :foreground primary)
-
-  (set-face-attribute 'zc-modeline/accent nil
-                      :inherit 'zc-modeline/active
-                      :foreground accent)
-
-  (set-face-attribute 'zc-modeline/warning nil
-                      :inherit 'zc-modeline/active
-                      :foreground warning :weight 'bold)
-
-  (set-face-attribute 'zc-modeline/evil-inactive nil
-                      :inherit 'zc-modeline/active
-                      :foreground text-inactive
-                      :background bg
-                      :weight     'bold
-                      :box `(:line-width ,padded :color ,bg :style nil))
-
-  (set-face-attribute 'zc-modeline/evil-visual-state nil
-                      :inherit 'zc-modeline/active
-                      :foreground text-inverse
-                      :background motion
-                      :weight     'bold
-                      :box `(:line-width ,padded :color ,motion :style nil))
-
-  (set-face-attribute 'zc-modeline/evil-normal-state nil
-                      :inherit 'zc-modeline/active
-                      :foreground text-inverse
-                      :background normal
-                      :weight     'bold
-                      :box `(:line-width ,padded :color ,normal :style nil))
-
-  (set-face-attribute 'zc-modeline/evil-insert-state nil
-                      :inherit 'zc-modeline/active
-                      :foreground text-inverse
-                      :background insert
-                      :weight     'bold
-                      :box `(:line-width ,padded :color ,insert :style nil))
-
-  (set-face-attribute 'zc-modeline/evil-visual-state nil
-                      :inherit 'zc-modeline/active
-                      :foreground text-inverse
-                      :background visual
-                      :weight     'bold
-                      :box `(:line-width ,padded :color ,visual :style nil)))
 
 
 
@@ -242,7 +176,7 @@
 
 
 
-(setq-default mode-line-format (list "%-"))
+;; (setq-default mode-line-format nil)
 
 (setq-default
  mode-line-format
@@ -250,7 +184,7 @@
     (let* ((active     (eq zc-modeline/active-window (get-buffer-window)))
            (face       (if active 'zc-modeline/active 'zc-modeline/inactive))
            (primary    (if active 'zc-modeline/primary face))
-           (accent     (if active 'zc-modeline/accent face))
+           (accent     (if active 'zc-modeline/accent  face))
            (warning    (if active 'zc-modeline/warning face))
            (evil-state (cond
                         ((not active)          'zc-modeline/evil-inactive)
@@ -336,7 +270,8 @@
 
 ;; Testing
 ;; (progn
-;;   (setq mode-line-format (default-value 'mode-line-format))
+;;   (setq mode-line-format   (default-value 'mode-line-format))
+;;   (setq header-line-format (default-value 'header-line-format))
 ;;   (zc/measure-time (format-mode-line mode-line-format)))
 
 (provide 'zc-modeline)
