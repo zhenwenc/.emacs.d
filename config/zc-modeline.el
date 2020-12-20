@@ -11,34 +11,6 @@
 (autoload 'all-the-icons-icon-for-mode "all-the-icons")
 
 
-
-(defvar zc-modeline/active-window nil
-  "Current active window.")
-
-(defun zc-modeline/set-active-window (windows)
-  (when (not (minibuffer-window-active-p (frame-selected-window)))
-    (setq zc-modeline/active-window (selected-window))))
-(add-function :before pre-redisplay-function #'zc-modeline/set-active-window)
-
-
-;; LSP Info
-
-(defvar-local zc-modeline/lsp-info nil
-  "Current LSP workspace and status.")
-
-(defun zc-modeline/update-lsp-info (&rest _)
-  (let* ((workspace (and (bound-and-true-p lsp-mode)
-                         (car (lsp-workspaces))))
-         (server-id (when workspace (lsp--workspace-print workspace))))
-    (setq zc-modeline/lsp-info server-id)))
-
-(with-eval-after-load 'lsp-mode
-  (dolist (hook '(lsp-mode-hook
-                  lsp-after-initialize-hook
-                  lsp-after-uninitialized-hook))
-    (add-hook hook #'zc-modeline/update-lsp-info)))
-
-
 ;; Functions
 
 (defun zc-modeline/get-width (values)
@@ -243,14 +215,43 @@
 
 
 
+(defvar zc-modeline/active-window nil
+  "Current active window.")
+
+(defun zc-modeline/set-active-window (windows)
+  (when (not (minibuffer-window-active-p (frame-selected-window)))
+    (setq zc-modeline/active-window (selected-window))))
+(add-function :before pre-redisplay-function #'zc-modeline/set-active-window)
+
+
+
+(defvar-local zc-modeline/lsp-info nil
+  "Current LSP workspace and status.")
+
+(defun zc-modeline/update-lsp-info (&rest _)
+  (let* ((workspace (and (bound-and-true-p lsp-mode)
+                         (car (lsp-workspaces))))
+         (server-id (when workspace (lsp--workspace-print workspace))))
+    (setq zc-modeline/lsp-info server-id)))
+
+(with-eval-after-load 'lsp-mode
+  (dolist (hook '(lsp-mode-hook
+                  lsp-after-initialize-hook
+                  lsp-after-uninitialized-hook))
+    (add-hook hook #'zc-modeline/update-lsp-info)))
+
+
+
+(setq-default mode-line-format (list "%-"))
+
 (setq-default
  mode-line-format
  '((:eval
-    (let* ((active (eq zc-modeline/active-window (get-buffer-window)))
-           (face (if active 'zc-modeline/active 'zc-modeline/inactive))
-           (primary (if active 'zc-modeline/primary face))
-           (accent (if active 'zc-modeline/accent face))
-           (warning (if active 'zc-modeline/warning face))
+    (let* ((active     (eq zc-modeline/active-window (get-buffer-window)))
+           (face       (if active 'zc-modeline/active 'zc-modeline/inactive))
+           (primary    (if active 'zc-modeline/primary face))
+           (accent     (if active 'zc-modeline/accent face))
+           (warning    (if active 'zc-modeline/warning face))
            (evil-state (cond
                         ((not active)          'zc-modeline/evil-inactive)
                         (buffer-read-only      'zc-modeline/evil-motion-state)
@@ -306,7 +307,7 @@
                  ;; Current column and line positions
                  (zc-modeline/separator)
                  (propertize "%4l:" 'face face)
-                 (propertize "%2c" 'face (if exceed-80col warning face))
+                 (propertize "%2c"  'face (if exceed-80col warning face))
 
                  ;; Project info
                  (zc-modeline/separator)
