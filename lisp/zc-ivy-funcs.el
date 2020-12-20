@@ -32,7 +32,7 @@
   (interactive)
   (cond
    ;; Similar to `counsel-imenu' but with better results
-   ((derived-mode-p 'org-mode)
+   ((eq major-mode 'org-mode)
     (zc-org/goto-buffer-heading (if widenp 'root 'parent)))
    (t
     (call-interactively #'counsel-imenu))))

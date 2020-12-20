@@ -128,8 +128,8 @@ See also `counsel-outline'."
   (let* ((settings (cdr (assq major-mode counsel-outline-settings)))
          (candidates (zc/with-widen-buffer
                       (pcase tree
-                        ('parent (ignore-errors (outline-up-heading 1))
-                                 (org-narrow-to-subtree)))
+                        ('parent (ignore-errors (outline-up-heading 1)
+                                                (org-narrow-to-subtree))))
                       (counsel-outline-candidates settings))))
     (ivy-read "Outline: " candidates
               :action  (or (plist-get settings :action) #'counsel-outline-action)
