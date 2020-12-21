@@ -189,8 +189,9 @@
                                  (restclient . t)))
 
   ;; Alias source code block languages
-  (add-to-list 'org-src-lang-modes '("rust" . rustic))
-  (add-to-list 'org-src-lang-modes '("ts"   . typescript)))
+  (add-to-list 'org-src-lang-modes '("rust"       . rustic))
+  (add-to-list 'org-src-lang-modes '("ts"         . typescript))
+  (add-to-list 'org-src-lang-modes '("typescript" . typescript)))
 
 
 
