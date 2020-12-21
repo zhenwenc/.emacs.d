@@ -188,59 +188,9 @@
                                  (plantuml   . t)
                                  (restclient . t)))
 
-  ;; A bit hacky, but works fine for myself :p
-  ;; Alternatively we can use `ts-node' instead.
-  (defalias 'org-babel-execute:typescript 'org-babel-execute:js)
-
-  ;; Improve TypeScript source block experience
-  ;; http://rwx.io/posts/org-with-babel-node-updated/
-  (defun org-babel-execute:typescript (body params)
-    "Execute a block of Typescript code with org-babel.
-  This function is called by `org-babel-execute-src-block'."
-    (let* ((ts-node-options (json-serialize '(module "CommonJS" target "ES2017")))
-           (dir (or (cdr (assq :dir params)) zc-org/directory))
-           (cmd (or (cdr (assq :cmd params)) (format "ts-node -T -O '%s'" ts-node-options)))
-           ;; Transpile 'import' statements to 'require'
-           (script-file (org-babel-temp-file "js-script-" ".ts"))
-           (output-file (org-babel-temp-file "js-script-" ".js"))
-           (babel-cmd (f-join zc-org/directory "node_modules/.bin/babel"))
-           (babel-res (progn (with-temp-file script-file (insert body))
-                             (shell-command-to-string
-                              (concat babel-cmd
-                                      " --no-babelrc"
-                                      " --presets @babel/preset-env"
-                                      " --plugins @babel/plugin-transform-runtime"
-                                      " --extensions .ts"
-                                      " --out-file " output-file
-                                      " " script-file))))
-           (babel-body (f-read output-file))
-           (node-path (concat "NODE_PATH=" (f-join dir "node_modules")))
-           (node-opts (format "NODE_OPTIONS='--unhandled-rejections=strict'"))
-           (org-babel-js-cmd (format "%s %s %s" node-path node-opts cmd))
-           (org-babel-js-function-wrapper "%s"))
-      (when (s-equals? "yes" (cdr (assq :debug params)))
-        (message "[DEBUG] Transpiled source code:\n\n%s\n%s" babel-res babel-body))
-      (org-babel-execute:js babel-body params)))
-
-  (defun org-babel-edit-prep:typescript (info)
-    (let* ((dir (or (->> info caddr (alist-get :dir)) zc-org/directory))
-           (config (zc-typescript/tide-load-tsconfig dir)))
-      (message "Set tide project root to %s" dir)
-      (setq-local tide-project-root (f-expand dir))
-      (puthash (tide-project-name) config tide-project-configs)
-      (zc-typescript/maybe-setup-tide)))
-
-  ;; Enable LSP Mode for babel source block
-  ;; - centaur-emacs
-  (defun org-babel-edit-prep:python (info)
-    (let ((file-name (->> info caddr (alist-get :file))))
-      (unless file-name
-        (setq file-name (f-join org-babel-temporary-directory "edit.py")))
-      (setq buffer-file-name file-name)
-      (lsp-deferred)))
-
-  ;; Prefer python3
-  (setq org-babel-python-command "python3"))
+  ;; Alias source code block languages
+  (add-to-list 'org-src-lang-modes '("rust" . rustic))
+  (add-to-list 'org-src-lang-modes '("ts"   . typescript)))
 
 
 
@@ -368,13 +318,8 @@ definition line and nil otherwise."
                      " "
                      (propertize (el-patch-swap $old $new) 'face 'org-verbatim)
                      " "))))
-              hdr-args " "))))))))
+              hdr-args " ")))))))
 
-
-;; Org Pretty
-
-(use-package org-eldoc
-  :after org
   :config
   (defun zc-org/post-org-eldoc-get-breadcrumb (orig-fn)
     "Unify text line-height for outline headers with `org-level-*' face,
@@ -387,6 +332,9 @@ so that the breadcrumb will fit in the default echo area."
         (setq pos (next-single-property-change pos 'face text)))
       text))
   (advice-add 'org-eldoc-get-breadcrumb :around #'zc-org/post-org-eldoc-get-breadcrumb))
+
+
+;; Org Pretty
 
 (use-package org-superstar
   :straight (:host github :repo "integral-dw/org-superstar-mode")
@@ -403,12 +351,6 @@ so that the breadcrumb will fit in the default echo area."
 (use-package ob-restclient
   :straight t
   :after org)
-
-(use-package ob-ipython
-  :disabled t ;; not used
-  :straight t
-  :after org
-  :if (executable-find "jupyter"))
 
 (use-package ob-async
   :straight t

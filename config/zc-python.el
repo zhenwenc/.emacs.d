@@ -17,7 +17,26 @@
   (setq python-shell-completion-native-enable nil)
 
   (add-hook 'inferior-python-mode-hook
-            (lambda () (process-query-on-exit-flag (get-process "Python")))))
+            (lambda () (process-query-on-exit-flag (get-process "Python"))))
+
+  ;; Integration with `org-mode'
+  (with-eval-after-load 'org
+    ;; Enable LSP Mode for babel source block
+    ;; - centaur-emacs
+    (defun org-babel-edit-prep:python (info)
+      (let ((file-name (->> info caddr (alist-get :file))))
+        (unless file-name
+          (setq file-name (f-join org-babel-temporary-directory "edit.py")))
+        (setq buffer-file-name file-name)
+        (lsp-deferred)))
+
+    ;; Prefer python3
+    (setq org-babel-python-command "python3")
+
+    (use-package ob-ipython
+      :disabled t ;; not used
+      :straight t
+      :if (executable-find "jupyter"))))
 
 ;; Live Coding in Python
 (use-package live-py-mode

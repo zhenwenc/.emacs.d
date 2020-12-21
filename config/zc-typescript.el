@@ -69,7 +69,51 @@
   ;; Enter > right before the slash in a self-closing tag automatically
   ;; inserts a closing tag and places point inside the element
   (evil-define-key 'insert typescript-mode-map
-    (kbd ">") 'zc-typescript/sp-jsx-rewrap-tag))
+    (kbd ">") 'zc-typescript/sp-jsx-rewrap-tag)
+
+  ;; Integration with `org-mode'
+  (with-eval-after-load 'org
+
+    ;; Improve TypeScript source block experience
+    ;; http://rwx.io/posts/org-with-babel-node-updated/
+    (defun org-babel-execute:typescript (body params)
+      "Execute a block of Typescript code with org-babel.
+  This function is called by `org-babel-execute-src-block'."
+      (let* ((ts-node-options (json-serialize '(module "CommonJS" target "ES2017")))
+             (dir (or (cdr (assq :dir params)) zc-org/directory))
+             (cmd (or (cdr (assq :cmd params)) (format "ts-node -T -O '%s'" ts-node-options)))
+             ;; Transpile 'import' statements to 'require'
+             (script-file (org-babel-temp-file "js-script-" ".ts"))
+             (output-file (org-babel-temp-file "js-script-" ".js"))
+             (babel-cmd (f-join zc-org/directory "node_modules/.bin/babel"))
+             (babel-res (progn (with-temp-file script-file (insert body))
+                               (shell-command-to-string
+                                (concat babel-cmd
+                                        " --no-babelrc"
+                                        " --presets @babel/preset-env"
+                                        " --plugins @babel/plugin-transform-runtime"
+                                        " --extensions .ts"
+                                        " --out-file " output-file
+                                        " " script-file))))
+             (babel-body (f-read output-file))
+             (node-path (concat "NODE_PATH=" (f-join dir "node_modules")))
+             (node-opts (format "NODE_OPTIONS='--unhandled-rejections=strict'"))
+             (org-babel-js-cmd (format "%s %s %s" node-path node-opts cmd))
+             (org-babel-js-function-wrapper "%s"))
+        (when (s-equals? "yes" (cdr (assq :debug params)))
+          (message "[DEBUG] Transpiled source code:\n\n%s\n%s" babel-res babel-body))
+        (org-babel-execute:js babel-body params)))
+
+    (defun org-babel-edit-prep:typescript (info)
+      (let* ((dir (or (->> info caddr (alist-get :dir)) zc-org/directory))
+             (config (zc-typescript/tide-load-tsconfig dir)))
+        (message "Set tide project root to %s" dir)
+        (setq-local tide-project-root (f-expand dir))
+        (puthash (tide-project-name) config tide-project-configs)
+        (zc-typescript/maybe-setup-tide)))
+
+    (defalias 'org-babel-execute:ts   'org-babel-execute:typescript)
+    (defalias 'org-babel-edit-prep:ts 'org-babel-edit-prep:typescript)))
 
 
 

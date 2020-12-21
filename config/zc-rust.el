@@ -104,11 +104,7 @@
   ;; Customize RLS server
   (with-eval-after-load 'lsp-rust
     ;; Only index the project when a file is saved
-    (setq lsp-rust-build-on-save t))
-
-  ;; Alias source code block language
-  (with-eval-after-load 'org
-    (add-to-list 'org-src-lang-modes '("rust" . rustic))))
+    (setq lsp-rust-build-on-save t)))
 
 
 
