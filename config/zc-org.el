@@ -373,6 +373,21 @@ definition line and nil otherwise."
 
 ;; Org Pretty
 
+(use-package org-eldoc
+  :after org
+  :config
+  (defun zc-org/post-org-eldoc-get-breadcrumb (orig-fn)
+    "Unify text line-height for outline headers with `org-level-*' face,
+so that the breadcrumb will fit in the default echo area."
+    (when-let ((text (funcall orig-fn)) (face '(:height 1)) (pos 0) (end 0))
+      (setq pos (next-single-property-change 0 'face text))
+      (while pos
+        (setq end (next-single-property-change pos 'face text))
+        (add-face-text-property pos (or end (length text)) face nil text)
+        (setq pos (next-single-property-change pos 'face text)))
+      text))
+  (advice-add 'org-eldoc-get-breadcrumb :around #'zc-org/post-org-eldoc-get-breadcrumb))
+
 (use-package org-superstar
   :straight (:host github :repo "integral-dw/org-superstar-mode")
   :after org
