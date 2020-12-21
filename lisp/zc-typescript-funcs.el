@@ -9,6 +9,7 @@
 (autoload 'tide-net-sentinel "tide")
 
 (defvar tide-servers)
+(defvar tide-project-configs)
 (defvar lsp--symbol-kind)
 (defvar flycheck-checkers)
 
@@ -148,6 +149,17 @@ Use `tide-documentation-at-point' to show complex types, need
 to enable `tide-always-show-documentation'."
   (-let (((head . tail) (s-lines text)))
     (funcall orig-fn (concat head (unless (null tail) " ...")))))
+
+(defun zc-typescript/tide-show-project-info (orig-fn version config-file-name)
+  "Advice `tide-eldoc-maybe-show' with extra information."
+  (funcall orig-fn version config-file-name)
+  (let ((inhibit-read-only t)
+        (config (gethash (tide-project-name) tide-project-configs)))
+    (with-current-buffer "*tide-project-info*"
+      (insert "\n\n")
+      (let ((pos (point-max)))
+        (json-insert config)
+        (json-pretty-print pos (point-max))))))
 
 
 ;; LSP

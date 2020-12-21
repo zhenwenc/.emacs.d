@@ -166,6 +166,7 @@
   ;; HACK: This is hacky, is there any better way?
   (advice-add 'tide-completion-doc-buffer :override #'ignore)
   (advice-add 'tide-eldoc-maybe-show :around #'zc-typescript/tide-eldoc-maybe-show)
+  (advice-add 'tide-show-project-info :around #'zc-typescript/tide-show-project-info)
 
   :config
   (defun zc-typescript/maybe-setup-tide ()
