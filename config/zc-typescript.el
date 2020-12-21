@@ -106,7 +106,9 @@
 
     (defun org-babel-edit-prep:typescript (info)
       (let* ((dir (or (->> info caddr (alist-get :dir)) zc-org/directory))
-             (config (zc-typescript/tide-load-tsconfig dir)))
+             (default-directory dir)
+             (config (tide-safe-json-read-string
+                      (tide-command-to-string "node" '("tsc" "--showConfig")))))
         (message "Set tide project root to %s" dir)
         (setq-local tide-project-root (f-expand dir))
         (puthash (tide-project-name) config tide-project-configs)
@@ -163,7 +165,6 @@
   :init
   ;; HACK: This is hacky, is there any better way?
   (advice-add 'tide-completion-doc-buffer :override #'ignore)
-  (advice-add 'tide-load-tsconfig :override #'zc-typescript/tide-load-tsconfig)
   (advice-add 'tide-eldoc-maybe-show :around #'zc-typescript/tide-eldoc-maybe-show)
 
   :config

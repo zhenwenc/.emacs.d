@@ -138,17 +138,6 @@ TODO: Maybe set `lsp-enable-completion-at-point' to `nil'?
   (shell-command (concat "tslint --fix " (buffer-file-name)))
   (revert-buffer t t))
 
-(defun zc-typescript/tide-load-tsconfig (path &rest _ignored)
-  "Overrides `tide-load-tsconfig'."
-  (when (not (file-exists-p path))
-    (error "tsconfig file not found at %S." path))
-  (condition-case nil
-      (let ((json-object-type 'plist)
-            (json (shell-command-to-string
-                   (format "tsc --project %s --showConfig" path))))
-        (json-read-from-string json))
-    (error '())))
-
 (defun zc-typescript/tide-eldoc-maybe-show (orig-fn text)
   "Advice `tide-eldoc-maybe-show' with magics.
 
