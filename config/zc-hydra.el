@@ -45,6 +45,9 @@
 (autoload 'youdao-dictionary-search "youdao-dictionary")
 (autoload 'youdao-dictionary-search-from-input "youdao-dictionary")
 
+(autoload 'org-agenda "org-agenda")
+(autoload 'org-capture "org-agenda")
+
 
 
 (use-package pretty-hydra

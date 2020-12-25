@@ -213,13 +213,13 @@
     ("-"  org-agenda-manipulate-query-subtract "query remove")
     ("*"  org-agenda-bulk-mark-all "bulk mark all")
     ("~"  org-agenda-bulk-toggle-all "bulk toggle all")
+    ("R"  org-agenda-bulk-mark-regexp "bulk mark regexp")
     ("x"  org-agenda-bulk-action "bulk action")
     ("r"  org-agenda-redo "rebuild agenda view")
     ("C"  org-agenda-capture "capture"))
 
    "Search"
-   (("%"  org-agenda-bulk-mark-regexp "bulk mark regexp")
-    ("sh" org-agenda-filter-by-top-headline "filter by headline")
+   (("sh" org-agenda-filter-by-top-headline "filter by headline")
     ("sc" zc-org/agenda-filter-by-category "filter by category")
     ("sC" org-agenda-filter-by-category "filter by category at point")
     ("se" org-agenda-filter-by-effort "filter by effort")
