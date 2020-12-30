@@ -71,6 +71,7 @@
  auto-save-file-name-transforms `((".*" ,temporary-file-directory t))
  auto-save-list-file-name        (concat paths-cache-dir "autosave")
  auto-save-list-file-prefix      (concat paths-cache-dir "autosave/.saves-")
+ auto-save-no-message            t
 
  ;; Tramp
  tramp-default-method            "ssh"
