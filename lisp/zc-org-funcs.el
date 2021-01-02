@@ -284,7 +284,7 @@ function and the file."
 (defun zc-org/agenda-filter-by-category (strip)
   (interactive "P")
   (let ((cat (ivy-read "Filter Category: "
-                       (-map (-compose #'f-no-ext #'f-filename) org-agenda-files)
+                       (org-agenda-get-represented-categories)
                        :require-match t
                        :caller 'zc-org/agenda-filter-by-category)))
     (cond ((and cat strip)

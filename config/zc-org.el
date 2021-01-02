@@ -226,7 +226,7 @@
     ("sr" org-agenda-filter-by-regexp "filter by regexp")
     ("st" org-agenda-filter-by-tag "filter bt tag")
     ("ss" org-agenda-limit-interactively "limit interactively")
-    ("S"  org-agenda-filter-remove-all "clear filter"))
+    ("sK" org-agenda-filter-remove-all "clear all filters"))
 
    "Clock & Set"
    (("ct" org-agenda-set-tags "set tags")
