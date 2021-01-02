@@ -3,4 +3,4 @@
 # key: ex
 # condition: (not (zc-yas/test-buffer-p))
 # --
-export ${2: { ${0:named} }} from '$1';
+export ${2: { ${0:named} \}} from '$1';

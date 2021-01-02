@@ -5,10 +5,18 @@
 # --
 import React from 'react';
 
+import { makeStyles } from '@navch-ui/styles';
+
 ${1:export interface ${2:`(file-name-base)`Props} {
 
 }}
 
 export function `(file-name-base)`(${3:props: $2}) {
+  const { styles \} = useStyles();
+
   $0
 }
+
+const useStyles = makeStyles(theme => ({
+
+}));
