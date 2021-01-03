@@ -102,8 +102,8 @@
 
         ;; Reduce search results.
         org-imenu-depth 3
-        org-refile-targets '((nil              :maxlevel . 2)
-                             (org-agenda-files :maxlevel . 2)))
+        org-refile-targets `((nil              :maxlevel . 1)
+                             (org-agenda-files :regexp   . ,(rx "Tasks"))))
 
   (setq org-eldoc-breadcrumb-separator " → "
         org-ellipsis (if (char-displayable-p ?) " ▼" nil)
