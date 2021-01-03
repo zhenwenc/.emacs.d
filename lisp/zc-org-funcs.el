@@ -17,13 +17,13 @@
 (defvar org-babel-result-regexp)
 (defvar org-default-notes-file)
 (defvar org-default-babel-file)
-(defvar zc-org/main-notes-dir)
-(defvar zc-org/work-notes-dir)
 (defvar counsel-outline-settings)
 (defvar counsel-outline--preselect)
 (defvar counsel-outline-path-separator)
 
 (defconst zc-org/directory "~/notes")
+(defconst zc-org/main-notes-dir (f-join zc-org/directory "main"))
+(defconst zc-org/work-notes-dir (f-join zc-org/directory "work"))
 
 
 ;; General

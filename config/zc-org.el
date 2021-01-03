@@ -69,26 +69,24 @@
   ;; Org file directories must be defined at `:init' block
   ;; so that they are visible to the navigation functions,
   ;; such as `zc-org/goto-agenda-file-heading'.
-  (setq org-directory          zc-org/directory
+  (setq org-directory          (f-expand zc-org/directory)
         org-attach-id-dir      (f-join org-directory "data")
 
-        zc-org/main-notes-dir  (f-join org-directory "main")
-        zc-org/work-notes-dir  (f-join org-directory "work")
-
-        org-default-notes-file (f-join zc-org/main-notes-dir "todos.org")
+        org-default-notes-file (f-join zc-org/main-notes-dir "notes.org")
         org-default-todos-file (f-join zc-org/main-notes-dir "todos.org")
         org-default-babel-file (f-join zc-org/main-notes-dir "babel.org")
-
         org-agenda-diary-file  (f-join zc-org/main-notes-dir "diary.org")
-        org-agenda-files       (append (zc-org/file-with-exts :dir zc-org/main-notes-dir)
+
+        org-agenda-files       (append (zc-org/file-with-exts :dir zc-org/directory)
+                                       (zc-org/file-with-exts :dir zc-org/main-notes-dir)
                                        (zc-org/file-with-exts :dir zc-org/work-notes-dir)))
 
   :config
   (setq org-M-RET-may-split-line nil
+        org-insert-heading-respect-content t
+        org-indirect-buffer-display 'current-window
         org-blank-before-new-entry '((heading         . auto)
                                      (plain-list-item . nil))
-        org-indirect-buffer-display 'current-window
-        org-insert-heading-respect-content t
 
         ;; Hide empty line on shift-tab
         ;;
@@ -110,8 +108,10 @@
   (setq org-eldoc-breadcrumb-separator " → "
         org-ellipsis (if (char-displayable-p ?) " ▼" nil)
         org-image-actual-width nil
-        org-pretty-entities nil
         org-tags-column 0
+        org-pretty-entities nil
+
+        ;; Inhibit displaying TeX-like syntax for "_" and "^"
         org-use-sub-superscripts '{}
 
         ;; Hide markers for structural markup elements:
@@ -208,50 +208,50 @@
 
   :hydra
   ("Basic"
-   (("."  org-agenda-goto-today "goto today")
-    ("+"  org-agenda-manipulate-query-add "query add")
+   (("."  org-agenda-goto-today                "goto today")
+    ("+"  org-agenda-manipulate-query-add      "query add")
     ("-"  org-agenda-manipulate-query-subtract "query remove")
-    ("*"  org-agenda-bulk-mark-all "bulk mark all")
-    ("~"  org-agenda-bulk-toggle-all "bulk toggle all")
-    ("R"  org-agenda-bulk-mark-regexp "bulk mark regexp")
-    ("x"  org-agenda-bulk-action "bulk action")
-    ("r"  org-agenda-redo "rebuild agenda view")
-    ("C"  org-agenda-capture "capture"))
+    ("*"  org-agenda-bulk-mark-all             "bulk mark all")
+    ("~"  org-agenda-bulk-toggle-all           "bulk toggle all")
+    ("R"  org-agenda-bulk-mark-regexp          "bulk mark regexp")
+    ("x"  org-agenda-bulk-action               "bulk action")
+    ("r"  org-agenda-redo                      "rebuild agenda view")
+    ("C"  org-agenda-capture                   "capture"))
 
    "Search"
-   (("sh" org-agenda-filter-by-top-headline "filter by headline")
-    ("sc" zc-org/agenda-filter-by-category "filter by category")
-    ("sC" org-agenda-filter-by-category "filter by category at point")
-    ("se" org-agenda-filter-by-effort "filter by effort")
-    ("sr" org-agenda-filter-by-regexp "filter by regexp")
-    ("st" org-agenda-filter-by-tag "filter bt tag")
-    ("ss" org-agenda-limit-interactively "limit interactively")
-    ("sK" org-agenda-filter-remove-all "clear all filters"))
+   (("sh" org-agenda-filter-by-top-headline    "filter by headline")
+    ("sc" zc-org/agenda-filter-by-category     "filter by category")
+    ("sC" org-agenda-filter-by-category        "filter by category at point")
+    ("se" org-agenda-filter-by-effort          "filter by effort")
+    ("sr" org-agenda-filter-by-regexp          "filter by regexp")
+    ("st" org-agenda-filter-by-tag             "filter bt tag")
+    ("ss" org-agenda-limit-interactively       "limit interactively")
+    ("sK" org-agenda-filter-remove-all         "clear all filters"))
 
    "Clock & Set"
-   (("ct" org-agenda-set-tags "set tags")
-    ("cT" org-timer-set-timer "set timer")
-    ("ce" org-agenda-set-effort "set effort")
-    ("cc" org-agenda-clock-cancel "clock cancel")
-    ("cg" org-agenda-clock-goto "clock goto")
-    ("cr" org-agenda-clockreport-mode "clock report"))
+   (("ct" org-agenda-set-tags                  "set tags")
+    ("cT" org-timer-set-timer                  "set timer")
+    ("ce" org-agenda-set-effort                "set effort")
+    ("cc" org-agenda-clock-cancel              "clock cancel")
+    ("cg" org-agenda-clock-goto                "clock goto")
+    ("cr" org-agenda-clockreport-mode          "clock report"))
 
    "Toggle"
-   (("tf" org-agenda-follow-mode "follow")
-    ("te" org-agenda-entry-text-show "entry text"))
+   (("tf" org-agenda-follow-mode               "follow")
+    ("te" org-agenda-entry-text-show           "entry text"))
 
    "Archive"
    (("da" org-agenda-archive-default-with-confirmation "archive y/n")
-    ("dA" org-agenda-archive "archive")
-    ("dd" org-agenda-kill "kill entry"))
+    ("dA" org-agenda-archive                   "archive")
+    ("dd" org-agenda-kill                      "kill entry"))
 
    "Navigation"
-   (("gr" org-agenda-redo "redo")
-    ("gR" org-agenda-redo-all "redo all")
-    ("gc" org-agenda-goto-calendar "goto calendar")
-    ("gC" org-agenda-convert-date "convert date")
-    ("gd" org-agenda-goto-date "goto date")
-    ("gt" org-agenda-show-tags "show tags")))
+   (("gr" org-agenda-redo                      "redo")
+    ("gR" org-agenda-redo-all                  "redo all")
+    ("gc" org-agenda-goto-calendar             "goto calendar")
+    ("gC" org-agenda-convert-date              "convert date")
+    ("gd" org-agenda-goto-date                 "goto date")
+    ("gt" org-agenda-show-tags                 "show tags")))
 
   :hook
   ((org-agenda-after-show . org-narrow-to-subtree))
