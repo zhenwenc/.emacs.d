@@ -168,21 +168,25 @@
 
 (defun zc-theme/after-init ()
   "Setup frame default fonts."
-  (if window-system
-      (progn
-        (add-to-list 'default-frame-alist `(font . ,zc-default-font))
-        (add-to-list 'default-frame-alist '(internal-border-width . 0))
+  (when window-system
+    (add-to-list 'default-frame-alist `(font . ,zc-default-font))
+    (add-to-list 'default-frame-alist '(internal-border-width . 0))
 
-        ;; Workaround for initializing child frame by posframe
-        ;; causes weird white square flicker on the screen.
-        (add-to-list 'default-frame-alist `(background-color . ,(doom-color 'bg)))
+    ;; Workaround for initializing child frame by posframe
+    ;; causes weird white square flicker on the screen.
+    (add-to-list 'default-frame-alist `(background-color . ,(doom-color 'bg)))
 
-        (set-face-font 'default        zc-default-font)
-        (set-face-font 'variable-pitch zc-variable-pitch-font)
-        (set-face-font 'fixed-pitch    zc-fixed-pitch-font))
-    (when (not (eq system-type 'darwin))
-      (menu-bar-mode -1))
-    ;; Menu bar always off in text mode
+    (set-face-font 'default        zc-default-font)
+    (set-face-font 'fixed-pitch    zc-fixed-pitch-font)
+    (set-face-font 'variable-pitch zc-variable-pitch-font)
+
+    ;; Workaround for Emojis don't render on `emacs-plus'.
+    (when (eq system-type 'darwin)
+      (set-fontset-font t 'symbol (font-spec :family "Apple Color Emoji")
+                        nil 'prepend)))
+  ;; Menu bar always off in text mode
+  (when (or (not window-system)
+            (not (eq system-type 'darwin)))
     (menu-bar-mode -1)))
 (add-hook 'after-init-hook 'zc-theme/after-init)
 
