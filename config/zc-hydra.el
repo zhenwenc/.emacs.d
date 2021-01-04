@@ -46,7 +46,7 @@
 (autoload 'youdao-dictionary-search-from-input "youdao-dictionary")
 
 (autoload 'org-agenda "org-agenda")
-(autoload 'org-capture "org-agenda")
+(autoload 'org-capture "org-capture")
 
 
 
