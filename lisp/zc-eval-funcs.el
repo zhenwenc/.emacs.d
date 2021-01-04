@@ -9,6 +9,7 @@
 (defvar compilation-arguments)
 
 
+;; Comint
 
 ;;;###autoload
 (defun zc-eval/compilation-toggle-comint ()
@@ -37,14 +38,22 @@ Interactively also sends a terminating newline."
   (zc-eval/compilation-send-input
    (apply #'string (append (this-command-keys-vector) nil))))
 
+
+
 (defun zc-eval/projectile-read-command (prompt command)
-  "Overwrite the original `projectile-read-command', prompt
-with Ivy."
-  (ivy-read prompt (delete-dups (mapcar #'s-trim compile-history))
-            :history 'zc-eval/projectile-read-command-history
-            :initial-input command
-            :action #'(lambda (x) (add-to-list 'compile-history x))
-            :caller #'zc-eval/projectile-read-command))
+  "Compatible with `projectile-read-command' function, prompt
+with `ivy-read'.
+
+Use `ivy-dispatching-done' or `ivy-dispatching-call' to select
+specific action to call after selecting a candidate.
+
+Use `ivy-reverse-i-search' to search from all history entries."
+  (let* ((project (projectile-acquire-root))
+         (history (ring-elements (projectile--get-command-history project))))
+    (ivy-read prompt (delete-dups (mapcar #'s-trim history))
+              :history 'zc-eval/projectile-read-command-history
+              :initial-input command
+              :caller #'zc-eval/projectile-read-command)))
 
 ;;;###autoload
 (defun zc-eval/projectile-compile-file (arg)

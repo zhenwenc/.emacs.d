@@ -29,6 +29,11 @@
    "C-<return>" #'ivy-immediate-done
    "C-c C-e"    #'zc-ivy/occur-then-wgrep)
 
+  (:keymaps 'ivy-reverse-i-search-map
+   "C-j"        #'ivy-next-line
+   "C-k"        #'ivy-previous-line
+   "C-S-k"      #'ivy-reverse-i-search-kill)
+
   :config
   (setq ivy-height 10)
   (setq ivy-count-format "(%d/%d) ")
