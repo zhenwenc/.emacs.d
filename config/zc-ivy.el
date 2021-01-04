@@ -56,10 +56,52 @@
   (with-eval-after-load 'yasnippet
     (add-to-list 'yas-prompt-functions #'zc-ivy/yas-prompt nil #'eq))
 
-  (ivy-mode))
+  (ivy-mode +1))
 
 (use-package ivy-hydra
   :straight t)
+
+(use-package ivy-posframe
+  :straight t
+  :if (display-graphic-p)
+  :custom-face
+  (ivy-posframe        ((t (:background ,(doom-color 'bg-alt)))))
+  (ivy-posframe-border ((t (:background ,(doom-color 'bg-alt)))))
+  (ivy-posframe-cursor ((t (:background ,(doom-color 'blue)))))
+  :config
+  (defun ivy-posframe-display-at-frame-bottom-center-custom (str)
+    (ivy-posframe--display str #'posframe-poshandler-frame-bottom-center))
+  ;; (defun ivy-posframe-display--custom (str)
+  ;;   (ivy-posframe--display str #'posframe-poshandler-frame-bottom-center))
+  ;; (setq ivy-posframe-display-functions-alist '((t . ivy-posframe-display--custom)))
+  (setq ivy-posframe-style 'frame-bottom-center-custom)
+  (setq ivy-posframe-parameters '((alpha 98 98))
+        ivy-posframe-border-width 16
+        ivy-posframe-min-height 10)
+  (ivy-posframe-mode +1))
+
+
+
+(use-package flx
+  :straight t
+  :after ivy
+  :config
+  (setq
+   ;; Fuzzy matching result sorting
+   ;; http://oremacs.com/2016/01/06/ivy-flx/
+   ivy-re-builders-alist '((t . ivy--regex-plus))
+
+   ;; Increase the maximum number of candidates that will be sorted
+   ;; using `flx'. The default is 200, which means `flx' is almost
+   ;; never used. Setting it too high (e.g. 10000) causes lag.
+   ivy-flx-limit 2000))
+
+(use-package ivy-prescient
+  :straight t
+  :after ivy
+  :hook (ivy-mode . ivy-prescient-mode))
+
+
 
 (use-package counsel
   :straight t
@@ -89,45 +131,6 @@
   ;; Use `helpful' describe functions
   (setq counsel-describe-function-function #'helpful-callable
         counsel-describe-variable-function #'helpful-variable))
-
-(use-package flx
-  :straight t
-  :after ivy
-  :config
-  (setq
-   ;; Fuzzy matching result sorting
-   ;; http://oremacs.com/2016/01/06/ivy-flx/
-   ivy-re-builders-alist
-   '((t . ivy--regex-plus))
-
-   ;; Increase the maximum number of candidates that will be sorted
-   ;; using `flx'. The default is 200, which means `flx' is almost
-   ;; never used. Setting it too high (e.g. 10000) causes lag.
-   ivy-flx-limit 2000))
-
-(use-package ivy-prescient
-  :straight t
-  :after ivy
-  :hook (ivy-mode . ivy-prescient-mode))
-
-(use-package ivy-posframe
-  :straight t
-  :if (display-graphic-p)
-  :custom-face
-  (ivy-posframe        ((t (:background ,(doom-color 'bg-alt)))))
-  (ivy-posframe-border ((t (:background ,(doom-color 'bg-alt)))))
-  (ivy-posframe-cursor ((t (:background ,(doom-color 'blue)))))
-  :config
-  (defun ivy-posframe-display-at-frame-bottom-center-custom (str)
-    (ivy-posframe--display str #'posframe-poshandler-frame-bottom-center))
-  ;; (defun ivy-posframe-display--custom (str)
-  ;;   (ivy-posframe--display str #'posframe-poshandler-frame-bottom-center))
-  ;; (setq ivy-posframe-display-functions-alist '((t . ivy-posframe-display--custom)))
-  (setq ivy-posframe-style 'frame-bottom-center-custom)
-  (setq ivy-posframe-parameters '((alpha 98 98))
-        ivy-posframe-border-width 16
-        ivy-posframe-min-height 10)
-  (ivy-posframe-mode +1))
 
 (use-package counsel-tramp
   :straight t
