@@ -9,7 +9,6 @@
 (defvar compilation-arguments)
 
 
-;; Comint
 
 ;;;###autoload
 (defun zc-eval/compilation-toggle-comint ()
@@ -55,22 +54,6 @@ Use `ivy-reverse-i-search' to search from all history entries."
               :initial-input command
               :caller #'zc-eval/projectile-read-command)))
 
-;;;###autoload
-(defun zc-eval/projectile-compile-file (arg)
-  "Run current script file with project compilation."
-  (interactive "P")
-  (-when-let (file-name (buffer-file-name))
-    (projectile-run-compilation (buffer-file-name))))
-
-;;;###autoload
-(defun zc-eval/recompile ()
-  "Call `recompile' if the compilation buffer was compiled
-manually, otherwise does nothing."
-  (interactive)
-  (let ((buffer (compilation-find-buffer)))
-    (unless (get-buffer-process buffer)
-      (recompile))))
-
 
 
 (define-minor-mode zc-eval/compile-on-save-mode
@@ -82,9 +65,18 @@ the current buffer, when there is no ongoing compilation."
    (noninteractive) ; running a batch job
    ((bound-and-true-p zc-eval/compile-on-save-mode)
     (make-local-variable 'after-save-hook)
-    (add-hook 'after-save-hook #'zc-eval/recompile nil t))
+    (add-hook 'after-save-hook #'zc-eval/recompile-on-save nil t))
    (t
-    (remove-hook 'after-save-hook #'zc-eval/recompile t))))
+    (remove-hook 'after-save-hook #'zc-eval/recompile-on-save t))))
+
+;;;###autoload
+(defun zc-eval/recompile-on-save ()
+  "Call `recompile' if the compilation buffer was compiled
+manually, otherwise does nothing."
+  (interactive)
+  (let ((buffer (compilation-find-buffer)))
+    (unless (get-buffer-process buffer)
+      (recompile))))
 
 
 

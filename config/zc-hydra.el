@@ -189,18 +189,19 @@
   (zc-hydra/define zc-main-hydra--error
     (:color teal :title "Error & Eval Hydra" :icon "bug" :prefix "e")
     ("Flycheck"
-     (("el" zc-flycheck/toggle-error-list "flycheck error list")
-      ("eL" zc-flycheck-hydra/body "flycheck error list")
-      ("en" flycheck-next-error "next error")
-      ("eN" flycheck-previous-error "previous error")
-      ("ee" flycheck-explain-error-at-point "flycheck explain at point")
-      ("ev" flycheck-verify-setup "flycheck verify"))
+     (("el" zc-flycheck/toggle-error-list   "show errors")
+      ("eL" zc-flycheck-hydra/body          "show errors (hydra)")
+      ("en" flycheck-next-error             "next error")
+      ("eN" flycheck-previous-error         "prev error")
+      ("ee" flycheck-explain-error-at-point "explain error")
+      ("ev" flycheck-verify-setup           "verify setup"))
 
-     "Eval"
-     (("ec" compile "compile")
-      ("ep" projectile-compile-project "compile project")
-      ("ef" zc-eval/projectile-compile-file "compile file")
-      ("er" recompile "recompile"))))
+     "Compilation"
+     (("ec" compile                         "compile")
+      ("er" recompile                       "recompile")
+      ("ep" projectile-compile-project      "project compile")
+      ("eP" projectile-test-project         "project test")
+      ("eR" projectile-repeat-last-command  "project recompile"))))
 
   (zc-hydra/define zc-main-hydra--org
     (:color teal :title "Org Hydra" :icon "empire" :prefix "o")
