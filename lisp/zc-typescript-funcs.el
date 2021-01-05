@@ -148,8 +148,15 @@ which is very distracted.
 Use `tide-documentation-at-point' to show complex types, need
 to enable `tide-always-show-documentation'."
   (-let (((head . tail) (s-lines text)))
-    (funcall orig-fn (concat (s-truncate 200 head)
-                             (unless (null tail) " ...")))))
+    (setq text (cond ((< (length head) 200)
+                      (->> text
+                           (s-replace-regexp (rx (+ (or space "\n"))) " ")
+                           (s-truncate 200)))
+                     ((null tail)
+                      (concat (s-truncate 200 head) " ..."))
+                     (t
+                      (s-truncate 200 head))))
+    (funcall orig-fn text)))
 
 (defun zc-typescript/tide-show-project-info (orig-fn version config-file-name)
   "Advice `tide-eldoc-maybe-show' with extra information."
