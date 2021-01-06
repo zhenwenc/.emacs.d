@@ -203,8 +203,8 @@
   :general
   (:states 'motion :keymaps 'org-agenda-mode-map
    "RET" #'org-agenda-switch-to
-   "sc"  #'zc-org/agenda-filter-by-category
-   "sC"  #'org-agenda-filter-by-category)
+   ;; The default keybinding `:' had been occupied by `evil'.
+   "T"   #'org-agenda-set-tags)
 
   :hydra
   ("Basic"
