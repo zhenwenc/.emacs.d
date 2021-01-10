@@ -128,11 +128,13 @@
    [remap xref-find-definitions] #'tide-jump-to-definition
    [remap xref-pop-marker-stack] #'tide-jump-back)
 
-  (:states 'normal :keymaps 'tide-references-mode-map
-   "RET" #'tide-goto-reference
-   "p"   #'tide-find-previous-reference
-   "n"   #'tide-find-next-reference
-   "q"   #'quit-window)
+  (:states 'motion :keymaps 'tide-references-mode-map
+   "RET"       #'tide-goto-reference
+   "TAB"       #'tide-cycle-next-reference
+   "<backtab>" #'tide-cycle-previous-reference
+   "C-j"       #'tide-find-next-reference
+   "C-k"       #'tide-find-previous-reference
+   "q"         #'quit-window)
 
   :hydra
   ((:mode (typescript-mode))
@@ -165,7 +167,7 @@
   :init
   ;; HACK: This is hacky, is there any better way?
   (advice-add 'tide-completion-doc-buffer :override #'ignore)
-  (advice-add 'tide-eldoc-maybe-show :around #'zc-typescript/tide-eldoc-maybe-show)
+  (advice-add 'tide-eldoc-maybe-show  :around #'zc-typescript/tide-eldoc-maybe-show)
   (advice-add 'tide-show-project-info :around #'zc-typescript/tide-show-project-info)
 
   :config

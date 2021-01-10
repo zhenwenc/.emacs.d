@@ -87,7 +87,7 @@
   (evil-set-initial-state 'org-agenda-mode          'motion)
   (evil-set-initial-state 'ivy-occur-mode           'motion)
   (evil-set-initial-state 'compilation-mode         'motion)
-  (evil-set-initial-state 'tide-references-mode     'normal)
+  (evil-set-initial-state 'tide-references-mode     'motion)
   (evil-set-initial-state 'tide-project-errors-mode 'motion))
 
 

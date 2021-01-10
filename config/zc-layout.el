@@ -82,6 +82,13 @@
                  (slot            . 1)
                  (window-width    . 0.5))
 
+                (,(rx bos "*tide-references*" eos)
+                 (display-buffer-reuse-window
+                  display-buffer-in-side-window)
+                 (side            . bottom)
+                 (reusable-frames . visible)
+                 (slot            . 0.3))
+
                 (,(rx bos "*prodigy*" eos)
                  (display-buffer-reuse-window
                   display-buffer-in-side-window)
