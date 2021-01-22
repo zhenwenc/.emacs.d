@@ -4,7 +4,6 @@
 (require 'subr-x)
 (require 'zc-paths)
 
-(autoload 'iedit-quit "iedit")
 (autoload 'evil-escape "evil")
 (autoload 'org-move-item-up "org")
 (autoload 'org-move-item-down "org")
@@ -240,7 +239,7 @@ Behave the same as 'Command + delete' at macOS"
   "Evil escape everything."
   (interactive)
   (if (bound-and-true-p iedit-mode)
-      (iedit-quit))
+      (iedit--quit))
   ;; (evil-mc-undo-all-cursors)
   (evil-escape))
 
