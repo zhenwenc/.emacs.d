@@ -353,7 +353,9 @@ so that the breadcrumb will fit in the default echo area."
   :straight t
   :after org)
 
+;; Disabled due to variables will be evaluated twice.
 (use-package ob-async
+  :disabled t
   :straight t
   :after org
   :hook (org-mode . (lambda () (require 'ob-async)))
