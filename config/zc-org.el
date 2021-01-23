@@ -10,9 +10,6 @@
 
 (autoload 'counsel-outline-candidates "counsel-projectile")
 
-(defvar org-tempo-tags)
-(defvar org-tempo-keywords-alist)
-
 
 
 (use-package org
@@ -178,6 +175,21 @@
         ;; Ask for confirmation before executing src block.
         org-confirm-babel-evaluate #'zc-org/babel-confirm-evaluate)
 
+  ;; Integration with `restclient'.
+  (use-package ob-restclient :straight t)
+
+  ;; Disabled due to variables will be evaluated twice.
+  (use-package ob-async
+    :disabled t
+    :straight t
+    :hook (org-mode . (lambda () (require 'ob-async)))
+    :config
+    (add-hook 'ob-async-pre-execute-src-block-hook
+              `(lambda ()
+                 (setq org-plantuml-jar-path ,(concat paths-vendor-dir "plantuml.jar"))))
+    ;; ipython has its own async keyword
+    (add-to-list 'ob-async-no-async-languages-alist "ipython"))
+
   ;; Activate babel source code blocks
   (org-babel-do-load-languages 'org-babel-load-languages
                                '((emacs-lisp . t)
@@ -268,9 +280,10 @@
   (advice-add 'org-agenda-quit :before 'org-save-all-org-buffers))
 
 
+;; Templates
+
 ;; https://orgmode.org/manual/Easy-templates.html
 ;; https://github.com/abo-abo/hydra/wiki/Org-mode-block-templates
-
 (use-package org-tempo
   :after org
   :config
@@ -282,7 +295,7 @@
                 (set key (-map-when 'stringp 'upcase value))))
           org-tempo-tags)
     (message "HACK: Org complete templates with uppercase keycords."))
-  (advice-add 'org-tempo-add-templates :after #'zc-org/post-tempo-add-templates)
+  (advice-add 'org-tempo-add-templates :after 'zc-org/post-tempo-add-templates)
 
   ;; Expand "#+NAME:" with "<n"
   (add-to-list 'org-tempo-keywords-alist '("n" . "name")))
@@ -292,7 +305,6 @@
 (use-package org-eldoc
   :after org
   :defer t
-
   ;; HACK: Error when header argument value is numeric type, such as port number.
   :config/el-patch
   (defun org-eldoc-get-src-header ()
@@ -321,7 +333,6 @@ definition line and nil otherwise."
                      (propertize (el-patch-swap $old $new) 'face 'org-verbatim)
                      " "))))
               hdr-args " ")))))))
-
   :config
   (defun zc-org/post-org-eldoc-get-breadcrumb (orig-fn)
     "Unify text line-height for outline headers with `org-level-*' face,
@@ -336,7 +347,7 @@ so that the breadcrumb will fit in the default echo area."
   (advice-add 'org-eldoc-get-breadcrumb :around #'zc-org/post-org-eldoc-get-breadcrumb))
 
 
-;; Org Pretty
+;; Pretty
 
 (use-package org-superstar
   :straight (:host github :repo "integral-dw/org-superstar-mode")
@@ -346,26 +357,6 @@ so that the breadcrumb will fit in the default echo area."
 (use-package org-sidebar
   :straight (:host github :repo "alphapapa/org-sidebar")
   :after org)
-
-
-;; Org Babel
-
-(use-package ob-restclient
-  :straight t
-  :after org)
-
-;; Disabled due to variables will be evaluated twice.
-(use-package ob-async
-  :disabled t
-  :straight t
-  :after org
-  :hook (org-mode . (lambda () (require 'ob-async)))
-  :config
-  (add-hook 'ob-async-pre-execute-src-block-hook
-            `(lambda ()
-               (setq org-plantuml-jar-path ,(concat paths-vendor-dir "plantuml.jar"))))
-  ;; ipython has its own async keyword
-  (add-to-list 'ob-async-no-async-languages-alist "ipython"))
 
 
 
