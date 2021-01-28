@@ -105,7 +105,7 @@
      "Misc."
      (("bB" ibuffer "ibuffer")
       ("bi" zc/indent-buffer "indent")
-      ("bI" clone-indirect-buffer-other-window "indirect buffer")
+      ("bI" zc/indirect-buffer "indirect buffer")
       ("bd" zc-layout/kill-buffer "kill")
       ("by" zc/copy-buffer-to-clipboard "copy to clipboard"))))
 

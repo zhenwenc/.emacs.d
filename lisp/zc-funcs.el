@@ -40,6 +40,16 @@ org subtree if in `org-mode'.
      ((eq major-mode 'org-mode) (org-narrow-to-subtree))
      (t                         (narrow-to-defun)))))
 
+(defun zc/indirect-buffer ()
+  "Create an indirect buffer for the current buffer."
+  (interactive)
+  (cond
+   ((eq major-mode 'org-mode)
+    (let ((org-indirect-buffer-display 'other-window))
+      (call-interactively 'org-tree-to-indirect-buffer)))
+   (t
+    (call-interactively 'clone-indirect-buffer-other-window))))
+
 ;; https://www.emacswiki.org/emacs/BufferLocalKeys
 (defun zc/buffer-local-set-key (key func)
   (let ((name (format "%s-magic" (buffer-name))))

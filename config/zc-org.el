@@ -28,7 +28,6 @@
   :hydra
   ("Basic"
    (("?" org-info                                 "org info")
-    ("B" org-tree-to-indirect-buffer              "indirect buffer")
     ("E" org-export-dispatch                      "export")
     ("P" zc-org/export-pdf-and-open               "export pdf")
     ("S" org-sort                                 "sort")
