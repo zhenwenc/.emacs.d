@@ -104,15 +104,16 @@
           (message "[DEBUG] Transpiled source code:\n\n%s\n%s" babel-res babel-body))
         (org-babel-execute:js babel-body params)))
 
-    (defun org-babel-edit-prep:typescript (info)
-      (let* ((dir (or (->> info caddr (alist-get :dir)) zc-org/directory))
-             (default-directory dir)
-             (config (tide-safe-json-read-string
-                      (tide-command-to-string "node" '("tsc" "--showConfig")))))
-        (message "Set tide project root to %s" dir)
-        (setq-local tide-project-root (f-expand dir))
-        (puthash (tide-project-name) config tide-project-configs)
-        (zc-typescript/maybe-setup-tide)))
+    ;; FIXME: This doesn't seem to work
+    ;; (defun org-babel-edit-prep:typescript (info)
+    ;;   (let* ((dir (or (->> info caddr (alist-get :dir)) zc-org/directory))
+    ;;          (default-directory dir)
+    ;;          (config (tide-safe-json-read-string
+    ;;                   (tide-command-to-string "node" '("tsc" "--showConfig")))))
+    ;;     (message "Set tide project root to %s" dir)
+    ;;     (setq-local tide-project-root (f-expand dir))
+    ;;     (puthash (tide-project-name) config tide-project-configs)
+    ;;     (zc-typescript/maybe-setup-tide)))
 
     (defalias 'org-babel-execute:ts   'org-babel-execute:typescript)
     (defalias 'org-babel-edit-prep:ts 'org-babel-edit-prep:typescript)))
