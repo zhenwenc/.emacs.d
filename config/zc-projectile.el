@@ -27,6 +27,7 @@
   (setq projectile-globally-ignored-files
         '("TAGS"
           ".DS_Store"
+          "yarn.lock"
           "terraform.tfstate"
           "terraform.tfstate.backup"))
   (setq projectile-globally-ignored-file-suffixes
