@@ -189,12 +189,25 @@ is located at the position of MARKER."
        ;; Prepend the file name
        (-map (-lambda ((head . marker))
                (--> marker
-                    (buffer-file-name (marker-buffer it))
-                    (f-relative it zc-org/directory)
-                    (f-no-ext it)
-                    (propertize it 'face 'ivy-virtual)
-                    (concat "[" it "] " head)
-                    (cons it marker))))))
+                 (buffer-file-name (marker-buffer it))
+                 (f-relative it zc-org/directory)
+                 (f-no-ext it)
+                 (propertize it 'face 'ivy-virtual)
+                 (concat "[" it "] " head)
+                 (cons it marker))))))
+
+(defun zc-org/outline-up-heading (arg)
+  "Move to the previous (possibly invisible) heading line.
+
+Enhanced `outline-up-heading' to break narrowed buffer."
+  (interactive "p")
+  (let ((narrowed (buffer-narrowed-p)))
+    ;; Break buffer narrow boundary
+    (when narrowed (widen))
+    (funcall-interactively 'outline-up-heading arg t)
+    (when narrowed (org-narrow-to-subtree)))
+  ;; Show all direct subheadings of this heading
+  (org-show-children))
 
 
 ;; Hooks and Advices

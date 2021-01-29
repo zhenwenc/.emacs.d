@@ -25,6 +25,9 @@
    "RET" #'zc-org/evil-normal-ret
    "C-e" #'evil-org-end-of-line)
 
+  (:states 'normal :keymaps 'outline-mode-map
+   [remap outline-up-heading] #'zc-org/outline-up-heading)
+
   :hydra
   ("Basic"
    (("?" org-info                                 "org info")

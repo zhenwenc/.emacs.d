@@ -75,9 +75,7 @@ org subtree if in `org-mode'.
 (defmacro zc/with-widen-buffer (&rest body)
   "Execute body while temporarily widening the buffer."
   (declare (debug (body)))
-  `(save-excursion
-     (save-restriction
-       (widen) ,@body)))
+  `(save-excursion (save-restriction (widen) ,@body)))
 
 
 ;; Window
