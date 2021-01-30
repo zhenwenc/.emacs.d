@@ -181,6 +181,16 @@
     (eldoc-mode +1)
     (flycheck-mode +1))
 
+  ;; HACK: Instruct `tide-buffer-file-name' to return correct file path
+  ;;       when editing `org-mode' source block on indirect buffer.
+  (defun zc-typescript/tide-buffer-file-name (orig-fn)
+    (or (and (bound-and-true-p org-src--overlay)
+             (-some->> (overlay-buffer org-src--overlay)
+               (buffer-base-buffer)
+               (buffer-file-name)))
+        (funcall orig-fn)))
+  (advice-add 'tide-buffer-file-name :around 'zc-typescript/tide-buffer-file-name)
+
   :config
   (setq tide-completion-detailed nil
         tide-completion-ignore-case t
