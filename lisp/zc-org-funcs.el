@@ -132,10 +132,10 @@ See also `counsel-outline'."
                                                 (org-narrow-to-subtree))))
                       (counsel-outline-candidates settings))))
     (ivy-read "Outline: " candidates
-              :action  (or (plist-get settings :action) #'counsel-outline-action)
-              :history (or (plist-get settings :history) 'counsel-outline-history)
-              :preselect (max (1- counsel-outline--preselect) 0)
-              :caller 'zc-org/goto-with-widen-buffer)))
+              :history  'counsel-org-goto-history
+              :action  #'zc-org/goto-buffer-heading-action
+              :caller   'zc-org/goto-buffer-heading
+              :preselect (max (1- counsel-outline--preselect) 0))))
 
 (defun zc-org/goto-file-heading (&optional type)
   "Jump to a heading in an org file.
@@ -150,6 +150,11 @@ See also `counsel-org-goto-all'."
               :history 'counsel-org-goto-history
               :action #'zc-org/goto-file-heading-action
               :caller #'zc-org/goto-file-heading)))
+
+(defun zc-org/goto-buffer-heading-action (x)
+  "Jump to headline in candidate X."
+  (counsel-org-goto-action x)
+  (zc-org/narrow-to-subtree))
 
 (defun zc-org/goto-file-heading-action (x)
   "Jump to headline in candidate X.
