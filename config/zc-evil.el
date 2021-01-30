@@ -88,7 +88,7 @@
   (evil-set-initial-state 'ivy-occur-mode           'motion)
   (evil-set-initial-state 'compilation-mode         'motion)
   (evil-set-initial-state 'tide-references-mode     'motion)
-  (evil-set-initial-state 'tide-project-errors-mode 'motion))
+  (evil-set-initial-state 'tide-project-errors-mode 'normal))
 
 
 ;; Provide motions and text objects for delimited arguments

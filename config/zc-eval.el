@@ -63,7 +63,10 @@
     (("i" zc-eval/compilation-send-input "send input")
      ("I" zc-eval/compilation-toggle-comint "toggle comint"))))
 
-  :preface
+  :hook ((compilation-mode   . zc-eval/compilation-resize-buffer)
+         (compilation-filter . zc-eval/compilation-colorize-buffer))
+
+  :config
   (defun zc-eval/compilation-colorize-buffer ()
     "Apply ansi codes to the compilation buffers."
     (unless (derived-mode-p 'rg-mode)
@@ -76,22 +79,17 @@
         ;; Run rust cargo test all to reproduce the issue.
         (replace-string "" "" nil compilation-filter-start (point)))))
 
-  :preface
   (defun zc-eval/compilation-resize-buffer ()
     "Reduce text size for better visibility."
     (text-scale-set -1))
 
-  :hook ((compilation-mode   . zc-eval/compilation-resize-buffer)
-         (compilation-filter . zc-eval/compilation-colorize-buffer))
-
-  :init
+  :config
   (setq compilation-environment '("TERM=screen-256color")
         compilation-always-kill t
         compilation-ask-about-save nil
         compilation-scroll-output 'first-error
         compilation-message-face 'font-lock-comment-face)
 
-  :config
   (-each `((jest-error   ,(list zc-eval/jest-error-rx   1 2 3 1))
            (jest-console ,(list zc-eval/jest-console-rx 1 2 nil 1)))
     (-lambda ((type elt))
