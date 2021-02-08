@@ -354,7 +354,10 @@ so that the breadcrumb will fit in the default echo area."
 (use-package org-superstar
   :straight (:host github :repo "integral-dw/org-superstar-mode")
   :after org
-  :hook (org-mode . org-superstar-mode))
+  :hook (org-mode . org-superstar-mode)
+  :config
+  ;; Remove the leading dots on headline
+  (setq org-superstar-leading-bullet "  "))
 
 (use-package org-sidebar
   :straight (:host github :repo "alphapapa/org-sidebar")
