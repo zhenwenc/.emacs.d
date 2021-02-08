@@ -38,6 +38,7 @@
           ".cache"
           ".metals"
           ".ensime_cache"
+          ".serverless"
           "dist"
           "build"
           "target"
