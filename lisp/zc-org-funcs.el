@@ -101,7 +101,18 @@ list item."
        (invisible-p (point-at-eol))))
 
 (defun zc-org/export-pdf-and-open ()
-  "Run `org-latex-export-to-pdf', delete the tex file and open pdf in a new buffer."
+  "Run `org-latex-export-to-pdf', delete the tex file and open
+pdf in a new buffer.
+
+- Full installation:
+  brew install --cask mactex
+
+- Full installation without bundled applications:
+  brew install --cask mactex-no-gui
+
+- Minimal installation:
+  brew install --cask basictex
+"
   (interactive)
   (save-buffer)
   (let* ((pdf-path (org-latex-export-to-pdf))
