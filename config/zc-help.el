@@ -84,7 +84,9 @@
   :commands (go-translate)
   :config
   (setq go-translate-local-language "en")
-  (setq go-translate-target-language "zh"))
+  (setq go-translate-target-language "zh")
+  ;; FIXME: What are these values?
+  (setq go-translate-token-current (cons 430675 2721866130)))
 
 
 
