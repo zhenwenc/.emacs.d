@@ -82,6 +82,7 @@
       (let* ((ts-node-options (json-serialize '(module "CommonJS" target "ES2017")))
              (dir (or (cdr (assq :dir params)) zc-org/directory))
              (cmd (or (cdr (assq :cmd params)) (format "ts-node -T -O '%s'" ts-node-options)))
+             (env (or (cdr (assq :env params)) ""))
              ;; Transpile 'import' statements to 'require'
              (script-file (org-babel-temp-file "js-script-" ".ts"))
              (output-file (org-babel-temp-file "js-script-" ".js"))
@@ -98,11 +99,16 @@
              (babel-body (f-read output-file))
              (node-path (concat "NODE_PATH=" (f-join dir "node_modules")))
              (node-opts (format "NODE_OPTIONS='--unhandled-rejections=strict'"))
-             (org-babel-js-cmd (format "%s %s %s" node-path node-opts cmd))
+             (org-babel-js-cmd (format "%s %s %s %s" node-path node-opts env cmd))
              (org-babel-js-function-wrapper "%s"))
+        ;; Print the transpiled output for debugging
         (when (s-equals? "yes" (cdr (assq :debug params)))
-          (message "[DEBUG] Transpiled source code:\n\n%s\n%s" babel-res babel-body))
-        (org-babel-execute:js babel-body params)))
+          (let ((inhibit-message t)) ;; skip echo area
+            (message "[DEBUG] Transpiled source code:\n\n%s\n%s" babel-res babel-body)))
+        ;; Execute the code block with `compilation' or `org-babel-execute'
+        (if (s-equals? "yes" (cdr (assq :compile params)))
+            (compile (format "%s %s %s %s %s" node-path node-opts env cmd output-file))
+          (org-babel-execute:js babel-body params))))
 
     ;; FIXME: This doesn't seem to work
     ;; (defun org-babel-edit-prep:typescript (info)
