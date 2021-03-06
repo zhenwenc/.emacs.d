@@ -91,7 +91,7 @@
                                (shell-command-to-string
                                 (concat babel-cmd
                                         " --no-babelrc"
-                                        " --presets @babel/preset-env"
+                                        " --presets @babel/preset-env,@babel/preset-typescript"
                                         " --plugins @babel/plugin-transform-runtime"
                                         " --extensions .ts"
                                         " --out-file " output-file
