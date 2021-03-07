@@ -88,8 +88,7 @@
 (straight-use-package 'use-package)
 
 ;; To avoid an obsolete version of Org get loaded.
-(straight-use-package 'org)
-(straight-use-package 'org-plus-contrib)
+(straight-use-package '(org-plus-contrib :includes org))
 
 (eval-when-compile
   (require 'use-package))
