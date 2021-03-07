@@ -363,6 +363,11 @@ so that the breadcrumb will fit in the default echo area."
   :straight (:host github :repo "alphapapa/org-sidebar")
   :after org)
 
+;; Export to Github Flavored Markdown
+(use-package ox-gfm
+  :straight t
+  :after org)
+
 
 
 (provide 'zc-org)
