@@ -1,7 +1,6 @@
 (require 's)
 (require 'f)
 (require 'dash)
-(require 'dash-functional)
 
 (autoload 'projectile-switch-project "projectile")
 
@@ -71,10 +70,10 @@ See also `zc-layout/config-for-slot'."
 (defun zc-layout/layout-tag-for-project (dir)
   "Return the eyebrowse window config tag for PROJECT."
   (--> projectile-known-projects
-       (--filter (string= (f-base dir) (f-base it)) it)
-       (f-common-parent it)
-       (s-chop-prefix (f-slash it) (f-canonical dir))
-       (s-chop-suffix "/" it)))
+    (--filter (string= (f-base dir) (f-base it)) it)
+    (f-common-parent it)
+    (s-chop-prefix (f-slash it) (f-canonical dir))
+    (s-chop-suffix "/" it)))
 
 (defun zc-layout/is-current-project-layout-p ()
   "Return t if the current selected project is the same as

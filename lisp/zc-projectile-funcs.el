@@ -1,7 +1,6 @@
 (require 's)
 (require 'f)
 (require 'dash)
-(require 'dash-functional)
 (require 'subr-x)
 (require 'general)
 

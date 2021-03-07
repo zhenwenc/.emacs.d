@@ -3,7 +3,6 @@
 
 (require 'f)
 (require 'dash)
-(require 'dash-functional)
 (require 'general)
 (require 'zc-org-funcs)
 (require 'zc-hydra-funcs)

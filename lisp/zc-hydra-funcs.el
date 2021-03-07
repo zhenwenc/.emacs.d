@@ -1,6 +1,5 @@
 (require 's)
 (require 'dash)
-(require 'dash-functional)
 
 (autoload 'all-the-icons-faicon "all-the-icons")
 (autoload 'all-the-icons-icon-for-mode "all-the-icons")

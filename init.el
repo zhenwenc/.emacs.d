@@ -67,7 +67,6 @@
 ;; Install basic packages
 
 (straight-use-package 'dash)
-(straight-use-package 'dash-functional)
 (straight-use-package 'f)
 (straight-use-package 's)
 (straight-use-package 'lv)
