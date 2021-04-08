@@ -305,7 +305,6 @@
 
 (use-package org-eldoc
   :after org
-  :defer t
   ;; HACK: Error when header argument value is numeric type, such as port number.
   :config/el-patch
   (defun org-eldoc-get-src-header ()
