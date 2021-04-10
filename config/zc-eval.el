@@ -77,7 +77,8 @@
         ;;        these unwanted carriage characters?
         ;;
         ;; Run rust cargo test all to reproduce the issue.
-        (replace-string "" "" nil compilation-filter-start (point)))))
+        (when (s-contains-p "cargo" compile-command)
+          (replace-string "" "" nil compilation-filter-start (point))))))
 
   (defun zc-eval/compilation-resize-buffer ()
     "Reduce text size for better visibility."
