@@ -107,10 +107,10 @@
             (message "[DEBUG] Transpiled source code:\n\n%s\n%s" babel-res babel-body)))
         ;; Execute the code block with `compilation' or `org-babel-execute'
         (if (s-equals? "yes" (cdr (assq :compile params)))
-            (compile (format "%s %s %s %s %s" node-path node-opts env cmd output-file))
+            (compile (format "TERM=dumb %s %s %s %s %s" node-path node-opts env cmd output-file))
           (org-babel-execute:js babel-body params))))
 
-    (defalias 'org-babel-execute:ts   'org-babel-execute:typescript)))
+    (defalias 'org-babel-execute:ts 'org-babel-execute:typescript)))
 
 
 
