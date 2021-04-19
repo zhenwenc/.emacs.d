@@ -74,7 +74,7 @@
     (or (pcase (magit-get-current-branch)
           ;; Extract JIRA ticket number from branch name
           ((rx (+ word) "/" (let ticket (+ upper) "-" (+ num)) "/" (+ anything))
-           (concat "[" ticket "]")))
+           (unless (s-blank? ticket) (concat "[" ticket "]"))))
         ;; Fixed commit messages for notes
         (when (f-equal-p (projectile-project-root) zc-org/directory) "update")))
   (advice-add 'git-commit-jira-prefix--ticket-number :override 'zc-git/find-ticket-number)
