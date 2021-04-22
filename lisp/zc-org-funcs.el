@@ -190,27 +190,27 @@ using `counsel-outline-candidates'.
 Each element is a pair (HEADING . MARKER), where the string HEADING
 is located at the position of MARKER."
   (->> (or filenames org-agenda-files)
-       (-filter #'f-exists?)
-       (-map-when (-compose #'not #'bufferp)
-                  (-rpartial #'find-file-noselect t))
-       ;; Collect headline candidates
-       (mapcan (lambda (buffer)
-                 (with-current-buffer buffer
-                   (zc/with-widen-buffer
-                    (counsel-outline-candidates
-                     (cdr (assq 'org-mode counsel-outline-settings)))))))
-       ;; Filter candidates by maximum headline depth
-       (-filter (-lambda ((head . marker))
-                  (< (length (s-split counsel-outline-path-separator head)) 4)))
-       ;; Prepend the file name
-       (-map (-lambda ((head . marker))
-               (--> marker
-                 (buffer-file-name (marker-buffer it))
-                 (f-relative it zc-org/directory)
-                 (f-no-ext it)
-                 (propertize it 'face 'ivy-virtual)
-                 (concat "[" it "] " head)
-                 (cons it marker))))))
+    (-filter #'f-exists?)
+    (-map-when (-compose #'not #'bufferp)
+               (-rpartial #'find-file-noselect t))
+    ;; Collect headline candidates
+    (mapcan (lambda (buffer)
+              (with-current-buffer buffer
+                (zc/with-widen-buffer
+                 (counsel-outline-candidates
+                  (cdr (assq 'org-mode counsel-outline-settings)))))))
+    ;; Filter candidates by maximum headline depth
+    (-filter (-lambda ((head . marker))
+               (< (length (s-split counsel-outline-path-separator head)) 4)))
+    ;; Prepend the file name
+    (-map (-lambda ((head . marker))
+            (--> marker
+              (buffer-file-name (marker-buffer it))
+              (f-relative it zc-org/directory)
+              (f-no-ext it)
+              (propertize it 'face 'ivy-virtual)
+              (concat "[" it "] " head)
+              (cons it marker))))))
 
 (defun zc-org/outline-up-heading (arg)
   "Move to the previous (possibly invisible) heading line.
@@ -327,21 +327,26 @@ function and the file."
 
 ;; Babel
 
-(defun zc-org/babel-foreach-result (fn)
+(cl-defun zc-org/babel-foreach-block (fn &key pattern matcher)
   "Run FN for each source block in buffer."
   (save-excursion
     (goto-char (point-min))
     (let ((case-fold-search t))
-      (while (re-search-forward org-babel-src-block-regexp nil t)
+      (while (re-search-forward pattern nil t)
         (let ((element (org-element-at-point)))
-          (when (eq (org-element-type element) 'src-block)
-            (funcall fn element)))))
-    (save-buffer)))
+          (when (funcall matcher (org-element-type element))
+            (funcall fn element)))))))
 
 (defun zc-org/babel-remove-result-all ()
   "Remove results from every code block in buffer."
   (interactive)
-  (zc-org/babel-foreach-result 'org-babel-remove-result-one-or-many))
+  (zc-org/babel-foreach-block 'org-babel-remove-result-one-or-many
+                              :pattern org-babel-src-block-regexp
+                              :matcher (-partial 'eq 'src-block))
+  (zc-org/babel-foreach-block '(lambda (&rest _) (org-babel-remove-result))
+                              :pattern "^[ \t]*#\\+CALL:[ \t]*"
+                              :matcher (-partial 'eq 'babel-call))
+  (save-buffer))
 
 (defun zc-org/babel-confirm-evaluate (lang body)
   "Function for `org-confirm-babel-evaluate' to determin the
