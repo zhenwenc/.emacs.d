@@ -4,4 +4,4 @@
 # group: es6
 # condition: (zc-yas/line-match-p "\\`fn")
 # --
-${1:export }const ${2:name} = ($3) => $0
+${1:export }const ${2:name} = async ($3) => $0
