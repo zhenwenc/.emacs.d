@@ -86,7 +86,7 @@
       (prettier-js-mode)))
   :config
   ;; NOTE: If the prettier version seems outdated, check .nvmrc
-  (setq prettier-js-args '("--single-quote" "--trailing-comma" "es5")))
+  (setq prettier-js-args '("--trailing-comma" "es5")))
 
 
 
