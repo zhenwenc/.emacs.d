@@ -138,6 +138,7 @@
 (use-package zc-restclient)
 (use-package zc-typescript)
 (use-package zc-plantuml)
+(use-package zc-mermaid)
 (use-package zc-prodigy)
 (use-package zc-help)
 

@@ -199,6 +199,7 @@
                                  (shell      . t)
                                  (python     . t)
                                  (ipython    . nil)
+                                 (mermaid    . t)
                                  (plantuml   . t)
                                  (restclient . t)))
 
