@@ -206,7 +206,15 @@
   ;; Alias source code block languages
   (add-to-list 'org-src-lang-modes '("rust"       . rustic))
   (add-to-list 'org-src-lang-modes '("ts"         . typescript))
-  (add-to-list 'org-src-lang-modes '("typescript" . typescript)))
+  (add-to-list 'org-src-lang-modes '("typescript" . typescript))
+
+  ;; Inhibit displaying message in echo-area while resolving src-block info.
+  ;; This is annoying when executing a code block which extracts remote params
+  ;; from other code blocks, where the intermediate results will be printed to
+  ;; the echo-area that causes flickering effect.
+  (defun zc-org/inhibit-message (orig-fn &rest args)
+    (let ((inhibit-message t)) (apply orig-fn args)))
+  (advice-add 'org-babel-get-src-block-info :around #'zc-org/inhibit-message))
 
 
 
