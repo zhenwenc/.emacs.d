@@ -17,9 +17,12 @@
 
 (use-package plantuml-mode
   :straight t
-  :commands zc-plantuml/download
+  :defer t
 
-  :preface
+  :mode     ("\\.puml\\'" . plantuml-mode)
+  :interpreter ("puml"    . plantuml-mode)
+
+  :config
   (defun zc-plantuml/download (&optional forced)
     ;; Download PlantUML JAR if not already exists.
     (interactive "P")
@@ -37,7 +40,6 @@
             `((,zc-plantuml/container ,zc-plantuml/container-url)
               (,zc-plantuml/component ,zc-plantuml/component-url))))
 
-  :config
   (setq plantuml-jar-path        (concat paths-vendor-dir "plantuml/plantuml.jar")
         plantuml-executable-path (concat paths-vendor-dir "plantuml/plantuml")
         plantuml-default-exec-mode 'jar)
