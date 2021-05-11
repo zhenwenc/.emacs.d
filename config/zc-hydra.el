@@ -168,13 +168,15 @@
      (("pf" counsel-projectile-find-file "find file")
       ("pl" projectile-find-file-in-directory "find in directory")
       ("pb" counsel-projectile-switch-to-buffer "find buffer")
-      ("pd" counsel-projectile-find-dir "find directory"))
+      ("pd" counsel-projectile-find-dir "find directory")
+      ("pt" projectile-toggle-between-implementation-and-test "toggle test file")
+      ("pT" projectile-find-implementation-or-test-other-window "open test file (ow)"))
 
      "Layer"
      (("pp" zc-layout/switch-project-layout "switch layout")
       ("pP" (zc-layout/switch-project-layout t) "create layout")
       ("pD" eyebrowse-close-window-config "close layout")
-      ("pT" counsel-tramp "tramp")
+      ("p$" counsel-tramp "tramp")
       ("p <tab>" eyebrowse-last-window-config "last project"))))
 
   (zc-hydra/define zc-main-hydra--git
