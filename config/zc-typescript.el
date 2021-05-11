@@ -79,17 +79,19 @@
     (defun org-babel-execute:typescript (body params)
       "Execute a block of Typescript code with org-babel.
   This function is called by `org-babel-execute-src-block'."
-      (let* ((ts-node-options (json-serialize '(module "CommonJS" target "ES2017")))
+      (let* ((ts-node-opts (json-serialize '(module "CommonJS" target "ES2017")))
+             (ts-node (f-join zc-org/directory "node_modules/.bin/ts-node"))
              (dir (or (cdr (assq :dir params)) zc-org/directory))
-             (cmd (or (cdr (assq :cmd params)) (format "ts-node -T -O '%s'" ts-node-options)))
+             (cmd (or (cdr (assq :cmd params)) (format "%s -T -O '%s'" ts-node ts-node-opts)))
              (env (or (cdr (assq :env params)) ""))
              ;; Transpile 'import' statements to 'require'
              (script-file (org-babel-temp-file "js-script-" ".ts"))
              (output-file (org-babel-temp-file "js-script-" ".js"))
-             (babel-cmd (f-join zc-org/directory "node_modules/.bin/babel"))
+             (babel-path (f-join zc-org/directory "node_modules"))
              (babel-res (progn (with-temp-file script-file (insert body))
                                (shell-command-to-string
-                                (concat babel-cmd
+                                (concat "NODE_PATH=" babel-path
+                                        " " (f-join babel-path ".bin/babel")
                                         " --no-babelrc"
                                         " --presets @babel/preset-env,@babel/preset-typescript"
                                         " --plugins @babel/plugin-transform-runtime"
