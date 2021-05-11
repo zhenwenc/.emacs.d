@@ -19,10 +19,6 @@
              flycheck-error-list-previous-error
              flycheck-error-list-goto-error)
 
-  :preface
-  (defun zc-flycheck/maybe-inhibit-flycheck (result)
-    (unless (equal (buffer-name) "*ediff-merge*") result))
-
   :init
   (defun zc-flycheck/disable-checkers (&rest checkers)
     "Disable the given Flycheck syntax CHECKERS, symbols.
@@ -35,10 +31,12 @@ nor requires Flycheck to be loaded."
       (cl-pushnew checker flycheck-disabled-checkers)))
 
   :config
+  ;; Reduce recheck frequency and display error quicker
+  (setq flycheck-idle-change-delay 1.0)
   (setq flycheck-display-errors-delay 0.5)
+
   (setq flycheck-emacs-lisp-load-path 'inherit)
   (setq flycheck-check-syntax-automatically '(save mode-enabled))
-  (setq flycheck-display-errors-function 'zc-flycheck/display-error-messages)
 
   (setq-default flycheck-disabled-checkers '(emacs-lisp-checkdoc))
 
@@ -51,14 +49,8 @@ nor requires Flycheck to be loaded."
         (delete-window window)
       (flycheck-list-errors)))
 
-  (defun zc-flycheck/display-error-messages (errors)
-    (unless (flycheck-get-error-list-window 'current-frame)
-      (when (and errors (flycheck-may-use-echo-area-p))
-        (let ((messages (seq-map #'flycheck-error-format-message-and-id errors)))
-          (display-message-or-buffer (string-join messages "\n\n")
-                                     flycheck-error-message-buffer
-                                     'display-buffer-popup-window)))))
-
+  (defun zc-flycheck/maybe-inhibit-flycheck (result)
+    (unless (equal (buffer-name) "*ediff-merge*") result))
   (advice-add #'flycheck-may-enable-mode :filter-return
               #'zc-flycheck/maybe-inhibit-flycheck)
 
@@ -86,8 +78,14 @@ nor requires Flycheck to be loaded."
   :custom-face
   (flycheck-posframe-info-face ((t (:foreground ,(doom-color 'green)))))
   :config
-  (add-to-list 'flycheck-posframe-inhibit-functions
-               #'(lambda () (bound-and-true-p company-backend))))
+  ;; Don't display popups if company is open
+  (with-eval-after-load 'company
+    (add-hook 'flycheck-posframe-inhibit-functions #'company--active-p))
+  ;; Don't display popups while in insert or replace mode, as it can affect
+  ;; the cursor's position or cause disruptive input delays.
+  (with-eval-after-load 'evil
+    (add-hook 'flycheck-posframe-inhibit-functions #'evil-insert-state-p)
+    (add-hook 'flycheck-posframe-inhibit-functions #'evil-replace-state-p)))
 
 (use-package flycheck-pos-tip
   :disabled ; use posframe
