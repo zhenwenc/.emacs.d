@@ -64,21 +64,36 @@
   :straight t
   :defer t)
 
-;; Automatically prepends the ticket number
+;; Automatically prepends the JIRA ticket number
 
 (use-package git-commit-jira-prefix
   :straight (:host github :repo "chrisbarrett/git-commit-jira-prefix")
   :after git-commit
-  :init
-  (defun zc-git/find-ticket-number (&rest _ignored)
-    (or (pcase (magit-get-current-branch)
-          ;; Extract JIRA ticket number from branch name
-          ((rx (+ word) "/" (let ticket (+ upper) "-" (+ num)) "/" (+ anything))
-           (unless (s-blank? ticket) (concat "[" ticket "]"))))
-        ;; Fixed commit messages for notes
-        (when (f-equal-p (projectile-project-root) zc-org/directory) "update")))
-  (advice-add 'git-commit-jira-prefix--ticket-number :override 'zc-git/find-ticket-number)
-  :config (git-commit-jira-prefix-init))
+  :config
+  (git-commit-jira-prefix-init)
+
+  (defun zc-git/commit-prefix (&rest _ignored)
+    (when-let ((branch (magit-get-current-branch)))
+      (or
+       ;; Branch pattern: "feature/ABC-123/blah"
+       (-when-let* ((branch-ptn (rx bos (+ alpha)
+                                    "/" (group (+ upper) "-" (+ num))
+                                    "/" (+ (or alpha "-"))))
+                    ((_ ticket) (s-match branch-ptn branch)))
+         (concat "[" ticket "]"))
+       ;; Branch pattern: "who/ABC-123-<type>-blah"
+       (-when-let* ((staged (f-common-parent (magit-staged-files)))
+                    (branch-ptn (rx bos (+ alpha)
+                                    "/" (group (+ upper) "-" (+ num))
+                                    "-" (group (+ lower)) "-"))
+                    (module-ptn (rx (+ alpha)
+                                    "/" (group (+ (or lower "-")))))
+                    ((_ ticket type) (s-match branch-ptn branch))
+                    ((_ module)      (s-match module-ptn staged)))
+         (s-join "\n\n" (list (concat (or type "feat") "(" module "): ") ticket)))
+       ;; Fixed commit messages for notes
+       (when (f-equal-p (projectile-project-root) zc-org/directory) "update"))))
+  (advice-add 'git-commit-jira-prefix--ticket-number :override 'zc-git/commit-prefix))
 
 
 
