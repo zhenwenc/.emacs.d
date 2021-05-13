@@ -59,7 +59,9 @@
   ;; large overtime, if so run `straight-prune-build'.
   (with-no-warnings
     (setq straight-cache-autoloads t)
-    (setq straight-check-for-modifications 'live))
+    (setq straight-check-for-modifications 'live)
+    ;; We don't use native compile branch yet
+    (setq straight-disable-native-compile t))
 
   (load bootstrap-file nil 'nomessage))
 
