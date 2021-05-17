@@ -122,5 +122,23 @@
   (savehist-mode +1))
 
 
+;; Visual
+
+;; Line wraps at `fill-column' instead of window edge. Mainly used
+;; while editing Org-Mode or Markdown files.
+;;
+;; https://www.philnewton.net/blog/distraction-free-writing-with-emacs
+(use-package visual-fill-column
+  :straight t
+  :commands (visual-fill-column-mode)
+  :config
+  (setq fill-column 100)
+  (setq visual-fill-column-width 100)
+  ;; Patch the `split-window-preferred-function' function to
+  ;; remove added window margin before splitting, otherwise
+  ;; vertical window split may not behave as expected.
+  (setq visual-fill-column-enable-sensible-window-split t))
+
+
 
 (provide 'zc-editing)

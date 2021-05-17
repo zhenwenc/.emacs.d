@@ -42,7 +42,6 @@
  bookmark-default-file (concat paths-cache-dir "bookmarks")
 
  ;; General settings.
- fill-column 80
  indent-tabs-mode nil
  sentence-end-double-space t
 

@@ -23,6 +23,8 @@
 
   ;; Rebind C-u to scroll up
   (:states '(motion normal visual)
+   "j"          #'evil-next-visual-line
+   "k"          #'evil-previous-visual-line
    "C-u"        #'evil-scroll-up
    "C-d"        #'evil-scroll-down
    "M-u"        #'evil-scroll-line-up
