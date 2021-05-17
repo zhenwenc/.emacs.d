@@ -173,9 +173,13 @@
     ;; Format org-mode source block
     (when (bound-and-true-p org-src-mode)
       (add-hook 'before-save-hook #'tide-format-before-save nil t))
-    (tide-setup)
-    (eldoc-mode +1)
-    (flycheck-mode +1))
+    ;; Skip when connected to remote server via TRAMP.
+    ;;
+    ;; TODO: Maybe use `dumb-jump' instead?
+    (unless (file-remote-p default-directory)
+      (tide-setup)
+      (eldoc-mode +1)
+      (flycheck-mode +1)))
 
   ;; HACK: Instruct `tide-buffer-file-name' to return correct file path
   ;;       when editing `org-mode' source block on indirect buffer.
