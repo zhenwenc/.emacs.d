@@ -8,9 +8,9 @@
 (use-package smartparens
   :straight t
 
-  :hook ((prog-mode    . smartparens-mode)
-         (text-mode    . smartparens-mode)
-         (eshell-mode  . smartparens-mode)
+  :hook ((text-mode    . smartparens-mode)
+         (prog-mode    . smartparens-mode)
+         (prog-mode    . show-smartparens-global-mode)
          (post-command . zc-sp/post-command-hook-handler))
 
   :general
@@ -27,15 +27,14 @@
               sp-local-pair)
 
   :commands (smartparens-mode
-             smartparens-global-mode
-             show-smartparens-global-mode)
+             smartparens-global-mode)
 
-  :init
-
+  :config
   (defun zc-sp/post-command-hook-handler ()
     "Handler for `post-command-hook'."
     (with-demoted-errors "zc-sp/post-command-hook-handler: %S"
-      (when (derived-mode-p 'typescript-mode 'scala-mode)
+      (when (or (eq major-mode 'typescript-mode)
+                (eq major-mode 'scala-mode))
         (zc-sp/maybe-insert-asterisk))))
 
   (defun zc-sp/maybe-insert-asterisk ()
@@ -136,10 +135,7 @@
   (dolist (key '(:unmatched-expression :no-matching-tag))
     (setf (alist-get key sp-message-alist) nil))
 
-  (set-face-attribute 'show-paren-match nil :background "#434956" :foreground nil)
-
-  ;; (smartparens-global-mode +1)
-  (show-smartparens-global-mode +1))
+  (set-face-attribute 'show-paren-match nil :background "#434956" :foreground nil))
 
 
 
