@@ -70,9 +70,8 @@
         evil-insert-skip-empty-lines t)
 
   :config
-  (evil-mode +1)
-  (setq-default evil-shift-width 2)
-  (setq-default evil-symbol-word-search t)
+  (setq evil-shift-width 2)
+  (setq evil-symbol-word-search t)
 
   ;; Configure cursors.
   (setq evil-motion-state-cursor '("plum3" box))
@@ -90,7 +89,9 @@
   (evil-set-initial-state 'ivy-occur-mode           'motion)
   (evil-set-initial-state 'compilation-mode         'motion)
   (evil-set-initial-state 'tide-references-mode     'motion)
-  (evil-set-initial-state 'tide-project-errors-mode 'normal))
+  (evil-set-initial-state 'tide-project-errors-mode 'normal)
+
+  (evil-mode +1))
 
 
 ;; Provide motions and text objects for delimited arguments
