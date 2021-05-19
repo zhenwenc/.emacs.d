@@ -79,7 +79,7 @@
   ;; (defun ivy-posframe-display--custom (str)
   ;;   (ivy-posframe--display str #'posframe-poshandler-frame-bottom-center))
   ;; (setq ivy-posframe-display-functions-alist '((t . ivy-posframe-display--custom)))
-  (setq ivy-posframe-style 'frame-bottom-center-custom)
+  (setq ivy-posframe-style 'frame-center)
   (setq ivy-posframe-parameters '((alpha 98 98))
         ivy-posframe-border-width 16
         ivy-posframe-min-height 10)
