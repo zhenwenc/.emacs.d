@@ -246,6 +246,8 @@ Behave the same as 'Command + delete' at macOS"
 (defun zc-core/evil-escape ()
   "Evil escape everything."
   (interactive)
+  (if (bound-and-true-p iedit-mode)
+      (iedit--quit))
   (call-interactively 'evil-escape))
 
 (defun zc/indent-buffer ()
