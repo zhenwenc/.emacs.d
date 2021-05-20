@@ -94,17 +94,15 @@
   (evil-mode +1))
 
 
-;; Provide motions and text objects for delimited arguments
+;; Enhance text objects, motion and seeking behavior.
 
-(use-package evil-args
+(use-package evil-args ;; for delimited arguments
   :straight t
-  :general (:keymaps
-            'evil-inner-text-objects-map "a" #'evil-inner-arg
-            :keymaps
-            'evil-outer-text-objects-map "a" #'evil-outer-arg)
-  :init
-  (with-eval-after-load 'evil
-    (require 'evil-args)))
+  :after evil
+  :config
+  (require 'evil-args)
+  (define-key evil-inner-text-objects-map "a" 'evil-inner-arg)
+  (define-key evil-outer-text-objects-map "a" 'evil-outer-arg))
 
 
 ;; Provide integration with highlight-symbol
