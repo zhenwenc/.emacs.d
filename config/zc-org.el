@@ -12,7 +12,6 @@
 
 
 (use-package org
-  :straight org-plus-contrib
   :commands org-try-structure-completion
   :defer t
 
@@ -219,7 +218,6 @@
 
 
 (use-package org-agenda
-  :straight org-plus-contrib
   :after org
   :commands (org-agenda)
 
