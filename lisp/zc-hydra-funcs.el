@@ -4,6 +4,12 @@
 (autoload 'all-the-icons-faicon "all-the-icons")
 (autoload 'all-the-icons-icon-for-mode "all-the-icons")
 
+(declare-function use-package-error "use-package")
+(declare-function use-package-concat "use-package")
+(declare-function use-package-as-mode "use-package")
+(declare-function use-package-process-keywords "use-package")
+(declare-function use-package-require-after-load "use-package")
+
 
 
 (defun zc-hydra/title-with-faicon (name icon)
@@ -19,17 +25,17 @@
 (defun zc-hydra/remove-heads-prefix (prefix heads-plist)
   (if (stringp prefix)
       (->> heads-plist
-           (--map-when (listp it)
-                       (-map (-lambda ((key . rest))
-                               (cons (s-trim (s-chop-prefix prefix key)) rest))
-                             it)))
+        (--map-when (listp it)
+                    (-map (-lambda ((key . rest))
+                            (cons (s-trim (s-chop-prefix prefix key)) rest))
+                          it)))
     heads-plist))
 
 (defun zc-hydra/maybe-add-exit-head (heads-plist)
   (if (->> heads-plist
-           (-partition 2)
-           (-mapcat #'cadr)
-           (-none? (-compose #'null #'cadr)))
+        (-partition 2)
+        (-mapcat #'cadr)
+        (-none? (-compose #'null #'cadr)))
       (--map-first (listp it)
                    (-concat it '(("q"        nil nil)
                                  ("<escape>" nil nil)))
@@ -38,9 +44,9 @@
 
 (defun zc-hydra/plist-remove-props (plist props)
   (->> plist
-       (-partition 2)
-       (--filter (not (-contains? props (car it))))
-       (-flatten-n 1)))
+    (-partition 2)
+    (--filter (not (-contains? props (car it))))
+    (-flatten-n 1)))
 
 
 
@@ -50,8 +56,8 @@
          (title  (zc-hydra/title-with-faicon (plist-get body :title) icon))
          (prefix (plist-get body :prefix))
          (heads  (--> heads-plist
-                      (zc-hydra/remove-heads-prefix prefix it)
-                      (zc-hydra/maybe-add-exit-head it)))
+                   (zc-hydra/remove-heads-prefix prefix it)
+                   (zc-hydra/maybe-add-exit-head it)))
          (body   (zc-hydra/plist-remove-props body '(:title :icon :prefix))))
     `(pretty-hydra-define ,name (,@body :hint nil :title ,title) ,heads)))
 
@@ -61,7 +67,7 @@
   (let ((name  (zc-hydra/major-mode-name mode))
         (title (zc-hydra/major-mode-title mode))
         (heads (--> heads-plist
-                    (zc-hydra/maybe-add-exit-head it))))
+                 (zc-hydra/maybe-add-exit-head it))))
     `(pretty-hydra-define+ ,name
        (:hint nil :color teal :title ,title) ,heads)))
 
@@ -109,7 +115,7 @@ arguments as `:after' directive in `use-package'."
    args))
 
 (defun use-package-handler/:hydra (package _keyword args rest state)
-  "Handle `:hydra' keyword."
+  "Handle `:hydra' keyword in `use-package' forms."
   (use-package-concat
    (use-package-process-keywords package rest state)
    (-mapcat
