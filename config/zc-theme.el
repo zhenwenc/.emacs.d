@@ -143,6 +143,8 @@
             (or (not (eq major-mode 'org-mode))
                 (not (or (s-matches? (rx bos (+ "*") eos) thing)
                          (s-matches? (rx bos "+BEGIN_" (+ upper) eos) thing))))
+            ;; Ignore repeated characters
+            (not (s-matches? (rx bos (+ (or "-" "=")) eos) thing))
             )))))
 
   (advice-add 'highlight-thing-should-highlight-p
