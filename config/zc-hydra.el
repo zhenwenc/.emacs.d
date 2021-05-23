@@ -259,8 +259,9 @@
      "Edit"
      (("tw" whitespace-mode "whitespace" :toggle t)
       ("tl" visual-line-mode "visual line" :toggle t)
-      ("tL" visual-fill-column-mode "visual column" :toggle t)
-      ("tA" auto-fill-mode "fill line" :toggle (symbol-value 'auto-fill-function))
+      ("tL" auto-fill-mode "fill line" :toggle (symbol-value 'auto-fill-function))
+      ("tc" display-fill-column-indicator-mode "indicate column" :toggle t)
+      ("tC" visual-fill-column-mode "visual column" :toggle t)
       ("tS" flyspell-mode "spell check" :toggle t)
       ("tE" explain-pause-mode "monitor pause" :toggle t))
 
@@ -269,7 +270,7 @@
       ("tP" list-processes "process list")
       ("td" docker "docker")
       ("te" explain-pause-top "explain pause")
-      ("tC" zc-eval/compile-on-save-mode "auto recompile")
+      ("tR" zc-eval/compile-on-save-mode "auto recompile")
       ("ti" imenu-list-smart-toggle "imenu list")
       ("tW" display-time-world "world clock"))))
 

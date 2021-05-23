@@ -132,7 +132,6 @@
   :straight t
   :commands (visual-fill-column-mode)
   :config
-  (setq fill-column 100)
   (setq visual-fill-column-width 100)
   ;; Patch the `split-window-preferred-function' function to
   ;; remove added window margin before splitting, otherwise
