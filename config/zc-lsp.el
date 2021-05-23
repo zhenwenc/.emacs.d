@@ -11,7 +11,7 @@
   :commands (lsp lsp-deferred)
 
   :hydra
-  ((:mode (python-mode scala-mode rustic-mode))
+  ((:mode (python-mode scala-mode rustic-mode yaml-mode))
    ("Server"
     (("ns" zc-lsp/workspace-maybe-restart  "restart")
      ("nS" lsp-workspace-shutdown          "shutdown")
@@ -72,7 +72,7 @@ new file with LSP support."
         lsp-session-file (concat paths-cache-dir ".lsp-session-v1")
 
         ;; Declare LSP clients we might use, hmm...
-        lsp-client-packages '(lsp-clients lsp-rust lsp-metals lsp-pyright)
+        lsp-client-packages '(lsp-clients lsp-rust lsp-metals lsp-pyright lsp-yaml)
 
         ;; The client may send a cancel event, but most LSP
         ;; servers seems doesn't care about it at all! :P
@@ -155,6 +155,8 @@ new file with LSP support."
   (advice-add 'lsp--symbol-filter        :around #'zc-lsp/imenu-symbol-filter)
   (advice-add 'lsp--imenu-filter-symbols :around #'zc-lsp/imenu-filter-symbols)
   (advice-add 'lsp--suggest-project-root :around #'zc-lsp/infer-project-root))
+
+
 
 (use-package lsp-ui
   :straight t

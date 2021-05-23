@@ -12,10 +12,16 @@
          (yaml-mode . flycheck-mode-on-safe)
          (yaml-mode . zc-yaml/override-font-lock-faces))
 
-  :init
+  :config
+  (require 'lsp)
+
   (defun zc-yaml/override-font-lock-faces ()
     (face-remap-add-relative 'font-lock-variable-name-face
-                             :foreground (doom-color 'violet))))
+                             :foreground (doom-color 'violet)))
+
+  ;; Customize YAMLLS server
+  (with-eval-after-load 'lsp-yaml
+    (setq lsp-yaml-hover nil)))
 
 
 
