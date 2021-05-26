@@ -40,6 +40,7 @@ flycheck_*.el
 # Cache
 /*.eld
 /*.cache
+/eln-cache
 /.historian
 /.trello
 /cookies

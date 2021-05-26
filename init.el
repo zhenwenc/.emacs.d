@@ -61,7 +61,7 @@
     (setq straight-cache-autoloads t)
     (setq straight-check-for-modifications 'live)
     ;; We don't use native compile branch yet
-    (setq straight-disable-native-compile t))
+    (setq straight-disable-native-compile nil))
 
   (load bootstrap-file nil 'nomessage))
 

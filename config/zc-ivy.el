@@ -74,6 +74,11 @@
   (ivy-posframe-border ((t (:background ,(doom-color 'bg-alt)))))
   (ivy-posframe-cursor ((t (:background ,(doom-color 'blue)))))
   :config
+  (setq ivy-posframe-style 'frame-bottom-center-custom)
+  (setq ivy-posframe-parameters '((alpha 98 98))
+        ivy-posframe-border-width 16
+        ivy-posframe-min-height 10)
+
   (defun zc/posframe-poshandler-frame-center-near-bottom (info)
     (let ((parent-frame (plist-get info :parent-frame))
           (pos (posframe-poshandler-frame-center info)))
@@ -81,10 +86,13 @@
             (truncate (* (frame-pixel-height parent-frame) .618)))))
   (defun ivy-posframe-display-at-frame-bottom-center-custom (str)
     (ivy-posframe--display str #'zc/posframe-poshandler-frame-center-near-bottom))
-  (setq ivy-posframe-style 'frame-bottom-center-custom)
-  (setq ivy-posframe-parameters '((alpha 98 98))
-        ivy-posframe-border-width 16
-        ivy-posframe-min-height 10)
+
+  (defun zc/ivy-posframe-use-fixed-width ()
+    (let ((height (max (or ivy-posframe-height ivy-height) 10))
+          (width (min (or ivy-posframe-width 200) (round (* .618 (frame-width))))))
+      (list :height height :width width :min-height height :min-width width)))
+  (setq ivy-posframe-size-function #'zc/ivy-posframe-use-fixed-width)
+
   (ivy-posframe-mode +1))
 
 
