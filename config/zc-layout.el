@@ -155,11 +155,12 @@
                  (window-height   . 0.2))
 
                 (,(rx bos "*Go Translate*" eos)
-                 (display-buffer-reuse-window)
+                 (display-buffer-reuse-window
+                  display-buffer-in-side-window)
                  (reusable-frames . visible)
-                 (side            . right)
+                 (side            . bottom)
                  (slot            . 1)
-                 (window-width    . 0.3))
+                 (window-height   . 0.35))
 
                 (,(rx bos "*compilation*" eos)
                  (display-buffer-reuse-window)
