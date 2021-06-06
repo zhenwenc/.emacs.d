@@ -40,7 +40,7 @@ org subtree if in `org-mode'.
      ((eq major-mode 'org-mode) (org-narrow-to-subtree))
      (t                         (narrow-to-defun)))))
 
-(defun zc/indirect-buffer ()
+(defun zc/buffer-clone-indirect ()
   "Create an indirect buffer for the current buffer."
   (interactive)
   (cond

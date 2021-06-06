@@ -88,26 +88,32 @@
       ("wQ" zc/kill-emacs-or-frame "kill frame"))))
 
   (zc-hydra/define zc-main-hydra--buffer
-    (:color teal :title "Buffer Hydra" :icon "drupal" :prefix "b")
+    (:color teal :title "Buffer & Bookmark Hydra" :icon "drupal" :prefix "b")
     ("Basic"
-     (("b SPC" (zc/buffer-narrow 'toggle) "toggle")
-      ("bw" (zc/buffer-narrow 'narrow) "narrow")
-      ("bW" (zc/buffer-narrow 'widen) "widen"))
+     (("b SPC" (zc/buffer-narrow 'toggle)      "Toggle narrow")
+      ("bw" (zc/buffer-narrow 'narrow)         "Narrow")
+      ("bW" (zc/buffer-narrow 'widen)          "Widen"))
 
      "Navigation"
-     (("bb" ivy-switch-buffer "switch")
-      ("bn" projectile-next-project-buffer "next")
-      ("bN" projectile-previous-project-buffer "previous")
-      ("bs" (switch-to-buffer "*scratch*") "switch to scratch")
-      ("bm" (switch-to-buffer "*Messages*") "switch to messages")
-      ("bz" bury-buffer "bury"))
+     (("bb" ivy-switch-buffer                  "Switch buffer")
+      ("bn" projectile-next-project-buffer     "Switch to next")
+      ("bN" projectile-previous-project-buffer "Switch to previous")
+      ("bS" (switch-to-buffer "*scratch*")     "Switch to scratch")
+      ("bM" (switch-to-buffer "*Messages*")    "Switch to messages")
+      ("bz" bury-buffer                        "Bury buffer"))
 
-     "Misc."
-     (("bB" ibuffer "ibuffer")
-      ("bi" zc/indent-buffer "indent")
-      ("bI" zc/indirect-buffer "indirect buffer")
-      ("bd" zc-layout/kill-buffer "kill")
-      ("by" zc/copy-buffer-to-clipboard "copy to clipboard"))))
+     "Buffer"
+     (("bB" ibuffer                            "ibuffer")
+      ("bi" zc/indent-buffer                   "Indent buffer")
+      ("bc" zc/buffer-clone-indirect           "Clone buffer")
+      ("bd" zc-layout/kill-buffer              "Kill buffer")
+      ("by" zc/copy-buffer-to-clipboard        "Yank buffer"))
+
+     "Bookmark"
+     (("bm" bookmark-set                       "Set bookmark")
+      ("bj" bookmark-jump                      "Jump to bookmark")
+      ("bl" bookmark-bmenu-list                "List bookmark")
+      ("bM" bookmark-delete                    "Delete bookmark"))))
 
   (zc-hydra/define zc-main-hydra--file
     (:color teal :title "File Hydra" :icon "file" :prefix "f")
@@ -300,39 +306,40 @@
   (zc-hydra/define zc-main-hydra
     (:hint nil :color teal :title "Main Hydra")
     ("Basic"
-     (("SPC" counsel-M-x "M-x")
-      (":" eval-expression "eval expression")
-      ("!" zc-term/open "open terminal")
-      ("r" ivy-resume "ivy resume")
-      ("v" er/expand-region "expand region")
-      ("m" zc-hydra/major-mode-hydra "major mode hydra")
-      ("u" universal-argument "universal argument"))
+     (("SPC" counsel-M-x               "M-x")
+      (":"   eval-expression           "Eval expression")
+      ("!"   zc-term/open              "Open terminal")
+      ("r"   ivy-resume                "Ivy resume")
+      ("v"   er/expand-region          "Expand region")
+      ("m"   zc-hydra/major-mode-hydra "Major mode hydra")
+      ("u"   universal-argument        "Universal argument"))
 
      "Quick Switch"
-     (("1" winum-select-window-1 "window 1")
-      ("2" winum-select-window-2 "window 2")
-      ("3" winum-select-window-3 "window 3")
-      ("4" winum-select-window-4 "window 4")
-      ("5" winum-select-window-5 "window 5"))
+     (("1" winum-select-window-1       "window 1")
+      ("2" winum-select-window-2       "window 2")
+      ("3" winum-select-window-3       "window 3")
+      ("4" winum-select-window-4       "window 4")
+      ("5" winum-select-window-5       "window 5"))
 
      ""
-     (("b" zc-main-hydra--buffer/body "+buffer")
-      ("e" zc-main-hydra--error/body "+flycheck")
-      ("f" zc-main-hydra--file/body "+file")
-      ("g" zc-main-hydra--git/body "+git")
-      ("h" zc-main-hydra--help/body "+help")
-      ("j" zc-main-hydra--jump/body "+jump"))
+     (("b" zc-main-hydra--buffer/body  "+buffer")
+      ("e" zc-main-hydra--error/body   "+flycheck")
+      ("f" zc-main-hydra--file/body    "+file")
+      ("g" zc-main-hydra--git/body     "+git")
+      ("h" zc-main-hydra--help/body    "+help")
+      ("j" zc-main-hydra--jump/body    "+jump"))
 
      ""
-     (("o" zc-main-hydra--org/body "+org")
+     (("o" zc-main-hydra--org/body     "+org")
       ("p" zc-main-hydra--project/body "+project")
-      ("s" zc-main-hydra--symbol/body "+symbol")
-      ("t" zc-main-hydra--toggle/body "+toggle")
-      ("w" zc-main-hydra--window/body "+window")))))
+      ("s" zc-main-hydra--symbol/body  "+symbol")
+      ("t" zc-main-hydra--toggle/body  "+toggle")
+      ("w" zc-main-hydra--window/body  "+window")))))
 
 
 
 (use-package general
+  :straight t
   :config
   (general-setq general-override-states
                 '(insert emacs hybrid normal visual motion operator replace))
