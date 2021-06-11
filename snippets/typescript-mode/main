@@ -1,0 +1,7 @@
+# -*- mode: snippet; require-final-newline: nil -*-
+# name: anonymous function
+# key: main
+# --
+;(async () => {
+  $0
+})();
