@@ -99,6 +99,9 @@
         ;; Disabled globally as it causes weird issue.
         org-startup-indented nil
 
+        ;; Enable alphabetical bullet lists.
+        org-list-allow-alphabetical t
+
         ;; Reduce search results.
         org-imenu-depth 3
         org-refile-targets `((nil              :maxlevel . 1)
