@@ -142,6 +142,10 @@
  apropos-do-all t
  doc-view-continuous t)
 
+ ;; Do not popup the *Warnings* buffer
+(setq-default native-comp-async-report-warnings-errors 'silent)
+(setq-default warning-minimum-level :error)
+
 
 ;; Performance
 
