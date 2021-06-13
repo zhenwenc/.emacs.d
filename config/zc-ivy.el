@@ -2,7 +2,6 @@
   (require 'use-package))
 
 (require 's)
-(require 'noflet)
 (require 'zc-ivy-funcs)
 (require 'zc-layout-funcs)
 
