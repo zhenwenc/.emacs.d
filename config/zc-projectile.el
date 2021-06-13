@@ -9,7 +9,11 @@
 
 (use-package projectile
   :straight t
-  :commands (projectile-mode)
+  :commands (projectile-project-root
+             projectile-project-name
+             projectile-project-p
+             projectile-locate-dominating-file
+             projectile-relevant-known-projects)
 
   :init
   (setq projectile-keymap-prefix (kbd "C-c p"))
@@ -66,51 +70,16 @@
   (advice-add 'projectile-load-known-projects
               :override #'zc-projectile/refresh-projects)
 
-  (projectile-mode))
-
-;; counsel-projectile also loads projectile itself
-(use-package counsel-projectile
-  :straight t
-  :after (:and counsel projectile)
-  :commands (counsel-projectile
-             counsel-projectile-switch-project
-             counsel-projectile-find-file
-             counsel-projectile-find-dir)
-
-  :general (:keymaps 'projectile-command-map
-            "/"  #'counsel-projectile-rg)
-
-  :config
-  (setq counsel-projectile-remove-current-buffer t)
-  (setq counsel-projectile-remove-current-project t)
-
-  (counsel-projectile-mode))
-
-(use-package all-the-icons-ivy
-  :disabled t ; don't like it
-  :straight t
-  :after (counsel-projectile)
-  :if window-system
-  :config
-  (setq all-the-icons-ivy-file-commands
-        '(counsel-find-file
-          counsel-file-jump
-          counsel-recentf
-          counsel-projectile
-          counsel-projectile-find-file
-          counsel-projectile-find-dir))
-  (all-the-icons-ivy-setup))
+  (projectile-mode +1))
 
 (use-package ibuffer-projectile
   :straight t
-  :preface
+  :hook (ibuffer . zc-projectile/ibuffer-setup)
+  :init
   (defun zc-projectile/ibuffer-setup ()
     (ibuffer-projectile-set-filter-groups)
     (unless (eq ibuffer-sorting-mode 'alphabetic)
       (ibuffer-do-sort-by-alphabetic)))
-  :hook
-  (ibuffer . zc-projectile/ibuffer-setup)
-  :init
   (setq ibuffer-projectile-prefix "Project: "))
 
 

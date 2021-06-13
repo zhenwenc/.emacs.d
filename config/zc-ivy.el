@@ -16,8 +16,7 @@
    "C-x C-w"    #'ivy-wgrep-change-to-wgrep-mode)
 
   (:keymaps 'ivy-switch-buffer-map
-   ;; Don't kill my buffers!
-   "C-k"        #'ivy-previous-line)
+   "C-k"        #'ivy-previous-line) ;; Don't kill my buffers!
 
   (:keymaps 'ivy-minibuffer-map
    "<f1>"       #'zc-ivy/show-help
@@ -98,38 +97,14 @@
 
 
 
-(use-package flx
-  :straight t
-  :after ivy
-  :config
-  (setq
-   ;; Fuzzy matching result sorting
-   ;; http://oremacs.com/2016/01/06/ivy-flx/
-   ivy-re-builders-alist '((t . ivy--regex-plus))
-
-   ;; Increase the maximum number of candidates that will be sorted
-   ;; using `flx'. The default is 200, which means `flx' is almost
-   ;; never used. Setting it too high (e.g. 10000) causes lag.
-   ivy-flx-limit 2000))
-
-(use-package ivy-prescient
-  :straight t
-  :after ivy
-  :hook (ivy-mode . ivy-prescient-mode))
-
-
-
 (use-package counsel
   :straight t
-  :after projectile
-
   :general
   (:states '(motion normal insert visual)
    "M-x" #'counsel-M-x
    "M-y" #'counsel-yank-pop)
   (:keymaps 'swiper-map
    "M-%" #'swiper-query-replace)
-
   :config
   ;; Display separator in kill-ring buffer
   (setq counsel-yank-pop-separator
@@ -151,9 +126,71 @@
   (setq counsel-describe-function-function #'helpful-callable
         counsel-describe-variable-function #'helpful-variable))
 
+;; counsel-projectile also loads projectile itself
+(use-package counsel-projectile
+  :straight t
+  :after (:and counsel projectile)
+  :commands (counsel-projectile
+             counsel-projectile-switch-project
+             counsel-projectile-find-file
+             counsel-projectile-find-dir)
+
+  :general (:keymaps 'projectile-command-map
+            "/"  #'counsel-projectile-rg)
+
+  :config
+  (setq counsel-projectile-remove-current-buffer t)
+  (setq counsel-projectile-remove-current-project t)
+
+  (counsel-projectile-mode +1))
+
 (use-package counsel-tramp
   :straight t
   :commands (counsel-tramp))
+
+
+
+(use-package flx
+  :straight t
+  :after ivy
+  :config
+  (setq
+   ;; Fuzzy matching result sorting
+   ;; http://oremacs.com/2016/01/06/ivy-flx/
+   ivy-re-builders-alist '((t . ivy--regex-plus))
+
+   ;; Increase the maximum number of candidates that will be sorted
+   ;; using `flx'. The default is 200, which means `flx' is almost
+   ;; never used. Setting it too high (e.g. 10000) causes lag.
+   ivy-flx-limit 2000))
+
+(use-package ivy-prescient
+  :straight t
+  :after ivy
+  :hook (ivy-mode . ivy-prescient-mode))
+
+
+
+(use-package ivy-rich
+  :disabled t ;; wip
+  :straight t
+  :if (display-graphic-p)
+  :after (:and ivy projectile)
+  :config
+  ;; For better performance
+  (setq ivy-rich-parse-remote-buffer nil)
+  ;; Use abbreviate in `ivy-rich-mode'.
+  (setq ivy-virtual-abbreviate
+        (or (and ivy-rich-mode 'abbreviate) 'name))
+  (ivy-rich-mode +1))
+
+(use-package all-the-icons-ivy-rich
+  :disabled t ;; wip
+  :straight t
+  :if (display-graphic-p)
+  :after (:and ivy ivy-rich counsel-projectile)
+  :config
+  (all-the-icons-ivy-rich-reload))
 
 
 
