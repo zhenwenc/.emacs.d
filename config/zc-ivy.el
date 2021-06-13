@@ -35,7 +35,7 @@
    "C-S-k"      #'ivy-reverse-i-search-kill)
 
   :config
-  (setq ivy-height 10)
+  (setq ivy-height 12)
   (setq ivy-count-format "(%d/%d) ")
 
   ;; Show recent files in switch-buffer
@@ -74,10 +74,11 @@
   (ivy-posframe-border ((t (:background ,(doom-color 'bg-alt)))))
   (ivy-posframe-cursor ((t (:background ,(doom-color 'blue)))))
   :config
-  (setq ivy-posframe-style 'frame-bottom-center-custom)
-  (setq ivy-posframe-parameters '((alpha 98 98))
-        ivy-posframe-border-width 16
-        ivy-posframe-min-height 10)
+  (setq ivy-posframe-min-height 10
+        ivy-posframe-border-width 8
+        ivy-posframe-parameters '((left-fringe  . 4)
+                                  (right-fringe . 4))
+        ivy-posframe-style 'frame-bottom-center-custom)
 
   (defun zc/posframe-poshandler-frame-center-near-bottom (info)
     (let ((parent-frame (plist-get info :parent-frame))
@@ -121,12 +122,14 @@
 (use-package counsel
   :straight t
   :after projectile
+
   :general
   (:states '(motion normal insert visual)
    "M-x" #'counsel-M-x
    "M-y" #'counsel-yank-pop)
   (:keymaps 'swiper-map
    "M-%" #'swiper-query-replace)
+
   :config
   ;; Display separator in kill-ring buffer
   (setq counsel-yank-pop-separator

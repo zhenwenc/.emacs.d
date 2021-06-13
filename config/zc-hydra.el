@@ -373,9 +373,13 @@
   :config
   (setq hydra-hint-display-type 'posframe)
   (setq hydra-posframe-show-params
-        `(:internal-border-width 16
+        `(:internal-border-width 3
+          :internal-border-color ,(doom-color 'base2)
           :background-color ,(doom-color 'bg-alt)
           :override-parameters ((alpha 98 98))
+          :left-fringe 16
+          :right-fringe 16
+          :lines-truncate t
           :poshandler posframe-poshandler-frame-bottom-center)))
 
 
