@@ -196,6 +196,9 @@
         tide-completion-ignore-case t
         tide-always-show-documentation t)
 
+  ;; TODO Improve imenu candiates
+  (setq tide-imenu-flatten t)
+
   ;; HACK: Flycheck generated temporary file hammers file watchers.
   ;;       Remove the hack after these issues are fixed:
   ;; https://github.com/flycheck/flycheck/issues/1446
