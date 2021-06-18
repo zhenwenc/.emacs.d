@@ -73,7 +73,11 @@
   (git-commit-jira-prefix-init)
 
   (defun zc-git/commit-prefix (&rest _ignored)
-    (when-let ((branch (magit-get-current-branch)))
+    (when-let ((branch (magit-get-current-branch))
+               (is-blank (s-blank? (save-excursion
+                                     (goto-char (point-min))
+                                     (buffer-substring (line-beginning-position)
+                                                       (line-end-position))))))
       (or
        ;; Branch pattern: "feature/ABC-123/blah"
        (-when-let* ((branch-ptn (rx bos (+ alpha)
@@ -81,7 +85,7 @@
                                     "/" (+ (or alpha "-"))))
                     ((_ ticket) (s-match branch-ptn branch)))
          (concat "[" ticket "]"))
-       ;; Branch pattern: "who/ABC-123-<type>-blah"
+       ;; Branch pattern: "prefix/ABC-123-<type>-blah"
        (-when-let* ((staged (f-common-parent (magit-staged-files)))
                     (branch-ptn (rx bos (+ alpha)
                                     "/" (group (+ upper) "-" (+ num))
