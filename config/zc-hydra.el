@@ -112,8 +112,7 @@
      "Bookmark"
      (("bm" bookmark-set                       "Set bookmark")
       ("bj" bookmark-jump                      "Jump to bookmark")
-      ("bl" bookmark-bmenu-list                "List bookmark")
-      ("bM" bookmark-delete                    "Delete bookmark"))))
+      ("bl" bookmark-bmenu-list                "List bookmark"))))
 
   (zc-hydra/define zc-main-hydra--file
     (:color teal :title "File Hydra" :icon "file" :prefix "f")
