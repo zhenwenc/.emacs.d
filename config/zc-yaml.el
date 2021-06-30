@@ -19,6 +19,9 @@
     (face-remap-add-relative 'font-lock-variable-name-face
                              :foreground (doom-color 'violet)))
 
+  (setq yaml-imenu-generic-expression
+        '((nil "^\\(:?[[:space:]]\\{2\\}??[a-zA-Z_-]+\\):" 1)))
+
   ;; Customize YAMLLS server
   (with-eval-after-load 'lsp-yaml
     (setq lsp-yaml-hover nil)))
