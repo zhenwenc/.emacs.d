@@ -48,7 +48,9 @@
          ;; Cleanup whitespace on save
          (before-save . whitespace-cleanup)))
 
+;; FIXME May not need this package anymore
 (use-package auto-highlight-symbol
+  :disabled t
   :straight t
   :after evil
   :preface

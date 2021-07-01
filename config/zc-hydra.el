@@ -150,8 +150,8 @@
 
      "Symbol"
      (("se" evil-iedit-state/iedit-mode "edit")
-      ("sh" zc-evil-ahs/highlight-symbol "highlight")
-      ("sH" zc-evil-ahs/goto-last-searched-symbol "goto last searched")
+      ("sh" (evil-search-word-forward  1 'symbol)  "search forward")
+      ("sH" (evil-search-word-backward 1 'symbol) "search backward")
       ("sc" zc/evil-search-clear-highlight "clear highlights"))
 
      "Search"
