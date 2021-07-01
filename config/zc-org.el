@@ -365,6 +365,23 @@ so that the breadcrumb will fit in the default echo area."
   (advice-add 'org-eldoc-get-breadcrumb :around #'zc-org/post-org-eldoc-get-breadcrumb))
 
 
+
+(use-package org-roam
+  :straight t
+  :if (executable-find "cc")
+  :hook (after-init . org-roam-mode)
+  :custom
+  (org-roam-directory   zc-org/directory)
+  (org-roam-db-location (f-join paths-cache-dir "org-roam.db"))
+  :bind (:map org-roam-mode-map
+         (("C-c n l" . org-roam)
+          ("C-c n f" . org-roam-find-file)
+          ("C-c n g" . org-roam-graph))
+         :map org-mode-map
+         (("C-c n i" . org-roam-insert))
+         (("C-c n I" . org-roam-insert-immediate))))
+
+
 ;; Pretty
 
 (use-package org-superstar

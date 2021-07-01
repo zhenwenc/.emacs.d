@@ -222,7 +222,8 @@
 
      "View"
      (("os" org-ql-search   "search")
-      ("ov" org-ql-view     "view"))
+      ("ov" org-ql-view     "view")
+      ("or" org-roam        "roam"))
 
      "Navigation"
      (("oo" (zc-org/goto-file-heading 'all)   "all")
