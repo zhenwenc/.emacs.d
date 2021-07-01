@@ -13,8 +13,7 @@
 
 (use-package org
   :straight t
-  :commands org-try-structure-completion
-  :defer t
+  :after (:and ob-mermaid)
 
   :general
   (:keymaps 'org-src-mode-map
@@ -229,7 +228,6 @@
 
 (use-package org-agenda
   :straight org
-  :after org
   :commands (org-agenda)
 
   :general
@@ -298,13 +296,9 @@
 
   (advice-add 'org-agenda-quit :before 'org-save-all-org-buffers))
 
-
-;; Templates
-
 ;; https://orgmode.org/manual/Easy-templates.html
 ;; https://github.com/abo-abo/hydra/wiki/Org-mode-block-templates
 (use-package org-tempo
-  :after org
   :config
   ;; Complete src block templates with uppercased keywords
   (defun zc-org/post-tempo-add-templates ()
@@ -319,10 +313,7 @@
   ;; Expand "#+NAME:" with "<n"
   (add-to-list 'org-tempo-keywords-alist '("n" . "name")))
 
-
-
 (use-package org-eldoc
-  :after org
   ;; HACK: Error when header argument value is numeric type, such as port number.
   :config/el-patch
   (defun org-eldoc-get-src-header ()

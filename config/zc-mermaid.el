@@ -6,7 +6,6 @@
 ;; https://github.com/arnm/ob-mermaid
 (use-package ob-mermaid
   :straight t
-  :after org
   :config
   (setq ob-mermaid-cli-path (concat zc-org/directory "/node_modules/.bin/mmdc"))
   (setq zc-mermaid-preview-buffer "*Mermaid Preview*")
