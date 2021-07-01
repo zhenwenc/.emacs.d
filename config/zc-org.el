@@ -62,6 +62,12 @@
 
   :hook
   ((org-mode . visual-line-mode)
+   (org-mode . (lambda ()
+                 (setq prettify-symbols-alist '(("#+BEGIN_SRC"   . "✎")
+                                                ("#+END_SRC"     . "□")
+                                                ("#+BEGIN_QUOTE" . "»")
+                                                ("#+END_QUOTE"   . "«")))
+                 (prettify-symbols-mode)))
    (org-babel-after-execute . zc-org/babel-after-execute))
 
   :init
