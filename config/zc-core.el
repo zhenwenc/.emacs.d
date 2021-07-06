@@ -64,6 +64,9 @@
  ;; Prefer splitting windows horizontally
  split-height-threshold nil
 
+ ;; Disable auto save
+ auto-save-default nil
+
  ;; Save backup files in the temporary directory
  make-backup-files               nil
  backup-directory-alist         `((".*" . ,(concat paths-cache-dir "backup/")))
