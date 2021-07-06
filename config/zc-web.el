@@ -13,15 +13,14 @@
          ("\\.babelrc\\'"  . zc-web-json-mode)
          ("\\.css\\'"      . zc-web-css-mode)
          ("\\.scss\\'"     . zc-web-css-mode)
-         ("\\.html\\'"     . zc-web-html-mode)))
+         ("\\.html\\'"     . zc-web-html-mode)
+         ("\\.ejs\\'"      . zc-web-html-mode)))
 
 
 
 (use-package web-mode
   :straight t
   :defer t
-  :defines (web-mode-css-indent-offset
-            web-mode-markup-indent-offset)
 
   :general
   (:keymaps 'web-mode "C-c C-r" nil) ; Disable web-mode-reload binding
