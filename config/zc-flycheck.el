@@ -78,6 +78,8 @@ nor requires Flycheck to be loaded."
   :custom-face
   (flycheck-posframe-info-face ((t (:foreground ,(doom-color 'green)))))
   :config
+  (setq flycheck-posframe-position 'window-bottom-left-corner)
+
   ;; Don't display popups if company is open
   (with-eval-after-load 'company
     (add-hook 'flycheck-posframe-inhibit-functions #'company--active-p))
