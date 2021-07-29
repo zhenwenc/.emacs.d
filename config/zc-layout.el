@@ -140,7 +140,8 @@
                  (window-height   . 0.35))
 
                 (,(rx bos "*helpful ")
-                 (display-buffer-reuse-window)
+                 (display-buffer-reuse-window
+                  display-buffer-in-side-window)
                  (reusable-frames . visible)
                  (side            . right)
                  (slot            . 1)
@@ -192,7 +193,8 @@
                  (window-width    . 0.5))
 
                 (,(rx bos "*PLANTUML Preview*" eos)
-                 (display-buffer-reuse-window)
+                 (display-buffer-reuse-window
+                  display-buffer-in-side-window)
                  (reusable-frames . visible)
                  (side            . right)
                  (slot            . 1)
