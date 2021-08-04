@@ -11,13 +11,13 @@
 
 
 
-(defvar zc-default-font "Fira Code 13"
+(defvar zc-default-font "Fira Code 12"
   "The universal default font.")
 
-(defvar zc-variable-pitch-font "Fira Code 13"
+(defvar zc-variable-pitch-font "Fira Code 12"
   "The font to use in the variable-pitch face.")
 
-(defvar zc-fixed-pitch-font "Fira Code 13"
+(defvar zc-fixed-pitch-font "Fira Code 12"
   "The font to use in the fixed-pitch face.")
 
 
