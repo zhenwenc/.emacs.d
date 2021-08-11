@@ -70,6 +70,7 @@
   (emacs-lisp-mode . rainbow-delimiters-mode))
 
 (use-package hl-line
+  :disabled t
   :straight t
   :preface
   (defun zc-theme/maybe-init-hl-line ()
