@@ -18,6 +18,7 @@
           ("~/dotfiles/" . 0)))
 
   ;; Display magit buffer in fullframe
+  (setq magit-bury-buffer-function    #'magit-restore-window-configuration)
   (setq magit-display-buffer-function #'magit-display-buffer-fullframe-status-v1))
 
 ;; Show source files' todos in Magit status buffer
