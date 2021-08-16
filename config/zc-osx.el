@@ -24,8 +24,8 @@
       ;; Enable this when using maximized instead of fullframe.
       ns-auto-hide-menu-bar nil)
 
+(add-to-list 'default-frame-alist '(ns-transparent-titlebar . t))
 (add-to-list 'default-frame-alist '(ns-appearance           . nil))
-(add-to-list 'default-frame-alist '(ns-transparent-titlebar . nil))
 (add-to-list 'default-frame-alist '(vertical-scroll-bars    . nil))
 
 (global-unset-key (kbd "M-t"))

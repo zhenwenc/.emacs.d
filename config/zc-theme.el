@@ -174,6 +174,9 @@
   "Setup frame default fonts."
   (when window-system
     (add-to-list 'default-frame-alist `(font . ,zc-default-font))
+
+    ;; TODO Improve appearance for Emacs --with-no-titlebar
+    (add-to-list 'default-frame-alist '(drag-internal-border  . 0))
     (add-to-list 'default-frame-alist '(internal-border-width . 0))
 
     ;; Workaround for initializing child frame by posframe
