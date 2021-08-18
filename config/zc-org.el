@@ -26,6 +26,11 @@
   (:states 'normal :keymaps 'outline-mode-map
    [remap outline-up-heading] #'zc-org/outline-up-heading)
 
+  (:states 'insert :keymaps 'org-mode-map
+   ;; Recently, a [tab] keybind in `outline-mode-cycle-map' has begun overriding
+   ;; org's [tab] keybind in GUI Emacs. This is needed to undo that.
+   [tab] #'org-cycle)
+
   :hydra
   ("Basic"
    (("?" org-info                                 "org info")
