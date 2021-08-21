@@ -3,15 +3,15 @@
 # key: r
 # condition: (and (zc-yas/react-buffer-p) (not (zc-yas/react-story-buffer-p)) (not (zc-yas/buffer-match-p "react")))
 # --
-import React from 'react';
+import * as React from 'react';
 
 import { makeStyles } from '@navch-ui/styles';
 
 ${1:export interface ${2:`(file-name-base)`Props} {
 
-}}
+\}}
 
-export function `(file-name-base)`(${3:props: $2}) {
+export const `(file-name-base)`: React.FC${2:$(and (not (string-empty-p yas-text)) (format "<%s>" yas-text))} = (${3:props}) => {
   const { styles \} = useStyles();
 
   $0
