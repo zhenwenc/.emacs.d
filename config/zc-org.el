@@ -16,6 +16,10 @@
   :after (:and ob-mermaid)
 
   :general
+  (:keymaps 'org-mode-map
+   [remap xref-find-definitions] #'org-open-at-point
+   [remap xref-pop-marker-stack] #'org-mark-ring-goto)
+
   (:keymaps 'org-src-mode-map
    "C-c C-c" #'org-edit-src-exit)
 
