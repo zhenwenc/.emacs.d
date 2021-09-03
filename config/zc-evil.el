@@ -82,6 +82,7 @@
 
   ;; Configure initial state for modes
   (evil-set-initial-state 'diff-mode                'motion)
+  (evil-set-initial-state 'shell-mode               'normal)
   (evil-set-initial-state 'ibuffer-mode             'motion)
   (evil-set-initial-state 'prodigy-mode             'motion)
   (evil-set-initial-state 'process-menu-mode        'motion)

@@ -167,7 +167,7 @@
                  (display-buffer-reuse-window)
                  (reusable-frames . visible)
                  (slot            . 1)
-                 (window-height   . 0.5))
+                 (window-width    . 0.5))
 
                 (,(rx bos "*prettier errors*" eos)
                  (display-buffer-reuse-window

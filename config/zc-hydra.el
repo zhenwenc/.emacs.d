@@ -83,7 +83,7 @@
      "Killer"
      (("wd" delete-window "kill")
       ("wD" delete-other-windows "close others")
-      ("wk" ace-delete-window "ace kill")
+      ("wk" kill-buffer-and-window "kill buffer")
       ("wK" ace-delete-other-windows "ace close others")
       ("wQ" zc/kill-emacs-or-frame "kill frame"))))
 
