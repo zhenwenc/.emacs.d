@@ -206,6 +206,14 @@
   :config
   (global-auto-revert-mode))
 
+(use-package savehist
+  :config
+  (setq savehist-file (concat paths-cache-dir "savehist")
+        savehist-save-minibuffer-history t
+        savehist-autosave-interval nil ; save on kill only
+        savehist-additional-variables '(projectile-project-command-history))
+  (savehist-mode +1))
+
 (use-package conf-mode
   :mode ("\\.ovpn\\'" . conf-space-mode))
 
