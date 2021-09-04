@@ -163,9 +163,18 @@
                  (slot            . 1)
                  (window-height   . 0.35))
 
+                ;; Don't set width to avoid weird behaviour on wider monitor.
                 (,(rx bos "*compilation*" eos)
                  (display-buffer-reuse-window)
+                 (reusable-frames . visible))
+
+                ;; Run docker compose commands without popping up the output
+                ;; window for convenience.
+                (,(rx bos "*docker-compose "
+                      (or "up" "down" "stop" "start" "restart"))
+                 (display-buffer-no-window)
                  (reusable-frames . visible)
+                 (side            . right)
                  (slot            . 1)
                  (window-width    . 0.5))
 
