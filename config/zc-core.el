@@ -239,10 +239,9 @@
 (use-package undo-tree
   :straight t
   :config
-  (progn
-    (setq undo-tree-visualizer-diff t)
-    (setq undo-tree-visualizer-timestamps t)
-    (global-undo-tree-mode)))
+  (setq undo-tree-visualizer-diff t)
+  (setq undo-tree-visualizer-timestamps t)
+  (global-undo-tree-mode))
 
 (use-package which-key
   :straight t
