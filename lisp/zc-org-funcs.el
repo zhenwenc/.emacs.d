@@ -1,12 +1,12 @@
 (require 'f)
 (require 'dash)
+(require 'org)
+(require 'org-element)
 
 (autoload 'ivy-read "ivy")
-(autoload 'org-element-type "org")
-(autoload 'org-element-at-point "org")
-(autoload 'org-agenda-filter-apply "org")
-(autoload 'org-capture-target-buffer "org")
-(autoload 'org-capture-put-target-region-and-position "org")
+(autoload 'counsel-org-goto-action "counsel")
+(autoload 'counsel-outline-candidates "counsel")
+(autoload 'projectile-ensure-project "projectile")
 
 (defvar org-any-link-re)
 (defvar org-ts-regexp-both)
@@ -150,7 +150,6 @@ See also `counsel-outline'."
 
 (defun zc-org/goto-file-heading (&optional type)
   "Jump to a heading in an org file.
-
 See also `counsel-org-goto-all'."
   (interactive)
   (let ((files (pcase type
@@ -163,14 +162,22 @@ See also `counsel-org-goto-all'."
               :caller #'zc-org/goto-file-heading)))
 
 (defun zc-org/goto-buffer-heading-action (x)
-  "Jump to headline in candidate X."
-  (counsel-org-goto-action x)
-  (zc-org/narrow-to-subtree))
+  "Jump to headline in candidate X.
+You can jump back to subtree with `org-mark-ring-goto'."
+  (let ((narrowed (buffer-narrowed-p)))
+    ;; Push current subtree to mark ring, see `org-mark-subtree'.
+    (org-with-limited-levels
+     (cond ((org-at-heading-p) (beginning-of-line))
+           ((not (org-before-first-heading-p))
+            (outline-previous-visible-heading 1)))
+     (org-mark-ring-push))
+    (counsel-org-goto-action x)
+    (when narrowed (zc-org/narrow-to-subtree))))
 
 (defun zc-org/goto-file-heading-action (x)
   "Jump to headline in candidate X.
-
-Ensure we are are in `org' layout to avoid chaos"
+You can jump back to subtree with `org-mark-ring-goto'."
+  ;; Ensure we are are in `org' layout to avoid chaos.
   (unless (projectile-ensure-project zc-org/directory)
     (error "Org directory '%s' is not a project" zc-org/directory))
   (let* ((marker (cdr x))
@@ -180,6 +187,11 @@ Ensure we are are in `org' layout to avoid chaos"
         (zc-projectile/with-switch-project-action buffer
           (zc-layout/create-project-layout project))
       (zc-layout/create-project-layout project)))
+  (org-with-limited-levels
+   (cond ((org-at-heading-p) (beginning-of-line))
+         ((not (org-before-first-heading-p))
+          (outline-previous-visible-heading 1)))
+   (org-mark-ring-push))
   (counsel-org-goto-action x)
   (zc-org/narrow-to-subtree))
 
@@ -190,31 +202,41 @@ using `counsel-outline-candidates'.
 Each element is a pair (HEADING . MARKER), where the string HEADING
 is located at the position of MARKER."
   (->> (or filenames org-agenda-files)
-    (-filter #'f-exists?)
-    (-map-when (-compose #'not #'bufferp)
-               (-rpartial #'find-file-noselect t))
-    ;; Collect headline candidates
-    (mapcan (lambda (buffer)
-              (with-current-buffer buffer
-                (zc/with-widen-buffer
-                 (counsel-outline-candidates
-                  (cdr (assq 'org-mode counsel-outline-settings)))))))
-    ;; Filter candidates by maximum headline depth
-    (-filter (-lambda ((head . marker))
-               (< (length (s-split counsel-outline-path-separator head)) 4)))
-    ;; Prepend the file name
-    (-map (-lambda ((head . marker))
-            (--> marker
-              (buffer-file-name (marker-buffer it))
-              (f-relative it zc-org/directory)
-              (f-no-ext it)
-              (propertize it 'face 'ivy-virtual)
-              (concat "[" it "] " head)
-              (cons it marker))))))
+       (-filter #'f-exists?)
+       (-map-when (-compose #'not #'bufferp)
+                  (-rpartial #'find-file-noselect t))
+       ;; Collect headline candidates
+       (mapcan (lambda (buffer)
+                 (with-current-buffer buffer
+                   (zc/with-widen-buffer
+                    (counsel-outline-candidates
+                     (cdr (assq 'org-mode counsel-outline-settings)))))))
+       ;; Filter candidates by maximum headline depth
+       (-filter (-lambda ((head . marker))
+                  (< (length (s-split counsel-outline-path-separator head)) 4)))
+       ;; Prepend the file name
+       (-map (-lambda ((head . marker))
+               (--> marker
+                    (buffer-file-name (marker-buffer it))
+                    (f-relative it zc-org/directory)
+                    (f-no-ext it)
+                    (propertize it 'face 'ivy-virtual)
+                    (concat "[" it "] " head)
+                    (cons it marker))))))
+
+(defun zc-org/goto-previous-mark (&optional n)
+  "Enhanced `org-mark-ring-goto' to break narrowed buffer."
+  (interactive "p")
+  (let ((narrowed (buffer-narrowed-p)))
+    ;; Break buffer narrow boundary
+    (when narrowed (widen))
+    (funcall-interactively 'org-mark-ring-goto n)
+    (when narrowed (org-narrow-to-subtree)))
+  ;; Show all direct subheadings of this heading
+  (org-show-children))
 
 (defun zc-org/outline-up-heading (arg)
   "Move to the previous (possibly invisible) heading line.
-
 Enhanced `outline-up-heading' to break narrowed buffer."
   (interactive "p")
   (let ((narrowed (buffer-narrowed-p)))

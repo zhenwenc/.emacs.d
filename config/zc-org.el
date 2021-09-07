@@ -4,7 +4,6 @@
 (require 'f)
 (require 'dash)
 (require 'general)
-(require 'zc-org-funcs)
 (require 'zc-hydra-funcs)
 
 (autoload 'counsel-outline-candidates "counsel-projectile")
@@ -18,7 +17,7 @@
   :general
   (:keymaps 'org-mode-map
    [remap xref-find-definitions] #'org-open-at-point
-   [remap xref-pop-marker-stack] #'org-mark-ring-goto)
+   [remap xref-pop-marker-stack] #'zc-org/goto-previous-mark)
 
   (:keymaps 'org-src-mode-map
    "C-c C-c" #'org-edit-src-exit)
@@ -79,6 +78,8 @@
    (org-babel-after-execute . zc-org/babel-after-execute))
 
   :init
+  (require 'zc-org-funcs)
+
   ;; Org file directories must be defined at `:init' block
   ;; so that they are visible to the navigation functions,
   ;; such as `zc-org/goto-agenda-file-heading'.
