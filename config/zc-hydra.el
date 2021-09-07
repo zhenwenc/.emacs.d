@@ -104,10 +104,10 @@
 
      "Buffer"
      (("bB" ibuffer                            "ibuffer")
-      ("bi" zc/indent-buffer                   "Indent buffer")
-      ("bc" zc/buffer-clone-indirect           "Clone buffer")
-      ("bd" zc-layout/kill-buffer              "Kill buffer")
-      ("by" zc/copy-buffer-to-clipboard        "Yank buffer"))
+      ("bi" zc/indent-buffer                   "Indent")
+      ("bc" zc/buffer-clone-indirect           "Clone")
+      ("bd" zc-layout/kill-buffer              "Kill")
+      ("by" zc/copy-buffer-to-clipboard        "Yank"))
 
      "Bookmark"
      (("bm" bookmark-set                       "Set bookmark")

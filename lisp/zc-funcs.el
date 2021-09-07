@@ -7,6 +7,7 @@
 (autoload 'evil-escape "evil")
 (autoload 'org-move-item-up "org")
 (autoload 'org-move-item-down "org")
+(autoload 'org-narrow-to-subtree "org")
 (autoload 'recentf-remove-if-non-kept "recentf")
 (autoload 'projectile-project-p "projectile")
 (autoload 'projectile-project-name "projectile")

@@ -144,8 +144,7 @@
                   display-buffer-in-side-window)
                  (reusable-frames . visible)
                  (side            . right)
-                 (slot            . 1)
-                 (window-width    . 0.5))
+                 (slot            . 1))
 
                 (,(rx bos "*wclock*" eos)
                  (display-buffer-reuse-window
