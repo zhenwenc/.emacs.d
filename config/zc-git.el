@@ -5,10 +5,8 @@
 
 (use-package magit
   :straight t
-
   :general (:states 'normal :keymaps 'magit-status-mode-map
             "q" #'magit-mode-bury-buffer)
-
   :config
   (setq magit-repository-directories
         '(("~/.emacs.d/" . 0)
@@ -19,7 +17,10 @@
 
   ;; Display magit buffer in fullframe
   (setq magit-bury-buffer-function    #'magit-restore-window-configuration)
-  (setq magit-display-buffer-function #'magit-display-buffer-fullframe-status-v1))
+  (setq magit-display-buffer-function #'magit-display-buffer-fullframe-status-v1)
+
+  ;; Display submodules information in the status buffer
+  (magit-add-section-hook 'magit-status-sections-hook 'magit-insert-modules nil t))
 
 ;; Show source files' todos in Magit status buffer
 
