@@ -38,6 +38,7 @@
 (global-set-key (kbd "M-s") 'zc-core/evil-escape-and-save)
 (global-set-key (kbd "M-Z") 'undo-tree-redo)
 (global-set-key (kbd "<C-M-268632070>") 'toggle-frame-fullscreen)
+(global-set-key (kbd "M-C-SPC") 'ns-do-show-character-palette)
 
 
 
