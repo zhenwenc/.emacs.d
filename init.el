@@ -78,6 +78,8 @@
 (straight-use-package 'general)
 (straight-use-package 'posframe)
 (straight-use-package 'el-patch)
+(straight-use-package 'tree-sitter)
+(straight-use-package 'tree-sitter-langs)
 
 ;; Must set before loading `use-package'.
 ;; Don't use `use-package-always-ensure' with straight!
