@@ -231,8 +231,10 @@
   ;; from other code blocks, where the intermediate results will be printed to
   ;; the echo-area that causes flickering effect.
   (defun zc-org/inhibit-message (orig-fn &rest args)
-    (let ((inhibit-message t)) (apply orig-fn args)))
-  (advice-add 'org-babel-get-src-block-info :around #'zc-org/inhibit-message))
+    (let ((inhibit-message t)) (message (make-string 60 ?-)) (apply orig-fn args)))
+  (advice-add 'org-babel-get-src-block-info      :around #'zc-org/inhibit-message)
+  (advice-add 'org-babel-expand-noweb-references :around #'zc-org/inhibit-message)
+  (advice-add 'org-babel-execute:restclient      :around #'zc-org/inhibit-message))
 
 
 
