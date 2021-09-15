@@ -140,6 +140,9 @@
   (setq counsel-projectile-remove-current-buffer t)
   (setq counsel-projectile-remove-current-project t)
 
+  ;; sort project file candidates with `ivy-prescient'.
+  (setq counsel-projectile-sort-files t)
+
   (counsel-projectile-mode +1))
 
 (use-package counsel-tramp
