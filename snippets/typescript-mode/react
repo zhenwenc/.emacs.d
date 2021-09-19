@@ -3,8 +3,6 @@
 # key: r
 # condition: (and (zc-yas/react-buffer-p) (not (zc-yas/react-story-buffer-p)) (not (zc-yas/buffer-match-p "react")))
 # --
-import * as React from 'react';
-
 import { makeStyles } from '@navch-ui/styles';
 
 ${1:export interface ${2:`(file-name-base)`Props} {
