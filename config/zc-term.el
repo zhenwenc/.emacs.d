@@ -21,12 +21,9 @@
    "Toggle"
    (("h" compilation-shell-minor-mode "compilation mode"))))
 
-
 (use-package multi-term
   :straight t
-
   :commands (multi-term)
-
   :general
   (:states 'normal :keymaps 'term-mode-map
    "<return>" #'undefined
@@ -46,7 +43,8 @@
    "C-n"      #'compilation-next-error
    "C-p"      #'compilation-previous-error)
 
-  :preface
+  :hook (term-mode . zc-term/setup)
+  :config
   (defun zc-term/setup ()
     ;; Fix ansi-term bi-directional text support problem, which
     ;; seems to be the cause of text jumbling when going back
@@ -58,14 +56,31 @@
     (make-local-variable 'require-final-newline)
     (setq require-final-newline nil))
 
-  :hook (term-mode . zc-term/setup)
-
-  :config
   (setq multi-term-dedicated-window-height 20
         multi-term-switch-after-close 'PREVIOUS
-
         ;; Avoid interpreter output causes window to scroll
         multi-term-scroll-show-maximum-output t))
+
+(use-package vterm
+  :straight t
+  :commands (vterm)
+  ;; https://github.com/akermu/emacs-libvterm#installation
+  :if (and module-file-suffix ; dynamic module
+           (executable-find "make")
+           (executable-find "cmake")
+           (executable-find "libtool"))
+  :bind (:map vterm-mode-map
+         ([f9] . shell-pop))
+  :init (setq vterm-always-compile-module t))
+
+(use-package shell-pop
+  :straight t
+  :commands (shell-pop)
+  :bind ([f9] . shell-pop)
+  :init (setq shell-pop-window-size 30
+              shell-pop-shell-type
+              (cond ((fboundp 'vterm) '("vterm" "*vterm*" #'vterm))
+                    (t '("multi-term" "*multi-term*" #'multi-term)))))
 
 
 
