@@ -91,12 +91,11 @@
     (call-interactively 'evil-delete-char))
 
   :config
-  (setq company-idle-delay 0.2
+  (setq company-tooltip-limit 12
+        company-tooltip-align-annotations t
+        company-idle-delay 0
         company-require-match nil
         company-minimum-prefix-length 2
-
-        company-tooltip-limit 12
-        company-tooltip-align-annotations t
 
         ;; Always display suggestions in the tooltip, even if there is only one.
         ;;

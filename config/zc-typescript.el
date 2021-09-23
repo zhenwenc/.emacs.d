@@ -156,7 +156,7 @@
     (("rr" tide-rename-symbol                      "rename")
      ("rf" tide-format                             "format")
      ("ra" tide-refactor                           "action")
-     ("rF" tide-fix                                "code fix")
+     ("rc" tide-fix                                "code fix")
      ("ro" tide-organize-imports                   "sort imports"))))
 
   :hook (typescript-mode . zc-typescript/maybe-setup-tide)
@@ -192,12 +192,13 @@
   (advice-add 'tide-buffer-file-name :around 'zc-typescript/tide-buffer-file-name)
 
   :config
-  (setq tide-completion-detailed nil
+  (setq tide-always-show-documentation t
         tide-completion-ignore-case t
-        tide-always-show-documentation t)
+        tide-completion-detailed nil
+        tide-completion-enable-autoimport-suggestions nil)
 
   ;; TODO Improve imenu candiates
-  (setq tide-imenu-flatten t)
+  (setq tide-imenu-flatten nil)
 
   ;; HACK: Flycheck generated temporary file hammers file watchers.
   ;;       Remove the hack after these issues are fixed:
