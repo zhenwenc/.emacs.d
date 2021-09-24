@@ -74,7 +74,7 @@
   :hook ((graphql-mode    . zc-web/maybe-enable-prettier)
          (typescript-mode . zc-web/maybe-enable-prettier)
          (zc-web-css-mode . zc-web/maybe-enable-prettier))
-  :preface
+  :config
   (defun zc-web/maybe-enable-prettier ()
     (unless (or (not buffer-file-name) ; maybe scratch
                 (file-remote-p buffer-file-name)

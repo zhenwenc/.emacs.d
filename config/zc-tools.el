@@ -8,7 +8,7 @@
 (use-package graphql-mode
   :straight t
   :defer t
-  :mode "graphql\\'")
+  :mode "\\.graphql\\'")
 
 (use-package docker
   :straight t

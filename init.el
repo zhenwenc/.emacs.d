@@ -145,6 +145,7 @@
 (use-package zc-plantuml)
 (use-package zc-mermaid)
 (use-package zc-prodigy)
+(use-package zc-prisma)
 (use-package zc-help)
 
 
