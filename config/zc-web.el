@@ -21,6 +21,7 @@
 (use-package web-mode
   :straight t
   :defer t
+  :after (flycheck)
 
   :general
   (:keymaps 'web-mode "C-c C-r" nil) ; Disable web-mode-reload binding
