@@ -15,18 +15,18 @@
    (("?" treemacs--helpful-hydra "helpful"))
 
    "Project"
-   (("pp" treemacs-projectile "add project")
+   (("pp" treemacs-projectile                    "add project")
     ("pd" treemacs-remove-project-from-workspace "remove project")
-    ("pr" treemacs-rename-project "rename project")
-    ("pc" treemacs-collapse-project "collapse project")
-    ("pC" treemacs-collapse-all-projects "collapse all projects"))
+    ("pr" treemacs-rename-project                "rename project")
+    ("pc" treemacs-collapse-project              "collapse project")
+    ("pC" treemacs-collapse-all-projects         "collapse all projects"))
 
    "Workspace"
    (("wc" treemacs-create-workspace "create workspace")
     ("wo" treemacs-switch-workspace "select workspace")
     ("wD" treemacs-remove-workspace "remove workspace")))
 
-  :preface
+  :config
   (defun zc-treemacs/is-file-ignored? (file git-info)
     "Return t if FILE should not be rendered."
     (let ((-compare-fn #'f-same?))
@@ -44,12 +44,10 @@
    treemacs-is-never-other-window t)
 
   (treemacs-follow-mode t)
-  (treemacs-filewatch-mode t)
   (treemacs-git-mode 'simple)
 
   ;; Hide noisy files and directories
-  (add-to-list 'treemacs-pre-file-insert-predicates
-               #'zc-treemacs/is-file-ignored?)
+  (add-to-list 'treemacs-pre-file-insert-predicates #'zc-treemacs/is-file-ignored?)
 
   ;; Disable the indicator next to open files--hl-line is sufficient
   (treemacs-fringe-indicator-mode nil))
