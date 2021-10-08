@@ -75,9 +75,9 @@
      "Resize"
      (("w=" balance-windows "balance")
       ("wm" zc/toggle-maximize-window "maximize")
-      ("w," shrink-window "resize ←" :color pink)
+      ("w," shrink-window  "resize ↓" :color pink)
       ("w." enlarge-window "resize ↑" :color pink)
-      ("w<" shrink-window-horizontally "resize ←" :color pink)
+      ("w<" shrink-window-horizontally  "resize ←" :color pink)
       ("w>" enlarge-window-horizontally "resize →" :color pink))
 
      "Killer"
