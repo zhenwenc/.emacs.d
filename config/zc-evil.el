@@ -199,9 +199,7 @@
 
 (use-package evil-matchit
   :straight t
-  :init
-  (with-eval-after-load 'evil
-    (global-evil-matchit-mode +1)))
+  :config (global-evil-matchit-mode t))
 
 
 ;; Comment/uncomment lines efficiently
