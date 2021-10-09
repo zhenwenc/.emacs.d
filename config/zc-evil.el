@@ -112,6 +112,21 @@
   :after (:and evil pretty-hydra))
 
 
+;; Emulates vim-seek/vim-sneak for 2-character versions of f/F/t/T
+
+(use-package evil-snipe
+  :disabled t
+  :straight t
+  :after evil
+  :init
+  (setq evil-snipe-smart-case t
+        evil-snipe-scope 'line
+        evil-snipe-repeat-scope 'visible)
+  :config
+  (evil-snipe-mode +1)
+  (evil-snipe-override-mode +1))
+
+
 ;; A set of keybindings for Evil mode.
 
 (use-package evil-collection
