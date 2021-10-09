@@ -61,10 +61,12 @@
         ;; Avoid interpreter output causes window to scroll
         multi-term-scroll-show-maximum-output t))
 
+;; To manually install the module: `M-x vterm-module-compile'
+;;
+;; https://github.com/akermu/emacs-libvterm#installation
 (use-package vterm
   :straight t
   :commands (vterm)
-  ;; https://github.com/akermu/emacs-libvterm#installation
   :if (and module-file-suffix ; dynamic module
            (executable-find "make")
            (executable-find "cmake")
