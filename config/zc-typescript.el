@@ -23,6 +23,7 @@
   (typescript-mode . zc-typescript/disable-flycheck-linters)
   (typescript-mode . zc-typescript/disable-flycheck-for-flow)
   (typescript-mode . zc-typescript/disable-flycheck-for-node-modules)
+  (typescript-mode . zc-typescript/setup-tree-sitter)
 
   ;; [2020-06-20] Switched back to Tide
   ;;
@@ -34,6 +35,11 @@
 
   :config
   (setq typescript-indent-level 2)
+
+  ;; Enter > right before the slash in a self-closing tag automatically
+  ;; inserts a closing tag and places point inside the element
+  (evil-define-key 'insert typescript-mode-map
+    (kbd ">") 'zc-typescript/sp-jsx-rewrap-tag)
 
   ;; Disable the new font lock level introduced on #110
   (add-to-list 'font-lock-maximum-decoration '(typescript-mode . 3))
@@ -66,14 +72,16 @@
                   (, zc-typescript/function-heading-re 1 font-lock-function-name-face)))
     (add-to-list 'typescript--font-lock-keywords-3 item))
 
-  ;; Enter > right before the slash in a self-closing tag automatically
-  ;; inserts a closing tag and places point inside the element
-  (evil-define-key 'insert typescript-mode-map
-    (kbd ">") 'zc-typescript/sp-jsx-rewrap-tag)
+  ;; Integration with `tree-sitter-hl-mode'
+  (defun zc-typescript/setup-tree-sitter ()
+    (add-function :before-while (local 'tree-sitter-hl-face-mapping-function)
+      (lambda (capture-name)
+        (not (or (string= capture-name "property")
+                 (string= capture-name "function.call")))))
+    (tree-sitter-hl-mode -1)) ;; TODO WIP
 
   ;; Integration with `org-mode'
   (with-eval-after-load 'org
-
     ;; Improve TypeScript source block experience
     ;; http://rwx.io/posts/org-with-babel-node-updated/
     (defun org-babel-execute:typescript (body params)
