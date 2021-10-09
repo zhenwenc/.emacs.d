@@ -177,7 +177,7 @@
                  (slot            . 1)
                  (window-width    . 0.5))
 
-                (,(rx bos "*prettier errors*" eos)
+                (,(rx bos "*prettier" (+ anything) "errors*" eos)
                  (display-buffer-reuse-window
                   display-buffer-in-side-window)
                  (reusable-frames . visible)

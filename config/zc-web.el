@@ -1,6 +1,7 @@
 (eval-when-compile
   (require 'use-package))
 
+(require 'f)
 (require 'rx)
 (require 'general)
 
@@ -69,6 +70,7 @@
 
 
 (use-package prettier-js
+  :disabled t ;; use reformatter
   :straight t
   :after (:any zc-web-modes typescript-mode graphql-mode)
   :commands (prettier-js prettier-js-mode)
@@ -87,6 +89,23 @@
   :config
   ;; NOTE: If the prettier version seems outdated, check .nvmrc
   (setq prettier-js-args '("--trailing-comma" "es5")))
+
+(use-package reformatter
+  :straight t
+  :after (:any zc-web-modes typescript-mode graphql-mode)
+  :hook ((graphql-mode    . prettier-format-on-save-mode)
+         (typescript-mode . prettier-format-on-save-mode)
+         (zc-web-css-mode . prettier-format-on-save-mode))
+  :config
+  (reformatter-define prettier-format
+    :program "prettier"
+    :args (-flatten
+           (list "--parser" (pcase major-mode
+                              ('typescript-mode "typescript")
+                              (_                "babel"))
+                 (when-let ((filename (buffer-file-name)))
+                   (list "--stdin-filepath" filename))))
+    :lighter " Prettier"))
 
 
 
