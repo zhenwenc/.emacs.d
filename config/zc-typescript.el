@@ -203,6 +203,7 @@
   (setq tide-always-show-documentation t
         tide-completion-ignore-case t
         tide-completion-detailed nil
+        tide-completion-setup-company-backend nil
         tide-completion-enable-autoimport-suggestions nil)
 
   ;; TODO Improve imenu candiates
