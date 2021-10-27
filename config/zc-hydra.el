@@ -301,7 +301,7 @@
       ("hdp" describe-package "package"))
 
      "Translate"
-     (("htt" go-translate "translate"))))
+     (("htt" gts-do-translate "translate"))))
 
   (zc-hydra/define zc-main-hydra
     (:hint nil :color teal :title "Main Hydra")

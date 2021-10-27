@@ -81,10 +81,15 @@
 ;; It also contains a clean usage of `posframe' and `completing-read'.
 (use-package go-translate
   :straight t
-  :commands (go-translate)
+  :commands (gst-do-translate)
   :config
-  (setq go-translate-local-language "en")
-  (setq go-translate-target-language "zh")
+  (setq gts-translate-list '(("en" "zh")))
+  (setq gts-default-translator
+        (gts-translator
+         :picker (gts-prompt-picker)
+         :engines (list (gts-bing-engine)
+                        (gts-google-rpc-engine :parser (gts-google-rpc-parser)))
+         :render (gts-posframe-pop-render)))
   ;; FIXME: What are these values?
   (setq go-translate-token-current (cons 430675 2721866130)))
 
