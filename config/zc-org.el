@@ -138,6 +138,10 @@
         ;; It doesn't work well with evil-mode :(
         org-hide-emphasis-markers nil)
 
+  ;; Performance boost: Disable the unused modules
+  ;; (setq org-modules (cl-set-difference org-modules '(ol-gnus ol-eww)))
+
+  ;; Default todo keywords and workflow
   (setq org-todo-keywords
         '((sequence "TODO(t)" "NEXT(n)" "MAYBE(m)" "|" "DONE(d)" "CANCEL(c)")
           (sequence "⚑(T)" "🏴(N)" "❓(M)" "|" "✔(D)" "✘(C)"))
