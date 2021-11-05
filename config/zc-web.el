@@ -100,11 +100,14 @@
   (reformatter-define prettier-format
     :program "prettier"
     :args (-flatten
-           (list "--parser" (pcase major-mode
-                              ('typescript-mode "typescript")
-                              (_                "babel"))
-                 (when-let ((filename (buffer-file-name)))
-                   (list "--stdin-filepath" filename))))
+           (list (if-let ((filename (buffer-file-name)))
+                     ;; when editing a file, let prettier infer the parser
+                     (list "--stdin-filepath" filename)
+                   ;; otherwise, infer the parser based on the marjor mode
+                   (list "--parser" (pcase major-mode
+                                      ('typescript-mode "typescript")
+                                      ('web-mode        "json")
+                                      (_                "babel"))))))
     :lighter " Prettier"))
 
 
