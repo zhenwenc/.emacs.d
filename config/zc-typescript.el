@@ -115,11 +115,15 @@
         (when (s-equals? "yes" (cdr (assq :debug params)))
           (let ((inhibit-message t)) ;; skip echo area
             (message "[DEBUG] Transpiled source code:\n\n%s\n%s" babel-res babel-body)))
-        ;; Execute the code block with `compilation' or `org-babel-execute'
+        ;; Execute the code block with `compilation'
         (if (s-equals? "yes" (cdr (assq :compile params)))
             (compile (format "TERM=dumb %s %s %s %s %s" node-path node-opts env cmd output-file))
-          (org-babel-execute:js babel-body params))))
-
+          ;; Execute the code block with `org-babel-execute'
+          (let* ((result (org-babel-eval
+                          (format "%s %s" org-babel-js-cmd
+                                  (org-babel-process-file-name script-file)) "")))
+            (org-babel-result-cond (cdr (assq :result-params params))
+              result (org-babel-js-read result))))))
     (defalias 'org-babel-execute:ts 'org-babel-execute:typescript)))
 
 
