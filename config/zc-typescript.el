@@ -82,11 +82,13 @@
 
   ;; Integration with `org-mode'
   (with-eval-after-load 'org
+    ;;
     ;; Improve TypeScript source block experience
     ;; http://rwx.io/posts/org-with-babel-node-updated/
     (defun org-babel-execute:typescript (body params)
       "Execute a block of Typescript code with org-babel.
-  This function is called by `org-babel-execute-src-block'."
+    This function is called by `org-babel-execute-src-block'.
+    "
       (let* ((ts-node-opts (json-serialize '(module "CommonJS" target "ES2017")))
              (ts-node (f-join zc-org/directory "node_modules/.bin/ts-node"))
              (dir (or (cdr (assq :dir params)) zc-org/directory))
@@ -95,8 +97,10 @@
              ;; Transpile 'import' statements to 'require'
              (script-file (org-babel-temp-file "js-script-" ".ts"))
              (output-file (org-babel-temp-file "js-script-" ".js"))
+             (full-body (org-babel-expand-body:generic
+                         body params (org-babel-variable-assignments:js params)))
              (babel-path (f-join zc-org/directory "node_modules"))
-             (babel-res (progn (with-temp-file script-file (insert body))
+             (babel-res (progn (with-temp-file script-file (insert full-body))
                                (shell-command-to-string
                                 (concat "NODE_PATH=" babel-path
                                         " " (f-join babel-path ".bin/babel")
