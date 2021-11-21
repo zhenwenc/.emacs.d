@@ -6,9 +6,8 @@
 
 (defconst zc-company/backend-alist
   '((text-mode       :derived (company-capf company-dabbrev company-ispell))
-    (prog-mode       :derived (company-capf))
-    (conf-mode       :derived (company-dabbrev-code))
-    (css-mode        :exact   (company-css))
+    (conf-mode       :derived (company-capf company-dabbrev-code))
+    (css-mode        :exact   (company-capf company-css))
     (tide-mode       :exact   (company-tide))
     (ensime-mode     :exact   (ensime-company))
     (terraform-mode  :exact   (company-dabbrev)))
