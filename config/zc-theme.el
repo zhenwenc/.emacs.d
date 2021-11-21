@@ -189,7 +189,7 @@
 
     ;; Workaround for Emojis don't render on `emacs-plus'.
     (when (eq system-type 'darwin)
-      (set-fontset-font t 'symbol (font-spec :family "Apple Color Emoji")
+      (set-fontset-font t 'emoji (font-spec :family "Apple Color Emoji")
                         nil 'prepend)))
   ;; Menu bar always off in text mode
   (when (or (not window-system)
