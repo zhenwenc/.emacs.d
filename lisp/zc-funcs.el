@@ -1,10 +1,12 @@
 (require 'f)
 (require 's)
-(require 'evil)
 (require 'subr-x)
 (require 'zc-paths)
+(require 'zc-secret-funcs)
 
 (autoload 'evil-escape "evil")
+(autoload 'evil-ex-nohighlight "evil")
+(autoload 'evil-window-set-height "evil")
 (autoload 'org-move-item-up "org")
 (autoload 'org-move-item-down "org")
 (autoload 'org-narrow-to-subtree "org")
@@ -284,13 +286,6 @@ Behave the same as 'Command + delete' at macOS"
         (error
          (make-frame-invisible nil 1)))
     (kill-emacs)))
-
-(defun zc/load-private-package (pkg file)
-  "Load encrypted package PKG from private directory."
-  (let ((path (f-join paths-private-dir file)))
-    (if (f-exists? path)
-        (require pkg path)
-      (warn "Private package [%s] not found." path))))
 
 (defmacro zc/measure-time (&rest body)
   "Measure the time it takes to evaluate BODY."

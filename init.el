@@ -105,6 +105,9 @@
 (zc-paths/init-load-paths)
 (zc-paths/maybe-require-local)
 
+(require 'zc-funcs)
+(require 'zc-secret-funcs)
+
 
 ;; Load features
 
