@@ -204,7 +204,8 @@
   (setq auto-revert-use-notify nil)
   (setq auto-revert-verbose nil)
   :config
-  (global-auto-revert-mode))
+  ;; Disabled due to serious performance degrade on TS files.
+  (global-auto-revert-mode -1))
 
 (use-package savehist
   :config
