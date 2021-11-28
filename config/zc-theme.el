@@ -14,12 +14,6 @@
 (defvar zc-default-font "Fira Code 12"
   "The universal default font.")
 
-(defvar zc-variable-pitch-font "Fira Code 12"
-  "The font to use in the variable-pitch face.")
-
-(defvar zc-fixed-pitch-font "Fira Code 12"
-  "The font to use in the fixed-pitch face.")
-
 
 ;; Themes
 
@@ -170,6 +164,10 @@
 
 
 
+(defun zc-theme/font-installed-p (font-name)
+  "Check if font with FONT-NAME is available."
+  (find-font (font-spec :name font-name)))
+
 (defun zc-theme/after-init ()
   "Setup frame default fonts."
   (when window-system
@@ -183,14 +181,22 @@
     ;; causes weird white square flicker on the screen.
     (add-to-list 'default-frame-alist `(background-color . ,(doom-color 'bg)))
 
-    (set-face-font 'default        zc-default-font)
-    (set-face-font 'fixed-pitch    zc-fixed-pitch-font)
-    (set-face-font 'variable-pitch zc-variable-pitch-font)
+    ;; Font
+    (set-face-attribute 'default        nil :font zc-default-font :height 130)
+    (set-face-attribute 'fixed-pitch    nil :font zc-default-font :height 130)
+    (set-face-attribute 'variable-pitch nil :font zc-default-font :height 130)
 
-    ;; Workaround for Emojis don't render on `emacs-plus'.
-    (when (eq system-type 'darwin)
-      (set-fontset-font t 'emoji (font-spec :family "Apple Color Emoji")
-                        nil 'prepend)))
+    ;; Specify font for all unicode characters on `emacs-plus'
+    (cl-loop for font in '("Apple Color Emoji" "Segoe UI Symbol" "Symbola" "Symbol")
+             when (zc-theme/font-installed-p font)
+             return (set-fontset-font t 'unicode font nil 'prepend))
+
+    ;; Specify font for Chinese characters
+    ;; https://github.com/saiswa/free-fonts/tree/master/PCLinuxOSFonts
+    (cl-loop for font in '("WenQuanYi Micro Hei" "PingFang SC")
+             when (zc-theme/font-installed-p font)
+             return (set-fontset-font t '(#x4e00 . #x9fff) font)))
+
   ;; Menu bar always off in text mode
   (when (or (not window-system)
             (not (eq system-type 'darwin)))
