@@ -173,7 +173,6 @@
 
 
 (use-package ivy-rich
-  :disabled t ;; wip
   :straight t
   :if (display-graphic-p)
   :after (:and ivy projectile)
@@ -186,7 +185,6 @@
   (ivy-rich-mode +1))
 
 (use-package all-the-icons-ivy-rich
-  :disabled t ;; wip
   :straight t
   :if (display-graphic-p)
   :after (:and ivy ivy-rich counsel-projectile)
