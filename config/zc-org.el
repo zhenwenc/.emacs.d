@@ -6,8 +6,6 @@
 (require 'general)
 (require 'zc-hydra-funcs)
 
-(autoload 'counsel-outline-candidates "counsel-projectile")
-
 
 
 (use-package org
@@ -101,42 +99,42 @@
         org-indirect-buffer-display 'current-window
         org-blank-before-new-entry '((heading         . auto)
                                      (plain-list-item . nil))
-
         ;; Hide empty line on shift-tab
         ;;
         ;; We usually add extra empty line at the end of a
         ;; subtree for properly display babel result.
         org-cycle-separator-lines 3
-
         ;; FIXME Is this correct?
         org-catch-invisible-edits 'smart
-
         ;; Disabled globally as it causes weird issue.
         org-startup-indented nil
-
+        ;; Fold all contents on opening a org file.
+        org-startup-folded t
         ;; Enable alphabetical bullet lists.
         org-list-allow-alphabetical t
-
         ;; Reduce search results.
         org-imenu-depth 3
         org-refile-targets `((nil              :maxlevel . 1)
                              (org-agenda-files :regexp   . ,(rx "Tasks"))))
 
+  ;; Appearance
   (setq org-eldoc-breadcrumb-separator " → "
         org-ellipsis (if (char-displayable-p ?) " ▼" nil)
-        org-image-actual-width nil
         org-tags-column 0
-        org-pretty-entities nil
-
+        ;; Do not display image actual width
+        org-image-actual-width 500
         ;; Inhibit displaying TeX-like syntax for "_" and "^"
-        org-use-sub-superscripts '{}
+        org-use-sub-superscripts '{})
 
-        ;; Hide markers for structural markup elements:
-        ;;
-        ;;   *bold* → bold
-        ;;
-        ;; It doesn't work well with evil-mode :(
-        org-hide-emphasis-markers nil)
+  ;; Babel
+  (setq org-src-window-setup 'current-window
+        ;; Disable reindent on every time editing code block
+        org-src-preserve-indentation t
+        org-edit-src-content-indentation 0
+        ;; This cause TAB on src block behaves quite weird.
+        org-src-tab-acts-natively nil
+        ;; Ask for confirmation before executing src block.
+        org-confirm-babel-evaluate #'zc-org/babel-confirm-evaluate)
 
   ;; Performance boost: Disable the unused modules
   ;; (setq org-modules (cl-set-difference org-modules '(ol-gnus ol-eww)))
@@ -188,15 +186,6 @@
                 (entry
                  "r" "Read later" "* MAYBE %i%? :Read:"
                  '(file+olp org-default-notes-file)))))
-
-  ;; Babel
-  (setq org-src-window-setup 'current-window
-        ;; Use major-mode indentation
-        org-src-preserve-indentation t
-        ;; This cause TAB on src block behaves quite weird.
-        org-src-tab-acts-natively nil
-        ;; Ask for confirmation before executing src block.
-        org-confirm-babel-evaluate #'zc-org/babel-confirm-evaluate)
 
   ;; Integration with `restclient'.
   (use-package ob-restclient :straight t)
@@ -390,24 +379,50 @@ so that the breadcrumb will fit in the default echo area."
   (org-roam-db-location (f-join paths-cache-dir "org-roam.db")))
 
 
-;; Pretty
+;; Appearance
 
 (use-package org-superstar
   :straight (:host github :repo "integral-dw/org-superstar-mode")
-  :after org
   :hook (org-mode . org-superstar-mode)
-  :config
+  :custom
   ;; Remove the leading dots on headline
-  (setq org-superstar-leading-bullet "  "))
+  (org-superstar-leading-bullet "  ")
+  ;; Change org unordered list styles.
+  (org-superstar-prettify-item-bullets t)
+  (org-superstar-item-bullet-alist '((?* . ?•)
+                                     (?+ . ?•)
+                                     (?- . ?•))))
+
+(use-package org-appear
+  :straight (:host github :repo "awth13/org-appear")
+  :hook (org-mode . org-appear-mode)
+  :init
+  ;; Instant toggle raw format on insert mode, 1 second delay on normal mode.
+  (add-hook 'evil-insert-state-entry-hook (lambda() (setq org-appear-delay 0)))
+  (add-hook 'evil-normal-state-entry-hook (lambda() (setq org-appear-delay 1)))
+  :custom
+  (org-appear-delay          0)
+  (org-appear-autolinks      t)
+  (org-appear-autoentities   t)
+  (org-appear-autokeywords   t)
+  (org-appear-autosubmarkers t)
+  :config
+  ;; Hide markers for structural markup elements:
+  ;;
+  ;;   *bold* → bold
+  ;;
+  (setq org-hide-emphasis-markers t)
+  ;; Prettify things like \pi, sub/super script.
+  (setq org-pretty-entities t))
 
 (use-package org-sidebar
-  :straight (:host github :repo "alphapapa/org-sidebar")
-  :after org)
+  :straight (:host github :repo "alphapapa/org-sidebar"))
+
+
+;; Misc.
 
 ;; Export to Github Flavored Markdown
-(use-package ox-gfm
-  :straight t
-  :after org)
+(use-package ox-gfm :straight t)
 
 
 
