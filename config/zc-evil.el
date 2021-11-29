@@ -60,14 +60,20 @@
   (:states 'insert          "C-e" #'mwim-end-of-code-or-line)
 
   :init
-  (setq evil-want-integration t
-        evil-want-Y-yank-to-eol t
-        evil-want-keybinding nil ; required for evil-collection
-        ;; FIXME: This may lead to unwanted behaviour, such as
-        ;;        when cursor on the closing curly braces.
-        evil-want-visual-char-semi-exclusive t
-        evil-mode-line-format nil
-        evil-insert-skip-empty-lines t)
+  (setq evil-echo-state nil)
+  (setq evil-want-integration t)
+  (setq evil-want-Y-yank-to-eol t)
+  ;; Required for evil-collection
+  (setq evil-want-keybinding nil)
+  ;; Record changes to separate steps instead of a big one in insert state.
+  (setq evil-want-fine-undo t)
+  ;; FIXME: This may lead to unwanted behaviour, such as
+  ;;        when cursor on the closing curly braces.
+  (setq evil-want-visual-char-semi-exclusive t)
+  (setq evil-mode-line-format nil)
+  (setq evil-insert-skip-empty-lines t)
+  ;; Use native keybindings, prevent overriding `C-t' and `C-d' keys.
+  (setq evil-disable-insert-state-bindings t)
 
   :config
   (setq evil-shift-width 2)
@@ -175,39 +181,34 @@
 
 (use-package evil-surround
   :straight t
-  :commands (global-evil-surround-mode)
+  :after evil
   :general
   (:states 'visual :keymaps 'evil-surround-mode-map
    "s" #'evil-surround-region
    "S" #'evil-substitute)
-  :preface
-  (defun zc-evil/init-evil-surround-pairs ()
-    (make-local-variable 'evil-surround-pairs-alist)
-    (push '(?\` . ("`" . "'")) evil-surround-pairs-alist))
   :hook
   ;; TODO: Why need this hook?
   (emacs-lisp-mode . zc-evil/init-evil-surround-pairs)
-  :init
-  (setq-default evil-surround-pairs-alist
-                '((?\( . ("(" . ")"))
-                  (?\[ . ("[" . "]"))
-                  (?\{ . ("{" . "}"))
+  :config
+  (defun zc-evil/init-evil-surround-pairs ()
+    (make-local-variable 'evil-surround-pairs-alist)
+    (push '(?\` . ("`" . "'")) evil-surround-pairs-alist))
 
-                  (?\) . ("(" . ")"))
-                  (?\] . ("[" . "]"))
-                  (?\} . ("{" . "}"))
-
-                  (?# . ("#{" . "}"))
-                  (?b . ("(" . ")"))
-                  (?B . ("{" . "}"))
-                  (?> . ("<" . ">"))
-                  (?$ . ("${" . "}"))
-                  (?t . evil-surround-read-tag)
-                  (?< . evil-surround-read-tag)
-                  (?f . evil-surround-function)))
-  :init
-  (with-eval-after-load 'evil
-    (global-evil-surround-mode +1)))
+  ;; Use non-spaced pairs when surrounding with an opening brace.
+  ;; Insert zero width space for org inline markup.
+  (evil-add-to-alist 'evil-surround-pairs-alist
+                     ?b  '("(" . ")")
+                     ?B  '("{" . "}")
+                     ?>  '("<" . ">")
+                     ?$  '("${" . "}")
+                     ?\* '("\x200B*" . "*\x200B")
+                     ?\+ '("\x200B+" . "+\x200B")
+                     ?\/ '("\x200B/" . "/\x200B")
+                     ?\~ '("\x200B~" . "~\x200B")
+                     ?\= '("\x200B=" . "=\x200B")
+                     ?\$ '("\x200B$" . "$\x200B")
+                     ?\_ '("\x200B_" . "_\x200B"))
+  (global-evil-surround-mode +1))
 
 
 ;; Extend % matching for HTML, LaTex, etc.
@@ -239,10 +240,6 @@
 
   :general
   (:states 'normal :keymaps 'org-mode-map "t" #'org-todo)
-
-  :init
-  ;; Disable overriding `C-t' and `C-d' keybindings.
-  (setq evil-disable-insert-state-bindings t)
 
   :config
   (require 'evil-org-agenda)
