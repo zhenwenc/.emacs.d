@@ -73,7 +73,8 @@
            (executable-find "libtool"))
   :bind (:map vterm-mode-map
          ([f9] . shell-pop))
-  :init (setq vterm-always-compile-module t))
+  :custom
+  (vterm-always-compile-module t))
 
 (use-package shell-pop
   :straight t
