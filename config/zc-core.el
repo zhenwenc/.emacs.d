@@ -155,8 +155,9 @@
 ;; Garbage collection makes emacs incredibly slow, disabling
 ;; it temporarily to speed up minibuffer operations that tend
 ;; to be memory heavy like fuzzy searches.
-(add-hook 'minibuffer-setup-hook #'zc/max-gc-limit)
-(add-hook 'minibuffer-exit-hook  #'zc/reset-gc-limit)
+(with-no-warnings
+  (add-hook 'minibuffer-setup-hook #'zc/max-gc-limit)
+  (add-hook 'minibuffer-exit-hook  #'zc/reset-gc-limit))
 
 ;; Improve the performance of rendering long lines.
 (setq-default bidi-display-reordering nil)
@@ -167,6 +168,10 @@
 ;; Reserved for Spacemacs style prefix key
 (global-unset-key (kbd "M-m"))
 (global-unset-key (kbd "M-l")) ;; downcase word
+
+;; Shortcuts for commonly used commands
+(global-set-key (kbd "M-f") 'counsel-grep-or-swiper)
+(global-set-key (kbd "M-F") 'counsel-projectile-rg)
 
 (global-set-key (kbd "C-x C-b") 'ibuffer)
 (global-set-key (kbd "C-c e e") 'toggle-debug-on-error)
@@ -204,7 +209,9 @@
   (setq auto-revert-use-notify nil)
   (setq auto-revert-verbose nil)
   :config
-  ;; Disabled due to serious performance degrade on TS files.
+  ;; Revert buffers when underlying files are changed externally.
+  ;;
+  ;; May cause serious performance degrade on TS files.
   (global-auto-revert-mode -1))
 
 (use-package savehist
