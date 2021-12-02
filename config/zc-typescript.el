@@ -112,7 +112,7 @@
                                         " " script-file))))
              (babel-body (f-read output-file))
              (node-path (concat "NODE_PATH=" (f-join dir "node_modules")))
-             (node-opts (format "NODE_OPTIONS='--unhandled-rejections=strict'"))
+             (node-opts (format "NODE_OPTIONS='--unhandled-rejections=strict --max-http-header-size=16384'"))
              (org-babel-js-cmd (format "%s %s %s %s" node-path node-opts env cmd))
              (org-babel-js-function-wrapper "%s"))
         ;; Print the transpiled output for debugging
