@@ -13,6 +13,8 @@
   :defer t
   :defines (gud-pdb-command-name pdb-path)
   :config
+  ;; Default indentation offset
+  (setq python-indent-offset 2)
   ;; Disable readline based native completion
   (setq python-shell-completion-native-enable nil)
 
@@ -33,6 +35,7 @@
     ;; Prefer python3
     (setq org-babel-python-command "python3")
 
+    ;; Integration with `jupyter'
     (use-package ob-ipython
       :disabled t ;; not used
       :straight t
