@@ -27,14 +27,6 @@
     ("wD" treemacs-remove-workspace "remove workspace")))
 
   :config
-  (defun zc-treemacs/is-file-ignored? (file git-info)
-    "Return t if FILE should not be rendered."
-    (let ((-compare-fn #'f-same?))
-      ;; Use treemacs function first as its faster
-      (or (treemacs-is-file-git-ignored? file git-info)
-          (-contains? (projectile-ignored-directories) file))))
-
-  :config
   (setq
    ;; Path to the file treemacs uses to persist its state
    treemacs-persist-file (concat paths-cache-dir "treemacs-persist")
@@ -42,11 +34,17 @@
    treemacs-follow-after-init t
    ;; Prevents treemacs from being selected with `other-window`
    treemacs-is-never-other-window t)
-
+  ;; Keep track of and focus the currently selected buffer's file
   (treemacs-follow-mode t)
-  (treemacs-git-mode 'simple)
+  (treemacs-filewatch-mode t)
 
   ;; Hide noisy files and directories
+  (defun zc-treemacs/is-file-ignored? (file git-info)
+    "Return t if FILE should not be rendered."
+    (let ((-compare-fn #'f-same?))
+      ;; Use treemacs function first as its faster
+      (or (treemacs-is-file-git-ignored? file git-info)
+          (-contains? (projectile-ignored-directories) file))))
   (add-to-list 'treemacs-pre-file-insert-predicates #'zc-treemacs/is-file-ignored?)
 
   ;; Disable the indicator next to open files--hl-line is sufficient
