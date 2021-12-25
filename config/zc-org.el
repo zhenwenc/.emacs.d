@@ -60,6 +60,7 @@
    (("th" org-toggle-heading                      "heading")
     ("ti" org-toggle-item                         "item")
     ("tl" org-toggle-link-display                 "link")
+    ("tp" org-appear-mode                         "appear" :toggle t)
     ("tI" org-indent-mode                         "indent" :toggle t)
     ("tb" org-show-block-all                      "blocks: show")
     ("tB" org-hide-block-all                      "blocks: hide")
