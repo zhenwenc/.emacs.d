@@ -146,6 +146,7 @@
      (("sj" (zc-ivy/imenu) "imenu")
       ("sJ" (zc-ivy/imenu t) "imenu widen")
       ("sl" imenu-list "imenu list")
+      ("sd" devdocs-browser-open "devdocs open")
       ("su" counsel-unicode-char "unicode"))
 
      "Symbol"

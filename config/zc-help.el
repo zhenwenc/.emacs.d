@@ -74,6 +74,12 @@
   ;; helpful buffer, `quit-window' won't work.
   (advice-add 'quit-window :around #'zc-help/maybe-kill-buffer))
 
+(use-package devdocs-browser
+  :straight t
+  :commands (devdocs-browser-open devdocs-browser-open-in)
+  :custom
+  (devdocs-browser-cache-directory (concat paths-cache-dir "devdocs-browser")))
+
 
 
 ;; Integration with Google Translate
