@@ -8,6 +8,7 @@
   '((text-mode       :derived (company-capf company-dabbrev company-ispell))
     (conf-mode       :derived (company-capf company-dabbrev-code))
     (css-mode        :exact   (company-capf company-css))
+    (emacs-lisp-mode :exact   (company-capf))
     (tide-mode       :exact   (company-tide))
     (ensime-mode     :exact   (ensime-company))
     (terraform-mode  :exact   (company-dabbrev)))
