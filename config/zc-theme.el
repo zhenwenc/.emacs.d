@@ -27,11 +27,14 @@
   ;; Load the theme
   (load-theme 'zc-dracula t)
 
+  ;; FIXME Disabled extensions due to breaking changes after upgrade
+  ;;
   ;; Enable custom treemacs theme
-  (doom-themes-treemacs-config)
+  ;; (doom-themes-treemacs-config)
 
   ;; Corrects (and improves) org-mode's native fontification.
-  (doom-themes-org-config))
+  ;; (doom-themes-org-config)
+  )
 
 
 
