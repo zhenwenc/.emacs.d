@@ -204,9 +204,9 @@
                  (display-buffer-reuse-window
                   display-buffer-in-side-window)
                  (reusable-frames . visible)
-                 (side            . right)
+                 (side            . bottom)
                  (slot            . 1)
-                 (window-width    . 0.5))
+                 (window-heigh    . 0.35))
                 ))
   (add-to-list 'display-buffer-alist item))
 
