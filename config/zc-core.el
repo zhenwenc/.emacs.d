@@ -3,6 +3,7 @@
 
 (require 'general)
 (require 'zc-paths)
+(require 'zc-funcs)
 
 
 ;; Environment
@@ -127,6 +128,8 @@
 
  ;; Prevent duplicated entries in the kill ring.
  kill-do-not-save-duplicates t
+ ;; Remove boring strings to be added to the kill ring.
+ kill-transform-function #'zc/kill-transform-function
 
  ;; Don't confirm before killing subprocesses on exit.
  confirm-kill-processes nil

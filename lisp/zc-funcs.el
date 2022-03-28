@@ -263,6 +263,12 @@ Behave the same as 'Command + delete' at macOS"
     (indent-region (point-min) (point-max) nil)
     (untabify (point-min) (point-max))))
 
+(defun zc/kill-transform-function (str)
+  "Transform STR before putting it on the kill ring.
+See `kill-transform-function'"
+  (and (not (string-blank-p str))
+       str))
+
 
 ;; Symbol and Search
 
