@@ -52,9 +52,9 @@ If argument INTERACTIVE-P is set, log additional information."
 
 (defun zc-paths/maybe-require-local ()
   "Require local configuration if presented."
-  (-when-let* ((path (concat user-emacs-directory "local.el"))
-               (exists (f-file? path)))
-    (require 'local path)))
+  (dolist (path `("~/.emacs.local.el"
+                  ,(concat user-emacs-directory "local.el")))
+    (when (f-exists? path) (require 'local path))))
 
 
 
