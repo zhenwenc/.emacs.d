@@ -76,6 +76,7 @@
   (setq lsp-python-ms-dir (concat paths-vendor-dir "mspyls/")))
 
 (use-package lsp-pyright
+  :disabled t
   :straight t
   :defines lsp-pyright-python-executable-cmd
   :hook (python-mode . zc-python/init-pyright)
