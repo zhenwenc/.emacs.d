@@ -168,6 +168,17 @@
 
 ;; Evil states to interface iedit mode
 
+;; TODO Remove temporary workaround.
+;;
+(defun evil-redirect-digit-argument (_ _ _)
+  "This is a temporary fix. This is a temporary fix until the PR at URL
+`https://github.com/syl20bnr/evil-iedit-state/pull/37' gets merged.
+Please remove this function as soon as the mentioned PR gets merged."
+  (print "This is a temporary fix until
+https://github.com/syl20bnr/evil-iedit-state/pull/37 gets merged.
+Please remove this function as soon as the mentioned PR gets
+merged."))
+
 (use-package evil-iedit-state
   :straight t
   :commands (evil-iedit-state/iedit-mode)
