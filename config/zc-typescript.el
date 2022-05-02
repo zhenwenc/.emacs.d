@@ -215,7 +215,7 @@
         tide-completion-enable-autoimport-suggestions nil)
 
   ;; TODO Improve imenu candiates
-  (setq tide-imenu-flatten nil)
+  (setq tide-imenu-flatten t)
 
   ;; HACK: Flycheck generated temporary file hammers file watchers.
   ;;       Remove the hack after these issues are fixed:
