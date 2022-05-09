@@ -73,7 +73,17 @@
   :hook ((emacs-lisp . aggressive-indent-mode)))
 
 (use-package expand-region
-  :straight t)
+  :straight t
+  :config
+  ;; HACK Disable `org-mode' extensions due to performance issue
+
+  (defun zc/er-save-org-mode-excursion (action)
+    (funcall action))
+  (advice-add #'er/save-org-mode-excursion :override #'zc/er-save-org-mode-excursion)
+  (advice-add #'er/mark-org-element        :override #'ignore)
+  (advice-add #'er/mark-org-element-parent :override #'ignore)
+  (advice-add #'er/mark-org-code-block     :override #'ignore)
+  (advice-add #'er/mark-org-parent         :override #'ignore))
 
 (use-package hippie-exp
   :general ("M-/" 'hippie-expand
