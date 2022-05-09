@@ -13,7 +13,9 @@
 (use-package docker
   :straight t
   :defer t
-  :commands (docker))
+  :commands (docker docker-compose)
+  :init
+  (setq docker-run-async-with-buffer-function 'docker-run-async))
 
 (use-package dockerfile-mode
   :straight t
