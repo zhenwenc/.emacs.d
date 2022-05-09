@@ -260,6 +260,11 @@
   :config
   (setq undo-tree-visualizer-diff t)
   (setq undo-tree-visualizer-timestamps t)
+
+  ;; Disable saving undo-tree history into files. By default it saves the history
+  ;; in ".<buffer-file-name>.~undo-tree~" in the same directory.
+  (setq undo-tree-auto-save-history nil)
+
   (global-undo-tree-mode))
 
 (use-package which-key
