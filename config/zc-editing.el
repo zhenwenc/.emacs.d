@@ -48,9 +48,9 @@
          ;; Cleanup whitespace on save
          (before-save . whitespace-cleanup)))
 
-;; FIXME May not need this package anymore
+;; FIXME This package is required for `evil-iedit-state', why?
+;; https://github.com/syl20bnr/evil-iedit-state/blob/master/evil-iedit-state.el#L60
 (use-package auto-highlight-symbol
-  :disabled t
   :straight t
   :after evil
   :preface
