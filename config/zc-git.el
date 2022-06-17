@@ -81,7 +81,7 @@
                                      (buffer-substring (line-beginning-position)
                                                        (line-end-position))))))
       (or
-       ;; Branch pattern: "feature/ABC-123/blah"
+       ;; Branch pattern: "prefix/ABC-123/blah"
        (-when-let* ((branch-ptn (rx bos (+ alpha)
                                     "/" (group (+ upper) "-" (+ num))
                                     "/" (+ (or alpha "-"))))
