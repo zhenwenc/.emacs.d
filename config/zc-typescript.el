@@ -99,18 +99,20 @@
              (output-file (org-babel-temp-file "js-script-" ".js"))
              (full-body (org-babel-expand-body:generic
                          body params (org-babel-variable-assignments:js params)))
+             ;; Transform with Babel for older NodeJS that doesn't support morden JS module
              (babel-path (f-join zc-org/directory "node_modules"))
              (babel-res (progn (with-temp-file script-file (insert full-body))
-                               (shell-command-to-string
-                                (concat "NODE_PATH=" babel-path
-                                        " " (f-join babel-path ".bin/babel")
-                                        " --no-babelrc"
-                                        " --presets @babel/preset-env,@babel/preset-typescript"
-                                        " --plugins @babel/plugin-transform-runtime"
-                                        " --extensions .ts"
-                                        " --out-file " output-file
-                                        " " script-file))))
-             (babel-body (f-read output-file))
+                               (when (s-equals? "yes" (cdr (assq :babel params)))
+                                 (shell-command-to-string
+                                  (concat "NODE_PATH=" babel-path
+                                          " " (f-join babel-path ".bin/babel")
+                                          " --no-babelrc"
+                                          " --presets @babel/preset-env,@babel/preset-typescript"
+                                          " --plugins @babel/plugin-transform-runtime"
+                                          " --extensions .ts"
+                                          " --out-file " output-file
+                                          " " script-file)))))
+             (node-file (if babel-res output-file script-file))
              (node-path (concat "NODE_PATH=" (f-join dir "node_modules")))
              (node-opts (format "NODE_OPTIONS='--unhandled-rejections=strict --max-http-header-size=16384'"))
              (org-babel-js-cmd (format "%s %s %s %s" node-path node-opts env cmd))
@@ -118,10 +120,10 @@
         ;; Print the transpiled output for debugging
         (when (s-equals? "yes" (cdr (assq :debug params)))
           (let ((inhibit-message t)) ;; skip echo area
-            (message "[DEBUG] Transpiled source code:\n\n%s\n%s" babel-res babel-body)))
+            (message "[DEBUG] Transpiled source code:\n\n%s\n%s" babel-res (f-read node-file))))
         ;; Execute the code block with `compilation'
         (if (s-equals? "yes" (cdr (assq :compile params)))
-            (compile (format "TERM=dumb %s %s %s %s %s" node-path node-opts env cmd output-file))
+            (compile (format "TERM=dumb %s %s %s %s %s" node-path node-opts env cmd node-file))
           ;; Execute the code block with `org-babel-execute'
           (let* ((result (org-babel-eval
                           (format "%s %s" org-babel-js-cmd
