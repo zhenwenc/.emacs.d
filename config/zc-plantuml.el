@@ -5,7 +5,7 @@
 (require 'zc-paths)
 
 (let ((dir (expand-file-name (concat paths-vendor-dir "plantuml/")))
-      (url "https://raw.githubusercontent.com/RicardoNiepel/C4-PlantUML/release/1-0/"))
+      (url "https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/"))
 
   (defconst zc-plantuml/component (concat dir "C4_Component.puml"))
   (defconst zc-plantuml/container (concat dir "C4_Container.puml"))
@@ -30,7 +30,7 @@
                  (or (f-exists? plantuml-jar-path)
                      (f-exists? plantuml-executable-path)))
       (plantuml-download-jar))
-    ;; Download extra custom diagram types.
+    ;; Download additional custom diagram components.
     (mapcar (-lambda ((filename url))
               (unless (and (not forced) (f-exists? filename))
                 (with-current-buffer
