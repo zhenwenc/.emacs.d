@@ -78,8 +78,20 @@
     (if (and (null org-export-current-backend) ;; not in `org-export-as' call
              (not (s-equals? "no" (cdr (assq :preview params)))))
         (let* ((output-type          (cdr (assq :output params)))
+               (window-type          (cdr (assq :window params)))
+               (height               (cdr (assq :height params)))
+               (width                (cdr (assq :width  params)))
                (plantuml-output-type (or output-type "png"))
                (full-body (org-babel-plantuml-make-body body params)))
+          ;; Adjust popup window layout
+          (setf (cdr (assoc (rx bos "*PLANTUML Preview*" eos) display-buffer-alist))
+                `((display-buffer-reuse-window
+                   display-buffer-in-side-window)
+                  (reusable-frames . visible)
+                  (window-width    . ,(or width  0.5))
+                  (window-height   . ,(or height 0.35))
+                  (side            . ,(or window-type 'right))
+                  (slot            . 1)))
           ;; We want to stay on the current buffer
           (plantuml-preview-string 0 full-body))
       (unless (s-contains? "file" (cdr (assq :results params)))
