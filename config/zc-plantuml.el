@@ -44,8 +44,11 @@
         plantuml-executable-path (concat paths-vendor-dir "plantuml/plantuml")
         plantuml-default-exec-mode 'jar)
 
+  ;; PLANTUML_LIMIT_SIZE: Increased diagram size limit, default to 4096.
+  (defconst zc-plantuml/java-args '("-DPLANTUML_LIMIT_SIZE=8192"))
+
   ;; Fix `--illegal-access=deny' doesn't supported by Java 8.
-  (setq plantuml-java-args '("-Djava.awt.headless=true" "-jar"))
+  (setq plantuml-java-args (-concat zc-plantuml/java-args '("-Djava.awt.headless=true" "-jar")))
 
   ;; Settings for `ob-plantuml'.
   ;;
@@ -81,6 +84,7 @@
                (window-type          (cdr (assq :window params)))
                (height               (cdr (assq :height params)))
                (width                (cdr (assq :width  params)))
+               (java-args            (cdr (assq :java   params)))
                (plantuml-output-type (or output-type "png"))
                (full-body (org-babel-plantuml-make-body body params)))
           ;; Adjust popup window layout
@@ -96,6 +100,9 @@
           (plantuml-preview-string 0 full-body))
       (unless (s-contains? "file" (cdr (assq :results params)))
         (user-error "You must specify \":results file replace\" header argument"))
+      (unless (cdr (assq :java params))
+        (add-to-list 'params (cons :java (s-join " " zc-plantuml/java-args))))
+      ;; Execute script using the original function
       (funcall orig-fn body params)))
   (advice-add #'org-babel-execute:plantuml :around #'zc-plantuml/org-babel-execute)
 
