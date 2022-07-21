@@ -200,10 +200,16 @@ merged."))
   :hook
   ;; TODO: Why need this hook?
   (emacs-lisp-mode . zc-evil/init-evil-surround-pairs)
+  (magit-status-mode . zc-evil/disable-evil-surround-mode)
   :config
   (defun zc-evil/init-evil-surround-pairs ()
     (make-local-variable 'evil-surround-pairs-alist)
     (push '(?\` . ("`" . "'")) evil-surround-pairs-alist))
+
+  ;; evil-surround bindings interfere with line-wise staging using `magit'
+  ;; @see https://github.com/syl20bnr/spacemacs/pull/15462
+  (defun zc-evil/disable-evil-surround-mode ()
+    (evil-surround-mode -1))
 
   ;; Use non-spaced pairs when surrounding with an opening brace.
   ;; Insert zero width space for org inline markup.
