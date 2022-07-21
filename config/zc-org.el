@@ -396,7 +396,6 @@ so that the breadcrumb will fit in the default echo area."
 
 (use-package org-appear
   :straight (:host github :repo "awth13/org-appear")
-  :hook (org-mode . org-appear-mode)
   :init
   ;; Instant toggle raw format on insert mode, 1 second delay on normal mode.
   (add-hook 'evil-insert-state-entry-hook (lambda() (setq org-appear-delay 0)))
