@@ -64,7 +64,11 @@
 
 (use-package browse-at-remote
   :straight t
-  :defer t)
+  :defer t
+  :config
+  ;; It raise an error when failed to infer the remote
+  (add-to-list 'browse-at-remote-remote-type-regexps
+               (cons "^heroku\\.com$" "heroku")))
 
 ;; Automatically prepends the JIRA ticket number
 
