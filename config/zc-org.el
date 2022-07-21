@@ -219,6 +219,7 @@
   (add-to-list 'org-src-lang-modes '("rust"       . rustic))
   (add-to-list 'org-src-lang-modes '("ts"         . typescript))
   (add-to-list 'org-src-lang-modes '("typescript" . typescript))
+  (add-to-list 'org-src-lang-modes '("json"       . zc-web-json))
 
   ;; Inhibit displaying message in echo-area while resolving src-block info.
   ;; This is annoying when executing a code block which extracts remote params
