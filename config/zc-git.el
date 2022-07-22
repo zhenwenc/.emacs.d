@@ -75,7 +75,18 @@
   :config
   ;; It raise an error when failed to infer the remote
   (add-to-list 'browse-at-remote-remote-type-regexps
-               (cons "^heroku\\.com$" "heroku")))
+               (cons "^heroku\\.com$" "heroku"))
+
+  ;; Enhance remote URL lookup capability
+  (defun zc-git/browse-at-remote-get-url (orig-fn &rest args)
+    "Return a remote URL to browse"
+    (cond
+     ;; We're time traveling in the past
+     ((bound-and-true-p git-timemachine-mode)
+      (browse-at-remote--commit-url (car git-timemachine-revision)))
+     ;; Fallback to the original function
+     (t (apply orig-fn args))))
+  (advice-add 'browse-at-remote-get-url :around 'zc-git/browse-at-remote-get-url))
 
 ;; Automatically prepends the JIRA ticket number
 
