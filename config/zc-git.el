@@ -20,7 +20,15 @@
   (setq magit-display-buffer-function #'magit-display-buffer-fullframe-status-v1)
 
   ;; Display submodules information in the status buffer
-  (magit-add-section-hook 'magit-status-sections-hook 'magit-insert-modules nil t))
+  (magit-add-section-hook 'magit-status-sections-hook 'magit-insert-modules nil t)
+
+  ;; Add `u' command to magit-commit transient for follow-up commits
+  (defun zc-git/magit-commit-update ()
+    "Create a new commit on `HEAD' instantly, using the last commit message."
+    (interactive)
+    (magit-commit-create '("--all" "--reuse-message=HEAD")))
+  (transient-append-suffix 'magit-commit "c"
+    '("u" "Update" zc-git/magit-commit-update)))
 
 ;; Show source files' todos in Magit status buffer
 
@@ -53,8 +61,7 @@
   (setq forge-database-file (concat paths-cache-dir "forge/database.sqlite")))
 
 
-;; Interactively step forward and backwards through a
-;; buffer's git versions.
+;; Interactively step forward and backwards through a buffer's history.
 
 (use-package git-timemachine
   :straight t
