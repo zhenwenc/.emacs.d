@@ -9,16 +9,7 @@
 (require 'zc-hydra-funcs)
 (require 'zc-layout-funcs)
 
-(autoload 'counsel-imenu "counsel")
-(autoload 'counsel-recentf "counsel")
-(autoload 'counsel-find-file "counsel")
-(autoload 'counsel-faces "counsel")
-(autoload 'counsel-grep-or-swiper "counsel")
-(autoload 'counsel-projectile "counsel-projectile")
-(autoload 'counsel-projectile-rg "counsel-projectile")
-(autoload 'counsel-projectile-find-dir "counsel-projectile")
 (autoload 'projectile-ibuffer "projectile")
-(autoload 'ivy-switch-buffer "ivy-switch-buffer")
 
 (autoload 'magit-status "magit")
 (autoload 'magit-blame "magit")
@@ -95,7 +86,15 @@
       ("bW" (zc/buffer-narrow 'widen)          "Widen"))
 
      "Navigation"
-     (("bb" ivy-switch-buffer                  "Switch buffer")
+     (;; Narrow source category with prefixed keys:
+      ;; - `b'   Buffers
+      ;; - `SPC' Hidden buffers
+      ;; - `*'   Modified buffers
+      ;; - `f'   Files (Requires recentf-mode)
+      ;; - `m'   Bookmarks
+      ;; - `p'   Project
+      ("bb" consult-buffer                     "Switch buffer")
+      ("bo" consult-buffer-other-window        "Switch buffer (ow)")
       ("bn" projectile-next-project-buffer     "Switch to next")
       ("bN" projectile-previous-project-buffer "Switch to previous")
       ("bS" (switch-to-buffer "*scratch*")     "Switch to scratch")
@@ -112,89 +111,94 @@
      "Bookmark"
      (("bm" bookmark-set                       "Set bookmark")
       ("bj" bookmark-jump                      "Jump to bookmark")
-      ("bl" bookmark-bmenu-list                "List bookmark"))))
+      ("bl" bookmark-bmenu-list                "List bookmark")
+      ("bf" consult-bookmark                   "select or create"))))
 
   (zc-hydra/define zc-main-hydra--file
     (:color teal :title "File Hydra" :icon "file" :prefix "f")
     ("Basic"
-     (("fs" save-buffer "save")
-      ("fv" reload-file "reload")
+     (("fs" save-buffer               "save")
+      ("fv" reload-file               "reload")
       ("fD" zc/delete-buffer-and-file "delete")
-      ("fR" zc/rename-buffer-and-file "rename")
-      ("fb" counsel-bookmark "bookmark"))
+      ("fR" zc/rename-buffer-and-file "rename"))
 
      "Search"
-     (("fr" counsel-recentf "find recent")
-      ("ff" counsel-find-file "find file")
+     (("fr" consult-recent-file    "find recent file")
+      ("ff" find-file              "find file")
       ("fo" find-file-other-window "find file (other window)")
-      ("fO" zc-osx/finder "open directory in Finder"))
+      ("fO" zc-osx/finder          "open directory in Finder"))
 
      "Copy"
-     (("fc" zc/copy-file "copy file")
+     (("fc" zc/copy-file        "copy file")
       ("fy" zc/copy-buffer-name "copy file name")
       ("fY" zc/copy-buffer-path "copy file path"))
 
      "Treemacs"
-     (("fT" treemacs-select-window "treemacs show")
-      ("ft" treemacs "treemacs toggle")
-      ("fp" treemacs-add-and-display-current-project "treemacs project")
+     (("fT" treemacs-select-window                       "treemacs show")
+      ("ft" treemacs                                     "treemacs toggle")
+      ("fp" treemacs-add-and-display-current-project     "treemacs project")
       ("fP" treemacs-display-current-project-exclusively "treemacs project (E)"))))
 
   (zc-hydra/define zc-main-hydra--symbol
     (:color teal :title "Symbol Hydra" :icon "strikethrough" :prefix "s")
     ("Basic"
-     (("sj" (zc-ivy/imenu) "imenu")
-      ("sJ" (zc-ivy/imenu t) "imenu widen")
-      ("sl" imenu-list "imenu list")
-      ("sd" devdocs-browser-open "devdocs open")
-      ("su" counsel-unicode-char "unicode"))
+     (("sj" (zc-completion/consult-imenu)   "imenu")
+      ("sJ" (zc-completion/consult-imenu t) "imenu widen")
+      ("sl" imenu-list                      "imenu list")
+      ("sd" devdocs-browser-open            "devdocs open"))
 
      "Symbol"
      (("se" evil-iedit-state/iedit-mode "edit")
       ("sh" (evil-search-word-forward  1 'symbol)  "search forward")
-      ("sH" (evil-search-word-backward 1 'symbol) "search backward")
-      ("sc" zc/evil-search-clear-highlight "clear highlights"))
+      ("sH" (evil-search-word-backward 1 'symbol)  "search backward")
+      ("sc" zc/evil-search-clear-highlight         "clear highlights"))
 
      "Search"
-     (("ss" counsel-grep-or-swiper "swiper")
-      ("sp" counsel-projectile-rg "search project")
-      ("sP" zc-projectile/search-symbol-at-point "search project (sym)"))))
+     (;; The `default-directory' is searched by default, invoke with prefix
+      ;; argument to override the searched directory.
+      ("sp" consult-ripgrep        "search project")
+      ;; Search string in the current buffer
+      ("ss" consult-line           "search buffer")
+      ("sS" consult-line-multi     "search buffer (multi)")
+      ;; Narrow buffer to the matched lines:
+      ;; - Use prefix key `!' to hide the matched lines
+      ;; - Call with prefix argument to reveal the hidden lines
+      ;; TODO Show narrow status on modeline, determine by `consult--focus-lines-overlays'
+      ("sf" consult-focus-lines    "search buffer (focus)")
+      )))
 
   (zc-hydra/define zc-main-hydra--project
     (:color teal :title "Project Hydra" :icon "product-hunt" :prefix "p")
     ("Basic"
      (("p!" projectile-run-shell-command-in-root "shell command")
       ("pk" projectile-kill-buffers "kill buffers")
-      ("pi" ibuffer "ibuffer")
-      ("pI" projectile-invalidate-cache "invalidate cache")
-      ("po" counsel-projectile-switch-project "switch project")
-      ("pg" zc-projectile/refresh-projects "refresh projects"))
+      ("pi" projectile-invalidate-cache "invalidate cache")
+      ("pg" zc-projectile/refresh-projects "refresh projects")
+      ("po" consult-projectile-switch-project "switch project"))
 
      "Search"
-     (("pf" counsel-projectile-find-file "find file")
-      ("pl" projectile-find-file-in-directory "find in directory")
-      ("pb" counsel-projectile-switch-to-buffer "find buffer")
-      ("pd" counsel-projectile-find-dir "find directory")
-      ("pt" projectile-toggle-between-implementation-and-test "toggle test file")
+     (("pb" consult-projectile-switch-to-buffer "find buffer")
+      ("pf" consult-projectile-find-file        "find file")
+      ("pl" projectile-find-file-in-directory   "find in directory")
+      ("pt" projectile-toggle-between-implementation-and-test   "toggle test file")
       ("pT" projectile-find-implementation-or-test-other-window "open test file (ow)"))
 
      "Layer"
      (("pp" zc-layout/switch-project-layout "switch layout")
       ("pP" (zc-layout/switch-project-layout t) "create layout")
       ("pD" eyebrowse-close-window-config "close layout")
-      ("p$" counsel-tramp "tramp")
       ("p <tab>" eyebrowse-last-window-config "last project"))))
 
   (zc-hydra/define zc-main-hydra--git
     (:color teal :title "Git Hydra" :icon "github" :prefix "g")
     ("Basic"
-     (("gs" magit-status "status")
-      ("gl" magit-log-buffer-file "file log")
-      ("gL" magit-log-current "project log")
-      ("gt" git-timemachine "time machine")
-      ("gb" magit-blame "blame")
-      ("gB" browse-at-remote "browse remote")
-      ("gy" browse-at-remote-kill "copy remote link"))))
+     (("gs" magit-status                    "status")
+      ("gl" magit-log-buffer-file           "file log")
+      ("gL" magit-log-current               "project log")
+      ("gt" git-timemachine                 "time machine")
+      ("gb" magit-blame                     "blame")
+      ("gB" browse-at-remote                "browse remote")
+      ("gy" browse-at-remote-kill           "copy remote link"))))
 
   (zc-hydra/define zc-main-hydra--error
     (:color teal :title "Error & Eval Hydra" :icon "bug" :prefix "e")
@@ -227,10 +231,10 @@
       ("or" org-roam        "roam"))
 
      "Navigation"
-     (("oo" (zc-org/goto-file-heading 'all)   "all")
-      ("ow" (zc-org/goto-file-heading 'work)  "work")
-      ("on" (zc-org/goto-file-heading 'note)  "notes")
-      ("ob" (zc-org/goto-file-heading 'babel) "babel"))))
+     (("oo" (zc-org/outline-file-heading 'all)   "all")
+      ("ow" (zc-org/outline-file-heading 'work)  "work")
+      ("on" (zc-org/outline-file-heading 'note)  "notes")
+      ("ob" (zc-org/outline-file-heading 'babel) "babel"))))
 
   (zc-hydra/define zc-main-hydra--jump
     (:color teal :title "Jump Hydra" :icon "tencent-weibo" :prefix "j")
@@ -284,22 +288,22 @@
   (zc-hydra/define zc-main-hydra--help
     (:color teal :title "Help Hydra" :icon "question" :prefix "h")
     ("Docs"
-     (("hi" info "info")
-      ("hI" counsel-info-lookup-symbol "find info")
-      ("hm" man "man")
-      ("hh" helpful-at-point "doc at point")
-      ("hl" counsel-find-library "find library"))
+     (("ha" consult-apropos            "apropos")
+      ("hm" consult-man                "man")
+      ("hi" info                       "info")
+      ("hI" info-lookup-symbol         "symbol info")
+      ("hh" helpful-at-point           "info at point"))
 
      "Describe"
-     (("hdc" describe-char "char")
-      ("hdC" zc-ivy/describe-command "command")
-      ("hdv" counsel-describe-variable "variable")
-      ("hdk" helpful-key "key")
-      ("hdf" counsel-describe-function "function")
-      ("hdF" counsel-faces "face")
-      ("hdm" describe-mode "mode")
-      ("hdM" helpful-macro "macro")
-      ("hdp" describe-package "package"))
+     (("hdc" describe-char             "char")
+      ("hdC" helpful-command           "command")
+      ("hdv" helpful-variable          "variable")
+      ("hdk" helpful-key               "key")
+      ("hdf" helpful-callable          "function")
+      ("hdF" describe-face             "face")
+      ("hdm" describe-mode             "mode")
+      ("hdM" helpful-macro             "macro")
+      ("hdp" describe-package          "package"))
 
      "Translate"
      (("htt" gts-do-translate "translate"))))
@@ -307,10 +311,10 @@
   (zc-hydra/define zc-main-hydra
     (:hint nil :color teal :title "Main Hydra")
     ("Basic"
-     (("SPC" counsel-M-x               "M-x")
+     (("SPC" execute-extended-command  "M-x")
       (":"   eval-expression           "Eval expression")
       ("!"   zc-term/open              "Open terminal")
-      ("r"   ivy-resume                "Ivy resume")
+      ("r"   vertico-repeat            "Resume minibuff")
       ("v"   er/expand-region          "Expand region")
       ("m"   zc-hydra/major-mode-hydra "Major mode hydra")
       ("u"   universal-argument        "Universal argument"))

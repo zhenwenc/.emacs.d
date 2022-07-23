@@ -114,7 +114,8 @@
 (use-package zc-theme)
 (use-package zc-core)
 (use-package zc-evil)
-(use-package zc-ivy)
+;; (use-package zc-ivy) ;; replaced with zc-completion
+(use-package zc-completion)
 (use-package zc-hydra)
 (use-package zc-osx :if (eq system-type 'darwin))
 (use-package zc-eval)

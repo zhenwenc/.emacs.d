@@ -44,7 +44,7 @@
 
   (:states 'normal
    "q"          nil ; unset define macro
-   "M"          #'counsel-evil-marks)
+   "M"          #'evil-show-marks)
 
   (:states 'insert
    "C-<tab>"    #'dabbrev-expand
@@ -93,7 +93,6 @@
   (evil-set-initial-state 'prodigy-mode             'motion)
   (evil-set-initial-state 'process-menu-mode        'motion)
   (evil-set-initial-state 'org-agenda-mode          'motion)
-  (evil-set-initial-state 'ivy-occur-mode           'motion)
   (evil-set-initial-state 'compilation-mode         'motion)
   (evil-set-initial-state 'tide-references-mode     'motion)
   (evil-set-initial-state 'tide-project-errors-mode 'normal)

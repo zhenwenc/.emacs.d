@@ -15,7 +15,7 @@
   :general
   (:keymaps 'org-mode-map
    [remap xref-find-definitions] #'org-open-at-point
-   [remap xref-pop-marker-stack] #'zc-org/goto-previous-mark)
+   [remap xref-pop-marker-stack] #'zc-org/outline-previous-mark)
 
   (:keymaps 'org-src-mode-map
    "C-c C-c" #'org-edit-src-exit)
@@ -46,7 +46,7 @@
     ("ey" org-copy-special                        "copy")
     ("eY" org-paste-special                       "paste")
     ("ep" org-property-action                     "props")
-    ("et" counsel-org-tag                         "tag")
+    ("et" org-set-tags-command                    "tag")
     ("en" org-add-note                            "note"))
 
    "Babel"

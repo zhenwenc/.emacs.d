@@ -2,10 +2,12 @@
 (require 'f)
 (require 'dash)
 
+(autoload 'projectile-prepend-project-name "projectile")
 (autoload 'projectile-switch-project "projectile")
+(autoload 'projectile-project-name "projectile")
+(autoload 'projectile-project-p "projectile")
 
 (defvar projectile-known-projects)
-(defvar counsel-projectile-sort-projects)
 (defvar eyebrowse-default-workspace-slot)
 
 
@@ -70,10 +72,10 @@ See also `zc-layout/config-for-slot'."
 (defun zc-layout/layout-tag-for-project (dir)
   "Return the eyebrowse window config tag for PROJECT."
   (--> projectile-known-projects
-    (--filter (string= (f-base dir) (f-base it)) it)
-    (f-common-parent it)
-    (s-chop-prefix (f-slash it) (f-canonical dir))
-    (s-chop-suffix "/" it)))
+       (--filter (string= (f-base dir) (f-base it)) it)
+       (f-common-parent it)
+       (s-chop-prefix (f-slash it) (f-canonical dir))
+       (s-chop-suffix "/" it)))
 
 (defun zc-layout/is-current-project-layout-p ()
   "Return t if the current selected project is the same as
@@ -102,14 +104,12 @@ reduce the overhead of recomputing the layout info.")
 ;;;###autoload
 (defun zc-layout/select-project-no-action ()
   "Prompt project selection with counsel."
-  (require 'counsel-projectile)
-  (ivy-read (projectile-prepend-project-name "Select a project: ")
-            projectile-known-projects
-            :preselect (and (projectile-project-p)
-                            (projectile-project-name))
-            :require-match t
-            :sort counsel-projectile-sort-projects
-            :caller 'zc-layout/select-project-no-action))
+  (completing-read (projectile-prepend-project-name "Select a project: ")
+                   projectile-known-projects
+                   nil ; predicate
+                   t   ; require-match
+                   (and (projectile-project-p) ; preselect
+                        (projectile-project-name))))
 
 ;;;###autoload
 (defun zc-layout/create-project-layout (&optional dir)

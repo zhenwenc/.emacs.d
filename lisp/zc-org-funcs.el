@@ -7,6 +7,8 @@
 (autoload 'counsel-org-goto-action "counsel")
 (autoload 'counsel-outline-candidates "counsel")
 (autoload 'projectile-ensure-project "projectile")
+(autoload 'consult-org-heading "consult-org")
+(autoload 'consult-org--headings "consult-org")
 
 (defvar org-any-link-re)
 (defvar org-ts-regexp-both)
@@ -127,75 +129,77 @@ pdf in a new buffer.
 
 ;; Navigation
 
-(defun zc-org/goto-buffer-heading (&optional tree)
-  "Jump to an outline heading within the current buffer.
+(defun zc-org/outline-buffer-heading (&optional scope)
+  "Jump to an outline heading within the current buffer. This
+function pushes the current subtree to mark ring, so that you
+can jump back using `org-mark-ring-goto'.
 
-Filter candidates with TREE:
-- When equals to 'parent, show all siblings recursively.
-- Otherwise, show all headings in the buffer.
+Filter candidates with SCOPE, see valid options in `org-map-entries'. By
+default only siblings are available.
 
-See also `counsel-outline'."
-  (interactive)
-  (let* ((settings (cdr (assq major-mode counsel-outline-settings)))
-         (candidates (zc/with-widen-buffer
-                      (pcase tree
-                        ('parent (ignore-errors (outline-up-heading 1)
-                                                (org-narrow-to-subtree))))
-                      (counsel-outline-candidates settings))))
-    (ivy-read "Outline: " candidates
-              :history  'counsel-org-goto-history
-              :action  #'zc-org/goto-buffer-heading-action
-              :caller   'zc-org/goto-buffer-heading
-              :preselect (max (1- counsel-outline--preselect) 0))))
+See also `counsel-outline' and `consult-org-heading'."
+  (interactive (unless (derived-mode-p 'org-mode)
+                 (user-error "Must be called from an Org buffer")))
+  (let* ((candidates (pcase scope
+                       ('parent (zc/with-widen-buffer
+                                 (ignore-errors (outline-up-heading 1)
+                                                (org-narrow-to-subtree))
+                                 (consult-org--headings t nil 'tree)))
+                       (_ (consult-org--headings t nil (or scope 'file)))))
+         (selected (consult--read candidates
+                                  :prompt "Go to heading: "
+                                  :category 'consult-org-heading
+                                  :sort nil
+                                  :require-match t
+                                  :narrow (consult-org--narrow)
+                                  :lookup #'consult--lookup-candidate)))
+    ;; Jump to headline in selected candidate position.
+    (let ((narrowed (buffer-narrowed-p)))
+      ;; Push current subtree to mark ring, see `org-mark-subtree'.
+      (org-with-limited-levels
+       (cond ((org-at-heading-p) (beginning-of-line))
+             ((not (org-before-first-heading-p))
+              (outline-previous-visible-heading 1)))
+       (org-mark-ring-push))
+      (org-goto-marker-or-bmk selected)
+      (when narrowed (zc-org/narrow-to-subtree)))))
 
-(defun zc-org/goto-file-heading (&optional type)
-  "Jump to a heading in an org file.
+(defun zc-org/outline-file-heading (&optional scope)
+  "Jump to a outline heading in a directory.
+
 See also `counsel-org-goto-all'."
   (interactive)
-  (let ((files (pcase type
-                 ('note  (f-files zc-org/main-notes-dir (-rpartial #'f-ext-p "org")))
-                 ('work  (f-files zc-org/work-notes-dir (-rpartial #'f-ext-p "org")))
-                 ('babel (list org-default-babel-file)))))
-    (ivy-read "Goto: " (zc-org/get-outline-candidates files)
-              :history 'counsel-org-goto-history
-              :action #'zc-org/goto-file-heading-action
-              :caller #'zc-org/goto-file-heading)))
-
-(defun zc-org/goto-buffer-heading-action (x)
-  "Jump to headline in candidate X.
-You can jump back to subtree with `org-mark-ring-goto'."
-  (let ((narrowed (buffer-narrowed-p)))
-    ;; Push current subtree to mark ring, see `org-mark-subtree'.
+  (let* ((files (pcase scope
+                  ('note  (f-files zc-org/main-notes-dir (-rpartial #'f-ext-p "org")))
+                  ('work  (f-files zc-org/work-notes-dir (-rpartial #'f-ext-p "org")))
+                  ('babel (list org-default-babel-file))))
+         (candidates (consult-org--headings t nil files))
+         (selected (consult--read candidates
+                                  :prompt "Go to heading: "
+                                  :category 'consult-org-heading
+                                  :sort nil
+                                  :require-match t
+                                  :narrow (consult-org--narrow)
+                                  :lookup #'consult--lookup-candidate)))
+    ;; Ensure we are are in `org' layout to avoid chaos.
+    (unless (projectile-ensure-project zc-org/directory)
+      (error "Org directory '%s' is not a project" zc-org/directory))
+    (let* ((marker selected)
+           (project zc-org/directory))
+      (-if-let* ((is-marker (markerp marker))
+                 (buffer    (marker-buffer marker)))
+          (zc-projectile/with-switch-project-action buffer
+            (zc-layout/create-project-layout project))
+        (zc-layout/create-project-layout project)))
     (org-with-limited-levels
      (cond ((org-at-heading-p) (beginning-of-line))
            ((not (org-before-first-heading-p))
             (outline-previous-visible-heading 1)))
      (org-mark-ring-push))
-    (counsel-org-goto-action x)
-    (when narrowed (zc-org/narrow-to-subtree))))
+    (org-goto-marker-or-bmk selected)
+    (zc-org/narrow-to-subtree)))
 
-(defun zc-org/goto-file-heading-action (x)
-  "Jump to headline in candidate X.
-You can jump back to subtree with `org-mark-ring-goto'."
-  ;; Ensure we are are in `org' layout to avoid chaos.
-  (unless (projectile-ensure-project zc-org/directory)
-    (error "Org directory '%s' is not a project" zc-org/directory))
-  (let* ((marker (cdr x))
-         (project zc-org/directory))
-    (-if-let* ((is-marker (markerp marker))
-               (buffer    (marker-buffer marker)))
-        (zc-projectile/with-switch-project-action buffer
-          (zc-layout/create-project-layout project))
-      (zc-layout/create-project-layout project)))
-  (org-with-limited-levels
-   (cond ((org-at-heading-p) (beginning-of-line))
-         ((not (org-before-first-heading-p))
-          (outline-previous-visible-heading 1)))
-   (org-mark-ring-push))
-  (counsel-org-goto-action x)
-  (zc-org/narrow-to-subtree))
-
-(defun zc-org/get-outline-candidates (&optional filenames)
+(defun zc-org/outline-candidates (&optional filenames)
   "Return an alist of counsel outline heading completion candidates,
 using `counsel-outline-candidates'.
 
@@ -224,7 +228,7 @@ is located at the position of MARKER."
                     (concat "[" it "] " head)
                     (cons it marker))))))
 
-(defun zc-org/goto-previous-mark (&optional n)
+(defun zc-org/outline-previous-mark (&optional n)
   "Enhanced `org-mark-ring-goto' to break narrowed buffer."
   (interactive "p")
   (let ((narrowed (buffer-narrowed-p)))

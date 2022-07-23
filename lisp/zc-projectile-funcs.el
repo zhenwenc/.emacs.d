@@ -76,21 +76,8 @@ by using the magic dynamic binding."
                  (eval ,action))
                 ;; Fallback to projectile find file.
                 (_
-                 (projectile-find-file)))))))
+                 (consult-projectile-find-file)))))))
      ,@body))
-
-
-;; Commands
-
-;;;###autoload
-(defun zc-projectile/search-symbol-at-point (current-dir-p)
-  (interactive "P")
-  (let ((sym (thing-at-point 'symbol t)))
-    (if (and (projectile-project-p) (not current-dir-p))
-        (let ((counsel-projectile-rg-initial-input sym))
-          (counsel-projectile-rg))
-      (counsel-rg sym default-directory ""
-                  (format "[%s] rg" default-directory)))))
 
 
 

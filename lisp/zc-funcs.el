@@ -15,7 +15,6 @@
 (autoload 'projectile-project-name "projectile")
 (autoload 'projectile-invalidate-cache "projectile")
 (autoload 'projectile-previous-project-buffer "projectile")
-(autoload 'counsel-projectile-switch-project "counsel-projectile")
 
 
 ;; Buffer
@@ -29,7 +28,8 @@
   "Restrict editing in this buffer to the current region or
 org subtree if in `org-mode'.
 
-- If buffer is narrowed, cancel the narrowing by `widen'.
+- If buffer is narrowed, invert the status by `widen'.
+- If buffer is narrowed by `consult-focus-lines', invert the status.
 - If the region is active, narrow to region.
 - If currently in `org-mode', narrow to subtree.
 - Otherwise, narrow to defun."
@@ -38,7 +38,10 @@ org subtree if in `org-mode'.
     (cond
      ((or (eq action 'widen)
           (and (buffer-narrowed-p) (eq action 'toggle)))
-      (widen) (recenter))
+      (when (buffer-narrowed-p)
+        (widen) (recenter))
+      (when consult--focus-lines-overlays
+        (consult-focus-lines t)))
      ((use-region-p) (narrow-to-region (region-beginning) (region-end)))
      ((eq major-mode 'org-mode) (org-narrow-to-subtree))
      (t                         (narrow-to-defun)))))

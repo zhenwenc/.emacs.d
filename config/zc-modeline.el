@@ -144,6 +144,9 @@
 (defun zc-modeline/narrowed-icon ()
   (all-the-icons-faicon "compress" :height 0.8 :v-adjust 0.05))
 
+(defun zc-modeline/narrowed-lines-icon ()
+  (all-the-icons-faicon "scissors" :height 0.8 :v-adjust 0.05))
+
 (defun zc-modeline/auto-recompile-icon ()
   (all-the-icons-faicon "repeat" :height 0.8 :v-adjust 0.05))
 
@@ -226,6 +229,12 @@
                    (list
                     (zc-modeline/separator)
                     (propertize (zc-modeline/narrowed-icon) 'face warning)))
+
+                 ;; Buffer narrowed status by `consult-focus-lines'
+                 (when consult--focus-lines-overlays
+                   (list
+                    (zc-modeline/separator)
+                    (propertize (zc-modeline/narrowed-lines-icon) 'face warning)))
 
                  ;; Auto-recompile status
                  (when zc-eval/compile-on-save-mode

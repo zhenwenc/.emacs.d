@@ -173,9 +173,6 @@
 (global-unset-key (kbd "M-l")) ;; downcase word
 
 ;; Shortcuts for commonly used commands
-(global-set-key (kbd "M-f") 'counsel-grep-or-swiper)
-(global-set-key (kbd "M-F") 'counsel-projectile-rg)
-
 (global-set-key (kbd "C-x C-b") 'ibuffer)
 (global-set-key (kbd "C-c e e") 'toggle-debug-on-error)
 (global-set-key (kbd "C-h c")   'describe-char)
