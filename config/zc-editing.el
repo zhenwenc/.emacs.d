@@ -76,14 +76,16 @@
   :straight t
   :config
   ;; HACK Disable `org-mode' extensions due to performance issue
-
-  (defun zc/er-save-org-mode-excursion (action)
-    (funcall action))
+  (defun zc/er-save-org-mode-excursion (action) (funcall action))
   (advice-add #'er/save-org-mode-excursion :override #'zc/er-save-org-mode-excursion)
   (advice-add #'er/mark-org-element        :override #'ignore)
   (advice-add #'er/mark-org-element-parent :override #'ignore)
   (advice-add #'er/mark-org-code-block     :override #'ignore)
-  (advice-add #'er/mark-org-parent         :override #'ignore))
+  (advice-add #'er/mark-org-parent         :override #'ignore)
+
+  ;; HACK These expand functions have problem with YAML variable placeholders
+  (advice-add #'er/mark-yaml-inner-block   :override #'ignore)
+  (advice-add #'er/mark-yaml-outer-block   :override #'ignore))
 
 (use-package hippie-exp
   :general ("M-/" 'hippie-expand
