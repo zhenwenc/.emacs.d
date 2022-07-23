@@ -105,11 +105,7 @@ reduce the overhead of recomputing the layout info.")
 (defun zc-layout/select-project-no-action ()
   "Prompt project selection with counsel."
   (completing-read (projectile-prepend-project-name "Select a project: ")
-                   projectile-known-projects
-                   nil ; predicate
-                   t   ; require-match
-                   (and (projectile-project-p) ; preselect
-                        (projectile-project-name))))
+                   projectile-known-projects nil t))
 
 ;;;###autoload
 (defun zc-layout/create-project-layout (&optional dir)
