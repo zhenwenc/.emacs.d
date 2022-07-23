@@ -99,6 +99,8 @@
      (t
       (call-interactively #'consult-imenu)))))
 
+;; Integration with `projectile'.
+;;
 (use-package consult-projectile
   :straight (:host gitlab :repo "OlMon/consult-projectile")
   :after (consult projectile))

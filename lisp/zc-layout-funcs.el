@@ -110,7 +110,12 @@ reduce the overhead of recomputing the layout info.")
 ;;;###autoload
 (defun zc-layout/create-project-layout (&optional dir)
   "Return the layout slot for the project in DIR, or create a new
-layout if no layout found and return the created slot."
+layout if no layout found and return the created slot.
+
+REMARK: You can control the projectile action after switching to a
+project by `projectile-switch-project-action' variable. For example,
+wrap your action within `zc-projectile/with-switch-project-action'.
+"
   (interactive)
   (let* ((dir     (or dir (zc-layout/select-project-no-action)))
          (project (projectile-project-root dir))
@@ -137,7 +142,8 @@ if not found or NEW."
   (interactive "P")
   (if (and zc-layout/window-config-alist (not create))
       (eyebrowse-switch-to-window-config (eyebrowse--read-slot))
-    (zc-layout/create-project-layout)))
+    (zc-projectile/with-switch-project-action 'default
+      (zc-layout/create-project-layout))))
 
 ;;;###autoload
 (defun zc-layout/kill-buffer (arg &optional buffer)

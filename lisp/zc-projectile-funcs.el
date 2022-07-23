@@ -13,10 +13,10 @@
 
 (defun zc-projectile/ignored-project-p (project)
   (thread-last zc-projectile/ignored-dirs
-    (-map #'file-truename)
-    (-any? (-orfn
-            (-rpartial #'f-same? project)
-            (-rpartial #'f-ancestor-of? project)))))
+               (-map #'file-truename)
+               (-any? (-orfn
+                       (-rpartial #'f-same? project)
+                       (-rpartial #'f-ancestor-of? project)))))
 
 (defun zc-projectile/refresh-projects ()
   "Update `projectile-known-projects', append magit discovered
@@ -30,10 +30,10 @@ directory in `zc-projectile/ignored-dirs'."
                   (magit-list-repos)))
     ;; Filter the known projects
     (thread-last projectile-known-projects
-      (-remove (-compose
-                #'zc-projectile/ignored-project-p
-                #'file-truename))
-      (setq projectile-known-projects))
+                 (-remove (-compose
+                           #'zc-projectile/ignored-project-p
+                           #'file-truename))
+                 (setq projectile-known-projects))
     ;; Ensure the projects exist
     (projectile-cleanup-known-projects)))
 
