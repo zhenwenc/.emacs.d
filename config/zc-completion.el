@@ -30,6 +30,23 @@
   (setq vertico-count 15) ;; maximum number of candidates to render
   (setq vertico-scroll-margin 0))
 
+;; Display minibuffer in childframe.
+;;
+(use-package vertico-posframe
+  :straight t
+  :after (vertico)
+  :if (zc/childframe-workable-p)
+  :custom-face
+  (vertico-posframe        ((t (:background ,(doom-color 'bg-alt)))))
+  (vertico-posframe-border ((t (:background ,(doom-color 'bg-alt)))))
+  (vertico-posframe-cursor ((t (:background ,(doom-color 'blue)))))
+  :config
+  (setq vertico-posframe-border-width 8
+        vertico-posframe-parameters '((left-fringe  . 4)
+                                      (right-fringe . 4))
+        vertico-posframe-poshandler 'posframe-poshandler-frame-top-center)
+  (vertico-posframe-mode))
+
 ;; TODO Fail to load extension
 ;;
 ;; (use-package vertico-repeat

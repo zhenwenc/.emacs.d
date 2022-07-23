@@ -87,6 +87,7 @@
   (setq evil-emacs-state-cursor  '("SkyBlue2" hbar))
 
   ;; Configure initial state for modes
+  (evil-set-initial-state 'minibuffer-mode          'emacs)
   (evil-set-initial-state 'diff-mode                'motion)
   (evil-set-initial-state 'shell-mode               'normal)
   (evil-set-initial-state 'ibuffer-mode             'motion)

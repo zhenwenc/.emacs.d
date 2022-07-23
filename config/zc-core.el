@@ -215,11 +215,12 @@
   (global-auto-revert-mode -1))
 
 (use-package savehist
-  :config
+  :init
   (setq savehist-file (concat paths-cache-dir "savehist")
         savehist-save-minibuffer-history t
         savehist-autosave-interval nil ; save on kill only
         savehist-additional-variables '(projectile-project-command-history))
+  :config
   (savehist-mode +1))
 
 (use-package conf-mode

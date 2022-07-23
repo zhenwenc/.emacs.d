@@ -284,6 +284,16 @@ See `kill-transform-function'"
     ('evil-search (evil-ex-nohighlight))))
 
 
+;; UI
+
+(defun zc/childframe-workable-p ()
+  "Return `t' when childframe is workable."
+  (or (not (or noninteractive
+               emacs-basic-display
+               (not (display-graphic-p))))
+      (daemonp)))
+
+
 ;; Misc.
 
 (defun zc/kill-emacs-or-frame (&optional persist-server-p)
