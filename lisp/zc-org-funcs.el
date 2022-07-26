@@ -145,14 +145,36 @@ See also `counsel-outline' and `consult-org-heading'."
                                  (ignore-errors (outline-up-heading 1)
                                                 (org-narrow-to-subtree))
                                  (consult-org--headings t nil 'tree)))
-                       (_ (consult-org--headings t nil (or scope 'file)))))
-         (selected (consult--read candidates
-                                  :prompt "Go to heading: "
-                                  :category 'consult-org-heading
-                                  :sort nil
-                                  :require-match t
-                                  :narrow (consult-org--narrow)
-                                  :lookup #'consult--lookup-candidate)))
+                       ;; HACK: Cannot use 'file scope on indirect buffers
+                       (_ (with-current-buffer (or (buffer-base-buffer)
+                                                   (current-buffer))
+                            (consult-org--headings t nil 'file)))))
+
+         ;; FIXME workaround with `counsel-outline-candidates' due to problematic
+         ;; behaviours in `consult-org--headings' that causes Emacs to freeze.
+         ;; (buffer (or (buffer-base-buffer) (current-buffer)))
+         ;; (buffer-name (buffer-name buffer))
+         ;; (settings (cdr (assq major-mode counsel-outline-settings)))
+         ;; (candidates (->> (zc/with-widen-buffer
+         ;;                   (pcase scope
+         ;;                     ('parent (ignore-errors (outline-up-heading 1)
+         ;;                                             (org-narrow-to-subtree))))
+         ;;                   (counsel-outline-candidates settings))
+         ;;                  (-map (-lambda ((cand . marker))
+         ;;                          (setq cand (format "%s %s" buffer-name cand))
+         ;;                          (add-text-properties
+         ;;                           0 1 `(consult--candidate ,marker) cand)
+         ;;                          cand))))
+
+         (selected (consult--read
+                    candidates
+                    :prompt "Go to heading: "
+                    :category 'consult-org-heading
+                    :sort nil
+                    :require-match t
+                    :narrow (consult-org--narrow)
+                    :lookup #'consult--lookup-candidate
+                    :group #'zc-org/outline-group-by-buffer)))
     ;; Jump to headline in selected candidate position.
     (let ((narrowed (buffer-narrowed-p)))
       ;; Push current subtree to mark ring, see `org-mark-subtree'.
@@ -161,7 +183,11 @@ See also `counsel-outline' and `consult-org-heading'."
              ((not (org-before-first-heading-p))
               (outline-previous-visible-heading 1)))
        (org-mark-ring-push))
-      (org-goto-marker-or-bmk selected)
+      ;; HACK: The candidates are collected from the original buffer
+      (-if-let* ((base (buffer-base-buffer))
+                 (mark (copy-marker (marker-position selected) base)))
+          (org-goto-marker-or-bmk mark)
+        (org-goto-marker-or-bmk selected))
       (when narrowed (zc-org/narrow-to-subtree)))))
 
 (defun zc-org/outline-file-heading (&optional scope)
@@ -180,7 +206,8 @@ See also `counsel-org-goto-all'."
                                   :sort nil
                                   :require-match t
                                   :narrow (consult-org--narrow)
-                                  :lookup #'consult--lookup-candidate)))
+                                  :lookup #'consult--lookup-candidate
+                                  :group #'zc-org/outline-group-by-buffer)))
     ;; Ensure we are are in `org' layout to avoid chaos.
     (unless (projectile-ensure-project zc-org/directory)
       (error "Org directory '%s' is not a project" zc-org/directory))
@@ -198,6 +225,12 @@ See also `counsel-org-goto-all'."
      (org-mark-ring-push))
     (org-goto-marker-or-bmk selected)
     (zc-org/narrow-to-subtree)))
+
+(defun zc-org/outline-group-by-buffer (cand transform)
+  "The default grouping logic provided by `consult-org-heading'."
+  (let* ((buf (get-text-property 0 'consult--candidate cand))
+         (name (buffer-name (marker-buffer buf))))
+    (if transform (substring cand (1+ (length name))) name)))
 
 (defun zc-org/outline-candidates (&optional filenames)
   "Return an alist of counsel outline heading completion candidates,

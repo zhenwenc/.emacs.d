@@ -105,6 +105,12 @@
   :straight (:host gitlab :repo "OlMon/consult-projectile")
   :after (consult projectile))
 
+;; Interactive functions for `ivy', borrow its more mature features
+;;
+;; - `zc-org/outline-buffer-heading'
+;;
+(use-package counsel :straight t)
+
 
 
 ;; Emacs Mini-Buffer Actions Rooted in Keymaps
