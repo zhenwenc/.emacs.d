@@ -3,13 +3,14 @@
 # key: r
 # condition: (and (zc-yas/react-buffer-p) (not (zc-yas/react-story-buffer-p)) (not (zc-yas/buffer-match-p "react")))
 # --
-import { makeStyles } from '@navch-ui/styles';
+import { StandardProps, StandardAttributes, makeStyles } from '@navch-ui/styles';
 
-${1:export interface ${2:`(file-name-base)`Props} {
+${1:export type ${2:`(file-name-base)`}LikeProps = {
 
 \}}
+${1:export type ${2:$(format "%sProps" yas-text)}= StandardProps<${2:$(format "%sLikeProps" yas-text)}, StandardAttributes<HTMLElement>>;}
 
-export const `(file-name-base)`: React.FC${2:$(and (not (string-empty-p yas-text)) (format "<%s>" yas-text))} = (${3:props}) => {
+export const `(file-name-base)`: React${2:$(if (string-empty-p yas-text) ".VFC" (format ".FC<%sProps>" yas-text))} = (${3:props}) => {
   const { styles \} = useStyles();
 
   $0
