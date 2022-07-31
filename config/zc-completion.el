@@ -44,7 +44,7 @@
   (setq vertico-posframe-border-width 8
         vertico-posframe-parameters '((left-fringe  . 4)
                                       (right-fringe . 4))
-        vertico-posframe-poshandler 'posframe-poshandler-frame-top-center)
+        vertico-posframe-poshandler 'posframe-poshandler-frame-bottom-center)
   (vertico-posframe-mode))
 
 ;; TODO Fail to load extension
