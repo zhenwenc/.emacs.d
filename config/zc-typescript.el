@@ -12,6 +12,8 @@
   :defer t
 
   :mode (("\\.es6\\'"  . typescript-mode)
+         ("\\.cjs\\'"  . typescript-mode)
+         ("\\.mjs\\'"  . typescript-mode)
          ("\\.jsx?\\'" . typescript-mode)
          ("\\.tsx?\\'" . typescript-mode))
 
