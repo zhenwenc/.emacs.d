@@ -2,6 +2,9 @@
 (require 'dash)
 (require 'org)
 (require 'org-element)
+(require 'zc-funcs)
+(require 'zc-layout-funcs)
+(require 'zc-projectile-funcs)
 
 (autoload 'ivy-read "ivy")
 (autoload 'counsel-org-goto-action "counsel")
@@ -141,10 +144,13 @@ See also `counsel-outline' and `consult-org-heading'."
   (interactive (unless (derived-mode-p 'org-mode)
                  (user-error "Must be called from an Org buffer")))
   (let* ((candidates (pcase scope
-                       ('parent (zc/with-widen-buffer
-                                 (ignore-errors (outline-up-heading 1)
-                                                (org-narrow-to-subtree))
-                                 (consult-org--headings t nil 'tree)))
+                       ('parent (if (org-current-level)
+                                    (zc/with-widen-buffer
+                                     (ignore-errors
+                                       (outline-up-heading 1)
+                                       (org-narrow-to-subtree))
+                                     (consult-org--headings t nil 'tree))
+                                  (consult-org--headings t nil 'file)))
                        ;; HACK: Cannot use 'file scope on indirect buffers
                        (_ (with-current-buffer (or (buffer-base-buffer)
                                                    (current-buffer))
