@@ -115,8 +115,17 @@
         org-list-allow-alphabetical t
         ;; Reduce search results.
         org-imenu-depth 3
-        org-refile-targets `((nil              :maxlevel . 1)
-                             (org-agenda-files :regexp   . ,(rx "Tasks"))))
+
+        ;; Move inbox entries to the its category.
+        org-refile-targets
+        `((nil              :maxlevel . 1)
+          (,(zc-org/file-with-exts :dir zc-org/directory) :maxlevel . 1)
+          (,(zc-org/file-with-exts :dir zc-org/main-notes-dir) :regexp . ,(rx "Tasks"))
+          (,(zc-org/file-with-exts :dir zc-org/work-notes-dir) :regexp . ,(rx "Tasks")))
+        org-refile-use-outline-path 'file
+
+        ;; Our `completion-styles' does not support hierarchical steps.
+        org-outline-path-complete-in-steps nil)
 
   ;; Appearance
   (setq org-eldoc-breadcrumb-separator " → "
