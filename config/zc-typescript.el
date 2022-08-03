@@ -117,7 +117,8 @@
              (node-file (if babel-res output-file script-file))
              (node-path (concat "NODE_PATH=" (f-join dir "node_modules")))
              (node-opts (format "NODE_OPTIONS='--unhandled-rejections=strict --max-http-header-size=16384'"))
-             (org-babel-js-cmd (format "%s %s %s %s" node-path node-opts env cmd))
+             (node-envs (concat "NODENV_VERSION=" (s-trim (shell-command-to-string "nodenv global"))))
+             (org-babel-js-cmd (format "%s %s %s %s %s" node-envs node-path node-opts env cmd))
              (org-babel-js-function-wrapper "%s"))
         ;; Print the transpiled output for debugging
         (when (s-equals? "yes" (cdr (assq :debug params)))
@@ -125,7 +126,7 @@
             (message "[DEBUG] Transpiled source code:\n\n%s\n%s" babel-res (f-read node-file))))
         ;; Execute the code block with `compilation'
         (if (s-equals? "yes" (cdr (assq :compile params)))
-            (compile (format "TERM=dumb %s %s %s %s %s" node-path node-opts env cmd node-file))
+            (compile (format "TERM=dumb %s %s" org-babel-js-cmd node-file))
           ;; Execute the code block with `org-babel-execute'
           (let* ((result (org-babel-eval
                           (format "%s %s" org-babel-js-cmd
