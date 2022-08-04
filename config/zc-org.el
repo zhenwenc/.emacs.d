@@ -153,7 +153,9 @@
   (setq org-todo-keywords
         '((sequence "TODO(t)" "NEXT(n)" "MAYBE(m)" "|" "DONE(d)" "CANCEL(c)")
           (sequence "⚑(T)" "🏴(N)" "❓(M)" "|" "✔(D)" "✘(C)"))
-        org-enforce-todo-dependencies t)
+        org-enforce-todo-dependencies t
+        ;; Do not list options in special window that messup window configs
+        org-use-fast-todo-selection 'expert)
 
   ;; Basic pre-defined tags for `org-set-tags-command'.
   (setq org-tag-alist '(("@home"  . ?h)
