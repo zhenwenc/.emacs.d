@@ -4,14 +4,22 @@
 (require 's)
 (require 'zc-paths)
 
-(let ((dir (expand-file-name (concat paths-vendor-dir "plantuml/")))
-      (url "https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/"))
-
-  (defconst zc-plantuml/component (concat dir "C4_Component.puml"))
-  (defconst zc-plantuml/container (concat dir "C4_Container.puml"))
-
-  (defconst zc-plantuml/component-url (concat url "C4_Component.puml"))
-  (defconst zc-plantuml/container-url (concat url "C4_Container.puml")))
+(defconst zc-plantuml/cache-dir (expand-file-name (concat paths-vendor-dir "plantuml/")))
+(defconst zc-plantuml/resources
+  '(;; https://github.com/plantuml-stdlib/C4-PlantUML
+    (C4Puml
+     . (:url "https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master"
+        :files ("C4_Component.puml"
+                "C4_Container.puml")))
+    ;; https://github.com/plantuml-stdlib/Azure-PlantUML
+    (AzurePuml
+     . (:url "https://raw.githubusercontent.com/plantuml-stdlib/Azure-PlantUML/master/dist"
+        :files ("AzureCommon.puml")))
+    ;; https://github.com/dcasati/kubernetes-PlantUML
+    (KubernetesPuml
+     . (:url "https://raw.githubusercontent.com/dcasati/kubernetes-PlantUML/master/dist"
+        :files ("OSS/KubernetesSvc.puml"
+                "OSS/KubernetesPod.puml")))))
 
 
 
@@ -31,14 +39,16 @@
                      (f-exists? plantuml-executable-path)))
       (plantuml-download-jar))
     ;; Download additional custom diagram components.
-    (mapcar (-lambda ((filename url))
-              (unless (and (not forced) (f-exists? filename))
-                (with-current-buffer
-                    (url-retrieve-synchronously url 'silent 'inhibit-cookies)
-                  (delete-region (point-min) url-http-end-of-headers)
-                  (write-file filename))))
-            `((,zc-plantuml/container ,zc-plantuml/container-url)
-              (,zc-plantuml/component ,zc-plantuml/component-url))))
+    (mapcar (-lambda ((name . (&plist :url url :files files)))
+              (--each files
+                (let ((uri (format "%s/%s" url it))
+                      (filename (concat zc-plantuml/cache-dir it)))
+                  (message "Downloading %s" uri)
+                  (with-current-buffer
+                      (url-retrieve-synchronously uri 'silent 'inhibit-cookies)
+                    (delete-region (point-min) url-http-end-of-headers)
+                    (write-file filename)))))
+            zc-plantuml/resources))
 
   (setq plantuml-jar-path        (concat paths-vendor-dir "plantuml/plantuml.jar")
         plantuml-executable-path (concat paths-vendor-dir "plantuml/plantuml")
@@ -55,9 +65,11 @@
   ;; - Use "!includeurl componenturl" to import diagram type.
   ;;
   (setq org-plantuml-jar-path plantuml-jar-path)
-  (dolist (var `((:cmdline . ,(s-join " " plantuml-jar-args))
-                 (:var     . ,(format "componenturl=\"%s\"" zc-plantuml/component-url))
-                 (:var     . ,(format "containerurl=\"%s\"" zc-plantuml/container-url))))
+  (dolist (var (-flatten `(((:cmdline . ,(s-join " " plantuml-jar-args))
+                            (:var . ,(format "LocalPuml=\"%s\"" zc-plantuml/cache-dir)))
+                           ,(-map (-lambda ((name . (&plist :url url)))
+                                    `(:var . ,(format "%s=\"%s\"" name url)))
+                                  zc-plantuml/resources))))
     (add-to-list 'org-babel-default-header-args:plantuml var))
 
   ;; Default ignore babel execution results to preview
@@ -84,7 +96,6 @@
                (window-type          (cdr (assq :window params)))
                (height               (cdr (assq :height params)))
                (width                (cdr (assq :width  params)))
-               (java-args            (cdr (assq :java   params)))
                (plantuml-output-type (or output-type "png"))
                (full-body (org-babel-plantuml-make-body body params)))
           ;; Adjust popup window layout
@@ -101,7 +112,7 @@
       (unless (s-contains? "file" (cdr (assq :results params)))
         (user-error "You must specify \":results file replace\" header argument"))
       (unless (cdr (assq :java params))
-        (add-to-list 'params (cons :java (s-join " " zc-plantuml/java-args))))
+        (add-to-list 'params (cons :java (s-join " " plantuml-java-args))))
       ;; Execute script using the original function
       (funcall orig-fn body params)))
   (advice-add #'org-babel-execute:plantuml :around #'zc-plantuml/org-babel-execute)
