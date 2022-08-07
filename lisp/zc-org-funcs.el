@@ -6,12 +6,10 @@
 (require 'zc-layout-funcs)
 (require 'zc-projectile-funcs)
 
-(autoload 'ivy-read "ivy")
-(autoload 'counsel-org-goto-action "counsel")
-(autoload 'counsel-outline-candidates "counsel")
 (autoload 'projectile-ensure-project "projectile")
 (autoload 'consult-org-heading "consult-org")
 (autoload 'consult-org--headings "consult-org")
+(autoload 'consult--read "consult")
 
 (defvar org-any-link-re)
 (defvar org-ts-regexp-both)
@@ -22,9 +20,6 @@
 (defvar org-babel-result-regexp)
 (defvar org-default-notes-file)
 (defvar org-default-babel-file)
-(defvar counsel-outline-settings)
-(defvar counsel-outline--preselect)
-(defvar counsel-outline-path-separator)
 
 (defconst zc-org/directory "~/notes")
 (defconst zc-org/main-notes-dir (f-join zc-org/directory "main"))
@@ -238,35 +233,6 @@ See also `counsel-org-goto-all'."
          (name (buffer-name (marker-buffer buf))))
     (if transform (substring cand (1+ (length name))) name)))
 
-(defun zc-org/outline-candidates (&optional filenames)
-  "Return an alist of counsel outline heading completion candidates,
-using `counsel-outline-candidates'.
-
-Each element is a pair (HEADING . MARKER), where the string HEADING
-is located at the position of MARKER."
-  (->> (or filenames org-agenda-files)
-       (-filter #'f-exists?)
-       (-map-when (-compose #'not #'bufferp)
-                  (-rpartial #'find-file-noselect t))
-       ;; Collect headline candidates
-       (mapcan (lambda (buffer)
-                 (with-current-buffer buffer
-                   (zc/with-widen-buffer
-                    (counsel-outline-candidates
-                     (cdr (assq 'org-mode counsel-outline-settings)))))))
-       ;; Filter candidates by maximum headline depth
-       (-filter (-lambda ((head . marker))
-                  (< (length (s-split counsel-outline-path-separator head)) 4)))
-       ;; Prepend the file name
-       (-map (-lambda ((head . marker))
-               (--> marker
-                    (buffer-file-name (marker-buffer it))
-                    (f-relative it zc-org/directory)
-                    (f-no-ext it)
-                    (propertize it 'face 'ivy-virtual)
-                    (concat "[" it "] " head)
-                    (cons it marker))))))
-
 (defun zc-org/outline-previous-mark (&optional n)
   "Enhanced `org-mark-ring-goto' to break narrowed buffer."
   (interactive "p")
@@ -312,28 +278,6 @@ This function can be called after org jumping to a location:
 
 
 ;; Agenda
-
-(defun zc-org/read-capture-file (&rest _)
-  (ivy-read "Capture Target: "
-            (-map #'f-short org-agenda-files)
-            :preselect org-default-notes-file
-            :require-match t
-            :caller 'zc-org/read-capture-target-file))
-
-(defun zc-org/read-capture-target-file (&rest _)
-  "Prompt for a target org file in `org-agenda-files'.
-
-This is for refiling targets when doing captures.
-
-See `org-capture-set-target-location' for example."
-  (-when-let* ((path (ivy-read "Capture Target: "
-                               (-map #'f-short org-agenda-files)
-                               :preselect org-default-notes-file
-                               :require-match t
-                               :caller 'zc-org/read-capture-target-file)))
-    (set-buffer (org-capture-target-buffer path))
-    (org-capture-put-target-region-and-position)
-    (widen)))
 
 (defun my/org-capture-clip-snippet (file)
   "Captures the currently selected text within an org EXAMPLE
