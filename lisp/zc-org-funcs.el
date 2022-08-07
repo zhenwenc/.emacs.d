@@ -377,10 +377,8 @@ function and the file."
 
 (defun zc-org/agenda-filter-by-category (strip)
   (interactive "P")
-  (let ((cat (ivy-read "Filter Category: "
-                       (org-agenda-get-represented-categories)
-                       :require-match t
-                       :caller 'zc-org/agenda-filter-by-category)))
+  (let ((cat (completing-read "Filter Category: "
+                              (org-agenda-get-represented-categories) nil t)))
     (cond ((and cat strip)
            (org-agenda-filter-apply
             (push (concat "-" cat) org-agenda-category-filter) 'category))
