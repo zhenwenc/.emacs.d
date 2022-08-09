@@ -93,9 +93,16 @@
 (use-package reformatter
   :straight t
   :after (:any zc-web-modes typescript-mode graphql-mode)
-  :hook ((graphql-mode    . prettier-format-on-save-mode)
-         (typescript-mode . prettier-format-on-save-mode)
-         (zc-web-css-mode . prettier-format-on-save-mode))
+  :hook ((graphql-mode    . zc-web/maybe-enable-prettier-format-on-save)
+         (typescript-mode . zc-web/maybe-enable-prettier-format-on-save)
+         (zc-web-css-mode . zc-web/maybe-enable-prettier-format-on-save))
+  :init
+  (defun zc-web/maybe-enable-prettier-format-on-save ()
+    (unless (and buffer-file-name ;; maybe scratch or indirect buffer
+                 (or (file-remote-p buffer-file-name)
+                     (f-ext-p buffer-file-name "js")    ; JS are shit!
+                     (f-ext-p buffer-file-name "jsx"))) ; JS are shit!
+      (prettier-format-on-save-mode)))
   :config
   (reformatter-define prettier-format
     :program "prettier"
@@ -115,7 +122,7 @@
 (use-package electric
   :after (:any zc-web-mode typescript-mode)
   :hook ((typescript-mode . zc-web/maybe-enable-electric-indent))
-  :preface
+  :init
   (defun zc-web/maybe-enable-electric-indent ()
     (when (and buffer-file-name ; maybe scratch
                (or (f-ext-p buffer-file-name "js")    ; JS are shit!
