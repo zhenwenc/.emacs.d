@@ -85,6 +85,10 @@
   :straight t
   :init
   (setq consult-async-input-debounce 0.1)
+  ;; By default, it searches from the current line, which results in a
+  ;; very confusing list of candidates, where items in the bottom are
+  ;; appearing on the top of the buffer.
+  (setq consult-line-start-from-top t)
   :config
   ;; Disable automatic immediate preview on expensive commands
   (consult-customize consult-ripgrep     :preview-key (kbd "C-l"))
