@@ -65,8 +65,9 @@
   (setq evil-want-Y-yank-to-eol t)
   ;; Required for evil-collection
   (setq evil-want-keybinding nil)
-  ;; Record changes to separate steps instead of a big one in insert state.
-  (setq evil-want-fine-undo t)
+  ;; When `t', record changes to separate steps instead of a big one
+  ;; in insert state.
+  (setq evil-want-fine-undo nil)
   ;; FIXME: This may lead to unwanted behaviour, such as
   ;;        when cursor on the closing curly braces.
   (setq evil-want-visual-char-semi-exclusive t)
