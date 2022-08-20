@@ -116,7 +116,7 @@
                                           " " script-file)))))
              (node-file (if babel-res output-file script-file))
              (node-path (concat "NODE_PATH=" (f-join dir "node_modules")))
-             (node-opts (format "NODE_OPTIONS='--unhandled-rejections=strict --max-http-header-size=16384'"))
+             (node-opts (format "NODE_OPTIONS='--unhandled-rejections=warn --max-http-header-size=16384'"))
              (node-envs (concat "NODENV_VERSION=" (s-trim (shell-command-to-string "nodenv global"))))
              (org-babel-js-cmd (format "%s %s %s %s %s" node-envs node-path node-opts env cmd))
              (org-babel-js-function-wrapper "%s"))
