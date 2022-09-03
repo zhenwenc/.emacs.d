@@ -241,7 +241,8 @@ See also `counsel-org-goto-all'."
     (when narrowed (widen))
     (funcall-interactively 'org-mark-ring-goto n)
     (when narrowed (org-narrow-to-subtree)))
-  ;; Show all direct subheadings of this heading
+  ;; Expand headline with content and direct subheadings
+  (org-show-entry)
   (org-show-children))
 
 (defun zc-org/outline-up-heading (arg)
