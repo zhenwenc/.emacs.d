@@ -346,7 +346,9 @@ function and the file."
             (funcall fn element)))))))
 
 (defun zc-org/babel-remove-result-all ()
-  "Remove results from every code block in buffer."
+  "Remove results from every code block in buffer.
+
+FIXME Does `(org-babel-remove-result-one-or-many t)' will be sufficient?"
   (interactive)
   (zc-org/babel-foreach-block 'org-babel-remove-result-one-or-many
                               :pattern org-babel-src-block-regexp
