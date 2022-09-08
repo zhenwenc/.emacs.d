@@ -9,6 +9,10 @@
 ;; This emacs setting is adapted from Chris Barrett's config here:
 ;; https://github.com/chrisbarrett/.emacs.d
 
+;; Install libgccjit if necessary:
+;;
+;;   brew reinstall gcc libgccjit
+;;
 ;; Install Emacs on MacOS:
 ;; https://github.com/railwaycat/homebrew-emacsmacport
 ;;
@@ -60,7 +64,6 @@
   (with-no-warnings
     (setq straight-cache-autoloads t)
     (setq straight-check-for-modifications 'live)
-    ;; We don't use native compile branch yet
     (setq straight-disable-native-compile nil))
 
   (load bootstrap-file nil 'nomessage))
