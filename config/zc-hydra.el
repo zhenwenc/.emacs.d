@@ -142,8 +142,8 @@
   (zc-hydra/define zc-main-hydra--symbol
     (:color teal :title "Symbol Hydra" :icon "strikethrough" :prefix "s")
     ("Basic"
-     (("sj" (zc-completion/consult-imenu)   "imenu")
-      ("sJ" (zc-completion/consult-imenu t) "imenu widen")
+     (("sj" (zc-completion/consult-imenu t) "imenu wide")
+      ("sJ" (zc-completion/consult-imenu)   "imenun")
       ("sl" imenu-list                      "imenu list")
       ("sd" devdocs-browser-open            "devdocs open"))
 
