@@ -78,9 +78,11 @@
   (defun zc-typescript/setup-tree-sitter ()
     (add-function :before-while (local 'tree-sitter-hl-face-mapping-function)
       (lambda (capture-name)
+        "Reduce distraction from the rainbowlic colors."
         (not (or (string= capture-name "property")
+                 (string= capture-name "method.call")
                  (string= capture-name "function.call")))))
-    (tree-sitter-hl-mode -1)) ;; TODO WIP
+    (tree-sitter-hl-mode 1))
 
   ;; Integration with `org-mode'
   (with-eval-after-load 'org

@@ -36,7 +36,7 @@
    ;; override dracula color palette
    (fg             (if (display-graphic-p) (doom-darken -fg 0.1) "#bfbfbf"))
 
-   ;; face categories -- required for all themes
+   ;; font-lock face categories -- required for all themes
    (highlight      violet)
    (vertical-bar   (doom-darken base1 0.1))
    (selection      dark-blue)
