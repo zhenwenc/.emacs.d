@@ -75,6 +75,7 @@
     (add-to-list 'typescript--font-lock-keywords-3 item))
 
   ;; Integration with `tree-sitter-hl-mode'
+  ;; https://github.com/tree-sitter/tree-sitter-typescript
   (defun zc-typescript/setup-tree-sitter ()
     (add-function :before-while (local 'tree-sitter-hl-face-mapping-function)
       (lambda (capture-name)
@@ -82,7 +83,11 @@
         (not (or (string= capture-name "property")
                  (string= capture-name "method.call")
                  (string= capture-name "function.call")))))
-    (tree-sitter-hl-mode 1))
+    ;; FIXME Syntax highlighting for TSX seems incorrect
+    ;; https://github.com/doomemacs/doomemacs/blob/master/modules/tools/tree-sitter/config.el
+    (unless (and (buffer-file-name)
+                 (f-ext-p (buffer-file-name) "tsx"))
+      (tree-sitter-hl-mode 1)))
 
   ;; Integration with `org-mode'
   (with-eval-after-load 'org

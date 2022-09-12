@@ -195,8 +195,12 @@
              return (set-fontset-font t 'unicode font nil 'prepend))
 
     ;; Specify font for Chinese characters
+    ;; https://github.com/laishulu/Sarasa-Mono-SC-Nerd
     ;; https://github.com/saiswa/free-fonts/tree/master/PCLinuxOSFonts
-    (cl-loop for font in '("WenQuanYi Micro Hei" "PingFang SC")
+    ;;
+    ;; References
+    ;; https://github.com/manateelazycat/lazycat-emacs/blob/master/site-lisp/config/init-font.el
+    (cl-loop for font in '("Sarasa Mono SC Nerd" "WenQuanYi Micro Hei" "PingFang SC")
              when (zc-theme/font-installed-p font)
              return (set-fontset-font t '(#x4e00 . #x9fff) font)))
 
