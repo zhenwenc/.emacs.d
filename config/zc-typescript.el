@@ -85,8 +85,8 @@
                  (string= capture-name "function.call")))))
     ;; FIXME Syntax highlighting for TSX seems incorrect
     ;; https://github.com/doomemacs/doomemacs/blob/master/modules/tools/tree-sitter/config.el
-    (unless (and (buffer-file-name)
-                 (f-ext-p (buffer-file-name) "tsx"))
+    (when (and (buffer-file-name)
+               (not (f-ext-p (buffer-file-name) "tsx")))
       (tree-sitter-hl-mode 1)))
 
   ;; Integration with `org-mode'
