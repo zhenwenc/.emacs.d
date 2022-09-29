@@ -25,7 +25,8 @@
   (typescript-mode . zc-typescript/disable-flycheck-linters)
   (typescript-mode . zc-typescript/disable-flycheck-for-flow)
   (typescript-mode . zc-typescript/disable-flycheck-for-node-modules)
-  (typescript-mode . zc-typescript/setup-tree-sitter)
+  ;; (typescript-mode . zc-typescript/disable-auto-indentation)
+  ;; (typescript-mode . zc-typescript/setup-tree-sitter)
 
   ;; [2020-06-20] Switched back to Tide
   ;;
@@ -44,7 +45,7 @@
     (kbd ">") 'zc-typescript/sp-jsx-rewrap-tag)
 
   ;; Disable the new font lock level introduced on #110
-  (add-to-list 'font-lock-maximum-decoration '(typescript-mode . 3))
+  (add-to-list 'font-lock-maximum-decoration '(typescript-mode . 2))
 
   (defconst zc-typescript/method-keyword-re
     (regexp-opt '("async" "static" "public" "private" "protected" "get" "set")))
@@ -73,6 +74,15 @@
                   (, zc-typescript/method-heading-re   1 font-lock-function-name-face)
                   (, zc-typescript/function-heading-re 1 font-lock-function-name-face)))
     (add-to-list 'typescript--font-lock-keywords-3 item))
+
+  ;; HACK: Disable typescript-mode's indentation and syntax highligiting
+  ;;
+  ;; These functions has serious performance issue:
+  ;; - `typescript--backward-to-parameter-list'
+  ;; - `typescript--backward-syntactic-ws'
+  ;;
+  (defun zc-typescript/disable-auto-indentation ()
+    (setq-local indent-line-function (lambda () 'noindent)))
 
   ;; Integration with `tree-sitter-hl-mode'
   ;; https://github.com/tree-sitter/tree-sitter-typescript
