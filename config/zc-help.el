@@ -94,7 +94,10 @@
         (gts-translator
          :picker (gts-prompt-picker)
          :engines (list (gts-bing-engine)
-                        (gts-google-rpc-engine :parser (gts-google-rpc-parser)))
+                        (gts-google-engine)
+                        ;; FIXME: Error fetching token
+                        ;; (gts-google-rpc-engine :parser (gts-google-rpc-parser))
+                        )
          :render (gts-posframe-pop-render)))
   ;; FIXME: What are these values?
   (setq go-translate-token-current (cons 430675 2721866130)))
