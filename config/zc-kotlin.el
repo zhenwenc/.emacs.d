@@ -5,7 +5,9 @@
 
 (use-package kotlin-mode
   :straight t
-  :defer t)
+  :defer t
+  :config
+  (setq kotlin-tab-width 2))
 
 ;; Major mode for Groovy and Grails files.
 (use-package groovy-mode
