@@ -88,6 +88,9 @@
 (use-package go-translate
   :straight t
   :commands (gst-do-translate)
+  :init
+  ;; FIXME: What are these values?
+  (setq go-translate-token-current (cons 430675 2721866130))
   :config
   (setq gts-translate-list '(("en" "zh")))
   (setq gts-default-translator
@@ -98,9 +101,7 @@
                         ;; FIXME: Error fetching token
                         ;; (gts-google-rpc-engine :parser (gts-google-rpc-parser))
                         )
-         :render (gts-posframe-pop-render)))
-  ;; FIXME: What are these values?
-  (setq go-translate-token-current (cons 430675 2721866130)))
+         :render (gts-posframe-pop-render))))
 
 
 
