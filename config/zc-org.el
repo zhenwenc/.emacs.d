@@ -38,7 +38,8 @@
     ("E" org-export-dispatch                      "export")
     ("P" zc-org/export-pdf-and-open               "export pdf")
     ("S" org-sort                                 "sort")
-    ("R" org-refile                               "refile"))
+    ("R" org-refile                               "refile")
+    ("T" org-toggle-checkbox                      "checkbox"))
 
    "Edit"
    (("ee" org-edit-special                        "edit")
