@@ -64,8 +64,10 @@
 ;; Interactively step forward and backwards through a buffer's history.
 
 (use-package git-timemachine
-  :straight t
-  :defer t)
+  ;; Source code had been moved to https://codeberg.org/pidu/git-timemachine,
+  ;; but MELPA still points to GitLab.
+  :straight (:host github :repo "emacsmirror/git-timemachine")
+  :commands git-timemachine)
 
 ;; Browse github/gitlab/bitbucket page
 
