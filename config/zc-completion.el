@@ -83,6 +83,7 @@
 ;; https://github.com/minad/consult
 (use-package consult
   :straight t
+  :after embark-consult
   :init
   (setq consult-async-input-debounce 0.1)
   ;; By default, it searches from the current line, which results in a
@@ -122,6 +123,7 @@
 ;; https://github.com/oantolin/embark
 (use-package embark
   :straight t
+  :after embark-consult
   :init
   ;; Peplace the key help with a completing-read interface
   (setq prefix-help-command #'embark-prefix-help-command)
@@ -134,7 +136,6 @@
 
 (use-package embark-consult
   :straight t
-  :after (embark consult)
   :demand t ; only necessary when using embark-collect-mode hook
   :hook
   (embark-collect-mode . consult-preview-at-point-mode))
