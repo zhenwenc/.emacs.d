@@ -86,6 +86,7 @@
   (setq org-directory          (f-expand zc-org/directory)
         org-attach-id-dir      (f-join org-directory "data")
         org-persist-directory  (f-join paths-cache-dir "org-persist")
+        org-id-locations-file  (f-join paths-cache-dir "org-id-locations")
 
         org-default-notes-file (f-join zc-org/main-notes-dir "notes.org")
         org-default-todos-file (f-join zc-org/main-notes-dir "todos.org")
