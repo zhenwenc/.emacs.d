@@ -85,6 +85,33 @@
               (cond ((fboundp 'vterm) '("vterm" "*vterm*" #'vterm))
                     (t '("multi-term" "*multi-term*" #'multi-term)))))
 
+;; Translate ANSI control sequence to text-property
+;;
+;; https://github.com/atomontage/xterm-color
+(use-package xterm-color
+  :straight t
+  :init
+  ;; https://github.com/dracula/mobaxterm/blob/master/MobaXterm.ini
+  (setq xterm-color-names
+        ["#44475A"    ; black
+         "#FF5555"    ; red
+         "#50FA7A"    ; green
+         "#F1FA8C"    ; yellow
+         "#6272A4"    ; blue
+         "#FF79C5"    ; magenta
+         "#8BE8FD"    ; cyan
+         "#F8F8F2"]   ; white
+        xterm-color-names-bright
+        ["#999999"    ; black
+         "#FFB86C"    ; red
+         "#50FA7A"    ; green
+         "#F1FA8C"    ; yellow
+         "#BE93F9"    ; blue
+         "#FF79C5"    ; magenta
+         "#8BE8FD"    ; cyan
+         "#FFFFFF"]   ; white
+        ))
+
 
 
 (provide 'zc-term)

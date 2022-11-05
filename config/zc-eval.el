@@ -63,29 +63,33 @@
     (("i" zc-eval/compilation-send-input "send input")
      ("I" zc-eval/compilation-toggle-comint "toggle comint"))))
 
-  :hook ((compilation-mode   . zc-eval/compilation-resize-buffer)
-         (compilation-filter . zc-eval/compilation-colorize-buffer))
+  :hook ((compilation-mode   . zc-eval/compilation-resize-buffer))
 
   :config
   (defun zc-eval/compilation-colorize-buffer ()
     "Apply ansi codes to the compilation buffers."
     (unless (derived-mode-p 'rg-mode)
       (with-silent-modifications
-        ;; FIXME: Maybe try the alternative `xterm-color'.
-        (ansi-color-apply-on-region compilation-filter-start (point))
+        ;; NOTE: Switched to `xterm-color'.
+        ;; (ansi-color-apply-on-region compilation-filter-start (point))
+
         ;; FIXME: Are there any proper solution to remove
         ;;        these unwanted carriage characters?
-        ;;
         ;; Run rust cargo test all to reproduce the issue.
         (when (s-contains-p "cargo" compile-command)
           (replace-string "" "" nil compilation-filter-start (point))))))
+
+  (defun zc-eval/compilation-filter (orig-fn proc string)
+    "Apply ansi codes to the compilation buffers."
+    (funcall orig-fn proc (xterm-color-filter string)))
+  (advice-add 'compilation-filter :around #'zc-eval/compilation-filter)
 
   (defun zc-eval/compilation-resize-buffer ()
     "Reduce text size for better visibility."
     (text-scale-set -1))
 
   :config
-  (setq compilation-environment '("TERM=screen-256color")
+  (setq compilation-environment '("TERM=xterm-256color")
         compilation-always-kill t
         compilation-ask-about-save nil
         compilation-scroll-output 'first-error
