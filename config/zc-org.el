@@ -65,7 +65,16 @@
     ("tI" org-indent-mode                         "indent" :toggle t)
     ("tb" org-show-block-all                      "blocks: show")
     ("tB" org-hide-block-all                      "blocks: hide")
-    ("tt" org-sidebar-tree-toggle                 "sidebar tree")))
+    ("tt" org-sidebar-tree-toggle                 "sidebar tree"))
+
+   "Note"
+   (("ni" org-roam-node-insert                 "insert node")
+    ("nc" org-roam-capture                     "capture node")
+    ("nt" org-roam-tag-add                     "add tag")
+    ("na" org-roam-alias-add                   "add alias")
+    ("nf" org-roam-node-find                   "find node")
+    ("nl" org-roam-buffer-toggle               "list nodes")
+    ("ng" org-roam-graph                       "show graph")))
 
   :hook
   ((org-mode . visual-line-mode)
@@ -381,17 +390,11 @@ so that the breadcrumb will fit in the default echo area."
 (use-package org-roam
   :disabled t
   :straight t
+  :after org
   :if (executable-find "cc")
-  :hook (after-init . org-roam-mode)
-  :bind (:map org-roam-mode-map
-         (("C-c n l" . org-roam)
-          ("C-c n f" . org-roam-find-file)
-          ("C-c n g" . org-roam-graph))
-         :map org-mode-map
-         (("C-c n i" . org-roam-insert))
-         (("C-c n I" . org-roam-insert-immediate)))
+  :hook (after-init . org-roam-db-autosync-enable)
   :custom
-  (org-roam-directory   zc-org/directory)
+  (org-roam-directory   (file-truename zc-org/directory))
   (org-roam-db-location (f-join paths-cache-dir "org-roam.db")))
 
 
