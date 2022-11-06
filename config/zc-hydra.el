@@ -220,15 +220,15 @@
   (zc-hydra/define zc-main-hydra--org
     (:color teal :title "Org Hydra" :icon "empire" :prefix "o")
     ("Agenda"
-     (("oa" org-agenda      "agenda")
-      ("oc" org-capture     "capture")
-      ("ot" org-todo-list   "todo list")
-      ("od" org-agenda-quit "quit"))
+     (("oa" org-agenda                      "agenda")
+      ("oc" org-capture                     "capture")
+      ("ot" org-todo-list                   "todo list")
+      ("od" org-agenda-quit                 "quit"))
 
      "View"
-     (("os" org-ql-search   "search")
-      ("ov" org-ql-view     "view")
-      ("or" org-roam        "roam"))
+     (("os" org-ql-search                   "search")
+      ("ov" org-ql-view                     "view")
+      ("or" org-roam-buffer-toggle          "roam"))
 
      "Navigation"
      (("oo" (zc-org/outline-file-heading 'all)   "all")

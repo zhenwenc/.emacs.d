@@ -292,18 +292,20 @@
    (("ct" org-agenda-set-tags                  "set tags")
     ("cT" org-timer-set-timer                  "set timer")
     ("ce" org-agenda-set-effort                "set effort")
+    ("cd" org-agenda-deadline                  "set deadline")
+    ("cs" org-agenda-schedule                  "set schedule")
     ("cc" org-agenda-clock-cancel              "clock cancel")
     ("cg" org-agenda-clock-goto                "clock goto")
     ("cr" org-agenda-clockreport-mode          "clock report"))
 
    "Toggle"
    (("tf" org-agenda-follow-mode               "follow")
-    ("te" org-agenda-entry-text-show           "entry text"))
-
-   "Archive"
-   (("da" org-agenda-archive-default-with-confirmation "archive y/n")
-    ("dA" org-agenda-archive                   "archive")
-    ("dd" org-agenda-kill                      "kill entry"))
+    ("te" org-agenda-entry-text-show           "entry text")
+    ("td" org-agenda-toggle-deadlines          "deadlines")
+    ;; Archive
+    ("ta" org-agenda-archive-default-with-confirmation "archive y/n")
+    ("tA" org-agenda-archive                   "archive")
+    ("tD" org-agenda-kill                      "kill entry"))
 
    "Navigation"
    (("gr" org-agenda-redo                      "redo")
