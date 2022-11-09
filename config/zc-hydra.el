@@ -159,7 +159,7 @@
       ("sp" consult-ripgrep        "search project")
       ;; Search string in the current buffer
       ("ss" consult-line           "search buffer")
-      ("sS" consult-line-multi     "search buffer (multi)")
+      ("sb" consult-line-multi     "search buffer (multi)")
       ;; Narrow buffer to the matched lines:
       ;; - Use prefix key `!' to hide the matched lines
       ;; - Call with prefix argument to reveal the hidden lines
