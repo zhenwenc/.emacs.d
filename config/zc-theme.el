@@ -103,7 +103,6 @@
 
 (use-package highlight-thing
   :straight t
-  :commands (global-highlight-thing-mode)
   :init (global-highlight-thing-mode)
   :config
   (setq highlight-thing-delay-seconds 0.5
@@ -174,8 +173,6 @@
 (defun zc-theme/after-init ()
   "Setup frame default fonts."
   (when window-system
-    (add-to-list 'default-frame-alist `(font . ,zc-default-font))
-
     ;; TODO Improve appearance for Emacs --with-no-titlebar
     (add-to-list 'default-frame-alist '(drag-internal-border  . 0))
     (add-to-list 'default-frame-alist '(internal-border-width . 0))
@@ -185,16 +182,18 @@
     (add-to-list 'default-frame-alist `(background-color . ,(doom-color 'bg)))
 
     ;; Font
-    (set-face-attribute 'default        nil :font zc-default-font :height 130)
-    (set-face-attribute 'fixed-pitch    nil :font zc-default-font :height 130)
-    (set-face-attribute 'variable-pitch nil :font zc-default-font :height 130)
+    (when (zc-theme/font-installed-p zc-default-font)
+      (add-to-list 'default-frame-alist `(font . ,zc-default-font))
+      (set-face-attribute 'default        nil :font zc-default-font :height 130)
+      (set-face-attribute 'fixed-pitch    nil :font zc-default-font :height 130)
+      (set-face-attribute 'variable-pitch nil :font zc-default-font :height 130))
 
-    ;; Specify font for all unicode characters on `emacs-plus'
+    ;; Font for all unicode characters on `emacs-plus'
     (cl-loop for font in '("Apple Color Emoji" "Segoe UI Symbol" "Symbola" "Symbol")
              when (zc-theme/font-installed-p font)
              return (set-fontset-font t 'unicode font nil 'prepend))
 
-    ;; Specify font for Chinese characters
+    ;; Font for Chinese characters
     ;; https://github.com/laishulu/Sarasa-Mono-SC-Nerd
     ;; https://github.com/saiswa/free-fonts/tree/master/PCLinuxOSFonts
     ;;
