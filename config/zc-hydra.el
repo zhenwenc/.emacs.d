@@ -109,10 +109,9 @@
       ("by" zc/copy-buffer-to-clipboard        "Yank"))
 
      "Bookmark"
-     (("bm" bookmark-set                       "Set bookmark")
-      ("bj" bookmark-jump                      "Jump to bookmark")
+     (("bm" consult-bookmark                   "Set/Jump to bookmark")
       ("bl" bookmark-bmenu-list                "List bookmark")
-      ("bf" consult-bookmark                   "select or create"))))
+      ("bK" bookmark-delete-all                "Delete all bookmarks"))))
 
   (zc-hydra/define zc-main-hydra--file
     (:color teal :title "File Hydra" :icon "file" :prefix "f")
@@ -156,6 +155,12 @@
      "Search"
      (;; The `default-directory' is searched by default, invoke with prefix
       ;; argument to override the searched directory.
+      ;;
+      ;; #alpha beta      : Search for alpha and beta in any order.
+      ;; #alpha.*beta     : Search for alpha before beta.
+      ;; #\(alpha\|beta\) : Search for alpha or beta (Note Emacs syntax!)
+      ;; #word -- -C3     : Search for word, include 3 lines as context
+      ;; #first#second    : Search for first, quick filter for second.
       ("sp" consult-ripgrep        "search project")
       ;; Search string in the current buffer
       ("ss" consult-line           "search buffer")
