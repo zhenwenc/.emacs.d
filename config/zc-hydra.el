@@ -203,7 +203,11 @@
       ("gt" git-timemachine                 "time machine")
       ("gb" magit-blame                     "blame")
       ("gB" browse-at-remote                "browse remote")
-      ("gy" browse-at-remote-kill           "copy remote link"))))
+      ("gy" browse-at-remote-kill           "copy remote link"))
+
+     "Toggle"
+     ;; Helps identifing bottlenecks of magit-status
+     (("gR" magit-toggle-verbose-refresh    "verbose refresh" :toggle magit-refresh-verbose))))
 
   (zc-hydra/define zc-main-hydra--error
     (:color teal :title "Error & Eval Hydra" :icon "bug" :prefix "e")
