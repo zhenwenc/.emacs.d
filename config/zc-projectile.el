@@ -11,7 +11,6 @@
   :straight t
   :commands (projectile-project-root
              projectile-project-name
-             projectile-project-p
              projectile-locate-dominating-file
              projectile-relevant-known-projects)
 
@@ -20,7 +19,6 @@
 
   :config
   (setq projectile-enable-caching t
-        projectile-completion-system 'ivy
         projectile-kill-buffers-filter #'zc/buffer-invisible-p
 
         projectile-cache-file
@@ -81,6 +79,36 @@
     (unless (eq ibuffer-sorting-mode 'alphabetic)
       (ibuffer-do-sort-by-alphabetic)))
   (setq ibuffer-projectile-prefix "Project: "))
+
+(use-package consult-projectile
+  :straight (:host gitlab :repo "OlMon/consult-projectile")
+  :after (consult projectile)
+  :config
+
+  (defvar zc-projectile/consult-source-package-file
+    (list :name     "Package File"
+          :narrow   '(?p . "Package File")
+          :category 'file
+          :face     'consult-file
+          :history  'file-name-history
+          :hidden   t ; Hidden by default, unless narrowed
+          :action   (lambda (f) (consult--file-action
+                                 (concat (projectile-acquire-root)
+                                         (zc-projectile/find-package-root) f)))
+          :enabled  #'projectile-project-root
+          :items
+          (lambda ()
+            (-when-let* ((package-root (zc-projectile/find-package-root)))
+              (->> (projectile-project-files (projectile-acquire-root))
+                   (--filter (s-starts-with? package-root it))
+                   (--map (s-chop-prefix package-root it)))))))
+
+  ;; Enhanced `consult-projectile-find-file' with extra sources
+  (defun zc-projectile/consult-find-file ()
+    (interactive)
+    (funcall-interactively
+     #'consult-projectile '(consult-projectile--source-projectile-file
+                            zc-projectile/consult-source-package-file))))
 
 
 

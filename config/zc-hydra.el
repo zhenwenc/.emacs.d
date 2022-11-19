@@ -183,7 +183,7 @@
 
      "Search"
      (("pb" consult-projectile-switch-to-buffer "find buffer")
-      ("pf" consult-projectile-find-file        "find file")
+      ("pf" zc-projectile/consult-find-file     "find file")
       ("pl" projectile-find-file-in-directory   "find in directory")
       ("pt" projectile-toggle-between-implementation-and-test   "toggle test file")
       ("pT" projectile-find-implementation-or-test-other-window "open test file (ow)"))

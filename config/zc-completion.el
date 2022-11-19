@@ -104,12 +104,6 @@
      (t
       (call-interactively #'consult-imenu)))))
 
-;; Integration with `projectile'.
-;;
-(use-package consult-projectile
-  :straight (:host gitlab :repo "OlMon/consult-projectile")
-  :after (consult projectile))
-
 ;; Interactive functions for `ivy', borrow its more mature features
 ;;
 ;; - `zc-org/outline-buffer-heading'

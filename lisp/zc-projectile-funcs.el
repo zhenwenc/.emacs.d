@@ -37,11 +37,34 @@ directory in `zc-projectile/ignored-dirs'."
     ;; Ensure the projects exist
     (projectile-cleanup-known-projects)))
 
+
+
 (defun zc-projectile/find-project-root (project)
   "Return the best guessed project root directory for the given
 projectile project name. Don't use `projectile-project-name'."
   (-find (-partial #'s-ends-with? (concat project "/"))
          projectile-known-projects))
+
+(defun zc-projectile/find-package-root (&optional project)
+  "Return the best guessed package root directory for the given
+projectile project name. Useful for monorepo."
+  (-when-let*
+      ((current-directory (or project default-directory))
+       (marker-files (-flatten (list (projectile-project-type-attribute 'npm 'marker-files))))
+       (package-root (--reduce-from
+                      (or acc (projectile-locate-dominating-file current-directory it))
+                      nil marker-files)))
+    (f-relative package-root (projectile-acquire-root))))
+
+(defun zc-projectile/yarn-workspaces ()
+  "Return the list of Yarn workspaces."
+  (with-demoted-errors "Error listing yarn workspaces: %S"
+    (->> (shell-command-to-string "yarn workspaces --json info")
+         (json-read-from-string)
+         (alist-get 'data)
+         (json-read-from-string)
+         (-map (-lambda ((package-name . (&alist 'location location)))
+                 (list :name package-name :location location))))))
 
 
 
