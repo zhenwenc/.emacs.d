@@ -3,6 +3,9 @@
 
 
 
+;; https://github.com/abrochard/mermaid-mode
+(use-package mermaid-mode :straight t)
+
 ;; https://github.com/arnm/ob-mermaid
 (use-package ob-mermaid
   :straight t
