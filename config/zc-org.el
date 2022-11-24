@@ -133,7 +133,9 @@
         `((nil              :maxlevel . 1)
           (,(zc-org/file-with-exts :dir zc-org/directory) :maxlevel . 1)
           (,(zc-org/file-with-exts :dir zc-org/main-notes-dir) :regexp . ,(rx "Tasks"))
-          (,(zc-org/file-with-exts :dir zc-org/work-notes-dir) :regexp . ,(rx "Tasks")))
+          (,(zc-org/file-with-exts :dir zc-org/work-notes-dir) :regexp . ,(rx "Tasks"))
+          (,(zc-org/file-with-exts :dir zc-org/main-notes-dir) :regexp . ,(rx "Archive"))
+          (,(zc-org/file-with-exts :dir zc-org/work-notes-dir) :regexp . ,(rx "Archive")))
         org-refile-use-outline-path 'file
 
         ;; Our `completion-styles' does not support hierarchical steps.
