@@ -97,18 +97,35 @@
                                          (zc-projectile/find-package-root) f)))
           :enabled  #'projectile-project-root
           :items
-          (lambda ()
-            (-when-let* ((package-root (zc-projectile/find-package-root)))
-              (->> (projectile-project-files (projectile-acquire-root))
-                   (--filter (s-starts-with? package-root it))
-                   (--map (s-chop-prefix package-root it)))))))
+          (lambda () (-when-let* ((package-root (zc-projectile/find-package-root)))
+                       (->> (projectile-project-files (projectile-acquire-root))
+                            (--filter (s-starts-with? package-root it))
+                            (--map (s-chop-prefix package-root it)))))))
+
+  (defvar zc-projectile/consult-source-workspace-file
+    (list :name     "Workspace File"
+          :narrow   '(?w . "Workspace File")
+          :category 'file
+          :face     'consult-file
+          :history  'file-name-history
+          :action   (lambda (f) (projectile-find-file-in-directory
+                                 (concat (projectile-acquire-root) f)))
+          :enabled  #'projectile-project-root
+          :items
+          (lambda () (->> (zc-projectile/yarn-workspaces)
+                          (--map (plist-get it :location))))))
 
   ;; Enhanced `consult-projectile-find-file' with extra sources
   (defun zc-projectile/consult-find-file ()
     (interactive)
     (funcall-interactively
      #'consult-projectile '(consult-projectile--source-projectile-file
-                            zc-projectile/consult-source-package-file))))
+                            zc-projectile/consult-source-package-file)))
+
+  (defun zc-projectile/consult-find-file-in-dir ()
+    (interactive)
+    (funcall-interactively
+     #'consult-projectile '(zc-projectile/consult-source-workspace-file))))
 
 
 

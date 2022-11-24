@@ -176,15 +176,15 @@
     (:color teal :title "Project Hydra" :icon "product-hunt" :prefix "p")
     ("Basic"
      (("p!" projectile-run-shell-command-in-root "shell command")
-      ("pk" projectile-kill-buffers "kill buffers")
-      ("pi" projectile-invalidate-cache "invalidate cache")
-      ("pg" zc-projectile/refresh-projects "refresh projects")
-      ("po" consult-projectile-switch-project "switch project"))
+      ("pk" projectile-kill-buffers              "kill buffers")
+      ("pi" projectile-invalidate-cache          "invalidate cache")
+      ("pg" zc-projectile/refresh-projects       "refresh projects")
+      ("po" consult-projectile-switch-project    "switch project"))
 
      "Search"
-     (("pb" consult-projectile-switch-to-buffer "find buffer")
-      ("pf" zc-projectile/consult-find-file     "find file")
-      ("pl" projectile-find-file-in-directory   "find in directory")
+     (("pb" consult-projectile-switch-to-buffer    "find buffer")
+      ("pf" zc-projectile/consult-find-file        "find file")
+      ("pl" zc-projectile/consult-find-file-in-dir "find file in directory")
       ("pt" projectile-toggle-between-implementation-and-test   "toggle test file")
       ("pT" projectile-find-implementation-or-test-other-window "open test file (ow)"))
 
