@@ -98,11 +98,11 @@
   ;; Enhance `consult-imenu' command
   (defun zc-completion/consult-imenu (&optional widenp)
     (interactive "p")
-    (cond
-     ((eq major-mode 'org-mode)
-      (zc-org/outline-buffer-heading (if widenp 'file 'parent)))
-     (t
-      (call-interactively #'consult-imenu)))))
+    (pcase imenu-create-index-function
+      ('org-imenu-get-tree
+       (zc-org/outline-buffer-heading (if widenp 'file 'parent)))
+      (_
+       (call-interactively #'consult-imenu)))))
 
 ;; Interactive functions for `ivy', borrow its more mature features
 ;;
