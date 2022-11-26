@@ -278,6 +278,7 @@
 
      "Edit"
      (("tw" whitespace-mode "whitespace" :toggle t)
+      ("tI" highlight-indent-guides-mode "indent guides" :toggle t)
       ("tl" visual-line-mode "visual line" :toggle t)
       ("tL" auto-fill-mode "fill line" :toggle (symbol-value 'auto-fill-function))
       ("tc" display-fill-column-indicator-mode "indicate column" :toggle t)

@@ -147,6 +147,12 @@
   (advice-add 'highlight-thing-should-highlight-p
               :around #'zc-theme/highlight-thing-should-highlight-p))
 
+(use-package highlight-indent-guides
+  :straight t
+  :commands (highlight-indent-guides-mode)
+  :config
+  (setq highlight-indent-guides-method 'fill))
+
 (use-package beacon
   :straight t
   :if (display-graphic-p)

@@ -4,7 +4,11 @@
 
 
 ;; https://github.com/abrochard/mermaid-mode
-(use-package mermaid-mode :straight t)
+(use-package mermaid-mode
+  :straight t
+  :custom
+  ;; https://github.com/mermaid-js/mermaid-cli
+  (mermaid-mmdc-location "npx -p @mermaid-js/mermaid-cli mmdc"))
 
 ;; https://github.com/arnm/ob-mermaid
 (use-package ob-mermaid
