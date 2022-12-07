@@ -45,6 +45,17 @@
         vertico-posframe-parameters '((left-fringe  . 4)
                                       (right-fringe . 4))
         vertico-posframe-poshandler 'posframe-poshandler-frame-bottom-center)
+
+  ;; If `auto-hscroll-mode' is set to `t', it will scroll horizontally to the
+  ;; right margin that causes candidates and prompt to be invisible.
+  ;;
+  ;; https://www.emacswiki.org/emacs/TruncateLines
+  (defun zc/post-vertico-posframe-display (&rest _ignore)
+    (when vertico-posframe--buffer
+      (with-current-buffer vertico-posframe--buffer
+        (setq-local auto-hscroll-mode 'current-line))))
+  (advice-add #'vertico-posframe--display :after #'zc/post-vertico-posframe-display)
+
   (vertico-posframe-mode))
 
 ;; TODO Fail to load extension
