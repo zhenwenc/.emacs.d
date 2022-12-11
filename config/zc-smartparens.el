@@ -11,7 +11,7 @@
   :hook ((text-mode    . smartparens-mode)
          (prog-mode    . smartparens-mode)
          (prog-mode    . show-smartparens-global-mode)
-         (post-command . zc-sp/post-command-hook-handler))
+         (post-command . zc/sp-post-command-hook-handler))
 
   :general
   (:keymaps 'smartparens-mode-map
@@ -30,14 +30,14 @@
              smartparens-global-mode)
 
   :config
-  (defun zc-sp/post-command-hook-handler ()
+  (defun zc/sp-post-command-hook-handler ()
     "Handler for `post-command-hook'."
     (with-demoted-errors "zc-sp/post-command-hook-handler: %S"
       (when (or (eq major-mode 'typescript-mode)
                 (eq major-mode 'scala-mode))
-        (zc-sp/maybe-insert-asterisk))))
+        (zc/sp-maybe-insert-asterisk))))
 
-  (defun zc-sp/maybe-insert-asterisk ()
+  (defun zc/sp-maybe-insert-asterisk ()
     "Insert asterisk when in Javadoc style multiline comment."
     (when (and (member this-command '(newline evil-open-below))
                (save-excursion
@@ -46,6 +46,18 @@
                                  (thing-at-point 'line t))))
       (insert " * ")
       (indent-according-to-mode)))
+
+  (defun zc/sp-javadoc-expand (&rest _ignored)
+    "Expand Javadoc style multiline comment block."
+    (save-excursion
+      (forward-line -1)
+      (end-of-line)
+      (insert "*"))
+    (insert " * ")
+    (save-excursion
+      (insert "\n")
+      (indent-according-to-mode))
+    (indent-according-to-mode))
 
   :config
   (setq
@@ -87,12 +99,12 @@
   (with-eval-after-load 'scala-mode
     (sp-with-modes '(scala-mode)
       (sp-local-pair "/*" "*/" :post-handlers '(("| " "SPC")
-                                                (zc-typescript/sp-javadoc-expand "RET")))))
+                                                (zc/sp-javadoc-expand "RET")))))
 
   (with-eval-after-load 'typescript-mode
     (sp-with-modes '(typescript-mode)
       (sp-local-pair "/*" "*/" :post-handlers '(("| " "SPC")
-                                                (zc-typescript/sp-javadoc-expand "RET")))
+                                                (zc/sp-javadoc-expand "RET")))
       ;; Enter < inserts </> to start a new JSX node
       ;; Also see `zc-typescript/sp-jsx-rewrap-tag'
       (sp-local-pair "<" ">" :post-handlers '(zc-typescript/sp-jsx-expand-tag))))

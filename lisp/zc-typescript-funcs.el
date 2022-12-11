@@ -75,18 +75,6 @@ TODO: Maybe set `lsp-enable-completion-at-point' to `nil'?
 
 ;; Smartparens
 
-(defun zc-typescript/sp-javadoc-expand (&rest _ignored)
-  "Expand Javadoc style multiline comment block."
-  (save-excursion
-    (forward-line -1)
-    (end-of-line)
-    (insert "*"))
-  (insert " * ")
-  (save-excursion
-    (insert "\n")
-    (indent-according-to-mode))
-  (indent-according-to-mode))
-
 (defun zc-typescript/sp-react-buffer-p (&rest _ignored)
   "Return t if the current buffer is a TSX/JSX buffer."
   (string-match-p "jsx\\|tsx" (file-name-extension (buffer-name))))

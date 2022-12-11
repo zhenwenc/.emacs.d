@@ -118,14 +118,14 @@
   ;; Enhanced `consult-projectile-find-file' with extra sources
   (defun zc/consult-projectile-find-file ()
     (interactive)
-    (funcall-interactively
-     #'consult-projectile '(consult-projectile--source-projectile-file
-                            zc/consult-projectile-source-package-file)))
+    (funcall-interactively #'consult-projectile
+                           '(consult-projectile--source-projectile-file
+                             zc/consult-projectile-source-package-file)))
 
   (defun zc/consult-projectile-find-file-in-dir ()
     (interactive)
-    (funcall-interactively
-     #'consult-projectile '(zc/consult-projectile-source-workspace-file))))
+    (funcall-interactively #'consult-projectile
+                           '(zc/consult-projectile-source-workspace-file))))
 
 
 
