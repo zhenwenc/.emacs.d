@@ -50,8 +50,11 @@ If argument INTERACTIVE-P is set, log additional information."
           (message "Load path updated. Added: %S" added)
         (message "No change to load-path")))))
 
-(defun zc-paths/maybe-require-local ()
-  "Require local configuration if presented."
+(defun zc-paths/init-local-modules ()
+  "Require local configuration if presented.
+
+This is useful when this Emacs configurations in multiple machines that have
+different setups."
   (dolist (path `("~/.emacs.local.el"
                   ,(concat user-emacs-directory "local.el")))
     (when (f-exists? path) (require 'local path))))

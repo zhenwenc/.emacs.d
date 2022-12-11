@@ -106,7 +106,7 @@
 (require 'zc-paths
          (expand-file-name "config/zc-paths.el" user-emacs-directory))
 (zc-paths/init-load-paths)
-(zc-paths/maybe-require-local)
+(zc-paths/init-local-modules)
 
 (require 'zc-funcs)
 (require 'zc-secret-funcs)

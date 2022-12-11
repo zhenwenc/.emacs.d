@@ -72,9 +72,9 @@
 
 (use-package ibuffer-projectile
   :straight t
-  :hook (ibuffer . zc-projectile/ibuffer-setup)
+  :hook (ibuffer . zc/projectile-ibuffer-setup)
   :init
-  (defun zc-projectile/ibuffer-setup ()
+  (defun zc/projectile-ibuffer-setup ()
     (ibuffer-projectile-set-filter-groups)
     (unless (eq ibuffer-sorting-mode 'alphabetic)
       (ibuffer-do-sort-by-alphabetic)))
@@ -85,7 +85,7 @@
   :after (consult projectile)
   :config
 
-  (defvar zc-projectile/consult-source-package-file
+  (defvar zc/consult-projectile-source-package-file
     (list :name     "Package File"
           :narrow   '(?p . "Package File")
           :category 'file
@@ -102,7 +102,7 @@
                             (--filter (s-starts-with? package-root it))
                             (--map (s-chop-prefix package-root it)))))))
 
-  (defvar zc-projectile/consult-source-workspace-file
+  (defvar zc/consult-projectile-source-workspace-file
     (list :name     "Workspace File"
           :narrow   '(?w . "Workspace File")
           :category 'file
@@ -116,16 +116,16 @@
                           (--map (plist-get it :location))))))
 
   ;; Enhanced `consult-projectile-find-file' with extra sources
-  (defun zc-projectile/consult-find-file ()
+  (defun zc/consult-projectile-find-file ()
     (interactive)
     (funcall-interactively
      #'consult-projectile '(consult-projectile--source-projectile-file
-                            zc-projectile/consult-source-package-file)))
+                            zc/consult-projectile-source-package-file)))
 
-  (defun zc-projectile/consult-find-file-in-dir ()
+  (defun zc/consult-projectile-find-file-in-dir ()
     (interactive)
     (funcall-interactively
-     #'consult-projectile '(zc-projectile/consult-source-workspace-file))))
+     #'consult-projectile '(zc/consult-projectile-source-workspace-file))))
 
 
 
