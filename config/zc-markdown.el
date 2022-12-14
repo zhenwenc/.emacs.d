@@ -8,7 +8,8 @@
   :mode (("README\\.md\\'" . gfm-mode)
          ("\\.md\\'"       . markdown-mode)
          ("\\.markdown\\'" . markdown-mode))
-  :hook (markdown-mode . turn-on-auto-fill)
+  ;; NOTE: Disabled by default to accommodate coding styles at work
+  ;; :hook (markdown-mode . turn-on-auto-fill)
   :init
   (setq markdown-command "marked"))
 
