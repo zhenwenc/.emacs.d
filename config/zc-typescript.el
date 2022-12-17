@@ -163,6 +163,9 @@
   :straight t
   :after (:and typescript-mode company flycheck)
 
+  :hook
+  (typescript-mode . zc-typescript/maybe-setup-tide)
+
   :general
   (:keymaps 'tide-mode-map
    [remap xref-find-definitions] #'tide-jump-to-definition
@@ -201,8 +204,6 @@
      ("ra" tide-refactor                           "action")
      ("rc" tide-fix                                "code fix")
      ("ro" tide-organize-imports                   "sort imports"))))
-
-  :hook (typescript-mode . zc-typescript/maybe-setup-tide)
 
   :init
   ;; HACK: This is hacky, is there any better way?

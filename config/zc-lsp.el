@@ -5,8 +5,81 @@
 (require 'zc-lsp-funcs)
 
 
+;; TODO Missing features
+;; - TS organize import code action
+;; - TS import module suggestion
+
+(use-package lsp-bridge
+  :straight (:host github
+             :repo "manateelazycat/lsp-bridge"
+             :files ("*.el" "*.py" "*.json" "core" "acm" "langserver" "multiserver"))
+  :after (evil yasnippet)
+
+  :hook
+  (python-mode     . lsp-bridge-mode)
+  ;; (typescript-mode . lsp-bridge-mode)
+
+  :general
+  (:keymaps 'lsp-bridge-mode-map
+   [remap xref-pop-marker-stack] #'lsp-bridge-find-def-return
+   [remap xref-find-definitions] #'lsp-bridge-find-def
+   [remap xref-find-definitions-other-window] #'lsp-bridge-find-def-other-window)
+
+  (:keymaps 'acm-mode-map
+   "C-j" #'acm-select-next
+   "C-k" #'acm-select-prev)
+
+  :hydra
+  ((:mode (python-mode))
+   ("Server"
+    (("ns" lsp-bridge-restart-process              "restart")
+     ("nS" lsp-bridge-kill-process                 "shutdown"))
+
+    "Edit & Diagnostic"
+    (
+     ("ec" lsp-bridge-diagnostic-copy              "diagnostic copy")
+     ("ei" lsp-bridge-diagnostic-ignore            "diagnostic ignore")
+     ("en" lsp-bridge-diagnostic-jump-next         "diagnostic next")
+     ("eN" lsp-bridge-diagnostic-jump-prev         "diagnostic prev")
+     ("el" lsp-bridge-diagnostic-list              "diagnostic errors"))
+
+    "Docs"
+    (("hh" lsp-bridge-popup-documentation          "show docs")
+     ("hu" lsp-bridge-find-references              "show refs")
+     ("hs" lsp-bridge-signature-help-fetch         "show signture help"))
+
+    "Refactor"
+    (("rr" lsp-bridge-rename                       "rename")
+     ("rf" lsp-bridge-code-format                  "format")
+     ("ra" lsp-bridge-code-action                  "action"))))
+
+  :config
+  ;; Output server logs to `*lsp-bridge*' buffer, required restarting the process
+  (setq lsp-bridge-enable-log nil)
+  ;; Show tooltip when cursor under a diagnostic overlay
+  (setq lsp-bridge-enable-hover-diagnostic t)
+  ;; Do not display documentation by default, press `M-d' when needed
+  (setq acm-enable-doc nil)
+
+  ;; Evil initial state
+  (evil-set-initial-state 'lsp-bridge-ref-mode 'emacs)
+
+  ;; HACK Do not run post-command hook on leader key commands, such as hydra menu
+  (defun zc/lsp-bridge-monitor-post-command (orig-fn &rest args)
+    (let ((this-command-string (format "%s" this-command)))
+      (unless (or (s-contains-p "zc-main-hydra"    this-command-string)
+                  (s-contains-p "major-mode-hydra" this-command-string))
+        (apply orig-fn args))))
+  (advice-add #'lsp-bridge-monitor-post-command :around #'zc/lsp-bridge-monitor-post-command)
+
+  ;; Disable the other completion plugins. lsp-bridge provides a full set from
+  ;; completion backend, completion frontend to multi-backend integration solution
+  (company-mode -1))
+
+
 
 (use-package lsp-mode
+  :disabled t
   :straight t
   :commands (lsp lsp-deferred)
 
@@ -159,6 +232,7 @@ new file with LSP support."
 
 
 (use-package lsp-ui
+  :disabled t
   :straight t
   :after lsp-mode
 

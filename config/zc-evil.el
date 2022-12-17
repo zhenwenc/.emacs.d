@@ -51,7 +51,7 @@
    "TAB"        #'indent-for-tab-command
    "M-a"        #'zc-core/evil-escape
    "M-s"        #'zc-core/evil-escape-and-save
-   "C-k"        #'undefined ; digraph
+   ;; "C-k"        #'undefined ; digraph
    "C-i"        #'indent-for-tab-command
    "C-d"        #'delete-char
    "C-S-d"      #'backward-kill-word)
