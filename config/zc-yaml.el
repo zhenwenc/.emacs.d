@@ -13,18 +13,12 @@
          (yaml-mode . zc-yaml/override-font-lock-faces))
 
   :config
-  (require 'lsp)
-
   (defun zc-yaml/override-font-lock-faces ()
     (face-remap-add-relative 'font-lock-variable-name-face
                              :foreground (doom-color 'violet)))
 
   (setq yaml-imenu-generic-expression
-        '((nil "^\\(:?[[:space:]]\\{2\\}??[a-zA-Z_-]+\\):" 1)))
-
-  ;; Customize YAMLLS server
-  (with-eval-after-load 'lsp-yaml
-    (setq lsp-yaml-hover nil)))
+        '((nil "^\\(:?[[:space:]]\\{2\\}??[a-zA-Z_-]+\\):" 1))))
 
 
 
