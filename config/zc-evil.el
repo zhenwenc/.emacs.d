@@ -63,14 +63,13 @@
   (setq evil-echo-state nil)
   (setq evil-want-integration t)
   (setq evil-want-Y-yank-to-eol t)
+  (setq evil-v$-excludes-newline t)
   ;; Required for evil-collection
   (setq evil-want-keybinding nil)
   ;; When `t', record changes to separate steps instead of a big one
   ;; in insert state.
   (setq evil-want-fine-undo nil)
-  ;; FIXME: This may lead to unwanted behaviour, such as
-  ;;        when cursor on the closing curly braces.
-  (setq evil-want-visual-char-semi-exclusive t)
+
   (setq evil-mode-line-format nil)
   (setq evil-insert-skip-empty-lines t)
   ;; Use native keybindings, prevent overriding `C-t' and `C-d' keys.
