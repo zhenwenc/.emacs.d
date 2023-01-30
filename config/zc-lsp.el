@@ -10,6 +10,7 @@
 ;; - TS import module suggestion
 
 (use-package lsp-bridge
+  :disabled t
   :straight (:host github
              :repo "manateelazycat/lsp-bridge"
              :files ("*.el" "*.py" "*.json" "core" "acm" "langserver" "multiserver"))
