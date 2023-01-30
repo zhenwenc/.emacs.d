@@ -129,13 +129,19 @@
         org-imenu-depth 3
 
         ;; Move inbox entries to the its category.
+        ;;
+        ;; It simply converts each rule to a regex expression, and search the
+        ;; file content using `re-search-forward'.
+        ;;
+        ;; See `org-refile-get-targets' for details.
         org-refile-targets
-        `((nil              :maxlevel . 1)
+        `(
+          (nil :maxlevel . 1)
           (,(zc-org/file-with-exts :dir zc-org/directory) :maxlevel . 1)
-          (,(zc-org/file-with-exts :dir zc-org/main-notes-dir) :regexp . ,(rx "Tasks"))
-          (,(zc-org/file-with-exts :dir zc-org/work-notes-dir) :regexp . ,(rx "Tasks"))
-          (,(zc-org/file-with-exts :dir zc-org/main-notes-dir) :regexp . ,(rx "Archive"))
-          (,(zc-org/file-with-exts :dir zc-org/work-notes-dir) :regexp . ,(rx "Archive")))
+          (,(zc-org/file-with-exts :dir zc-org/main-notes-dir)
+           :regexp . ,(rx "* " (or "Inbox" "Archive")))
+          (,(zc-org/file-with-exts :dir zc-org/work-notes-dir)
+           :regexp . ,(rx "* " (or "Inbox" "Archive"))))
         org-refile-use-outline-path 'file
 
         ;; Our `completion-styles' does not support hierarchical steps.
