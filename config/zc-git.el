@@ -26,7 +26,7 @@
   (defun zc-git/magit-commit-update ()
     "Create a new commit on `HEAD' instantly, using the last commit message."
     (interactive)
-    (magit-commit-create '("--all" "--reuse-message=HEAD")))
+    (magit-commit-create '("--all" "--no-verify" "--reuse-message=HEAD")))
   (transient-append-suffix 'magit-commit "c"
     '("u" "Update" zc-git/magit-commit-update)))
 
