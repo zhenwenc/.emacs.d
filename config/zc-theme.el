@@ -88,7 +88,11 @@
                   (s-ends-with? "org.el" name))
         (hl-todo-mode))))
   :hook
-  (prog-mode . zc-theme/maybe-init-hl-todo))
+  (prog-mode . zc-theme/maybe-init-hl-todo)
+  :custom
+  ;; Reduce noises
+  (hl-todo-require-punctuation t)
+  (hl-todo-highlight-punctuation ":"))
 
 (use-package highlight-sexp
   :disabled
