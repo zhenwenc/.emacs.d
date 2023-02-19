@@ -12,7 +12,7 @@
 
 
 
-(defvar zc-layout/window-config-alist nil
+(defvar zc-layout/window-config-alist (make-hash-table)
   "Alist of layout configurations keyed by eyebrowse window
 config slot.
 
@@ -130,8 +130,8 @@ wrap your action within `zc-projectile/with-switch-project-action'.
         ;; Actually switch to the project
         (projectile-switch-project-by-name project)
         ;; Memorize the window config associated project
-        (map-put zc-layout/window-config-alist slot
-                 (list :project project :tag tag))
+        (map-put! zc-layout/window-config-alist slot
+                  (list :project project :tag tag))
         ;; Kill other windows, they belong to the last layout
         (delete-other-windows)))))
 
