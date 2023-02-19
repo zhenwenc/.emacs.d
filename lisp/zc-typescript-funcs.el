@@ -127,7 +127,7 @@ TODO: Maybe set `lsp-enable-completion-at-point' to `nil'?
   (shell-command (concat "tslint --fix " (buffer-file-name)))
   (revert-buffer t t))
 
-(defun zc-typescript/tide-eldoc-maybe-show (orig-fn text)
+(defun zc-typescript/tide-eldoc-maybe-show (orig-fn text &optional cb)
   "Advice `tide-eldoc-maybe-show' with magics.
 
 Documentations with multiple lines will expand the echo area,
@@ -144,7 +144,7 @@ to enable `tide-always-show-documentation'."
                       (concat (s-truncate 200 head) " ..."))
                      (t
                       (s-truncate 200 head))))
-    (funcall orig-fn text)))
+    (funcall orig-fn text cb)))
 
 (defun zc-typescript/tide-show-project-info (orig-fn version config-file-name)
   "Advice `tide-eldoc-maybe-show' with extra information."
