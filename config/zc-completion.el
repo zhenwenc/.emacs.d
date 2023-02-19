@@ -103,8 +103,8 @@
   (setq consult-line-start-from-top t)
   :config
   ;; Disable automatic immediate preview on expensive commands
-  (consult-customize consult-ripgrep     :preview-key (kbd "C-l"))
-  (consult-customize consult-org-heading :preview-key (kbd "C-l"))
+  (consult-customize consult-ripgrep consult-git-grep consult-org-heading
+                     :preview-key "C-l")
 
   ;; Enhance `consult-imenu' command
   (defun zc-completion/consult-imenu (&optional widenp)
