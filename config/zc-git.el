@@ -77,7 +77,7 @@
   :config
   ;; It raise an error when failed to infer the remote
   (add-to-list 'browse-at-remote-remote-type-regexps
-               (cons "^heroku\\.com$" "heroku"))
+               '(:host "^heroku\\.com$" :type "heroku"))
 
   ;; Enhance remote URL lookup capability
   (defun zc-git/browse-at-remote-get-url (orig-fn &rest args)
