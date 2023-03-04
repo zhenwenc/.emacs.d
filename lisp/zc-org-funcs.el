@@ -9,6 +9,7 @@
 (autoload 'projectile-ensure-project "projectile")
 (autoload 'consult-org-heading "consult-org")
 (autoload 'consult-org--headings "consult-org")
+(autoload 'consult--slow-operation "consult")
 (autoload 'consult--read "consult")
 
 (defvar org-any-link-re)
@@ -132,6 +133,9 @@ pdf in a new buffer.
 function pushes the current subtree to mark ring, so that you
 can jump back using `org-mark-ring-goto'.
 
+Current buffer narrowed status will be preserved after jumping
+to the selected heading.
+
 Filter candidates with SCOPE, see valid options in `org-map-entries'. By
 default only siblings are available.
 
@@ -149,7 +153,10 @@ See also `counsel-outline' and `consult-org-heading'."
                        ;; HACK: Cannot use 'file scope on indirect buffers
                        (_ (with-current-buffer (or (buffer-base-buffer)
                                                    (current-buffer))
-                            (consult-org--headings t nil 'file)))))
+                            ;; Taken from `consult-org-heading', see for details
+                            (consult--slow-operation "Collecting headings..."
+                              (or (consult-org--headings t nil 'file)
+                                  (user-error "No headings")))))))
 
          ;; FIXME workaround with `counsel-outline-candidates' due to problematic
          ;; behaviours in `consult-org--headings' that causes Emacs to freeze.
