@@ -37,6 +37,12 @@ directory in `zc-projectile/ignored-dirs'."
     ;; Ensure the projects exist
     (projectile-cleanup-known-projects)))
 
+(defun zc-projectile/refresh-cache ()
+  "Invalidate projectile caches."
+  (interactive)
+  (call-interactively 'projectile-invalidate-cache)
+  (call-interactively 'zc-projectile/refresh-projects))
+
 
 
 (defun zc-projectile/find-project-root (project)

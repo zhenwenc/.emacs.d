@@ -177,8 +177,7 @@
     ("Basic"
      (("p!" projectile-run-shell-command-in-root "shell command")
       ("pk" projectile-kill-buffers              "kill buffers")
-      ("pi" projectile-invalidate-cache          "invalidate cache")
-      ("pg" zc-projectile/refresh-projects       "refresh projects")
+      ("pg" zc-projectile/refresh-cache          "refresh projects")
       ("po" consult-projectile-switch-project    "switch project"))
 
      "Search"
