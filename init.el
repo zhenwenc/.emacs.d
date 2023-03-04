@@ -32,8 +32,8 @@
 
 
 
-(defun zc/max-gc-limit ()
-  "Disable garbage collection when entering commands."
+(defun zc/increase-gc-limit ()
+  "Increase garbage collection limit to maximum value."
   (setq gc-cons-threshold most-positive-fixnum))
 
 (defun zc/reset-gc-limit ()
@@ -41,7 +41,7 @@
   (setq gc-cons-threshold (* 16 1024 1024)))
 
 ;; Defer GC further back to speed up startup
-(zc/max-gc-limit)
+(zc/increase-gc-limit)
 (add-hook 'emacs-startup-hook #'zc/reset-gc-limit)
 
 
