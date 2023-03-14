@@ -139,6 +139,9 @@ to the selected heading.
 Filter candidates with SCOPE, see valid options in `org-map-entries'. By
 default only siblings are available.
 
+References for `org-map-entries' API:
+- https://scripter.co/looping-through-org-mode-headings/
+
 See also `counsel-outline' and `consult-org-heading'."
   (interactive (unless (derived-mode-p 'org-mode)
                  (user-error "Must be called from an Org buffer")))
