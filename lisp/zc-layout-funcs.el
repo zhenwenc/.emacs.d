@@ -1,5 +1,6 @@
 (require 's)
 (require 'f)
+(require 'ht)
 (require 'dash)
 
 (autoload 'projectile-prepend-project-name "projectile")
@@ -60,8 +61,8 @@ slot if unoccupied, otherwise fine a free one."
   "Return the window config plist for SLOT.
 
 If SLOT is nil, default to current slot."
-  (alist-get (or slot (eyebrowse--get 'current-slot))
-             zc-layout/window-config-alist nil nil 'equal))
+  (ht-get zc-layout/window-config-alist
+          (or slot (eyebrowse--get 'current-slot))))
 
 (defun zc-layout/project-for-slot (&optional slot)
   "Return the associated project for SLOT.
