@@ -40,7 +40,8 @@
   (:states '(normal insert)
    "M-k"        #'kill-whole-line
    "M-."        #'xref-find-definitions
-   "M-,"        #'xref-pop-marker-stack)
+   "M-,"        #'xref-pop-marker-stack
+   "M->"        #'xref-find-definitions-other-window)
 
   (:states 'normal
    "q"          nil ; unset define macro
