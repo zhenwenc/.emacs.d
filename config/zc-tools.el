@@ -15,7 +15,9 @@
   :defer t
   :commands (docker docker-compose)
   :init
-  (setq docker-run-async-with-buffer-function 'docker-run-async))
+  (setq docker-run-async-with-buffer-function 'docker-run-async)
+  ;; Use compose V2 command
+  (setq docker-compose-command "docker compose"))
 
 (use-package dockerfile-mode
   :straight t
