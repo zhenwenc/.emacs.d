@@ -208,7 +208,9 @@ See also `counsel-org-goto-all'."
   (interactive)
   (let* ((files (pcase scope
                   ('note  (f-files zc-org/main-notes-dir (-rpartial #'f-ext-p "org")))
-                  ('work  (f-files zc-org/work-notes-dir (-rpartial #'f-ext-p "org")))
+                  ('work  (f-files zc-org/work-notes-dir
+                                   (-andfn (-rpartial #'f-ext-p "org")
+                                           (-not (-partial #'s-contains? "inbox")))))
                   ('babel (list org-default-babel-file))))
          (candidates (consult-org--headings t nil files))
          (selected (consult--read candidates
