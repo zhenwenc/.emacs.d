@@ -30,11 +30,18 @@
   (setq vertico-count 15) ;; maximum number of candidates to render
   (setq vertico-scroll-margin 0))
 
+;; Configure Vertico modes per command or completion category.
+;;
+(use-package vertico-multiform
+  :straight (vertico :includes vertico-multiform
+                     :files (:defaults "extensions/vertico-multiform.el"))
+  :after (vertico))
+
 ;; Display minibuffer in childframe.
 ;;
 (use-package vertico-posframe
   :straight t
-  :after (vertico)
+  :after (vertico vertico-multiform)
   :if (zc/childframe-workable-p)
   :custom-face
   (vertico-posframe        ((t (:background ,(doom-color 'bg-alt)))))
