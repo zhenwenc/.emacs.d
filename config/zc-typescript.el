@@ -102,6 +102,13 @@
   ;; Integration with `org-mode'
   (with-eval-after-load 'org
     ;;
+    ;; Dummy executor for JSON source block
+    (defun org-babel-execute:json (body params)
+      "Execute a block of JSON code with org-babel.
+    This function is called by `org-babel-execute-src-block'.
+    "
+      (org-babel-result-cond (cdr (assq :result-params params)) body body))
+    ;;
     ;; Improve TypeScript source block experience
     ;; http://rwx.io/posts/org-with-babel-node-updated/
     (defun org-babel-execute:typescript (body params)
