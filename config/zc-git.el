@@ -88,7 +88,22 @@
       (browse-at-remote--commit-url (car git-timemachine-revision)))
      ;; Fallback to the original function
      (t (apply orig-fn args))))
-  (advice-add 'browse-at-remote-get-url :around 'zc-git/browse-at-remote-get-url))
+  (advice-add 'browse-at-remote-get-url :around 'zc-git/browse-at-remote-get-url)
+
+  ;; Patch symbolic ref resolver to return tag when available
+  (defun zc-git/vc-git--symbolic-ref (orig-fn filename)
+    (or (funcall orig-fn filename)
+        (magit-get-current-tag (vc-git-working-revision (or filename ".")))))
+  (advice-add 'vc-git--symbolic-ref :around 'zc-git/vc-git--symbolic-ref)
+
+  ;; Patch remote URL resolver to support headless ref
+  (defun zc-git/browse-at-remote--remote-ref (orig-fn &optional filename)
+    "Return (REMOTE-URL . REF) if symbolic ref is available,
+otherwise, use the commit hash."
+    (let* ((symbolic-ref (vc-git--symbolic-ref (or filename ".")))
+           (browse-at-remote-prefer-symbolic symbolic-ref))
+      (funcall orig-fn filename)))
+  (advice-add 'browse-at-remote--remote-ref :around 'zc-git/browse-at-remote--remote-ref))
 
 ;; Automatically prepends the JIRA ticket number
 
