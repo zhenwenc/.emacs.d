@@ -231,6 +231,7 @@
      (("oa" org-agenda                      "agenda")
       ("oc" org-capture                     "capture")
       ("ot" org-todo-list                   "todo list")
+      ("ok" org-agenda-clock-out            "clock out")
       ("od" org-agenda-quit                 "quit"))
 
      "View"
