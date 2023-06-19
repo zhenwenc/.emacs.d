@@ -207,7 +207,7 @@
                  '(file+headline org-default-todos-file "Inbox"))
 
                 (entry
-                 "t" "Todo" "* TODO %?\n%i"
+                 "t" "Todo" "* TODO %?\nSCHEDULED: %t\n\n%i"
                  '(file+headline org-default-todos-file "Inbox")
                  :kill-buffer t)
 
@@ -216,7 +216,12 @@
                  '(file+headline org-default-todos-file "Inbox"))
 
                 (entry
-                 "r" "Read later" "* MAYBE %i%? :Read:"
+                 "r" "Review" "* TODO %i%? :review:"
+                 '(file+headline org-default-notes-file "Inbox")
+                 :empty-lines-after 1 :clock-in t :clock-resume t)
+
+                (entry
+                 "m" "Maybe" "* MAYBE %i%?"
                  '(file+olp org-default-notes-file)))))
 
   ;; Integration with `restclient'.
