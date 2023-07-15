@@ -115,16 +115,39 @@
       "Execute a block of Typescript code with org-babel.
     This function is called by `org-babel-execute-src-block'.
     "
+      (let* ((dir (or (cdr (assq :dir params)) zc-org/directory))
+             (env (or (cdr (assq :env params)) ""))
+             (node-path (concat "NODE_PATH=" (f-join dir "node_modules")))
+             (node-opts (format "NODE_OPTIONS='--unhandled-rejections=warn --max-http-header-size=16384'"))
+             (node-envs (concat "NODENV_VERSION=" (s-trim (shell-command-to-string "nodenv global"))))
+             (term-name (if (s-equals? "no" (cdr (assq :color params))) "TERM=dumb" ""))
+             (cmd-env (format "%s %s %s %s" node-envs node-path node-opts env))
+             (cmd (if (s-equals? "yes" (cdr (assq :esm params)))
+                      (zc-org-babel-execute-typescript-esm body params)
+                    (zc-org-babel-execute-typescript-cjs body params)))
+             (org-babel-js-function-wrapper "%s"))
+        ;; Execute the code block with `compilation'
+        (if (s-equals? "yes" (cdr (assq :compile params)))
+            ;; Do not highlight errors for arbitrary outputs
+            (let ((compilation-start-hook '(lambda (&rest _ignore)
+                                             (make-local-variable 'compilation-error-regexp-alist)
+                                             (setq-local compilation-error-regexp-alist nil))))
+              (compile (format "%s %s %s" term-name cmd-env (plist-get cmd :cmd-compile))))
+          ;; Execute the code block with `org-babel-execute'
+          (let* ((result (org-babel-eval (format "%s %s" cmd-env (plist-get cmd :cmd-eval)) "")))
+
+            (org-babel-result-cond (cdr (assq :result-params params))
+              result (org-babel-js-read result))))))
+
+    (defun zc-org-babel-execute-typescript-cjs (body params)
       (let* ((ts-node-opts (json-serialize '(module "CommonJS" target "ES2017")))
              (ts-node (f-join zc-org/directory "node_modules/.bin/ts-node"))
-             (dir (or (cdr (assq :dir params)) zc-org/directory))
              (cmd (or (cdr (assq :cmd params)) (format "%s -T -O '%s'" ts-node ts-node-opts)))
-             (env (or (cdr (assq :env params)) ""))
+             (full-body (org-babel-expand-body:generic
+                         body params (org-babel-variable-assignments:js params)))
              ;; Transpile 'import' statements to 'require'
              (script-file (org-babel-temp-file "js-script-" ".ts"))
              (output-file (org-babel-temp-file "js-script-" ".js"))
-             (full-body (org-babel-expand-body:generic
-                         body params (org-babel-variable-assignments:js params)))
              ;; Transform with Babel for older NodeJS that doesn't support morden JS module
              (babel-path (f-join zc-org/directory "node_modules"))
              (babel-res (progn (with-temp-file script-file (insert full-body))
@@ -138,30 +161,27 @@
                                           " --extensions .ts"
                                           " --out-file " output-file
                                           " " script-file)))))
-             (node-file (if babel-res output-file script-file))
-             (node-path (concat "NODE_PATH=" (f-join dir "node_modules")))
-             (node-opts (format "NODE_OPTIONS='--unhandled-rejections=warn --max-http-header-size=16384'"))
-             (node-envs (concat "NODENV_VERSION=" (s-trim (shell-command-to-string "nodenv global"))))
-             (term-name (if (s-equals? "no" (cdr (assq :color params))) "TERM=dumb" ""))
-             (org-babel-js-cmd (format "%s %s %s %s %s" node-envs node-path node-opts env cmd))
-             (org-babel-js-function-wrapper "%s"))
+             (node-file (if babel-res output-file script-file)))
         ;; Print the transpiled output for debugging
         (when (s-equals? "yes" (cdr (assq :debug params)))
           (let ((inhibit-message t)) ;; skip echo area
             (message "[DEBUG] Transpiled source code:\n\n%s\n%s" babel-res (f-read node-file))))
-        ;; Execute the code block with `compilation'
-        (if (s-equals? "yes" (cdr (assq :compile params)))
-            ;; Do not highlight errors for arbitrary outputs
-            (let ((compilation-start-hook '(lambda (&rest _ignore)
-                                             (make-local-variable 'compilation-error-regexp-alist)
-                                             (setq-local compilation-error-regexp-alist nil))))
-              (compile (format "%s %s %s" term-name org-babel-js-cmd node-file)))
-          ;; Execute the code block with `org-babel-execute'
-          (let* ((result (org-babel-eval
-                          (format "%s %s" org-babel-js-cmd
-                                  (org-babel-process-file-name script-file)) "")))
-            (org-babel-result-cond (cdr (assq :result-params params))
-              result (org-babel-js-read result))))))
+        ;; Generate execution commands
+        `(:cmd-compile ,(format "%s %s" cmd node-file)
+          :cmd-eval    ,(format "%s %s" cmd (org-babel-process-file-name script-file)))))
+
+    (defun zc-org-babel-execute-typescript-esm (body params)
+      (let* ((ts-node-opts (json-serialize '(module "NodeNext" moduleResolution "NodeNext" esModuleInterop t)))
+             (ts-node (f-join zc-org/directory "node_modules/.bin/ts-node-esm --skipProject"))
+             (cmd (or (cdr (assq :cmd params)) (format "%s -T -O '%s'" ts-node ts-node-opts)))
+             (full-body (org-babel-expand-body:generic
+                         body params (org-babel-variable-assignments:js params)))
+             (script-file (org-babel-temp-file "js-script-" ".mjs")))
+        (with-temp-file script-file (insert full-body))
+        ;; Generate execution commands
+        `(:cmd-compile ,(format "%s %s" cmd script-file)
+          :cmd-eval    ,(format "%s %s" cmd (org-babel-process-file-name script-file)))))
+
     (defalias 'org-babel-execute:ts 'org-babel-execute:typescript)))
 
 
