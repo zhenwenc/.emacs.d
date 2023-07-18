@@ -145,6 +145,7 @@
 (use-package zc-yaml)
 (use-package zc-rust)
 (use-package zc-scala)
+(use-package zc-swift)
 (use-package zc-kotlin)
 (use-package zc-python)
 (use-package zc-markdown)
