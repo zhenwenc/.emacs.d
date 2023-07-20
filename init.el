@@ -138,6 +138,7 @@
 (use-package zc-tools)
 (use-package zc-treemacs)
 (use-package zc-yasnippet)
+(use-package zc-cc)
 (use-package zc-sql)
 (use-package zc-org)
 (use-package zc-web)
