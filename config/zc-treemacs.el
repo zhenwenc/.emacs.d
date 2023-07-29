@@ -33,7 +33,10 @@
    ;; Follow the currently selected file
    treemacs-follow-after-init t
    ;; Prevents treemacs from being selected with `other-window`
-   treemacs-is-never-other-window t)
+   treemacs-is-never-other-window t
+   ;; Use the simple TUI icons in GUI mode
+   treemacs-no-png-images t)
+
   ;; Keep track of and focus the currently selected buffer's file
   (treemacs-follow-mode t)
   (treemacs-filewatch-mode t)
