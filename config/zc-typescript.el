@@ -170,10 +170,10 @@
         `(:cmd-compile ,(format "%s %s" cmd node-file)
           :cmd-eval    ,(format "%s %s" cmd (org-babel-process-file-name script-file)))))
 
+    ;; https://github.com/esbuild-kit/tsx
     (defun zc-org-babel-execute-typescript-esm (body params)
-      (let* ((ts-node-opts (json-serialize '(module "NodeNext" moduleResolution "NodeNext" esModuleInterop t)))
-             (ts-node (f-join zc-org/directory "node_modules/.bin/ts-node-esm --skipProject"))
-             (cmd (or (cdr (assq :cmd params)) (format "%s -T -O '%s'" ts-node ts-node-opts)))
+      (let* ((tsx (f-join zc-org/directory "node_modules/.bin/tsx"))
+             (cmd (or (cdr (assq :cmd params)) (format "%s" tsx)))
              (full-body (org-babel-expand-body:generic
                          body params (org-babel-variable-assignments:js params)))
              (script-file (org-babel-temp-file "js-script-" ".mjs")))
@@ -181,6 +181,18 @@
         ;; Generate execution commands
         `(:cmd-compile ,(format "%s %s" cmd script-file)
           :cmd-eval    ,(format "%s %s" cmd (org-babel-process-file-name script-file)))))
+
+    ;; (defun zc-org-babel-execute-typescript-esm (body params)
+    ;;   (let* ((ts-node-opts (json-serialize '(module "NodeNext" moduleResolution "NodeNext" esModuleInterop t)))
+    ;;          (ts-node (f-join zc-org/directory "node_modules/.bin/ts-node-esm --skipProject"))
+    ;;          (cmd (or (cdr (assq :cmd params)) (format "%s -T -O '%s'" ts-node ts-node-opts)))
+    ;;          (full-body (org-babel-expand-body:generic
+    ;;                      body params (org-babel-variable-assignments:js params)))
+    ;;          (script-file (org-babel-temp-file "js-script-" ".mjs")))
+    ;;     (with-temp-file script-file (insert full-body))
+    ;;     ;; Generate execution commands
+    ;;     `(:cmd-compile ,(format "%s %s" cmd script-file)
+    ;;       :cmd-eval    ,(format "%s %s" cmd (org-babel-process-file-name script-file)))))
 
     (defalias 'org-babel-execute:ts 'org-babel-execute:typescript)))
 
