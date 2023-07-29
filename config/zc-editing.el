@@ -29,7 +29,8 @@
 (use-package whitespace
   :preface
   (defun zc-editing/show-trailing-whitespace ()
-    (setq show-trailing-whitespace 1))
+    (unless (eq major-mode 'swift-mode)
+      (setq show-trailing-whitespace 1)))
 
   :preface
   (defun zc-editing/set-whitespace-style-for-diff ()
