@@ -72,6 +72,12 @@ projectile project name. Useful for monorepo."
          (-map (-lambda ((package-name . (&alist 'location location)))
                  (list :name package-name :location location))))))
 
+(defun zc-projectile/example-workspaces ()
+  "Return the list of example packages."
+  (with-demoted-errors "Error listing example workspaces: %S"
+    (->> (f-directories "./examples/")
+         (--map (f-relative it default-directory)))))
+
 
 
 (defmacro zc-projectile/with-switch-project-action (action &rest body)

@@ -112,9 +112,10 @@
                                  (concat (projectile-acquire-root) f)))
           :enabled  #'projectile-project-root
           :items
-          (lambda () (->> (projectile-with-default-dir (projectile-acquire-root)
-                            (zc-projectile/yarn-workspaces))
-                          (--map (plist-get it :location))))))
+          (lambda () (projectile-with-default-dir (projectile-acquire-root)
+                       (-concat (->> (zc-projectile/yarn-workspaces)
+                                     (--map (plist-get it :location)))
+                                (zc-projectile/example-workspaces))))))
 
   ;; Enhanced `consult-projectile-find-file' with extra sources
   (defun zc/consult-projectile-find-file ()
