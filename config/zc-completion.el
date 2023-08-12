@@ -9,8 +9,9 @@
 ;;
 ;; https://github.com/minad/vertico
 (use-package vertico
-  :straight t
-
+  :straight (:files (:defaults
+                     "extensions/vertico-directory.el"
+                     "extensions/vertico-multiform.el"))
   :general
   (:keymaps 'vertico-map
    "C-j"        #'vertico-next
@@ -30,11 +31,16 @@
   (setq vertico-count 15) ;; maximum number of candidates to render
   (setq vertico-scroll-margin 0))
 
+;; Provide Ido-like directory navigation commands.
+;;
+(use-package vertico-directory
+  :straight nil
+  :after (vertico))
+
 ;; Configure Vertico modes per command or completion category.
 ;;
 (use-package vertico-multiform
-  :straight (vertico :includes vertico-multiform
-                     :files (:defaults "extensions/vertico-multiform.el"))
+  :straight nil
   :after (vertico))
 
 ;; Display minibuffer in childframe.
