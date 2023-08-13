@@ -214,18 +214,18 @@ merged."))
 
   ;; Use non-spaced pairs when surrounding with an opening brace.
   ;; Insert zero width space for org inline markup.
-  (evil-add-to-alist 'evil-surround-pairs-alist
-                     ?b  '("(" . ")")
-                     ?B  '("{" . "}")
-                     ?>  '("<" . ">")
-                     ?$  '("${" . "}")
-                     ?\* '("\x200B*" . "*\x200B")
-                     ?\+ '("\x200B+" . "+\x200B")
-                     ?\/ '("\x200B/" . "/\x200B")
-                     ?\~ '("\x200B~" . "~\x200B")
-                     ?\= '("\x200B=" . "=\x200B")
-                     ?\$ '("\x200B$" . "$\x200B")
-                     ?\_ '("\x200B_" . "_\x200B"))
+  (evil--add-to-alist evil-surround-pairs-alist
+                      ?b  '("(" . ")")
+                      ?B  '("{" . "}")
+                      ?>  '("<" . ">")
+                      ?$  '("${" . "}")
+                      ?\* '("\x200B*" . "*\x200B")
+                      ?\+ '("\x200B+" . "+\x200B")
+                      ?\/ '("\x200B/" . "/\x200B")
+                      ?\~ '("\x200B~" . "~\x200B")
+                      ?\= '("\x200B=" . "=\x200B")
+                      ?\$ '("\x200B$" . "$\x200B")
+                      ?\_ '("\x200B_" . "_\x200B"))
   (global-evil-surround-mode +1))
 
 
