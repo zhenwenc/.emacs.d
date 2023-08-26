@@ -11,8 +11,8 @@
 
 
 
-(defvar zc-default-font "Fira Code 12"
-  "The universal default font.")
+;; (defvar zc-default-font "Fira Code 12"
+;;   "The universal default font.")
 
 
 ;; Themes
@@ -57,8 +57,7 @@
   :straight t
   :hook
   (lisp-mode       . page-break-lines-mode)
-  (emacs-lisp-mode . page-break-lines-mode)
-  (org-agenda-mode . page-break-lines-mode))
+  (emacs-lisp-mode . page-break-lines-mode))
 
 (use-package rainbow-delimiters
   :straight t
