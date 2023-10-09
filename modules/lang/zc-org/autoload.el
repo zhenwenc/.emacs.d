@@ -449,9 +449,13 @@ Function for `org-babel-after-execute-hook'."
 This function is called by `org-babel-execute-src-block'."
   (require 'ob-shell)
   ;; Execute the code block with `compilation'
-  (if (s-equals? "yes" (cdr (assq :compile params)))
+  (if (or (s-equals? "yes" (cdr (assq :compile params)))
+          (s-equals? "yes" (cdr (assq :tmux    params))))
       (let (;; Run script in the current shell environment
-            (cmd (or (plist-get params :cmd) "."))
+            (cmd (or (plist-get params :cmd) "/bin/zsh"))
+            (tmux-target (or (-when-let ((value (plist-get params :tmux-target)))
+                               (format "-t %s" value))
+                             ""))
             (full-body (concat
                         (org-babel-expand-body:generic
                          body params (org-babel-variable-assignments:shell params))))
@@ -461,6 +465,10 @@ This function is called by `org-babel-execute-src-block'."
                                        (make-local-variable 'compilation-error-regexp-alist)
                                        (setq-local compilation-error-regexp-alist nil))))
         (with-temp-file script-file (insert full-body))
-        (compile (format "%s %s" cmd script-file)))
+        (cond
+         ((s-equals? "yes" (cdr (assq :compile params)))
+          (compile (format "%s %s" cmd script-file)))
+         ((s-equals? "yes" (cdr (assq :tmux params)))
+          (shell-command (format "tmux send-keys %s '%s %s' ENTER" tmux-target cmd script-file)))))
     ;; Execute the code block with `org-babel-execute'
     (funcall orig-fn body params)))
