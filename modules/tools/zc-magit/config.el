@@ -14,7 +14,8 @@
 
   ;; Disable the auto-revert buffer feature for certain major modes
   (defun zc/magit-revert-buffer-override (orig-fn buffer)
-    (unless (or (f-ext? buffer-file-name ".gpg")
+    (unless (or (not buffer-file-name)
+                (f-ext? buffer-file-name ".gpg")
                 (eq major-mode 'org-mode))
       (funcall orig-fn buffer)))
   (advice-add #'+magit--revert-buffer :around #'zc/magit-revert-buffer-override))
