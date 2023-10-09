@@ -200,19 +200,25 @@ See also `counsel-org-goto-all'."
     ;; Ensure we are are in `org' layout to avoid chaos.
     (unless (projectile-ensure-project zc-org/directory)
       (error "Org directory '%s' is not a project" zc-org/directory))
-    (let* ((marker selected)
-           (project zc-org/directory))
-      (-if-let* ((is-marker (markerp marker))
-                 (buffer    (marker-buffer marker)))
-          (zc/projectile-with-switch-project-action buffer
-            (zc-layout/create-project-layout project))
-        (zc-layout/create-project-layout project)))
-    (org-with-limited-levels
-     (cond ((org-at-heading-p) (beginning-of-line))
-           ((not (org-before-first-heading-p))
-            (outline-previous-visible-heading 1)))
-     (org-mark-ring-push))
+    (-if-let* ((project zc-org/directory)
+               (is-marker (markerp selected))
+               (buffer    (marker-buffer selected)))
+        (zc/projectile-with-switch-project-action buffer
+          (zc-layout/create-project-layout project))
+      (zc-layout/create-project-layout project))
+    ;; Push current header to mark ring before navigate away
+    (-when-let* ((is-marker   (markerp selected))
+                 (buffer      (marker-buffer selected))
+                 (is-org-mode (eq major-mode 'org-mode)))
+      (with-current-buffer buffer
+        (org-with-limited-levels
+         (cond ((org-at-heading-p) (beginning-of-line))
+               ((not (org-before-first-heading-p))
+                (outline-previous-visible-heading 1)))
+         (org-mark-ring-push))))
+    ;; Jump to the selected header
     (org-goto-marker-or-bmk selected)
+    ;; Focus on the subtree
     (zc-org/narrow-to-subtree)))
 
 (defun zc-org/outline-group-by-buffer (cand transform)
