@@ -62,10 +62,11 @@
       "M-v"             #'isearch-yank-pop
       "M-<backspace>"   #'isearch-delete-char)
 
-(map! :after company :map company-active-map
-      :i [return]       #'company-complete-selection
-      :i "TAB"          #'company-complete-selection
-      :i "RET"          #'company-complete-selection)
+(map! :after (company yasnippet) :map company-active-map
+      :i  [return]       #'company-complete-selection
+      :i  "RET"          #'company-complete-selection
+      :ig "TAB"          yas-maybe-expand
+      :ig [tab]          yas-maybe-expand)
 
 (map! :after git-rebase :map git-rebase-mode-map
       :n "s-j" #'git-rebase-move-line-down
