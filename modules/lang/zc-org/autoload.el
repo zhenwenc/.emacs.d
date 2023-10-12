@@ -218,6 +218,11 @@ See also `counsel-org-goto-all'."
          (org-mark-ring-push))))
     ;; Jump to the selected header
     (org-goto-marker-or-bmk selected)
+    ;; HACK Doom defers the buffer initialisation when its on the background,
+    ;;      it doesn't have a chance to read the file properties on time.
+    (unless (bound-and-true-p zc/org-initialised)
+      (revert-buffer)
+      (setq-local zc/org-initialised t))
     ;; Focus on the subtree
     (zc-org/narrow-to-subtree)))
 
