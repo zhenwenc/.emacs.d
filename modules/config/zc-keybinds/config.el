@@ -234,6 +234,11 @@
        :desc "Goto char 2"                     "S" #'evil-avy-goto-char-2
        :desc "Goto line"                       "l" #'evil-avy-goto-line
 
+       :desc "sp sexp (end)"                   "e" #'sp-end-of-sexp
+       :desc "sp sexp (begin)"                 "E" #'sp-beginning-of-sexp
+       :desc "sp sexp (next)"                  "n" #'sp-next-sexp
+       :desc "sp sexp (prev)"                  "N" #'sp-previous-sexp
+
        :desc "sp up (forward)"                 ">" #'sp-up-sexp
        :desc "sp up (backward)"                "<" #'sp-up-sexp
 
