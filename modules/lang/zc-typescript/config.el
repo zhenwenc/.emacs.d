@@ -42,6 +42,8 @@
       (sp-local-pair "<" ">" :post-handlers '(zc-typescript/sp-jsx-expand-tag))))
 
   ;; Enable auto-formatter on source code files only
+  ;;
+  ;; Not working? check `(executable-find "prettier")' and try `npm i -g prettier'
   (add-hook! 'typescript-mode-hook
     (defun zc-typescript/maybe-enable-formatter ()
       (unless (and buffer-file-name ;; maybe scratch or indirect buffer
