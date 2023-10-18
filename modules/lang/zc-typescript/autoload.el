@@ -42,7 +42,7 @@ This function is called by `org-babel-execute-src-block'."
           result (org-babel-js-read result))))))
 
 (defun zc-org-babel-execute-typescript-cjs (body params)
-  (let* ((ts-node-opts (json-serialize '(module "CommonJS" target "ES2017")))
+  (let* ((ts-node-opts (json-serialize '(module "CommonJS" target "ES2017" skipLibCheck t)))
          (ts-node (f-join zc-org/directory "node_modules/.bin/ts-node"))
          (cmd (or (cdr (assq :cmd params)) (format "%s -T -O '%s'" ts-node ts-node-opts)))
          (full-body (org-babel-expand-body:generic
