@@ -84,7 +84,7 @@
     ;; (run-at-time "2sec" nil (lambda () (toggle-frame-fullscreen)))
     (set-frame-parameter (selected-frame) 'fullscreen 'maximized)
     ;; Customize popup rules
-    (set-popup-rule! "^\\*compilation" :size 0.3 :side 'right :ttl nil :select t)))
+    (set-popup-rule! "^\\*compilation" :size 0.5 :side 'right :ttl nil :select t)))
 
 ;; Wrap long lines in the buffer with language-aware indentation by
 ;; - `adaptive-wrap'
