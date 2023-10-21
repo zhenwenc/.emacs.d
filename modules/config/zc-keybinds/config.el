@@ -107,6 +107,20 @@
       :n "gk"  #'outline-backward-same-level
       :n "gj"  #'outline-forward-same-level)
 
+(defhydra zc-hydra/window-mgnt (:hint nil)
+  "
+          Scale: _+_:↑  ___:↓
+         Resize: _<_:←  _>_:→  _,_:↓  _._:↑ _=_:balance
+"
+  ("=" balance-windows)
+  ("+" text-scale-increase)
+  ("_" text-scale-decrease)
+  ("<" hydra-move-splitter-left)
+  (">" hydra-move-splitter-right)
+  ("," hydra-move-splitter-down)
+  ("." hydra-move-splitter-up)
+  ("q" nil))
+
 ;; <leader> w --- window management
 (map! :after evil :map evil-window-map
       "=" #'balance-windows
@@ -116,12 +130,16 @@
       "S" #'evil-window-vsplit
       "D" #'delete-other-windows
 
+      "w" #'zc-hydra/window-mgnt/body
+
       ;; Override doom default to reduce the keystrike for commonly used commands
       "m" #'doom/window-maximize-buffer
       (:prefix "M"
                "m" #'doom/window-maximize-buffer
                "v" #'doom/window-maximize-vertically
-               "s" #'doom/window-maximize-horizontally))
+               "s" #'doom/window-maximize-horizontally)
+
+      "SPC" #'zc/toggle-current-window-dedication)
 
 
 ;; Custom help keys -- overrides the default `help-map' defined in
