@@ -61,12 +61,13 @@
   :hook (emacs-lisp-mode . page-break-lines-mode))
 
 (use-package! highlight-thing
-  :init
   :config
   (setq highlight-thing-delay-seconds 0.5
         highlight-thing-case-sensitive-p t
         highlight-thing-exclude-thing-under-point t
-        highlight-thing-excluded-major-modes '(magit-status-mode org-mode))
+        highlight-thing-excluded-major-modes '(compilation-mode
+                                               magit-status-mode
+                                               org-mode))
   (global-highlight-thing-mode)
 
   ;; Disable `highlight-thing' for various cases
