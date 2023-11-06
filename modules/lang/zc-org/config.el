@@ -109,3 +109,8 @@
   ;; Override shell execution command
   (after! ob-shell
     (advice-add 'org-babel-execute:shell :around #'zc/org-babel-execute:shell)))
+
+(after! org-journal
+  (setq org-journal-date-prefix "#+TITLE: ")
+  (setq org-journal-date-format "%a, %Y-%m-%d")
+  (setq org-journal-file-format "%Y-%m-%d.org"))
