@@ -456,10 +456,10 @@ This function is called by `org-babel-execute-src-block'."
   ;; Execute the code block with `compilation'
   (if (or (s-equals? "yes" (cdr (assq :compile params)))
           (s-equals? "yes" (cdr (assq :tmux    params))))
-      (let (;; Run script in the current shell environment
+      (let (;; Run script in sub-shell environment
             (cmd (or (plist-get params :cmd) "/bin/zsh"))
-            (tmux-target (or (-when-let ((value (plist-get params :tmux-target)))
-                               (format "-t %s" value))
+            (tmux-target (or (--when-let (cdr (assq :tmux-target params))
+                               (format "-t %s" it))
                              ""))
             (full-body (concat
                         (org-babel-expand-body:generic
