@@ -20,6 +20,11 @@
       (funcall orig-fn buffer)))
   (advice-add #'+magit--revert-buffer :around #'zc/magit-revert-buffer-override))
 
+;; UX: Disable in Org mode, the performance is extremely horrible
+(after! (magit git-gutter)
+  (add-to-list 'git-gutter:disabled-modes 'org-mode t))
+
+;; Generate URL with tag or branch name when available
 (after! browse-at-remote
   (setq browse-at-remote-prefer-symbolic t))
 

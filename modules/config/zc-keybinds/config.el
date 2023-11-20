@@ -244,7 +244,10 @@
        :desc "Magit status"                    "s" #'magit-status
        :desc "Magit blame"                     "B" #'magit-blame
        :desc "Magit blame addition"            "b" #'magit-blame-addition
-       :desc "Magit verbose refresh"           "R" #'magit-refresh-verbose) ; To identify magit-status pref bottlenecks
+       ;; To help identify magit-status pref bottlenecks
+       :desc "Magit verbose refresh"           "R" #'magit-refresh-verbose
+       ;; Doom only set this binding when `vc-gutter' is enabled
+       :desc "Git time machine"                "t" #'git-timemachine-toggle)
 
       ;; <leader> j --- jump
       (:prefix-map ("j" . "jump")
