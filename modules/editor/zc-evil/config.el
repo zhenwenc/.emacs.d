@@ -38,7 +38,7 @@
   (evil-set-initial-state 'process-menu-mode        'motion)
   (evil-set-initial-state 'org-agenda-mode          'motion)
   (evil-set-initial-state 'compilation-mode         'motion)
-  (evil-set-initial-state 'tide-references-mode     'motion)
+  (evil-set-initial-state 'tide-references-mode     'emacs)
   (evil-set-initial-state 'tide-project-errors-mode 'normal))
 
 (use-package! evil-escape
