@@ -200,6 +200,7 @@
  zc-lisp
  zc-yaml
  zc-typescript
+ zc-plantuml
 
  :email
  ;;(mu4e +org +gmail)
