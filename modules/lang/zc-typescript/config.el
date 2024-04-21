@@ -129,6 +129,15 @@
   (setq-hook! 'tide-mode-hook +lookup-definition-functions
               '(+lookup-xref-definitions-backend-fn))
 
+    (setq tide-always-show-documentation t
+        tide-completion-detailed nil ; has performance issue
+        tide-completion-ignore-case t
+        tide-completion-setup-company-backend nil
+        tide-completion-enable-autoimport-suggestions nil)
+
+  ;; TODO Improve imenu candiates
+  ;; (setq tide-imenu-flatten nil)
+
   (set-company-backend! 'tide-mode 'company-tide)
   ;; navigation
   (set-lookup-handlers! 'tide-mode :async t
@@ -140,15 +149,6 @@
   (advice-add 'tide-completion-doc-buffer :override #'ignore)
   (advice-add 'tide-eldoc-maybe-show  :around #'zc-typescript/tide-eldoc-maybe-show)
   (advice-add 'tide-show-project-info :around #'zc-typescript/tide-show-project-info)
-
-  (setq tide-always-show-documentation t
-        tide-completion-detailed nil ; has performance issue
-        tide-completion-ignore-case t
-        tide-completion-setup-company-backend nil
-        tide-completion-enable-autoimport-suggestions nil)
-
-  ;; TODO Improve imenu candiates
-  ;; (setq tide-imenu-flatten nil)
 
   (defun zc-typescript/maybe-setup-tide ()
     ;; Format org-mode source block
