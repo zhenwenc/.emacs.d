@@ -157,7 +157,7 @@ See also `counsel-outline' and `consult-org-heading'."
                     :require-match t
                     :narrow (consult-org--narrow)
                     :lookup #'consult--lookup-candidate
-                    :group #'zc-org/outline-group-by-buffer)))
+                    :group #'consult-org--group)))
     ;; Jump to headline in selected candidate position.
     (let ((narrowed (buffer-narrowed-p)))
       ;; Push current subtree to mark ring, see `org-mark-subtree'.
@@ -189,6 +189,7 @@ See also `counsel-org-goto-all'."
                                            (-not (-partial #'s-contains? "-archive")))))
                   ('babel (list org-default-babel-file))))
          (candidates (consult-org--headings t nil files))
+         ;; https://github.com/minad/consult/blob/main/consult-org.el
          (selected (consult--read candidates
                                   :prompt "Go to heading: "
                                   :category 'consult-org-heading
@@ -196,7 +197,7 @@ See also `counsel-org-goto-all'."
                                   :require-match t
                                   :narrow (consult-org--narrow)
                                   :lookup #'consult--lookup-candidate
-                                  :group #'zc-org/outline-group-by-buffer)))
+                                  :group #'consult-org--group)))
     ;; Ensure we are are in `org' layout to avoid chaos.
     (unless (projectile-ensure-project zc-org/directory)
       (error "Org directory '%s' is not a project" zc-org/directory))
@@ -225,12 +226,6 @@ See also `counsel-org-goto-all'."
       (setq-local zc/org-initialised t))
     ;; Focus on the subtree
     (zc-org/narrow-to-subtree)))
-
-(defun zc-org/outline-group-by-buffer (cand transform)
-  "The default grouping logic provided by `consult-org-heading'."
-  (let* ((buf (get-text-property 0 'consult--candidate cand))
-         (name (buffer-name (marker-buffer buf))))
-    (if transform (substring cand (1+ (length name))) name)))
 
 ;;;###autoload
 (defun zc-org/outline-previous-mark (&optional n)
