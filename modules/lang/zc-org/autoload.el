@@ -149,15 +149,15 @@ See also `counsel-outline' and `consult-org-heading'."
          ;;                           0 1 `(consult--candidate ,marker) cand)
          ;;                          cand))))
 
-         (selected (consult--read
-                    candidates
-                    :prompt "Go to heading: "
-                    :category 'consult-org-heading
-                    :sort nil
-                    :require-match t
-                    :narrow (consult-org--narrow)
-                    :lookup #'consult--lookup-candidate
-                    :group #'consult-org--group)))
+         (selected (consult--read candidates
+                                  :prompt "Go to heading: "
+                                  :category 'consult-org-heading
+                                  :sort nil
+                                  :require-match t
+                                  :annotate #'consult-org--annotate
+                                  :narrow (consult-org--narrow)
+                                  :lookup (apply-partially #'consult--lookup-prop 'org-marker)
+                                  :group #'consult-org--group)))
     ;; Jump to headline in selected candidate position.
     (let ((narrowed (buffer-narrowed-p)))
       ;; Push current subtree to mark ring, see `org-mark-subtree'.
@@ -190,13 +190,15 @@ See also `counsel-org-goto-all'."
                   ('babel (list org-default-babel-file))))
          (candidates (consult-org--headings t nil files))
          ;; https://github.com/minad/consult/blob/main/consult-org.el
+         ;; see `consult-org-heading'
          (selected (consult--read candidates
                                   :prompt "Go to heading: "
-                                  :category 'consult-org-heading
+                                  :category 'org-heading
                                   :sort nil
                                   :require-match t
+                                  :annotate #'consult-org--annotate
                                   :narrow (consult-org--narrow)
-                                  :lookup #'consult--lookup-candidate
+                                  :lookup (apply-partially #'consult--lookup-prop 'org-marker)
                                   :group #'consult-org--group)))
     ;; Ensure we are are in `org' layout to avoid chaos.
     (unless (projectile-ensure-project zc-org/directory)
