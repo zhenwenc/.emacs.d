@@ -452,12 +452,12 @@ This function is called by `org-babel-execute-src-block'."
   (require 'ob-shell)
   ;; Execute the code block with `compilation'
   (if (or (s-equals? "yes" (cdr (assq :compile params)))
-          (s-equals? "yes" (cdr (assq :tmux    params))))
+          (not   (s-blank? (cdr (assq :tmux    params)))))
       (let (;; Run script in sub-shell environment
             (cmd (or (plist-get params :cmd) "/bin/zsh"))
-            (tmux-target (or (--when-let (cdr (assq :tmux-target params))
-                               (format "-t %s" it))
-                             ""))
+            (tmux (or (--when-let (cdr (assq :tmux params))
+                        (format "-t %s" it))
+                      ""))
             (full-body (concat
                         (org-babel-expand-body:generic
                          body params (org-babel-variable-assignments:shell params))))
@@ -470,7 +470,7 @@ This function is called by `org-babel-execute-src-block'."
         (cond
          ((s-equals? "yes" (cdr (assq :compile params)))
           (compile (format "%s %s" cmd script-file)))
-         ((s-equals? "yes" (cdr (assq :tmux params)))
-          (shell-command (format "tmux send-keys %s '%s %s' ENTER" tmux-target cmd script-file)))))
+         ((not (s-blank? tmux))
+          (shell-command (format "tmux send-keys %s '%s %s' ENTER" tmux cmd script-file)))))
     ;; Execute the code block with `org-babel-execute'
     (funcall orig-fn body params)))
