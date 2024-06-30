@@ -471,6 +471,7 @@ This function is called by `org-babel-execute-src-block'."
          ((s-equals? "yes" (cdr (assq :compile params)))
           (compile (format "%s %s" cmd script-file)))
          ((not (s-blank? tmux))
+          (shell-command (format "tmux send-keys %s -R C-l" tmux))
           (shell-command (format "tmux send-keys %s '%s %s' ENTER" tmux cmd script-file)))))
     ;; Execute the code block with `org-babel-execute'
     (funcall orig-fn body params)))
