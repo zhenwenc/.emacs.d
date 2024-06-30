@@ -28,18 +28,27 @@ This function is called by `org-babel-execute-src-block'."
                   (zc-org-babel-execute-typescript-esm body params)
                 (zc-org-babel-execute-typescript-cjs body params)))
          (org-babel-js-function-wrapper "%s"))
-    ;; Execute the code block with `compilation'
-    (if (s-equals? "yes" (cdr (assq :compile params)))
-        ;; Do not highlight errors for arbitrary outputs
-        (let ((compilation-start-hook '(lambda (&rest _ignore)
-                                         (make-local-variable 'compilation-error-regexp-alist)
-                                         (setq-local compilation-error-regexp-alist nil))))
-          (compile (format "%s %s %s" term-name cmd-env (plist-get cmd :cmd-compile))))
-      ;; Execute the code block with `org-babel-execute'
-      (let* ((result (org-babel-eval (format "%s %s" cmd-env (plist-get cmd :cmd-eval)) "")))
-
-        (org-babel-result-cond (cdr (assq :result-params params))
-          result (org-babel-js-read result))))))
+    (cond
+     ;; Execute the code block with `compilation'
+     ((or (s-equals? "yes" (cdr (assq :compile params)))
+          (not   (s-blank? (cdr (assq :tmux    params)))))
+      ;; Do not highlight errors for arbitrary outputs
+      (let ((compilation-start-hook '(lambda (&rest _ignore)
+                                       (make-local-variable 'compilation-error-regexp-alist)
+                                       (setq-local compilation-error-regexp-alist nil)))
+            (tmux (or (--when-let (cdr (assq :tmux params))
+                        (format "-t %s" it))
+                      ""))
+            (final-cmd (format "%s %s %s" term-name cmd-env (plist-get cmd :cmd-compile))))
+        (if (s-equals? "yes" (cdr (assq :compile params)))
+            (compile final-cmd)
+          (let ((script-file (org-babel-temp-file "sh-script-" ".sh")))
+            (with-temp-file script-file (insert final-cmd))
+            (shell-command (format "tmux send-keys %s '/bin/zsh %s' ENTER" tmux script-file))))))
+     ;; Execute the code block with `org-babel-execute'
+     (t (let* ((result (org-babel-eval (format "%s %s" cmd-env (plist-get cmd :cmd-eval)) "")))
+          (org-babel-result-cond (cdr (assq :result-params params))
+            result (org-babel-js-read result)))))))
 
 (defun zc-org-babel-execute-typescript-cjs (body params)
   (let* ((ts-node-opts (json-serialize '(module "CommonJS" target "ES2017" skipLibCheck t)))
