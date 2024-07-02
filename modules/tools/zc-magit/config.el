@@ -73,6 +73,13 @@
                   ((_ ticket type) (s-match branch-ptn branch))
                   ((_ module)      (s-match module-ptn staged)))
        (s-join "\n\n" (list (concat (or type "feat") "(" module "): ") ticket)))
+     ;; Branch pattern: "prefix/blah"
+     (-when-let* ((staged (f-common-parent (magit-staged-files)))
+                  (branch-ptn (rx bos (+ alpha) "/"))
+                  (module-ptn (rx (+ alpha)
+                                  "/" (group (+ (or lower "-")))))
+                  ((_ module)      (s-match module-ptn staged)))
+       (s-join "\n\n" (list (concat "feat" "(" module "): "))))
      ;; Fixed commit messages for notes
      (when (f-equal-p (projectile-project-root) zc-org/directory) "update"))))
 
