@@ -141,6 +141,10 @@
 
       "SPC" #'zc/toggle-current-window-dedication)
 
+;; https://github.com/emacs-evil/evil/blob/master/evil-maps.el
+(map! :after evil :n "q" nil) ;; unset `evil-record-macro'
+(map! :after evil :n "Q" nil) ;; unset `evil-execute-last-recorded-macro'
+
 
 ;; Custom help keys -- overrides the default `help-map' defined in
 ;; `modules/config/default/config.el'.
