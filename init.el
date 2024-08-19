@@ -44,7 +44,6 @@
  ;;doom-quit               ; DOOM quit-message prompts when you quit Emacs
  ;;(emoji +unicode)        ; 🙂
  hl-todo                   ; highlight TODO/FIXME/NOTE/DEPRECATED/HACK/REVIEW
- hydra
  ;;indent-guides           ; highlighted indent columns
  ;;ligatures               ; ligatures and symbols to make your code pretty again
  ;;minimap                 ; show a map of the code on the side
@@ -60,6 +59,7 @@
  ;; vi-tilde-fringe        ; fringe tildes to mark beyond EOB
  (window-select +numbers)  ; visually switch windows
  ;;workspaces              ; tab emulation, persistence & separate workspaces
+ zc-hydra
  zc-theme
  zc-modeline
  zc-workspaces
