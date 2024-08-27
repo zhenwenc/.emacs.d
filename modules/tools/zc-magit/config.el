@@ -79,7 +79,7 @@
                   (module-ptn (rx (+ alpha)
                                   "/" (group (+ (or lower "-")))))
                   ((_ module)      (s-match module-ptn staged)))
-       (s-join "\n\n" (list (concat "feat" "(" module "): "))))
+       (s-join "\n\n" (list (concat "chore" "(" module "): "))))
      ;; Fixed commit messages for notes
      (when (f-equal-p (projectile-project-root) zc-org/directory) "update"))))
 
