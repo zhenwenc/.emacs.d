@@ -1,19 +1,4 @@
-(require 'f)
-
-(autoload 'evil-escape "evil")
-(autoload 'evil-ex-nohighlight "evil")
-(autoload 'evil-window-set-height "evil")
-(autoload 'org-move-item-up "org")
-(autoload 'org-move-item-down "org")
-(autoload 'org-narrow-to-subtree "org")
-(autoload 'recentf-remove-if-non-kept "recentf")
-(autoload 'projectile-project-p "projectile")
-(autoload 'projectile-project-name "projectile")
-(autoload 'projectile-invalidate-cache "projectile")
-(autoload 'projectile-previous-project-buffer "projectile")
-
-
-;; Buffer
+;;; core/zc-prelude/autoload/buffer.el -*- lexical-binding: t; -*-
 
 ;;;###autoload
 (defun zc/copy-buffer-to-clipboard ()
@@ -81,44 +66,6 @@ org subtree if in `org-mode'.
   "Execute body while temporarily widening the buffer."
   (declare (debug (body)))
   `(save-excursion (save-restriction (widen) ,@body)))
-
-
-;; Window
-
-;;;###autoload
-(defun zc/toggle-maximize-window ()
-  "Maximize window."
-  (interactive)
-  (let* ((win (window-normalize-window nil))
-         (win-height (window-parameter win 'window-height)))
-    (cond
-     ;; If window is side window, which can not be the only
-     ;; window, resize the window
-     ((window-parameter win 'window-side)
-      (evil-window-set-height nil))
-     ;; If window maybe maximized, to restore the previous
-     ;; window layout
-     ((and (= 1 (length (window-list)))
-           (assoc ?_ register-alist))
-      (jump-to-register ?_))
-     ;; Miximize the selected window
-     (t
-      (window-configuration-to-register ?_)
-      (delete-other-windows win)))))
-
-;;;###autoload
-(defun zc/toggle-current-window-dedication ()
-  "Toggle whether the current window is dedicated to its current buffer."
-  (interactive)
-  (let* ((window (selected-window))
-         (was-dedicated (window-dedicated-p window)))
-    (set-window-dedicated-p window (not was-dedicated))
-    (message "Window %sdedicated to %s"
-             (if was-dedicated "no longer " "")
-             (buffer-name))))
-
-
-;; File
 
 (defun zc/assert-buffer-and-file-exists (&optional buffer)
   "Return filename if exists, otherwise throw."
@@ -203,128 +150,3 @@ update recentf list."
     (when (and (featurep 'projectile) (projectile-project-p))
       (projectile-invalidate-cache nil))
     (message "File renamed '%s' to '%s'" src-name dest-name)))
-
-
-;; Editing
-
-;;;###autoload
-(defun zc-core/backward-kill-line (arg)
-  "Kill ARG lines backward.
-
-Behave the same as 'Command + delete' at macOS"
-  (interactive "p")
-  (kill-line (- 1 arg)))
-
-;;;###autoload
-(defun zc-core/move-line-up ()
-  "Move the current line up."
-  (interactive)
-  (if (derived-mode-p 'org-mode)
-      (org-move-item-up)
-    (transpose-lines 1)
-    (forward-line -2)
-    (indent-according-to-mode)))
-
-;;;###autoload
-(defun zc-core/move-line-down ()
-  "Move the current line down."
-  (interactive)
-  (if (derived-mode-p 'org-mode)
-      (org-move-item-down)
-    (forward-line 1)
-    (transpose-lines 1)
-    (forward-line -1)
-    (indent-according-to-mode)))
-
-;;;###autoload
-(defun zc-core/evil-escape-and-save ()
-  "Evil escape everything and save buffer."
-  (interactive)
-  (if (derived-mode-p 'term-mode)
-      (message "You won't want to save!")
-    (save-buffer))
-  (call-interactively 'zc-core/evil-escape))
-
-;;;###autoload
-(defun zc-core/evil-escape ()
-  "Evil nuclear escape everything. See also `doom/escape'"
-  (interactive)
-  (if (bound-and-true-p iedit-mode)
-      (iedit--quit))
-  (call-interactively 'evil-escape)
-  (call-interactively 'doom/escape))
-
-;;;###autoload
-(defun zc/indent-buffer ()
-  "Indent the entire buffer."
-  (interactive)
-  (when (derived-mode-p 'yaml-mode)
-    (user-error "You won't wanna indent YAML buffer!"))
-  (save-excursion
-    (delete-trailing-whitespace)
-    (indent-region (point-min) (point-max) nil)
-    (untabify (point-min) (point-max))))
-
-(defun zc/kill-transform-function (str)
-  "Transform STR before putting it on the kill ring.
-See `kill-transform-function'"
-  (and (not (string-blank-p str))
-       str))
-
-
-;; Symbol and Search
-
-;;;###autoload
-(defun zc/evil-search-clear-highlight ()
-  "Clear evil-search or evil-ex-search persistent highlights."
-  (interactive)
-  (cl-case evil-search-module
-    ;; NOTE: We no longer use persist highlights
-    ;; ('isearch (evil-search-highlight-persist-remove-all))
-    ('evil-search (evil-ex-nohighlight))))
-
-
-;; UI
-
-(defun zc/childframe-workable-p ()
-  "Return `t' when childframe is workable."
-  (or (not (or noninteractive
-               emacs-basic-display
-               (not (display-graphic-p))))
-      (daemonp)))
-
-
-;; Secret
-
-(defun zc/load-private-package (pkg file)
-  "Load encrypted package PKG from private directory."
-  (let ((path (f-join paths-private-dir file)))
-    (if (f-exists? path)
-        (require pkg path)
-      (warn "Private package [%s] not found." path))))
-
-(cl-defun zc/secrets-basic-auth (&rest spec &allow-other-keys)
-  (when-let ((found (car (apply 'auth-source-search :require '(:user :secret) spec)))
-             (username (plist-get found :user))
-             (password (funcall (plist-get found :secret))))
-    (format "%s:%s" username password)))
-
-
-;; Misc.
-
-;;;###autoload
-(defun zc/kill-emacs-or-frame (&optional persist-server-p)
-  "Kill emacs process or the current frame."
-  (interactive)
-  (if persist-server-p
-      (condition-case-unless-debug nil
-          (delete-frame nil 1)
-        (error
-         (make-frame-invisible nil 1)))
-    (kill-emacs)))
-
-(defmacro zc/measure-time (&rest body)
-  "Measure the time it takes to evaluate BODY."
-  `(let ((time (current-time)))
-     ,@body
-     (message "%.06fs" (float-time (time-since time)))))
