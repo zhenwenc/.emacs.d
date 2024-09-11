@@ -2,3 +2,4 @@
 ;;; core/zc-prelude/packages.el
 
 (package! ht)
+(package! plz)
