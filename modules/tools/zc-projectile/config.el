@@ -17,7 +17,7 @@
           ".metals"
           ".ensime_cache"
           ".serverless"
-          "docs"
+          ;; "docs"
           "dist"
           "build"
           "target"
