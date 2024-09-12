@@ -3,6 +3,7 @@
 
 ;; UI
 
+;;;###autoload
 (defun zc/childframe-workable-p ()
   "Return `t' when childframe is workable."
   (or (not (or noninteractive
@@ -13,6 +14,7 @@
 
 ;; Secret
 
+;;;###autoload
 (defun zc/load-private-package (pkg file)
   "Load encrypted package PKG from private directory."
   (let ((path (f-join paths-private-dir file)))
@@ -20,6 +22,7 @@
         (require pkg path)
       (warn "Private package [%s] not found." path))))
 
+;;;###autoload
 (cl-defun zc/secrets-basic-auth (&rest spec &allow-other-keys)
   (when-let ((found (car (apply 'auth-source-search :require '(:user :secret) spec)))
              (username (plist-get found :user))
@@ -40,6 +43,7 @@
          (make-frame-invisible nil 1)))
     (kill-emacs)))
 
+;;;###autoload
 (defmacro zc/measure-time (&rest body)
   "Measure the time it takes to evaluate BODY."
   `(let ((time (current-time)))
