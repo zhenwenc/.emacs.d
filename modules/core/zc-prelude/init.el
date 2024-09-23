@@ -19,6 +19,11 @@
 
 
 
+;; Load local libraries.
+(require 'zc-cache  (expand-file-name "lisp/cache.el"  doom-user-dir))
+(require 'zc-secret (expand-file-name "lisp/secret.el" doom-user-dir))
+(require 'zc-misc   (expand-file-name "lisp/misc.el"   doom-user-dir))
+
 ;; Load local configuration if presented.
 ;; This is useful when this Emacs configurations in multiple machines that have
 ;; different setups.

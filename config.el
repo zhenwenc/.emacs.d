@@ -50,7 +50,6 @@
 ;; - Command (⌘) key    => ⌥ Option
 ;; - Function (fn) key  => ⌥ Option
 ;;
-
 ;; Disable evil-snipe on s/S keys
 (remove-hook 'doom-first-input-hook #'evil-snipe-mode)
 (setq evil-snipe-override-evil-repeat-keys nil)
