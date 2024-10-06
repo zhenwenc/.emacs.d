@@ -13,6 +13,7 @@
         projectile-globally-ignored-directories
         '(".git"
           ".log"
+          ".yarn"
           ".cache"
           ".metals"
           ".ensime_cache"
