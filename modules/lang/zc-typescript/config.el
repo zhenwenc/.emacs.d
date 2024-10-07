@@ -19,6 +19,9 @@
   :config
   (setq typescript-indent-level 2)
 
+  ;; Enable tsserver logs
+  ;; (setq tide-tsserver-process-environment '("TSS_LOG=-level verbose -file /tmp/tss.log"))
+
   ;; HACK Fixes comment continuation on newline
   ;;
   ;; Doom defines `+default-open-doc-comments-block' for smartparens that
