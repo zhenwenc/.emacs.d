@@ -3,6 +3,10 @@
 
 
 
+(defun zc-theme/font-installed-p (font-name)
+  "Check if font with FONT-NAME is available."
+  (find-font (font-spec :name font-name)))
+
 ;; Doom exposes five (optional) variables for controlling fonts in Doom:
 ;;
 ;; - `doom-font' -- the primary font to use
@@ -17,6 +21,16 @@
 ;;
 (setq doom-font (font-spec :family "Fira Code" :size 12 :weight 'semi-light)
       doom-variable-pitch-font (font-spec :family "Fira Sans" :size 13))
+;;
+;; Font for Chinese characters
+;; https://github.com/laishulu/Sarasa-Mono-SC-Nerd
+;; https://github.com/saiswa/free-fonts/tree/master/PCLinuxOSFonts
+;;
+;; References
+;; https://github.com/manateelazycat/lazycat-emacs/blob/master/site-lisp/config/init-font.el
+(cl-loop for font in '("Source Han Sans HW SC VF" "Sarasa Term SC Nerd" "WenQuanYi Micro Hei" "PingFang SC")
+         when (zc-theme/font-installed-p font)
+         return (set-fontset-font t '(#x4e00 . #x9fff) (font-spec :family font :size 12)))
 ;;
 ;; If you or Emacs can't find your font, use 'M-x describe-font' to look them
 ;; up, `M-x eval-region' to execute elisp code, and 'M-x doom/reload-font' to
