@@ -51,6 +51,9 @@
  :i  "C-d"     #'delete-char
  :i  "C-S-d"   #'backward-kill-word)
 
+;; unset some annoying key bindings
+(map! "s-l" nil) ; use `SPC s l' instead
+
 
 
 (setq iedit-toggle-key-default nil) ;; disable auto bind M-;
