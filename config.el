@@ -91,6 +91,6 @@
 ;; - `visual-fill-column-mode'
 (add-hook! 'after-init-hook
   (defun zc/init-editor-config ()
-    (when (doom-module-p :editor word-wrap)
+    (when (doom-module-active-p :editor word-wrap)
       (setq +word-wrap-extra-indent nil) ;; weird experience
       (+global-word-wrap-mode +1))))

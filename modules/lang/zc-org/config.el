@@ -70,7 +70,7 @@
   (setq org-eldoc-breadcrumb-separator " → "
         org-ellipsis (if (char-displayable-p ?) " ▼" nil))
 
-  (unless (doom-module-p 'ui 'ligatures)
+  (unless (doom-module-active-p 'ui 'ligatures)
     (setq-hook! org-mode prettify-symbols-alist '(("#+BEGIN_SRC"   . "»")
                                                   ("#+begin_src"   . "»")
                                                   ("#+END_SRC"     . "«")
