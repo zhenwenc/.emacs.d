@@ -113,7 +113,7 @@
  (eval +overlay)           ; run code, run (also, repls)
  ;;gist                    ; interacting with github gists
  lookup                    ; navigate your code and its documentation
- ;;lsp                     ; M-x vscode
+ lsp                       ; M-x vscode
  magit                     ; a git porcelain for Emacs
  ;;make                    ; run make tasks from Emacs
  ;;pass                    ; password manager for nerds
@@ -165,7 +165,7 @@
  java                      ; the poster child for carpal tunnel syndrome
  ;; javascript             ; all(hope(abandon(ye(who(enter(here))))))
  ;;julia                   ; a better, faster MATLAB
- kotlin                    ; a better, slicker Java(Script)
+ (kotlin +lsp)             ; a better, slicker Java(Script)
  ;;latex                   ; writing papers in Emacs has never been so fun
  ;;lean                    ; for folks with too much to prove
  ;;ledger                  ; be audit you can be
