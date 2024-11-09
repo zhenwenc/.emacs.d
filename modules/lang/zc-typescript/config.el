@@ -24,15 +24,23 @@
 
   ;; HACK Fixes comment continuation on newline
   ;;
-  ;; Doom defines `+default-open-doc-comments-block' for smartparens that
-  ;; added local pair for ~/* */~.
+  ;; Doom defines `+default-open-doc-comments-block' for smartparens that added
+  ;; local pair for ~/* */~.
   ;;
   ;; It also defines `+default--newline-indent-and-continue-comments-a' that
   ;; hacks `newline-and-indent' to support continue comments.
   ;;
-  ;; But they don't work well with each other :sweat:
+  ;; And also defines `+evil--insert-newline-above-and-respect-comments-a' that
+  ;; hacks hacks `evil-open-above' and `evil-open-below' to continue comments.
+  ;;
+  ;; However, they don't work well with each other :sweat:
+  ;;
   (autoload 'js2-line-break "js2-mode" nil t)
   (setq-hook! 'typescript-mode-hook comment-line-break-function #'js2-line-break)
+  ;;
+  ;; FIXME seems broken after this refactoring:
+  ;; https://github.com/doomemacs/doomemacs/commit/e43d575cafd957cdc9de4eb8518f654a5a5487c5
+  (setq-hook! 'typescript-mode-hook +evil-want-o/O-to-continue-comments t)
 
   (after! smartparens
     ;; Enter > right before the slash in a self-closing tag automatically
@@ -40,6 +48,8 @@
     (map! :map typescript-mode-map :i ">" #'zc-typescript/sp-jsx-rewrap-tag)
 
     (sp-with-modes '(typescript-mode)
+      ;; Revert definition in `+default-open-doc-comments-block'
+      (sp-local-pair "/*" "*/" :actions :rem)
       ;; Enter < inserts </> to start a new JSX node
       ;; Also see `zc-typescript/sp-jsx-rewrap-tag'
       (sp-local-pair "<" ">" :post-handlers '(zc-typescript/sp-jsx-expand-tag))))
@@ -132,7 +142,7 @@
   (setq-hook! 'tide-mode-hook +lookup-definition-functions
               '(+lookup-xref-definitions-backend-fn))
 
-    (setq tide-always-show-documentation t
+  (setq tide-always-show-documentation t
         tide-completion-detailed nil ; has performance issue
         tide-completion-ignore-case t
         tide-completion-setup-company-backend nil
