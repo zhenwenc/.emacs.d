@@ -64,8 +64,9 @@
 ;; Doom default to 'loopback, which forces gpg-agent to use the Emacs minibuffer
 ;; to prompt for the key passphrase. It doesn't use macos keychain.
 ;; FIXME What's the better approach?
-(after! epa
-  (set epg-pinentry-mode nil))
+(when (modulep! +gnupg)
+  (after! epa
+    (set epg-pinentry-mode nil)))
 
 ;; Prepare initial workspace layouts on startup.
 (add-hook! 'after-init-hook

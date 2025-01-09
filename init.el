@@ -219,5 +219,5 @@
 
  :config
  ;;literate
- (default +bindings +smartparens)
+ (default +bindings +gnupg +smartparens)
  zc-keybinds)
