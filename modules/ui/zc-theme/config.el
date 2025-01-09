@@ -48,7 +48,7 @@
       doom-themes-enable-italic t)
 
 ;; Load custom theme
-(load-theme 'zc-dracula t)
+(setq doom-theme 'zc-dracula)
 
 
 
