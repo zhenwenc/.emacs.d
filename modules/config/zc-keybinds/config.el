@@ -321,6 +321,7 @@
        :desc "Emacs debug"                     "D" #'toggle-debug-on-error
        :desc "Explain pause"                   "e" #'docker-compose
        :desc "Auto recompile"                  "R" #'zc-eval/compile-on-save-mode
+       :desc "Show Chat"                       "C" #'gptel
        :desc "Show imenu"                      "i" #'imenu-list-smart-toggle
        :desc "Show world clock"                "W" #'world-clock)
       )

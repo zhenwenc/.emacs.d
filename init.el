@@ -129,6 +129,7 @@
  zc-magit
  zc-docker
  zc-projectile
+ zc-llm
 
  :os
  (:if IS-MAC macos)        ; improve compatibility with macOS
