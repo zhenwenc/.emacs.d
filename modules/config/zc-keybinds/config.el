@@ -258,8 +258,8 @@
 
       ;; <leader> j --- jump
       (:prefix-map ("j" . "jump")
-       :desc "Goto char"                       "s" #'evil-avy-goto-char
-       :desc "Goto char 2"                     "S" #'evil-avy-goto-char-2
+       :desc "Goto char"                       "j" #'evil-avy-goto-char
+       :desc "Goto char 2"                     "J" #'evil-avy-goto-char-2
        :desc "Goto line"                       "l" #'evil-avy-goto-line
 
        :desc "sp sexp (end)"                   "e" #'sp-end-of-sexp
