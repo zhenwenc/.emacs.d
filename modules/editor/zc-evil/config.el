@@ -63,3 +63,25 @@
   (setq iedit-current-symbol-default t
         iedit-only-at-symbol-boundaries t
         iedit-toggle-key-default nil))
+
+;; Doom disabled the `expand-region' package by default when using `evil'
+(use-package! expand-region
+  :commands (er/contract-region er/mark-symbol er/mark-word)
+  :config
+  (defadvice! doom--quit-expand-region-a (&rest _)
+    "Properly abort an expand-region region."
+    :before '(evil-escape doom/escape)
+    (when (memq last-command '(er/expand-region er/contract-region))
+      (er/contract-region 0)))
+
+  ;; HACK Disable `org-mode' extensions due to performance issue
+  (defun zc/er-save-org-mode-excursion (action) (funcall action))
+  (advice-add #'er/save-org-mode-excursion :override #'zc/er-save-org-mode-excursion)
+  (advice-add #'er/mark-org-element        :override #'ignore)
+  (advice-add #'er/mark-org-element-parent :override #'ignore)
+  (advice-add #'er/mark-org-code-block     :override #'ignore)
+  (advice-add #'er/mark-org-parent         :override #'ignore)
+
+  ;; HACK These expand functions have problem with YAML variable placeholders
+  (advice-add #'er/mark-yaml-inner-block   :override #'ignore)
+  (advice-add #'er/mark-yaml-outer-block   :override #'ignore))
