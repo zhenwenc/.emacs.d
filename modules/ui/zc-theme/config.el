@@ -28,9 +28,12 @@
 ;;
 ;; References
 ;; https://github.com/manateelazycat/lazycat-emacs/blob/master/site-lisp/config/init-font.el
+;;
+;; 测试字体：符号
 (cl-loop for font in '("Source Han Sans HW SC VF" "Sarasa Term SC Nerd" "WenQuanYi Micro Hei" "PingFang SC")
          when (zc-theme/font-installed-p font)
-         return (set-fontset-font t '(#x4e00 . #x9fff) (font-spec :family font :size 12)))
+         return (list (set-fontset-font t '(#x4e00 . #x9fff) (font-spec :family font :size 12))
+                      (set-fontset-font t '(#xff00 . #xff65) (font-spec :family font :size 12))))
 ;;
 ;; If you or Emacs can't find your font, use 'M-x describe-font' to look them
 ;; up, `M-x eval-region' to execute elisp code, and 'M-x doom/reload-font' to
