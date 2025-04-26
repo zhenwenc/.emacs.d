@@ -254,7 +254,9 @@
        ;; To help identify magit-status pref bottlenecks
        :desc "Magit verbose refresh"           "R" #'magit-refresh-verbose
        ;; Doom only set this binding when `vc-gutter' is enabled
-       :desc "Git time machine"                "t" #'git-timemachine-toggle)
+       :desc "Git time machine"                "t" #'git-timemachine-toggle
+       ;; Shortcuts
+       :desc "WIP commit"                      "u" #'zc-git/magit-commit-update)
 
       ;; <leader> j --- jump
       (:prefix-map ("j" . "jump")
