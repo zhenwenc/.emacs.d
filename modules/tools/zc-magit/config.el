@@ -69,7 +69,7 @@
                                   "/" (group (+ upper) "-" (+ num))
                                   "-" (group (+ lower)) "-"))
                   (module-ptn (rx (+ alpha)
-                                  "/" (group (+ (or lower "-")))))
+                                  "/" (group (+ (or alnum "-")))))
                   ((_ ticket type) (s-match branch-ptn branch))
                   ((_ module)      (s-match module-ptn staged)))
        (s-join "\n\n" (list (concat (or type "feat") "(" module "): ") ticket)))
@@ -77,7 +77,7 @@
      (-when-let* ((staged (f-common-parent (magit-staged-files)))
                   (branch-ptn (rx bos (+ alpha) "/"))
                   (module-ptn (rx (+ alpha)
-                                  "/" (group (+ (or lower "-")))))
+                                  "/" (group (+ (or alnum "-")))))
                   ((_ module)      (s-match module-ptn staged)))
        (s-join "\n\n" (list (concat "chore" "(" module "): "))))
      ;; Fixed commit messages for notes
