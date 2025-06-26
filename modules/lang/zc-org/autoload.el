@@ -472,6 +472,7 @@ This function is called by `org-babel-execute-src-block'."
           (compile (format "%s %s" cmd script-file)))
          ((not (s-blank? tmux))
           (shell-command (format "tmux send-keys %s -X cancel" tmux)) ;; exit copy-mode
+          (shell-command (format "tmux send-keys %s -R C-c" tmux)) ;; exit process
           (shell-command (format "tmux send-keys %s -R C-l" tmux)) ;; clear history
           (shell-command (format "tmux send-keys %s '%s %s' ENTER" tmux cmd script-file)))))
     ;; Execute the code block with `org-babel-execute'
