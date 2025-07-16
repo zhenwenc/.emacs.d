@@ -129,6 +129,7 @@
  zc-magit
  zc-docker
  zc-projectile
+ zc-kubernetes
  zc-llm
 
  :os
