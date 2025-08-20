@@ -14,6 +14,9 @@
 (defconst paths-themes-dir
   (concat doom-user-dir "themes/"))
 
+(defconst paths-prompts-dir
+  (concat doom-user-dir "prompts/"))
+
 (defconst paths-private-dir
   (concat "~/dotfiles/" "private/"))
 

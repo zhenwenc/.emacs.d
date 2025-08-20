@@ -323,7 +323,18 @@
        :desc "Emacs debug"                     "D" #'toggle-debug-on-error
        :desc "Explain pause"                   "e" #'docker-compose
        :desc "Auto recompile"                  "R" #'zc-eval/compile-on-save-mode
-       :desc "Show Chat"                       "C" #'gptel
        :desc "Show imenu"                      "i" #'imenu-list-smart-toggle
        :desc "Show world clock"                "W" #'world-clock)
+
+      ;; <leader> o --- open
+      (:prefix-map ("o" . "open")
+                   (:prefix ("l" . "llm")
+                    :desc "Add text to context"    "a" #'gptel-add
+                    :desc "Add file to context"    "f" #'gptel-add-file
+                    :desc "Open gptel"             "l" #'gptel
+                    :desc "Send to gptel"          "s" #'gptel-send
+                    :desc "Open gptel menu"        "m" #'gptel-menu
+                    :desc "Rewrite"                "r" #'gptel-rewrite
+                    :desc "Org: set topic"         "o" #'gptel-org-set-topic
+                    :desc "Org: set properties"    "O" #'gptel-org-set-properties))
       )

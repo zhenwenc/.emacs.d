@@ -3,3 +3,4 @@
 
 ;; https://github.com/karthink/gptel
 (package! gptel)
+(package! gptel-magit)
