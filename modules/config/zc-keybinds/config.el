@@ -283,6 +283,7 @@
        :desc "Search babel"                    "b" (cmd! (zc-org/outline-file-heading 'babel))
        :desc "Search notes"                    "n" (cmd! (zc-org/outline-file-heading 'note))
        :desc "Search work notes"               "w" (cmd! (zc-org/outline-file-heading 'work))
+       :desc "Search past notes"               "p" (cmd! (zc-org/outline-file-heading 'past))
        :desc "Search heading"                  "i" #'consult-org-heading
 
        :desc "Org capture"                     "c" #'org-capture

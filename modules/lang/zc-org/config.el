@@ -60,6 +60,8 @@
           (,(zc-org/file-with-exts :dir zc-org/main-notes-dir)
            :regexp . ,(rx "* " (or "Inbox" "Archive")))
           (,(zc-org/file-with-exts :dir zc-org/work-notes-dir)
+           :regexp . ,(rx "* " (or "Inbox" "Archive")))
+          (,(zc-org/file-with-exts :dir zc-org/past-notes-dir)
            :regexp . ,(rx "* " (or "Inbox" "Archive"))))
         org-refile-use-outline-path 'file
 

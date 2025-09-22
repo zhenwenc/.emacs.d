@@ -187,6 +187,10 @@ See also `counsel-org-goto-all'."
                                    (-andfn (-rpartial #'f-ext-p "org")
                                            (-not (-partial #'s-contains? "-inbox"))
                                            (-not (-partial #'s-contains? "-archive")))))
+                  ('past  (f-files zc-org/past-notes-dir
+                                   (-andfn (-rpartial #'f-ext-p "org")
+                                           (-not (-partial #'s-contains? "-inbox"))
+                                           (-not (-partial #'s-contains? "-archive")))))
                   ('babel (list org-default-babel-file))))
          (candidates (consult-org--headings t nil files))
          ;; https://github.com/minad/consult/blob/main/consult-org.el

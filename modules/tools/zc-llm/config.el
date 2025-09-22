@@ -40,12 +40,12 @@
   ;;
   ;;  machine api.deepseek.com login apikey password TOKEN
   ;;
-  (gptel-make-openai "DeepSeek"
-    :host "api.deepseek.com"
-    :endpoint "/chat/completions"
-    :stream t
-    :key (zc/secrets-api-key :host "api.deepseek.com")
-    :models '(deepseek-chat deepseek-coder))
+  ;; (gptel-make-openai "DeepSeek"
+  ;;   :host "api.deepseek.com"
+  ;;   :endpoint "/chat/completions"
+  ;;   :stream t
+  ;;   :key (zc/secrets-api-key :host "api.deepseek.com")
+  ;;   :models '(deepseek-chat deepseek-coder))
 
   (gptel-make-preset 'copilot-sonnet
     :description "Preset for Copilot sonnet chat"
@@ -57,10 +57,10 @@
     :description "Preset for Copilot Beast Mode chat"
     :system (f-read-text (expand-file-name "beastmode.md" paths-prompts-dir)))
 
-  (gptel-make-preset 'deepseek
-    :description "Preset for DeepSeek chat"
-    :backend "DeepSeek"
-    :model 'deepseek-chat)
+  ;; (gptel-make-preset 'deepseek
+  ;;   :description "Preset for DeepSeek chat"
+  ;;   :backend "DeepSeek"
+  ;;   :model 'deepseek-chat)
   )
 
 (use-package! gptel-magit
