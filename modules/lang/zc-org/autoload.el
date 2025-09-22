@@ -186,7 +186,8 @@ See also `counsel-org-goto-all'."
                   ('work  (f-files zc-org/work-notes-dir
                                    (-andfn (-rpartial #'f-ext-p "org")
                                            (-not (-partial #'s-contains? "-inbox"))
-                                           (-not (-partial #'s-contains? "-archive")))))
+                                           (-not (-partial #'s-contains? "-archive"))
+                                           (-not (-partial #'s-contains? "-invoice")))))
                   ('past  (f-files zc-org/past-notes-dir
                                    (-andfn (-rpartial #'f-ext-p "org")
                                            (-not (-partial #'s-contains? "-inbox"))
