@@ -42,21 +42,28 @@ projectile project name. Useful for monorepo."
             (json-read-from-string)
             (alist-get 'data)
             (json-read-from-string)
-            (-map (-lambda ((package-name . (&alist 'location location)))
-                    (list :name package-name :location location)))))
+            (-map (-lambda ((name . (&alist 'location location)))
+                    (cons name location)))))
       ((rx "4" (1+ "." num))
        (->> (shell-command-to-string "yarn workspaces list --json")
             (s-trim) (s-lines)
             (-map 'json-read-from-string)
             (-remove (-lambda ((&alist 'name name)) (null name)))
             (-map (-lambda ((&alist 'name name 'location location))
-                    (list :name name :location location)))))
-      (_ (user-error "Unsupported Yarn version")))
-    ))
+                    (cons name location)))))
+      (_ (user-error "Unsupported Yarn version")))))
+
+(defun zc-projectile/npm-workspaces ()
+  "Return the list of NPM workspaces."
+  (with-demoted-errors "Error listing npm workspaces: %S"
+    (->> (shell-command-to-string "npm query .workspace")
+         (json-read-from-string)
+         (-map (-lambda ((&alist 'name name 'location location))
+                 (cons name location))))))
 
 (defun zc-projectile/local-workspaces (parent)
   "Return the list of children folders."
-  (with-demoted-errors "Error listing dummy workspaces: %S"
+  (with-demoted-errors "Error listing local workspaces: %S"
     (->> (f-glob parent)
          (--filter (f-directory-p it))
          (--map (f-relative it default-directory)))))
@@ -129,8 +136,8 @@ by using the magic dynamic binding."
         :enabled  #'projectile-project-root
         :items
         (lambda () (projectile-with-default-dir (projectile-acquire-root)
-                     (-concat (->> (zc-projectile/yarn-workspaces)
-                                   (--map (plist-get it :location)))
+                     (-concat (zc-projectile/npm-workspaces)
+                              (zc-projectile/yarn-workspaces)
                               (zc-projectile/local-workspaces "./modules/*/*")
                               (zc-projectile/local-workspaces "./examples/*"))))))
 
