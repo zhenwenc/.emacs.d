@@ -114,7 +114,7 @@
  ;;gist                    ; interacting with github gists
  lookup                    ; navigate your code and its documentation
  lsp                       ; M-x vscode
- magit                     ; a git porcelain for Emacs
+ (magit +forge)            ; a git porcelain for Emacs
  ;;make                    ; run make tasks from Emacs
  ;;pass                    ; password manager for nerds
  ;;pdf                     ; pdf enhancements
@@ -205,6 +205,7 @@
  zc-kotlin
  zc-typescript
  zc-plantuml
+ zc-mermaid
 
  :email
  ;;(mu4e +org +gmail)
