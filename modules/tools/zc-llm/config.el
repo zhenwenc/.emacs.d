@@ -34,7 +34,7 @@
   ;; To use Github Copilot backend, it auto prompt authentication
   ;;
   (setq gptel-backend (gptel-make-gh-copilot "Copilot"))
-  (setq gptel-model 'claude-3.7-sonnet)
+  (setq gptel-model 'claude-3.5-sonnet)
 
   ;; To use DeepSeek backend, it lookup the API key from authinfo
   ;;
