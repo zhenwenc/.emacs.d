@@ -5,10 +5,11 @@
 ;; - When source block results set to `none', use `plantuml-mode'
 ;;   preview instead of output to file.
 ;;
-;; - Preview diagram output to `PNG' instead of `SVG', otherwise
-;;   displaying the image on dark background looks weird. E.g.:
+;; - When preview diagram with output set to "SVG" `PNG' instead of `PNG', you
+;;   should customise the background color, otherwise rendering the image on a
+;;   dark background looks weird. For example:
 ;;
-;;   skinparam backgroundColor #EEEBDC
+;;       skinparam backgroundColor #EEEBDC
 ;;
 ;;   Use `:output' to specify output type: txt, svg, or png.
 ;;
@@ -20,7 +21,7 @@
              (window-type          (cdr (assq :window params)))
              (height               (cdr (assq :height params)))
              (width                (cdr (assq :width  params)))
-             (plantuml-output-type (or output-type "png"))
+             (plantuml-output-type (or output-type "svg"))
              (full-body (org-babel-plantuml-make-body body params)))
 
         ;; TODO Adjust popup window layout
@@ -39,7 +40,6 @@
       (user-error "You must specify \":results file replace\" header argument"))
     (unless (cdr (assq :java params))
       ;; (push (cons :java (s-join " " plantuml-java-args)) params)
-      (add-to-list 'params (cons :java (s-join " " plantuml-java-args)))
-      )
+      (add-to-list 'params (cons :java (s-join " " plantuml-java-args))))
     ;; Execute script using the original function
     (funcall orig-fn body params)))
