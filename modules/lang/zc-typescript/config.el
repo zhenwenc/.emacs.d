@@ -61,8 +61,8 @@
     (defun zc-typescript/maybe-enable-formatter ()
       (unless (and buffer-file-name ;; maybe scratch or indirect buffer
                    (or (file-remote-p buffer-file-name)
-                       (f-ext-p buffer-file-name "js")   ; JS are shit!
-                       (f-ext-p buffer-file-name "jsx")  ; JS are shit!
+                       ;; (f-ext-p buffer-file-name "js")   ; JS are shit!
+                       ;; (f-ext-p buffer-file-name "jsx")  ; JS are shit!
                        (s-contains-p "/node_modules/" buffer-file-name)))
         (apheleia-mode))))
 
