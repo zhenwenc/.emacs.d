@@ -47,10 +47,15 @@
   ;;   :key (zc/secrets-api-key :host "api.deepseek.com")
   ;;   :models '(deepseek-chat deepseek-coder))
 
+  (gptel-make-preset 'chatgpt-mini
+    :description "Preset for ChatGPT general chat"
+    :backend "ChatGPT"
+    :model 'gpt-4.1-mini)
+
   (gptel-make-preset 'copilot-sonnet
     :description "Preset for Copilot sonnet chat"
     :backend "Copilot"
-    :model 'claude-3.7-sonnet)
+    :model 'claude-3.5-sonnet)
 
   (gptel-make-preset 'copilot-beast
     :parents 'copilot-sonnet
