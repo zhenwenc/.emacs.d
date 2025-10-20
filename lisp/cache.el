@@ -38,7 +38,10 @@
 BODY and store the returned value into CACHE with TTL."
   `(or (zc/cache-get ,cache ,key)
        (let ((value (progn ,@body)))
-         (zc/cache-set ,cache ,key value)
-         value)))
+         (if (or (null value)
+                 (s-equals? "" value))
+             (user-error "Invalid cache value: [%s]" value)
+           (zc/cache-set ,cache ,key value)
+           value))))
 
 (provide 'zc-cache)
