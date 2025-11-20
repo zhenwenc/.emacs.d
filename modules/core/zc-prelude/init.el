@@ -2,6 +2,9 @@
 
 
 
+(defconst paths-configs-dir
+  (f-expand "~/dotfiles/"))
+
 (defconst paths-cache-dir
   (concat doom-user-dir ".cache/"))
 
@@ -15,10 +18,10 @@
   (concat doom-user-dir "themes/"))
 
 (defconst paths-prompts-dir
-  (concat doom-user-dir "prompts/"))
+  (concat paths-configs-dir "prompts/"))
 
 (defconst paths-private-dir
-  (concat "~/dotfiles/" "private/"))
+  (concat paths-configs-dir "private/"))
 
 
 
