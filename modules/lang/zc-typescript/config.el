@@ -1,12 +1,66 @@
 ;;; lang/zc-typescript/config.el -*- lexical-binding: t; -*-
 
+(defun zc-typescript/common-setup (mode)
+  ;; ;; HACK Fix comment continuation on newline
+  ;;
+  ;; Doom defines `+default-open-doc-comments-block' for smartparens that added
+  ;; local pair for ~/* */~.
+  ;;
+  ;; It also defines `+default--newline-indent-and-continue-comments-a' that
+  ;; hacks `newline-and-indent' to support continue comments.
+  ;;
+  ;; And also defines `+evil--insert-newline-above-and-respect-comments-a' that
+  ;; hacks hacks `evil-open-above' and `evil-open-below' to continue comments.
+  ;;
+  ;; However, they don't work well with each other :sweat:
+  ;;
+  (autoload 'js2-line-break "js2-mode" nil t)
+  (setq-hook! (derived-mode-hook-name mode) comment-line-break-function #'js2-line-break)
+
+  ;; FIXME Seems broken after this refactoring:
+  ;; https://github.com/doomemacs/doomemacs/commit/e43d575cafd957cdc9de4eb8518f654a5a5487c5
+  (setq-hook! (derived-mode-hook-name mode) +evil-want-o/O-to-continue-comments t)
+
+  (after! smartparens
+    ;; Enter > right before the slash in a self-closing tag automatically
+    ;; inserts a closing tag and places point inside the element
+    (map! :map (derived-mode-map-name mode) :i ">" #'zc-typescript/sp-jsx-rewrap-tag)
+
+    (sp-with-modes '(typescript-mode)
+      ;; Revert definition in `+default-open-doc-comments-block'
+      (sp-local-pair "/*" "*/" :actions :rem)
+      ;; Enter < inserts </> to start a new JSX node
+      ;; Also see `zc-typescript/sp-jsx-rewrap-tag'
+      (sp-local-pair "<" ">" :post-handlers '(zc-typescript/sp-jsx-expand-tag))))
+
+  ;; Enable format +onsave for source code files only
+  ;;
+  ;; Not working? check `(executable-find "prettier")' and try `npm i -g prettier'
+  (add-hook (derived-mode-hook-name mode)
+            (defun zc-typescript/maybe-enable-formatter ()
+              (unless (and buffer-file-name ;; maybe scratch or indirect buffer
+                           (or (file-remote-p buffer-file-name)
+                               ;; (f-ext-p buffer-file-name "js")   ; JS are shit!
+                               ;; (f-ext-p buffer-file-name "jsx")  ; JS are shit!
+                               (s-contains-p "/node_modules/" buffer-file-name)))
+                (apheleia-mode)))))
+
 
 
 (use-package! typescript-ts-mode ; 29.1+ only
   :unless (< emacs-major-version 29)
 
   :mode "\\.ts\\'"
+  :mode "\\.es6\\'"
+  :mode "\\.[cm]js\\'"
   :mode ("\\.[tj]sx\\'" . tsx-ts-mode)
+
+  :interpreter (("node" . typescript-ts-mode))
+
+  :hook (typescript-ts-mode . zc-typescript/add-node-modules-bin-to-path)
+  :hook (typescript-ts-mode . zc-typescript/disable-flycheck-linters)
+  :hook (typescript-ts-mode . zc-typescript/disable-flycheck-for-flow)
+  :hook (typescript-ts-mode . zc-typescript/disable-flycheck-for-node-modules)
 
   :init
   (set-tree-sitter! 'typescript-mode 'typescript-ts-mode
@@ -18,25 +72,21 @@
        :commit "8e13e1db35b941fc57f2bd2dd4628180448c17d5"
        :source-dir "tsx/src")))
 
+
   :config
   (dolist (mode '(typescript-ts-mode tsx-ts-mode))
     (set-electric! mode :chars '(?\} ?\) ?. ?:))
     (set-electric! mode :chars '(?\} ?\)) :words '("||" "&&"))
 
-    ;; Enable format +onsave for source code files only
-    ;;
-    ;; Not working? check `(executable-find "prettier")' and try `npm i -g prettier'
-    (add-hook! 'typescript-ts-mode-hook
-      (defun zc-typescript/maybe-enable-formatter ()
-        (unless (and buffer-file-name ;; maybe scratch or indirect buffer
-                     (or (file-remote-p buffer-file-name)
-                         ;; (f-ext-p buffer-file-name "js")   ; JS are shit!
-                         ;; (f-ext-p buffer-file-name "jsx")  ; JS are shit!
-                         (s-contains-p "/node_modules/" buffer-file-name)))
-          (apheleia-mode))))
-
     (when (modulep! +lsp)
-      (add-hook (intern (format "%s-local-vars-hook" mode)) #'lsp! 'append))))
+      (add-hook (intern (format "%s-local-vars-hook" mode)) #'lsp! 'append))
+
+    (zc-typescript/common-setup mode))
+
+  (after! org-src
+    (defalias 'org-babel-execute:ts 'org-babel-execute:typescript)
+    (add-to-list 'org-src-lang-modes '("ts"         . typescript-ts))
+    (add-to-list 'org-src-lang-modes '("typescript" . typescript-ts))))
 
 
 
@@ -58,53 +108,7 @@
 
   :config
   (setq typescript-indent-level 2)
-
-  ;; Enable tsserver logs
-  ;; (setq tide-tsserver-process-environment '("TSS_LOG=-level verbose -file /tmp/tss.log"))
-
-  ;; HACK Fixes comment continuation on newline
-  ;;
-  ;; Doom defines `+default-open-doc-comments-block' for smartparens that added
-  ;; local pair for ~/* */~.
-  ;;
-  ;; It also defines `+default--newline-indent-and-continue-comments-a' that
-  ;; hacks `newline-and-indent' to support continue comments.
-  ;;
-  ;; And also defines `+evil--insert-newline-above-and-respect-comments-a' that
-  ;; hacks hacks `evil-open-above' and `evil-open-below' to continue comments.
-  ;;
-  ;; However, they don't work well with each other :sweat:
-  ;;
-  (autoload 'js2-line-break "js2-mode" nil t)
-  (setq-hook! 'typescript-mode-hook comment-line-break-function #'js2-line-break)
-  ;;
-  ;; FIXME seems broken after this refactoring:
-  ;; https://github.com/doomemacs/doomemacs/commit/e43d575cafd957cdc9de4eb8518f654a5a5487c5
-  (setq-hook! 'typescript-mode-hook +evil-want-o/O-to-continue-comments t)
-
-  (after! smartparens
-    ;; Enter > right before the slash in a self-closing tag automatically
-    ;; inserts a closing tag and places point inside the element
-    (map! :map typescript-mode-map :i ">" #'zc-typescript/sp-jsx-rewrap-tag)
-
-    (sp-with-modes '(typescript-mode)
-      ;; Revert definition in `+default-open-doc-comments-block'
-      (sp-local-pair "/*" "*/" :actions :rem)
-      ;; Enter < inserts </> to start a new JSX node
-      ;; Also see `zc-typescript/sp-jsx-rewrap-tag'
-      (sp-local-pair "<" ">" :post-handlers '(zc-typescript/sp-jsx-expand-tag))))
-
-  ;; Enable auto-formatter on source code files only
-  ;;
-  ;; Not working? check `(executable-find "prettier")' and try `npm i -g prettier'
-  (add-hook! 'typescript-mode-hook
-    (defun zc-typescript/maybe-enable-formatter ()
-      (unless (and buffer-file-name ;; maybe scratch or indirect buffer
-                   (or (file-remote-p buffer-file-name)
-                       ;; (f-ext-p buffer-file-name "js")   ; JS are shit!
-                       ;; (f-ext-p buffer-file-name "jsx")  ; JS are shit!
-                       (s-contains-p "/node_modules/" buffer-file-name)))
-        (apheleia-mode))))
+  (zc-typescript/common-setup 'typescript-mode)
 
   ;; Disable the new font lock level introduced on #110
   (when (booleanp font-lock-maximum-decoration)
@@ -138,7 +142,12 @@
   (dolist (item `((, zc-typescript/decorator-re        . font-lock-preprocessor-face)
                   (, zc-typescript/method-heading-re   1 font-lock-function-name-face)
                   (, zc-typescript/function-heading-re 1 font-lock-function-name-face)))
-    (add-to-list 'typescript--font-lock-keywords-3 item)))
+    (add-to-list 'typescript--font-lock-keywords-3 item))
+
+  (after! org-src
+    (defalias 'org-babel-execute:ts 'org-babel-execute:typescript)
+    (add-to-list 'org-src-lang-modes '("ts"         . typescript))
+    (add-to-list 'org-src-lang-modes '("typescript" . typescript))))
 
 
 
@@ -154,7 +163,7 @@
 
   :config
   (map! :localleader
-        :map typescript-mode-map
+        :map (typescript-mode-map typescript-ts-mode-map)
 
         (:prefix ("n" . "server")
          :desc "Restart server"      :n "s" #'tide-restart-server
@@ -179,6 +188,9 @@
          :desc "Action"              :n "a" #'tide-refactor
          :desc "Code fix"            :n "c" #'tide-fix
          :desc "Organize imports"    :n "o" #'tide-organize-imports))
+
+  ;; Enable tsserver logs
+  ;; (setq tide-tsserver-process-environment '("TSS_LOG=-level verbose -file /tmp/tss.log"))
 
   ;; Enforce `+lookup/definition' command to only use tide backend
   ;; FIXME I need a reliable code navigation!
@@ -243,10 +255,3 @@
     (setcar (memq 'source-inplace
                   (flycheck-checker-get 'typescript-tslint 'command))
             'source-original)))
-
-
-
-(after! org-src
-  (defalias 'org-babel-execute:ts 'org-babel-execute:typescript)
-  (add-to-list 'org-src-lang-modes '("ts"         . typescript-ts))
-  (add-to-list 'org-src-lang-modes '("typescript" . typescript-ts)))
