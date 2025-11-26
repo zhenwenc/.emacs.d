@@ -72,16 +72,34 @@
        :commit "8e13e1db35b941fc57f2bd2dd4628180448c17d5"
        :source-dir "tsx/src")))
 
-
   :config
   (dolist (mode '(typescript-ts-mode tsx-ts-mode))
     (set-electric! mode :chars '(?\} ?\) ?. ?:))
     (set-electric! mode :chars '(?\} ?\)) :words '("||" "&&"))
+    (zc-typescript/common-setup mode)
 
     (when (modulep! +lsp)
-      (add-hook (intern (format "%s-local-vars-hook" mode)) #'lsp! 'append))
+      (add-hook (intern (format "%s-local-vars-hook" mode)) #'lsp! 'append)
+      (map! :localleader
+            :map (typescript-ts-mode-map tsx-ts-mode-map)
 
-    (zc-typescript/common-setup mode))
+            (:prefix ("n" . "server")
+             :desc "Restart workspace"   :n "s" #'lsp-workspace-restart
+             :desc "Shutdown workspace"  :n "S" #'lsp-workspace-shutdown
+             :desc "Describe session"    :n "i" #'lsp-describe-session
+             :desc "Disconnect buffer"   :n "D" #'lsp-disconnect)
+
+            (:prefix ("h" . "docs")
+             :desc "Show docs"           :n "h" #'lsp-describe-thing-at-point
+             :desc "Show signature help" :n "s" #'lsp-signature-activate
+             :desc "Show reference"      :n "u" #'lsp-find-references
+             :desc "Show implementation" :n "i" #'lsp-find-implementation)
+
+            (:prefix ("r" . "refactor")
+             :desc "Rename symbol"       :n "r" #'lsp-rename
+             :desc "Format"              :n "f" #'lsp-format-buffer
+             :desc "Action"              :n "a" #'lsp-execute-code-action
+             :desc "Organize imports"    :n "o" #'lsp-organize-imports))))
 
   (after! org-src
     (defalias 'org-babel-execute:ts 'org-babel-execute:typescript)
@@ -105,6 +123,7 @@
   :hook (typescript-mode . zc-typescript/disable-flycheck-linters)
   :hook (typescript-mode . zc-typescript/disable-flycheck-for-flow)
   :hook (typescript-mode . zc-typescript/disable-flycheck-for-node-modules)
+  :hook (typescript-mode . zc-typescript/maybe-setup-tide)
 
   :config
   (setq typescript-indent-level 2)
@@ -152,9 +171,8 @@
 
 
 (use-package! tide
+  :unless (modulep! +lsp)
   :after (:and (:or typescript-mode typescript-ts-mode) company flycheck)
-  :hook ((typescript-mode    . zc-typescript/maybe-setup-tide)
-         (typescript-ts-mode . zc-typescript/maybe-setup-tide))
 
   ;; :general
   ;; (:keymaps 'tide-mode-map

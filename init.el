@@ -204,7 +204,7 @@
  zc-lisp
  zc-yaml
  zc-kotlin
- zc-typescript
+ (zc-typescript +lsp)
  zc-plantuml
  zc-mermaid
 
