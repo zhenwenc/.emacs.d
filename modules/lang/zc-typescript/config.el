@@ -2,7 +2,47 @@
 
 
 
+(use-package! typescript-ts-mode ; 29.1+ only
+  :unless (< emacs-major-version 29)
+
+  :mode "\\.ts\\'"
+  :mode ("\\.[tj]sx\\'" . tsx-ts-mode)
+
+  :init
+  (set-tree-sitter! 'typescript-mode 'typescript-ts-mode
+    '((typescript :url "https://github.com/tree-sitter/tree-sitter-typescript"
+       :commit "8e13e1db35b941fc57f2bd2dd4628180448c17d5"
+       :source-dir "typescript/src")))
+  (set-tree-sitter! nil 'tsx-ts-mode
+    '((tsx :url "https://github.com/tree-sitter/tree-sitter-typescript"
+       :commit "8e13e1db35b941fc57f2bd2dd4628180448c17d5"
+       :source-dir "tsx/src")))
+
+  :config
+  (dolist (mode '(typescript-ts-mode tsx-ts-mode))
+    (set-electric! mode :chars '(?\} ?\) ?. ?:))
+    (set-electric! mode :chars '(?\} ?\)) :words '("||" "&&"))
+
+    ;; Enable format +onsave for source code files only
+    ;;
+    ;; Not working? check `(executable-find "prettier")' and try `npm i -g prettier'
+    (add-hook! 'typescript-ts-mode-hook
+      (defun zc-typescript/maybe-enable-formatter ()
+        (unless (and buffer-file-name ;; maybe scratch or indirect buffer
+                     (or (file-remote-p buffer-file-name)
+                         ;; (f-ext-p buffer-file-name "js")   ; JS are shit!
+                         ;; (f-ext-p buffer-file-name "jsx")  ; JS are shit!
+                         (s-contains-p "/node_modules/" buffer-file-name)))
+          (apheleia-mode))))
+
+    (when (modulep! +lsp)
+      (add-hook (intern (format "%s-local-vars-hook" mode)) #'lsp! 'append))))
+
+
+
 (use-package! typescript-mode
+  :when (< emacs-major-version 29)
+
   :mode "\\.es6\\'"
   :mode "\\.cjs\\'"
   :mode "\\.mjs\\'"
@@ -100,9 +140,12 @@
                   (, zc-typescript/function-heading-re 1 font-lock-function-name-face)))
     (add-to-list 'typescript--font-lock-keywords-3 item)))
 
+
+
 (use-package! tide
-  :after (:and typescript-mode company flycheck)
-  :hook (typescript-mode . zc-typescript/maybe-setup-tide)
+  :after (:and (:or typescript-mode typescript-ts-mode) company flycheck)
+  :hook ((typescript-mode    . zc-typescript/maybe-setup-tide)
+         (typescript-ts-mode . zc-typescript/maybe-setup-tide))
 
   ;; :general
   ;; (:keymaps 'tide-mode-map
@@ -205,5 +248,5 @@
 
 (after! org-src
   (defalias 'org-babel-execute:ts 'org-babel-execute:typescript)
-  (add-to-list 'org-src-lang-modes '("ts"         . typescript))
-  (add-to-list 'org-src-lang-modes '("typescript" . typescript)))
+  (add-to-list 'org-src-lang-modes '("ts"         . typescript-ts))
+  (add-to-list 'org-src-lang-modes '("typescript" . typescript-ts)))

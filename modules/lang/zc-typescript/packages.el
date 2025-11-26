@@ -1,7 +1,8 @@
 ;; -*- no-byte-compile: t; -*-
 ;;; lang/zc-typescript/packages.el
 
-(package! typescript-mode)
-(package! tide)
+(when (< emacs-major-version 29)
+  (package! typescript-mode)
+  (package! js2-mode))
 
-(package! js2-mode)
+(package! tide)
