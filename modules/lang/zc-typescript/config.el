@@ -93,8 +93,10 @@
 
             (:prefix ("h" . "docs")
              :desc "Show docs"            :n "h" #'eldoc
-             :desc "Show reference"       :n "u" #'xref-find-references
-             :desc "Show type definition" :n "t" #'eglot-find-typeDefinition)
+             :desc "Show reference"       :n "u" #'+lookup/references
+             :desc "Show definition"      :n "d" #'+lookup/definition
+             :desc "Show type definition" :n "t" #'+lookup/type-definition
+             :desc "Show documentation"   :n "D" #'+lookup/documentation)
 
             (:prefix ("r" . "refactor")
              :desc "Rename symbol"        :n "r" #'eglot-rename
