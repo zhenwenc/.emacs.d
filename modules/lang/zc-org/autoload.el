@@ -463,6 +463,7 @@ This function is called by `org-babel-execute-src-block'."
             (tmux (or (--when-let (cdr (assq :tmux params))
                         (format "-t %s" it))
                       ""))
+            (tmux-follow (s-equals? "yes" (cdr (assq :tmux-follow params))))
             (full-body (concat
                         (org-babel-expand-body:generic
                          body params (org-babel-variable-assignments:shell params))))
@@ -476,6 +477,8 @@ This function is called by `org-babel-execute-src-block'."
          ((s-equals? "yes" (cdr (assq :compile params)))
           (compile (format "%s %s" cmd script-file)))
          ((not (s-blank? tmux))
+          (when tmux-follow ;; switch to window index
+            (shell-command (format "tmux switch-client %s" tmux)))
           (shell-command (format "tmux send-keys %s -X cancel" tmux)) ;; exit copy-mode
           (shell-command (format "tmux send-keys %s -R C-c" tmux)) ;; exit process
           (shell-command (format "tmux send-keys %s -R C-l" tmux)) ;; clear history
