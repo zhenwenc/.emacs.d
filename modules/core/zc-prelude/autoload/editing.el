@@ -71,4 +71,4 @@ See `kill-transform-function'"
   (cl-case evil-search-module
     ;; NOTE: We no longer use persist highlights
     ;; ('isearch (evil-search-highlight-persist-remove-all))
-    ('evil-search (evil-ex-nohighlight))))
+    (evil-search (evil-ex-nohighlight))))

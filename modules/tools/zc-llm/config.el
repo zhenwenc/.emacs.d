@@ -29,23 +29,30 @@
   ;; Move cursor to the next prompt after response is inserted
   (add-hook 'gptel-post-response-functions 'gptel-end-of-response)
 
+  (defun zc/deepseek-api-key  () (zc/secrets-api-key :host "api.deepseek.com"))
+  (defun zc/anthropic-api-key () (zc/secrets-api-key :host "api.anthropic.com"))
+
   ;; Set default backend
   ;;
   ;; To use Github Copilot backend, it auto prompt authentication
   ;;
   (setq gptel-backend (gptel-make-gh-copilot "Copilot"))
-  (setq gptel-model 'claude-3.5-sonnet)
+  (setq gptel-model 'gpt-4o)
 
   ;; To use DeepSeek backend, it lookup the API key from authinfo
   ;;
   ;;  machine api.deepseek.com login apikey password TOKEN
   ;;
-  ;; (gptel-make-openai "DeepSeek"
-  ;;   :host "api.deepseek.com"
-  ;;   :endpoint "/chat/completions"
-  ;;   :stream t
-  ;;   :key (zc/secrets-api-key :host "api.deepseek.com")
-  ;;   :models '(deepseek-chat deepseek-coder))
+  (gptel-make-openai "DeepSeek"
+    :host "api.deepseek.com"
+    :endpoint "/chat/completions"
+    :stream t
+    :key 'zc/deepseek-api-key
+    :models '(deepseek-chat deepseek-coder))
+
+  (gptel-make-anthropic "Claude"
+    :stream t 
+    :key 'zc/anthropic-api-key)
 
   (gptel-make-preset 'chatgpt-mini
     :description "Preset for ChatGPT general chat"
@@ -62,11 +69,27 @@
     :description "Preset for Copilot Beast Mode chat"
     :system (f-read-text (expand-file-name "beastmode.md" paths-prompts-dir)))
 
-  ;; (gptel-make-preset 'deepseek
-  ;;   :description "Preset for DeepSeek chat"
-  ;;   :backend "DeepSeek"
-  ;;   :model 'deepseek-chat)
+  (gptel-make-preset 'deepseek
+    :description "Preset for DeepSeek chat"
+    :backend "DeepSeek"
+    :model 'deepseek-chat)
+
+  (gptel-make-preset 'claude
+    :description "Preset for Anthropic (Claude) chat"
+    :backend "Claude"
+    :model 'claude-4-5-sonnet-20250929)
+
+  (gptel-make-preset 'claude-code
+    :description "Preset for Claude coding agent"
+    :backend "Claude"
+    :model 'claude-4-5-sonnet-20250929
+    :system "You are an expert coding assistant. Your role is to provide high-quality code solutions, refactorings, and explanations.")
   )
+
+(use-package! gptel-agent
+  :after gptel
+  :config
+  (gptel-agent-update))
 
 (use-package! gptel-magit
   :when (modulep! :tools magit)
