@@ -51,23 +51,18 @@
     :models '(deepseek-chat deepseek-coder))
 
   (gptel-make-anthropic "Claude"
-    :stream t 
+    :stream t
     :key 'zc/anthropic-api-key)
 
-  (gptel-make-preset 'chatgpt-mini
-    :description "Preset for ChatGPT general chat"
+  (gptel-make-preset 'chatgpt
+    :description "Preset for ChatGPT chat"
     :backend "ChatGPT"
     :model 'gpt-4.1-mini)
 
-  (gptel-make-preset 'copilot-sonnet
-    :description "Preset for Copilot sonnet chat"
+  (gptel-make-preset 'copilot
+    :description "Preset for Copilot chat"
     :backend "Copilot"
-    :model 'claude-3.5-sonnet)
-
-  (gptel-make-preset 'copilot-beast
-    :parents 'copilot-sonnet
-    :description "Preset for Copilot Beast Mode chat"
-    :system (f-read-text (expand-file-name "beastmode.md" paths-prompts-dir)))
+    :model 'claude-sonnet-4.5)
 
   (gptel-make-preset 'deepseek
     :description "Preset for DeepSeek chat"
@@ -77,20 +72,19 @@
   (gptel-make-preset 'claude
     :description "Preset for Anthropic (Claude) chat"
     :backend "Claude"
-    :model 'claude-4-5-sonnet-20250929)
-
-  (gptel-make-preset 'claude-code
-    :description "Preset for Claude coding agent"
-    :backend "Claude"
     :model 'claude-4-5-sonnet-20250929
-    :system "You are an expert coding assistant. Your role is to provide high-quality code solutions, refactorings, and explanations.")
+    :tools '("Glob" "Grep" "Read"))
   )
 
 (use-package! gptel-agent
-  :after gptel
-  :config
-  (gptel-agent-update))
+  :after (gptel)
+  :config (gptel-agent-update))
 
 (use-package! gptel-magit
   :when (modulep! :tools magit)
   :hook (magit-mode . gptel-magit-install))
+
+(use-package! gptel-prompts
+  :after (gptel)
+  :init (setq gptel-prompts-directory paths-prompts-dir)
+  :config (gptel-prompts-update))

@@ -7,3 +7,6 @@
 
 ;; https://github.com/karthink/gptel-agent
 (package! gptel-agent)
+
+;; https://github.com/jwiegley/gptel-prompts
+(package! gptel-prompts :recipe (:host github :repo "jwiegley/gptel-prompts"))
