@@ -74,6 +74,12 @@
     :backend "Claude"
     :model 'claude-4-5-sonnet-20250929
     :tools '("Glob" "Grep" "Read"))
+
+  (gptel-make-preset 'claude-code
+    :description "Preset for Anthropic (Claude) coding agent"
+    :backend "Claude"
+    :model 'claude-4-5-sonnet-20250929
+    :tools '("Glob" "Grep" "Read" "Edit" "Insert"))
   )
 
 (use-package! gptel-agent
