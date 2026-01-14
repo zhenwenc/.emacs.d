@@ -34,8 +34,14 @@
 
   ;; Set default backend
   ;;
+  ;; For Github Copilot, each chat interactions count as a premium request, while
+  ;; a paid plan has unlimited chat interactions using the included models:
+  ;;
+  ;; - [2026-01] GPT-5 mini, GPT-4.1 and GPT-4o
+  ;;
+  ;; https://docs.github.com/en/copilot/concepts/billing/copilot-requests#model-multipliers
   (setq gptel-backend (gptel-make-gh-copilot "Copilot" :stream t))
-  (setq gptel-model 'claude-sonnet-4.5)
+  (setq gptel-model 'gpt-4.1)
 
   ;; To use Anthropic backend, it lookup the API key from authinfo
   ;;
