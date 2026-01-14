@@ -56,10 +56,10 @@ projectile project name. Useful for monorepo."
 (defun zc-projectile/npm-workspaces ()
   "Return the list of NPM workspaces."
   (with-demoted-errors "Error listing npm workspaces: %S"
-    (->> (shell-command-to-string "npm query .workspace")
+    (->> (shell-command-to-string "npm query .workspace --silent")
          (json-read-from-string)
          (-map (-lambda ((&alist 'name name 'location location))
-                 (cons name location))))))
+                 (cons (format "%s" name) location))))))
 
 (defun zc-projectile/local-workspaces (parent)
   "Return the list of children folders."
@@ -137,7 +137,8 @@ by using the magic dynamic binding."
         :items
         (lambda () (projectile-with-default-dir (projectile-acquire-root)
                      (-concat (zc-projectile/npm-workspaces)
-                              (zc-projectile/yarn-workspaces)
+                              ;; FIXME Duplicated?
+                              ;; (zc-projectile/yarn-workspaces)
                               (zc-projectile/local-workspaces "./modules/*/*")
                               (zc-projectile/local-workspaces "./examples/*"))))))
 
