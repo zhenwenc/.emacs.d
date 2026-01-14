@@ -26,12 +26,12 @@
              (token (funcall (plist-get found :secret))))
     token))
 
-(defmacro zc/secrets-get (&rest body)
+(defmacro zc/secrets-get (vault &rest body)
   `(progn
      (unless (boundp 'paths-secrets-filename)
        (user-error "Missing required `paths-secrets-filename'"))
-     (unless (boundp 'zc/secrets)
-       (zc/load-private-package 'zc-secrets paths-secrets-filename))
-     (let-alist zc/secrets ,@body)))
+     (unless (featurep 'private-secrets)
+       (zc/load-private-package 'private-secrets paths-secrets-filename))
+     (let-alist ,vault ,@body)))
 
 (provide 'zc-secret)
