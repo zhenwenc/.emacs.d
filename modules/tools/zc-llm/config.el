@@ -34,10 +34,16 @@
 
   ;; Set default backend
   ;;
-  ;; To use Github Copilot backend, it auto prompt authentication
-  ;;
-  (setq gptel-backend (gptel-make-gh-copilot "Copilot"))
+  (setq gptel-backend (gptel-make-gh-copilot "Copilot" :stream t))
   (setq gptel-model 'claude-sonnet-4.5)
+
+  ;; To use Anthropic backend, it lookup the API key from authinfo
+  ;;
+  ;;  machine api.anthropic.com login apikey password TOKEN
+  ;;
+  (gptel-make-anthropic "Claude"
+    :stream t
+    :key 'zc/anthropic-api-key)
 
   ;; To use DeepSeek backend, it lookup the API key from authinfo
   ;;
@@ -49,10 +55,6 @@
     :stream t
     :key 'zc/deepseek-api-key
     :models '(deepseek-chat deepseek-coder))
-
-  (gptel-make-anthropic "Claude"
-    :stream t
-    :key 'zc/anthropic-api-key)
 
   (gptel-make-preset 'chatgpt
     :description "Preset for ChatGPT chat"
