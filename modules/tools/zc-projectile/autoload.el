@@ -43,14 +43,14 @@ projectile project name. Useful for monorepo."
             (alist-get 'data)
             (json-read-from-string)
             (-map (-lambda ((name . (&alist 'location location)))
-                    (cons name location)))))
+                    (cons (symbol-name name) location)))))
       ((rx "4" (1+ "." num))
        (->> (shell-command-to-string "yarn workspaces list --json")
             (s-trim) (s-lines)
             (-map 'json-read-from-string)
             (-remove (-lambda ((&alist 'name name)) (null name)))
             (-map (-lambda ((&alist 'name name 'location location))
-                    (cons name location)))))
+                    (cons (symbol-name name) location)))))
       (_ (user-error "Unsupported Yarn version")))))
 
 (defun zc-projectile/npm-workspaces ()
@@ -136,11 +136,12 @@ by using the magic dynamic binding."
         :enabled  #'projectile-project-root
         :items
         (lambda () (projectile-with-default-dir (projectile-acquire-root)
-                     (-concat (zc-projectile/npm-workspaces)
-                              ;; FIXME Duplicated?
-                              ;; (zc-projectile/yarn-workspaces)
-                              (zc-projectile/local-workspaces "./modules/*/*")
-                              (zc-projectile/local-workspaces "./examples/*"))))))
+                     (-concat
+                      ;; FIXME Performance issue?
+                      ;;(zc-projectile/npm-workspaces)
+                      (zc-projectile/yarn-workspaces)
+                      (zc-projectile/local-workspaces "./modules/*/*")
+                      (zc-projectile/local-workspaces "./examples/*"))))))
 
 
 ;;; Commands
