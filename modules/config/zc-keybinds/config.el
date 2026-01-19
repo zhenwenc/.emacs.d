@@ -332,7 +332,7 @@
                    (:prefix ("l" . "llm")
                     :desc "Add text to context"    "a" #'gptel-add
                     :desc "Add file to context"    "f" #'gptel-add-file
-                    :desc "Remove context"         "C" #'gptel-context-remove
+                    :desc "Remove all context"     "c" #'gptel-context-remove-all
                     :desc "Open gptel"             "l" #'gptel
                     :desc "Send to gptel"          "s" #'gptel-send
                     :desc "Open gptel menu"        "m" #'gptel-menu
