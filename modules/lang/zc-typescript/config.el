@@ -71,6 +71,10 @@
     '((tsx :url "https://github.com/tree-sitter/tree-sitter-typescript"
        :commit "8e13e1db35b941fc57f2bd2dd4628180448c17d5"
        :source-dir "tsx/src")))
+  (after! org-src
+    (defalias 'org-babel-execute:ts 'org-babel-execute:typescript)
+    (add-to-list 'org-src-lang-modes '("ts"         . typescript-ts))
+    (add-to-list 'org-src-lang-modes '("typescript" . typescript-ts)))
 
   :config
   (dolist (mode '(typescript-ts-mode tsx-ts-mode))
@@ -124,12 +128,7 @@
              :desc "Rename symbol"       :n "r" #'lsp-rename
              :desc "Format"              :n "f" #'lsp-format-buffer
              :desc "Action"              :n "a" #'lsp-execute-code-action
-             :desc "Organize imports"    :n "o" #'lsp-organize-imports))))
-
-  (after! org-src
-    (defalias 'org-babel-execute:ts 'org-babel-execute:typescript)
-    (add-to-list 'org-src-lang-modes '("ts"         . typescript-ts))
-    (add-to-list 'org-src-lang-modes '("typescript" . typescript-ts))))
+             :desc "Organize imports"    :n "o" #'lsp-organize-imports)))))
 
 
 
@@ -149,6 +148,12 @@
   :hook (typescript-mode . zc-typescript/disable-flycheck-for-flow)
   :hook (typescript-mode . zc-typescript/disable-flycheck-for-node-modules)
   :hook (typescript-mode . zc-typescript/maybe-setup-tide)
+
+  :init
+  (after! org-src
+    (defalias 'org-babel-execute:ts 'org-babel-execute:typescript)
+    (add-to-list 'org-src-lang-modes '("ts"         . typescript))
+    (add-to-list 'org-src-lang-modes '("typescript" . typescript)))
 
   :config
   (setq typescript-indent-level 2)
@@ -186,12 +191,7 @@
   (dolist (item `((, zc-typescript/decorator-re        . font-lock-preprocessor-face)
                   (, zc-typescript/method-heading-re   1 font-lock-function-name-face)
                   (, zc-typescript/function-heading-re 1 font-lock-function-name-face)))
-    (add-to-list 'typescript--font-lock-keywords-3 item))
-
-  (after! org-src
-    (defalias 'org-babel-execute:ts 'org-babel-execute:typescript)
-    (add-to-list 'org-src-lang-modes '("ts"         . typescript))
-    (add-to-list 'org-src-lang-modes '("typescript" . typescript))))
+    (add-to-list 'typescript--font-lock-keywords-3 item)))
 
 
 
