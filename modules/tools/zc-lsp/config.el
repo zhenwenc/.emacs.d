@@ -9,4 +9,13 @@
   (defun zc-lsp/maybe-disable-eglot ()
     (when (eq major-mode 'json-mode)
       (setq eglot--managed-mode nil)))
-  (add-hook 'eglot-managed-mode-hook #'zc-lsp/maybe-disable-eglot))
+  (add-hook 'eglot-managed-mode-hook #'zc-lsp/maybe-disable-eglot)
+
+  ;; Disable unused LSP server capabilities
+  (setq eglot-ignored-server-capabilities '(:semanticTokensProvider
+                                            :documentHighlightProvider
+                                            :documentFormattingProvider
+                                            :documentRangeFormattingProvider
+                                            :documentOnTypeFormattingProvider
+                                            :foldingRangeProvider
+                                            :colorProvider)))
