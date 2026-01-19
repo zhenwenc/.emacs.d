@@ -87,7 +87,9 @@
   (setq org-src-window-setup 'current-window
         org-edit-src-content-indentation 0
         ;; This cause TAB on src block behaves quite weird.
-        org-src-tab-acts-natively nil)
+        org-src-tab-acts-natively nil
+        ;; Prefer python3
+        org-babel-python-command "python3")
 
   ;; Ask for confirmation before executing src block.
   (defun zc-org/babel-confirm-evaluate (lang &rest _)
