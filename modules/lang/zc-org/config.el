@@ -25,8 +25,8 @@
        :desc "line display"   :n "l" #'org-toggle-link-display
        :desc "appear"         :n "p" #'org-appear-mode
        :desc "indent"         :n "I" #'org-indent-mode
-       :desc "show blocks"    :n "b" #'org-show-block-all
-       :desc "hide blocks"    :n "B" #'org-hide-block-all))
+       :desc "show blocks"    :n "b" #'org-fold-show-all
+       :desc "hide blocks"    :n "B" #'org-fold-hide-block-all))
 
 (after! org
   ;; Override default
@@ -60,8 +60,6 @@
           (,(zc-org/file-with-exts :dir zc-org/main-notes-dir)
            :regexp . ,(rx "* " (or "Inbox" "Archive")))
           (,(zc-org/file-with-exts :dir zc-org/work-notes-dir)
-           :regexp . ,(rx "* " (or "Inbox" "Archive")))
-          (,(zc-org/file-with-exts :dir zc-org/past-notes-dir)
            :regexp . ,(rx "* " (or "Inbox" "Archive"))))
         org-refile-use-outline-path 'file
 

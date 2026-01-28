@@ -16,7 +16,6 @@
 (defvar zc-org/directory "~/notes")
 (defvar zc-org/main-notes-dir (f-join zc-org/directory "main"))
 (defvar zc-org/work-notes-dir (f-join zc-org/directory "work"))
-(defvar zc-org/past-notes-dir (f-join zc-org/directory "past"))
 
 ;; File directories must be defined at `:init' block
 ;; so that they are visible to the navigation functions,
