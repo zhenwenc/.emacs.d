@@ -21,7 +21,7 @@
   ;; https://github.com/doomemacs/doomemacs/commit/e43d575cafd957cdc9de4eb8518f654a5a5487c5
   (setq-hook! (derived-mode-hook-name mode) +evil-want-o/O-to-continue-comments t)
 
-  (after! smartparens
+  (with-eval-after-load 'smartparens
     ;; Enter > right before the slash in a self-closing tag automatically
     ;; inserts a closing tag and places point inside the element
     (map! :map (derived-mode-map-name mode) :i ">" #'zc-typescript/sp-jsx-rewrap-tag)
@@ -71,7 +71,7 @@
     '((tsx :url "https://github.com/tree-sitter/tree-sitter-typescript"
        :commit "8e13e1db35b941fc57f2bd2dd4628180448c17d5"
        :source-dir "tsx/src")))
-  (after! org-src
+  (with-eval-after-load 'org-src
     (defalias 'org-babel-execute:ts 'org-babel-execute:typescript)
     (add-to-list 'org-src-lang-modes '("ts"         . typescript-ts))
     (add-to-list 'org-src-lang-modes '("typescript" . typescript-ts)))
@@ -150,7 +150,7 @@
   :hook (typescript-mode . zc-typescript/maybe-setup-tide)
 
   :init
-  (after! org-src
+  (with-eval-after-load 'org-src
     (defalias 'org-babel-execute:ts 'org-babel-execute:typescript)
     (add-to-list 'org-src-lang-modes '("ts"         . typescript))
     (add-to-list 'org-src-lang-modes '("typescript" . typescript)))

@@ -1,6 +1,6 @@
 ;;; completion/vertico/config.el -*- lexical-binding: t; -*-
 
-(after! consult
+(with-eval-after-load 'consult
   ;; By default, it searches from the current line, which results in a
   ;; very confusing list of candidates, where items in the bottom are
   ;; appearing on the top of the buffer.

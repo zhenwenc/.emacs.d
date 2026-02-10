@@ -1,4 +1,4 @@
-(after! evil
+(with-eval-after-load 'evil
   (setq evil-echo-state nil)
   ;; Use native keybindings, prevent overriding `C-t' and `C-d' keys
   (setq evil-disable-insert-state-bindings t)

@@ -1,4 +1,4 @@
-(after! magit
+(with-eval-after-load 'magit
   (setq magit-repository-directories
         '(("~/.emacs.d/" . 0)
           ("~/.doom.d/"  . 0)
@@ -21,11 +21,12 @@
   (advice-add #'+magit--revert-buffer :around #'zc/magit-revert-buffer-override))
 
 ;; UX: Disable in Org mode, the performance is extremely horrible
-(after! (magit git-gutter)
-  (add-to-list 'git-gutter:disabled-modes 'org-mode t))
+(with-eval-after-load 'magit
+  (with-eval-after-load 'git-gutter
+    (add-to-list 'git-gutter:disabled-modes 'org-mode t)))
 
 ;; Generate URL with tag or branch name when available
-(after! browse-at-remote
+(with-eval-after-load 'browse-at-remote
   (setq browse-at-remote-prefer-symbolic t))
 
 
@@ -40,7 +41,7 @@
   "Create a new commit on `HEAD' instantly, using the last commit message."
   (interactive)
   (magit-commit-create '("--all" "--no-verify" "--reuse-message=HEAD")))
-(after! magit
+(with-eval-after-load 'magit
   (transient-append-suffix 'magit-commit "c" '("u" "Update" zc-git/magit-commit-update)))
 
 

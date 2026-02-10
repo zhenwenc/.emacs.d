@@ -4,7 +4,7 @@
   :config
   (setq kotlin-tab-width 2)
 
-  (after! smartparens
+  (with-eval-after-load 'smartparens
     ;; Enter > right before the slash in a self-closing tag automatically
     ;; inserts a closing tag and places point inside the element
     (map! :map typescript-mode-map :i ">" #'zc-typescript/sp-jsx-rewrap-tag)

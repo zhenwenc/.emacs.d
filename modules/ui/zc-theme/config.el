@@ -66,7 +66,7 @@
 
 
 ;; Flash with softer color, my eye hurts!
-(after! nav-flash
+(with-eval-after-load 'nav-flash
   (set-face-attribute 'nav-flash-face nil :background (doom-darken 'cyan 0.5)))
 
 

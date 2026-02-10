@@ -1,6 +1,6 @@
 ;;; completion/zc-company/config.el -*- lexical-binding: t; -*-
 
-(after! company
+(with-eval-after-load 'company
   (setq company-tooltip-limit 12
         company-tooltip-align-annotations t
         company-idle-delay 0.1

@@ -41,7 +41,7 @@
   ;; Fix `--illegal-access=deny' doesn't supported by Java 8.
   (setq plantuml-java-args (-concat zc-plantuml/java-args '("-Djava.awt.headless=true" "-jar"))))
 
-(after! ob-plantuml
+(with-eval-after-load 'ob-plantuml
   ;; HACK Force ob-plantuml to use `plantuml-mode''s building mechanism, which
   ;;      is more sophisticated.
   (advice-add #'org-babel-execute:plantuml :around #'zc-plantuml/org-babel-execute)

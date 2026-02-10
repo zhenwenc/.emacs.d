@@ -13,7 +13,7 @@
 ;; Whenever you reconfigure a package, make sure to wrap your config in an
 ;; `after!' block, otherwise Doom's defaults may override your settings. E.g.
 ;;
-;;   (after! PACKAGE
+;;   (with-eval-after-load PACKAGE
 ;;     (setq x y))
 ;;
 ;; The exceptions to this rule:
@@ -65,7 +65,7 @@
 ;; to prompt for the key passphrase. It doesn't use macos keychain.
 ;; FIXME What's the better approach?
 (when (modulep! +gnupg)
-  (after! epa
+  (with-eval-after-load 'epa
     (set epg-pinentry-mode nil)))
 
 ;; Prepare initial workspace layouts on startup.

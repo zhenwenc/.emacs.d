@@ -1,6 +1,6 @@
 ;;; lang/zc-yaml/config.el -*- lexical-binding: t; -*-
 
-(after! yaml-mode
+(with-eval-after-load 'yaml-mode
   (setq yaml-imenu-generic-expression
         '((nil "^\\(:?[[:space:]]\\{2\\}??[a-zA-Z_-]+\\):" 1))))
 

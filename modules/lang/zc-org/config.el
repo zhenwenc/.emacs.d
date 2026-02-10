@@ -28,7 +28,7 @@
        :desc "show blocks"    :n "b" #'org-fold-show-all
        :desc "hide blocks"    :n "B" #'org-fold-hide-block-all))
 
-(after! org
+(with-eval-after-load 'org
   ;; Override default
   (setq org-M-RET-may-split-line nil
         org-insert-heading-respect-content t
@@ -112,10 +112,10 @@
   (advice-add 'org-babel-execute:restclient      :around #'zc-org/inhibit-message)
 
   ;; Override shell execution command
-  (after! ob-shell
+  (with-eval-after-load 'ob-shell
     (advice-add 'org-babel-execute:shell :around #'zc/org-babel-execute:shell)))
 
-(after! org-journal
+(with-eval-after-load 'org-journal
   (setq org-journal-date-prefix "#+TITLE: ")
   (setq org-journal-date-format "%a, %Y-%m-%d")
   (setq org-journal-file-format "%Y-%m-%d.org"))

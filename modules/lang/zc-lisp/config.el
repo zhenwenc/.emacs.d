@@ -1,7 +1,7 @@
 ;;; lang/zc-lisp/config.el -*- lexical-binding: t; -*-
 
 ;; Override doom-emacs default key bindings
-(after! elisp-mode
+(with-eval-after-load 'elisp-mode
   (map! :localleader
         :map (emacs-lisp-mode-map lisp-interaction-mode-map)
 

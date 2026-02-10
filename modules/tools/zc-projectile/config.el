@@ -1,7 +1,7 @@
 ;; -*- no-byte-compile: t; -*-
 ;;; tools/zc-projectile/config.el
 
-(after! projectile
+(with-eval-after-load 'projectile
   (setq projectile-globally-ignored-file-suffixes
         '(".elc" ".pyc" ".o" "gz" "zip" "tar" "elc")
         projectile-globally-ignored-files
