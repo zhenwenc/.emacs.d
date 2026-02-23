@@ -18,7 +18,7 @@
   (concat doom-user-dir "themes/"))
 
 (defconst paths-prompts-dir
-  (concat paths-configs-dir "prompts/"))
+  (concat paths-configs-dir "claude/agents/"))
 
 (defconst paths-private-dir
   (concat paths-configs-dir "private/"))
