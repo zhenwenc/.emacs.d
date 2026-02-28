@@ -111,6 +111,9 @@
   (advice-add 'org-babel-expand-noweb-references :around #'zc-org/inhibit-message)
   (advice-add 'org-babel-execute:restclient      :around #'zc-org/inhibit-message)
 
+  ;; FIXME: Move this to a proper place
+  (setq restclient-enable-eval t)
+
   ;; Override shell execution command
   (with-eval-after-load 'ob-shell
     (advice-add 'org-babel-execute:shell :around #'zc/org-babel-execute:shell)))
