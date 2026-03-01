@@ -95,6 +95,7 @@
   :config (gptel-agent-update))
 
 (use-package! gptel-magit
+  :after (gptel)
   :when (modulep! :tools magit)
   :hook (magit-mode . gptel-magit-install))
 
