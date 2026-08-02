@@ -83,52 +83,52 @@
     (zc-typescript/common-setup mode)
 
     (when (modulep! +lsp)
-      (add-hook (intern (format "%s-local-vars-hook" mode)) #'lsp! 'append))
+      (add-hook (intern (format "%s-local-vars-hook" mode)) #'lsp! 'append)))
 
-    (when (and (modulep! :tools lsp +eglot))
-      (map! :localleader
-            :map (typescript-ts-mode-map tsx-ts-mode-map)
+  (when (and (modulep! :tools lsp +eglot))
+    (map! :localleader
+          :map (typescript-ts-mode-map tsx-ts-mode-map)
 
-            (:prefix ("n" . "server")
-             :desc "Restart server"       :n "s" #'eglot-reconnect
-             :desc "Shutdown server"      :n "S" #'eglot-shutdown
-             :desc "Shutdown ALL servers" :n "S" #'eglot-shutdown-all
-             :desc "List connections"     :n "i" #'eglot-list-connections)
+          (:prefix ("n" . "server")
+           :desc "Restart server"       :n "s" #'eglot-reconnect
+           :desc "Shutdown server"      :n "S" #'eglot-shutdown
+           :desc "Shutdown ALL servers" :n "S" #'eglot-shutdown-all
+           :desc "List connections"     :n "i" #'eglot-list-connections)
 
-            (:prefix ("h" . "docs")
-             :desc "Show docs"            :n "h" #'eldoc
-             :desc "Show reference"       :n "u" #'+lookup/references
-             :desc "Show definition"      :n "d" #'+lookup/definition
-             :desc "Show type definition" :n "t" #'+lookup/type-definition
-             :desc "Show documentation"   :n "D" #'+lookup/documentation)
+          (:prefix ("h" . "docs")
+           :desc "Show docs"            :n "h" #'eldoc
+           :desc "Show reference"       :n "u" #'+lookup/references
+           :desc "Show definition"      :n "d" #'+lookup/definition
+           :desc "Show type definition" :n "t" #'+lookup/type-definition
+           :desc "Show documentation"   :n "D" #'+lookup/documentation)
 
-            (:prefix ("r" . "refactor")
-             :desc "Rename symbol"        :n "r" #'eglot-rename
-             :desc "Format"               :n "f" #'eglot-format-buffer
-             :desc "Action"               :n "a" #'eglot-code-action-quickfix
-             :desc "Organize imports"     :n "o" #'eglot-code-action-organize-imports)))
+          (:prefix ("r" . "refactor")
+           :desc "Rename symbol"        :n "r" #'eglot-rename
+           :desc "Format"               :n "f" #'eglot-format-buffer
+           :desc "Action"               :n "a" #'eglot-code-action-quickfix
+           :desc "Organize imports"     :n "o" #'eglot-code-action-organize-imports)))
 
-    (when (and (modulep! :tools lsp -eglot))
-      (map! :localleader
-            :map (typescript-ts-mode-map tsx-ts-mode-map)
+  (when (and (modulep! :tools lsp -eglot))
+    (map! :localleader
+          :map (typescript-ts-mode-map tsx-ts-mode-map)
 
-            (:prefix ("n" . "server")
-             :desc "Restart workspace"   :n "s" #'lsp-workspace-restart
-             :desc "Shutdown workspace"  :n "S" #'lsp-workspace-shutdown
-             :desc "Describe session"    :n "i" #'lsp-describe-session
-             :desc "Disconnect buffer"   :n "D" #'lsp-disconnect)
+          (:prefix ("n" . "server")
+           :desc "Restart workspace"   :n "s" #'lsp-workspace-restart
+           :desc "Shutdown workspace"  :n "S" #'lsp-workspace-shutdown
+           :desc "Describe session"    :n "i" #'lsp-describe-session
+           :desc "Disconnect buffer"   :n "D" #'lsp-disconnect)
 
-            (:prefix ("h" . "docs")
-             :desc "Show docs"           :n "h" #'lsp-describe-thing-at-point
-             :desc "Show signature help" :n "s" #'lsp-signature-activate
-             :desc "Show reference"      :n "u" #'lsp-find-references
-             :desc "Show implementation" :n "i" #'lsp-find-implementation)
+          (:prefix ("h" . "docs")
+           :desc "Show docs"           :n "h" #'lsp-describe-thing-at-point
+           :desc "Show signature help" :n "s" #'lsp-signature-activate
+           :desc "Show reference"      :n "u" #'lsp-find-references
+           :desc "Show implementation" :n "i" #'lsp-find-implementation)
 
-            (:prefix ("r" . "refactor")
-             :desc "Rename symbol"       :n "r" #'lsp-rename
-             :desc "Format"              :n "f" #'lsp-format-buffer
-             :desc "Action"              :n "a" #'lsp-execute-code-action
-             :desc "Organize imports"    :n "o" #'lsp-organize-imports)))))
+          (:prefix ("r" . "refactor")
+           :desc "Rename symbol"       :n "r" #'lsp-rename
+           :desc "Format"              :n "f" #'lsp-format-buffer
+           :desc "Action"              :n "a" #'lsp-execute-code-action
+           :desc "Organize imports"    :n "o" #'lsp-organize-imports))))
 
 
 
