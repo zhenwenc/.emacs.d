@@ -14,10 +14,6 @@
 ;;      Alternatively, press 'gd' (or 'C-c c d') on a module to browse its
 ;;      directory (for easy access to its source code).
 
-(setq doom-modules-dirs
-      (list (file-name-concat doom-user-dir "modules/")
-            doom-modules-dir))
-
 (doom!
  :core
  zc-prelude
