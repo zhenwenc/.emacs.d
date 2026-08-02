@@ -7,6 +7,10 @@
           ("~/notes/"    . 0)
           ("~/dotfiles/" . 0)))
 
+  ;; Log per-section refresh timings to *Messages* to identify slowness.
+  ;; Toggle at runtime with `magit-toggle-verbose-refresh'.
+  (setq magit-refresh-verbose t)
+
   ;; Display magit buffer in fullframe
   ;; TODO Is this correct? Does doom happy?
   (setq magit-bury-buffer-function    #'magit-restore-window-configuration)
