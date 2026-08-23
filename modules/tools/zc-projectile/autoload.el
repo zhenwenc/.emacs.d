@@ -61,10 +61,10 @@ projectile project name. Useful for monorepo."
          (-map (-lambda ((&alist 'name name 'location location))
                  (cons (format "%s" name) location))))))
 
-(defun zc-projectile/local-workspaces (parent)
+(defun zc-projectile/local-workspaces (pattern)
   "Return the list of children folders."
   (with-demoted-errors "Error listing local workspaces: %S"
-    (->> (f-glob parent)
+    (->> (f-glob pattern)
          (--filter (f-directory-p it))
          (--map (f-relative it default-directory)))))
 
@@ -141,7 +141,7 @@ by using the magic dynamic binding."
                       ;;(zc-projectile/npm-workspaces)
                       (zc-projectile/yarn-workspaces)
                       (zc-projectile/local-workspaces "./modules/*/*")
-                      (zc-projectile/local-workspaces "./examples/*"))))))
+                      (zc-projectile/local-workspaces "./work/*/spaces/*"))))))
 
 
 ;;; Commands
