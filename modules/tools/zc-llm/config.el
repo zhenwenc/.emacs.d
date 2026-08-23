@@ -12,6 +12,7 @@
 ;;
 ;; https://github.com/karthink/gptel
 (use-package! gptel
+  :disabled t
   :defer t
   :config
   ;; Doom specific, popup manager may bow out
@@ -91,15 +92,18 @@
   )
 
 (use-package! gptel-agent
+  :disabled t
   :after (gptel)
   :config (gptel-agent-update))
 
 (use-package! gptel-magit
+  :disabled t
   :after (gptel)
   :when (modulep! :tools magit)
   :hook (magit-mode . gptel-magit-install))
 
 (use-package! gptel-prompts
+  :disabled t
   :after (gptel)
   :init (setq gptel-prompts-directory paths-prompts-dir)
   :config (gptel-prompts-update))
