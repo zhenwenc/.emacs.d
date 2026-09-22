@@ -37,20 +37,20 @@ projectile project name. Useful for monorepo."
   "Return the list of Yarn workspaces."
   (with-demoted-errors "Error listing yarn workspaces: %S"
     (pcase (shell-command-to-string "yarn --version")
-      ((rx "1" (1+ "." num))
+      ((rx bos "1.")
        (->> (shell-command-to-string "yarn workspaces --json info")
             (json-read-from-string)
             (alist-get 'data)
             (json-read-from-string)
             (-map (-lambda ((name . (&alist 'location location)))
                     (cons (symbol-name name) location)))))
-      ((rx "4" (1+ "." num))
+      ((rx bos (any "2-9") ".") ; Yarn Berry (2+)
        (->> (shell-command-to-string "yarn workspaces list --json")
             (s-trim) (s-lines)
             (-map 'json-read-from-string)
             (-remove (-lambda ((&alist 'name name)) (null name)))
             (-map (-lambda ((&alist 'name name 'location location))
-                    (cons (symbol-name name) location)))))
+                    (cons name location)))))
       (_ (user-error "Unsupported Yarn version")))))
 
 (defun zc-projectile/npm-workspaces ()
