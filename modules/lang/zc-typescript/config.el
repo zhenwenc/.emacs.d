@@ -50,7 +50,7 @@
 (use-package! typescript-ts-mode ; 29.1+ only
   :unless (< emacs-major-version 29)
 
-  :mode "\\.ts\\'"
+  :mode "\\.[cm]?ts\\'"
   :mode "\\.es6\\'"
   :mode "\\.[cm]js\\'"
   :mode ("\\.[tj]sx\\'" . tsx-ts-mode)
